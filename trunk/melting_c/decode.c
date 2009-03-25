@@ -278,10 +278,46 @@ struct param *decode_input(struct param *pst_in_param, char *ps_input, char *ps_
 	  exit(EXIT_FAILURE);
       }
     break;
-  case 'N':
+   case 'N':
       /* sodium concentration */
       if ( strlen(&ps_input[2]) != 0 && isdigit((int)ps_input[2]) ){
       pst_in_param->d_conc_salt = strtod(&ps_input[2],NULL);
+      i_salt = TRUE;
+      } else {
+	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
+	  usage();
+	  exit(EXIT_FAILURE);
+      }
+      break;
+  case 'k':
+      /* potassium concentration */
+      if ( strlen(&ps_input[2]) != 0 && isdigit((int)ps_input[2]) ){
+      pst_in_param->d_conc_potassium = strtod(&ps_input[2],NULL);
+      i_magnesium = TRUE;
+      i_salt = TRUE;
+      } else {
+	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
+	  usage();
+	  exit(EXIT_FAILURE);
+      }
+      break;
+  case 't':
+      /* tris concentration */
+      if ( strlen(&ps_input[2]) != 0 && isdigit((int)ps_input[2]) ){
+      pst_in_param->d_conc_tris = strtod(&ps_input[2],NULL);
+      i_magnesium = TRUE;
+      i_salt = TRUE;
+      } else {
+	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
+	  usage();
+	  exit(EXIT_FAILURE);
+      }
+      break;
+  case 'G':
+      /* magnesium concentration */
+      if ( strlen(&ps_input[2]) != 0 && isdigit((int)ps_input[2]) ){
+      pst_in_param->d_conc_magnesium = strtod(&ps_input[2],NULL);
+      i_magnesium = TRUE;
       i_salt = TRUE;
       } else {
 	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
