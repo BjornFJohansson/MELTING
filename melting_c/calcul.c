@@ -321,30 +321,112 @@ double tm_approx(struct param *pst_param){
 double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
 
     double d_temp;		/* melting temperature */
+    double d_temp_na;           /*melting temperature in 1M na+ */
     double d_salt_corr_value = 0.0; /* ... */
+    double d_magn_corr_value = 0.0;
+    int i_size;			/* size of the duplex */
+    int i_numbergc;		/* ... */
+    double d_fgc;		/* need an explanation? */
+    char *pc_screen;     	/* screen the sequence */
+    double d_conc_monovalents = pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris;
+    double d_ratio_ions = sqrt(pst_param->d_conc_magnesium)/d_conc_monovalents;
+    double d_a = 3.92/100000;
+    double d_b = 9.11/1000000;
+    double d_c = 6.26/100000;
+    double d_d = 1.42/100000;
+    double d_e = 4.82/10000;
+    double d_f = 5.25/10000;
+    double d_g = 8.31/100000;  
+    
+    /*+--------------------+
+      | Size of the duplex |
+      +--------------------+*/
+
+    i_size = strlen(pst_param->ps_sequence);
+    if (i_size == 0){
+	fprintf(ERROR," The size of the duplex appears to be null. Therefore I\n"
+                      " cannot compute approximation of the melting temperature.\n");
+	exit(EXIT_FAILURE);
+    }
+    
+      /*+----------------+
+      | percent of G+C |
+      +----------------+*/
+	
+    pc_screen = pst_param->ps_sequence;
+    i_numbergc = 0;
+    while(*pc_screen != '\0'){
+	if (*pc_screen == 'G' || *pc_screen == 'C')
+	    i_numbergc++;
+	pc_screen++;
+    }
+    d_fgc = ( (double)i_numbergc / (double)i_size );
+
 
     /*+-----------------+
       | salt correction |
       +-----------------+*/
-
-    if (strncmp(pst_param->s_sodium_correction,"wet91a",6) == 0)
-	d_salt_corr_value = 16.6 * log10 (pst_param->d_conc_salt / (1.0 + 0.7 * pst_param->d_conc_salt)) - 269.32;
-    else 
-	if (strncmp(pst_param->s_sodium_correction,"san96a",6) == 0)
-	    d_salt_corr_value = 12.5 * log10 (pst_param->d_conc_salt) - 273.15;
-	else 
-	    if (strncmp(pst_param->s_sodium_correction,"san98a",6) == 0){
-		d_salt_corr_value = -273.15;
-		pst_results->d_total_entropy += 0.368 * (strlen(pst_param->ps_sequence)-1) * log (pst_param->d_conc_salt);
-	    } else 
-		if (strncmp(pst_param->s_sodium_correction,"nak99a",6) == 0){
-		    fprintf(ERROR," Sorry, not implemented yet\n");
-		    exit(EXIT_FAILURE);
-		}
-				/* thermodynamic term */
+ 
+    if (i_magnesium == FALSE){
+    
+    	if (strncmp(pst_param->s_sodium_correction,"wet91a",6) == 0)
+		d_salt_corr_value = 16.6 * log10 (pst_param->d_conc_salt / (1.0 + 0.7 * pst_param->d_conc_salt)) - 269.32;
+    	else 
+	    if (strncmp(pst_param->s_sodium_correction,"san96a",6) == 0)
+	    	d_salt_corr_value = 12.5 * log10 (pst_param->d_conc_salt) - 273.15;
+	    else 
+	        if (strncmp(pst_param->s_sodium_correction,"san98a",6) == 0){
+			d_salt_corr_value = -273.15;
+			pst_results->d_total_entropy += 0.368 * (strlen(pst_param->ps_sequence)-1) * log (pst_param->d_conc_salt);
+	    	} else 
+			if (strncmp(pst_param->s_sodium_correction,"nak99a",6) == 0){
+		   		 fprintf(ERROR," Sorry, not implemented yet\n");
+		   		 exit(EXIT_FAILURE);
+			}
+    				/* thermodynamic term */
     d_temp = pst_results->d_total_enthalpy / (pst_results->d_total_entropy + 1.987 * log (pst_param->d_conc_probe/pst_param->d_gnat))
 				/* salt correction */
 	+ d_salt_corr_value;
-    
+    }
+    else if (i_magnesium == TRUE && i_dnadna == TRUE){
+    	if (d_conc_monovalents == 0) {
+		d_magn_corr_value = d_a - d_b * log (pst_param->d_conc_magnesium) + d_fgc * (d_c + d_d * log
+		(pst_param->d_conc_magnesium)) + 1/(2 * ((double)i_size - 1)) *
+		(- d_e + d_f * log (pst_param->d_conc_magnesium) + d_g *
+		pow(log (pst_param->d_conc_magnesium),2));
+	}
+	else {		
+		if (d_ratio_ions < 0.22) {		
+			d_magn_corr_value = (4.29 * d_fgc - 3.95) * 1/100000 * log (d_conc_monovalents) + 9.40 * 1/1000000 * pow(log (d_conc_monovalents),2);
+		}
+		else {
+			if (d_ratio_ions < 6) {
+				d_a = 3.92/100000 * (0.843 - 0.352 * sqrt(d_conc_monovalents) * log (d_conc_monovalents));
+				d_d = 1.42/100000 * (1.279 - 4.03/1000 * log (d_conc_monovalents) - 8.03/1000 * pow(log (d_conc_monovalents),2));
+				d_g = 8.31/100000 * (0.486 - 0.258 * log (d_conc_monovalents) + 5.25/1000 * pow(log (d_conc_monovalents),3));
+				
+				d_magn_corr_value = d_a - d_b * log
+				(pst_param->d_conc_magnesium) + d_fgc *
+				(d_c + d_d * log (pst_param->d_conc_magnesium)) + 1/(2 * ((double)i_size - 1)) * (- d_e + d_f * log (pst_param->d_conc_magnesium) + d_g *
+				pow(log (pst_param->d_conc_magnesium),2));
+			}
+			else {			
+				d_magn_corr_value = d_a - d_b * log (pst_param->d_conc_magnesium) + d_fgc * (d_c + d_d * log (pst_param->d_conc_magnesium)) + 1/(2 *
+				((double)i_size - 1)) * (- d_e + d_f * log (pst_param->d_conc_magnesium) + d_g *
+				pow(log(pst_param->d_conc_magnesium),2));
+			}
+		}
+	}
+	
+    d_temp_na = pst_results->d_total_enthalpy / (pst_results->d_total_entropy +
+    1.987 * log (pst_param->d_conc_probe/pst_param->d_gnat));	
+    				/* thermodynamic term with magnesium correction */
+    d_temp = 1/(1/d_temp_na + d_magn_corr_value) - 273;
+    }
+    else {
+    	fprintf(OUTPUT,"  WARNING: The magnesium correction can efficiently\n"
+			  "  account only for the DNA/DNA hybridisation. So we can't take in account the magnesium, potassium ant tris concentration for the melting temperature\n" 
+			  "computation of RNA or hybrids RNA/DNA duplexes.\n");
+    }
     return d_temp;
 }

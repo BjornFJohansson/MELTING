@@ -47,6 +47,9 @@
  |        -L     displays Legal information                              |
  |        -M[Alternative Mismaches NN set]                               |
  |        -N[salt (N states for Na)]                                     |
+ |        -k[potassium]                                                  |
+ |        -t[tris]                                                       |
+ |        -G[magnesium]                                                  |
  |        -O[Outfile] (the name can be omitted)                          |
  |        -P[concentration of the strand in excess (P states for Probe)] |
  |        -p     displays the path where to seek the parameters and quit |
@@ -71,6 +74,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 #include "common.h"
 #include "melting.h"
 
@@ -104,6 +108,9 @@ int main(int argc, char *argv[]){
 	 return EXIT_FAILURE;
     }
     pst_param->d_conc_salt = 0.0;
+    pst_param->d_conc_potassium = 0.0;
+    pst_param->d_conc_tris = 0.0;
+    pst_param->d_conc_magnesium = 0.0;
     pst_param->d_conc_probe = 0.0;       
 /* Note however that the probe concentration has to be > 0, because of a logarithm, and 
    because an hybridation without nucleic acid isn't that much interresting ...*/
@@ -151,7 +158,7 @@ int main(int argc, char *argv[]){
 	fprintf(ERROR," Function main, line __LINE__:\n"
 		" Unable to allocate memory for the parsing of the %dth argument\n",i_count);
 	return EXIT_FAILURE;
-    };
+    }
 	strncpy(ps_inputstring,argv[i_count],strlen(argv[i_count]));
 	ps_inputstring[strlen(argv[i_count])] = '\0';
 	pst_param = decode_input(pst_param,ps_inputstring,ps_getenv);
@@ -223,11 +230,14 @@ int main(int argc, char *argv[]){
     }
     
     /*-------------------------------------*
-     | The salt concentration is mandatory |
+     | The different ion concentrations are mandatory |
      *-------------------------------------*/
 
-    if (pst_param->d_conc_salt <= MIN_SALT || pst_param->d_conc_salt >= MAX_SALT )
+    if (pst_param->d_conc_salt < MIN_SALT || pst_param->d_conc_salt >= MAX_SALT )
 	i_salt = FALSE;
+	if (pst_param->d_conc_salt == 0 && i_magnesium == FALSE){
+	i_salt = FALSE;
+	}
     while(i_salt == FALSE){
 	if (i_quiet == FALSE){
 	    fprintf(MENU,"  No salt concentration has been properly entered.\n"
@@ -252,6 +262,83 @@ int main(int argc, char *argv[]){
 	}
     }
     
+   if (pst_param->d_conc_potassium < MIN_SALT)
+	i_salt = FALSE;
+    while(i_salt == FALSE){
+	if (i_quiet == FALSE){
+	    fprintf(MENU,"  No potassium concentration has been properly entered.\n"
+		         "  The specification of this parameter is mandatory.\n"
+		         "  This concentration has to be positive\n"
+		         "  Enter it now (Q to quit)                         \n");
+	    fgets(s_line,sizeof(s_line),INPUT); /* Try to see what is happening if the line 
+		      is over sizeof(ac_line). Maybe suck the remaining with while( getchar() != EOF) */
+	    pc_scan = s_line;
+	    while(*pc_scan == ' ')
+		pc_scan++;
+	    if (*pc_scan == 'Q' || *pc_scan == 'q')
+		return EXIT_SUCCESS;
+	    if ( isdigit((int)*pc_scan) ){
+		pst_param->d_conc_potassium = strtod(pc_scan,NULL);
+		if (pst_param->d_conc_potassium >= MIN_SALT)
+		    i_salt = TRUE;
+	    }
+	} else{
+	    fprintf(ERROR," No proper potassium concentration has been entered.\n");
+	    return EXIT_FAILURE;
+	}
+    }
+    
+    if (pst_param->d_conc_tris < MIN_SALT)
+    	i_salt = FALSE;
+    while(i_salt == FALSE){
+	if (i_quiet == FALSE){
+	    fprintf(MENU,"  No tris concentration has been properly entered.\n"
+		         "  The specification of this parameter is mandatory.\n"
+		         "  This concentration has to be positive\n"
+		         "  Enter it now (Q to quit)                         \n");
+	    fgets(s_line,sizeof(s_line),INPUT); /* Try to see what is happening if the line 
+		      is over sizeof(ac_line). Maybe suck the remaining with while( getchar() != EOF) */
+	    pc_scan = s_line;
+	    while(*pc_scan == ' ')
+		pc_scan++;
+	    if (*pc_scan == 'Q' || *pc_scan == 'q')
+		return EXIT_SUCCESS;
+	    if ( isdigit((int)*pc_scan) ){
+		pst_param->d_conc_tris = strtod(pc_scan,NULL);
+		if (pst_param->d_conc_tris > MIN_SALT)
+		    i_salt = TRUE;
+	    }
+	} else{
+	    fprintf(ERROR," No proper tris concentration has been entered.\n");
+	    return EXIT_FAILURE;
+	}
+    }
+    
+    if (pst_param->d_conc_magnesium < MIN_SALT)
+    	i_salt = FALSE;
+    while(i_salt == FALSE){
+	if (i_quiet == FALSE){
+	    fprintf(MENU,"  No magnesium concentration has been properly entered.\n"
+		         "  The specification of this parameter is mandatory.\n"
+		         "  This concentration has to be positive\n"
+		         "  Enter it now (Q to quit)                         \n");
+	    fgets(s_line,sizeof(s_line),INPUT); /* Try to see what is happening if the line 
+		      is over sizeof(ac_line). Maybe suck the remaining with while( getchar() != EOF) */
+	    pc_scan = s_line;
+	    while(*pc_scan == ' ')
+		pc_scan++;
+	    if (*pc_scan == 'Q' || *pc_scan == 'q')
+		return EXIT_SUCCESS;
+	    if ( isdigit((int)*pc_scan) ){
+		pst_param->d_conc_magnesium = strtod(pc_scan,NULL);
+		if (pst_param->d_conc_tris >= MIN_SALT)
+		    i_salt = TRUE;
+	    }
+	} else{
+	    fprintf(ERROR," No proper salt concentration has been entered.\n");
+	    return EXIT_FAILURE;
+	}
+     }
     if (i_approx == FALSE){ /* The approximative mode do not need the concentration of nucleic acid 
                                A good indication of how accurate it is ...*/
       /*-----------------------------------------------------------------*
@@ -412,8 +499,11 @@ int main(int argc, char *argv[]){
 	    if (i_dnarna == TRUE || i_rnarna == TRUE)
 		fprintf(OUTFILE,"(Note that uridine is changed into thymidine for sake of simplification. The\n"
 		                "computation has been nevertheless performed with the specified hybridisation\n"
-                                "type.)\n");
+                                "type. There is also not magnesium correction for dnarna and rnarna hybridization.)\n");
 	    fprintf(OUTFILE,"Sodium concentration: %5.2e M\n",pst_param->d_conc_salt);
+	    fprintf(OUTFILE,"Potassium concentration: %5.2e M\n",pst_param->d_conc_potassium);
+	    fprintf(OUTFILE,"Tris concentration: %5.2e M\n",pst_param->d_conc_tris);
+	    fprintf(OUTFILE,"Magnesium concentration: %5.2e M\n",pst_param->d_conc_magnesium);
 	    fprintf(OUTFILE,"Nucleic acid concentration (strand in excess): %5.2e M\n",pst_param->d_conc_probe);
 	    if (i_approx == FALSE){
 		fprintf(OUTFILE,"File containing the nearest_neighbor parameters is %s.\n\n",pst_param->pst_present_nn->s_nnfile);
@@ -461,17 +551,51 @@ int main(int argc, char *argv[]){
 				    pst_param->pst_present_de->ast_dedata[i_count].d_entropy * 4.18);
 			}
 		}
-
-		if (strncmp(pst_param->s_sodium_correction,"wet91a",sizeof(pst_param->s_sodium_correction)) == 0)
-		    fprintf(OUTFILE,"\nThe salt correction is from Wetmur (1991), i.e,\n"
+		
+		if (i_magnesium == TRUE){
+		    fprintf(OUTFILE,"\nThe monovalent ion correction and divalent ion correction is from owczarzy (2008), i.e,\n");
+		    if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris == 0) {
+		    	fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+			"ln([Mg2+]))\n"
+			"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
+		    }
+		    else {
+		    	if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 0.22) {
+				fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000 x ln([monovalent+]) + 9.40 x 1/1000000 x ln([Mg2+]) x ln([Mg2+])\n"
+				"where : [Monovalent+] = [Na+] + [Mg2+].\n");
+		    	}
+			else {
+		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 6) {
+					fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+					"ln([Mg2+]))\n"
+					"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
+					"(1.279 - 4.03/1000 x ln([monovalent+]) - 8.03/1000 x ln([monovalent+] x ln([monovalent+]),e = 4.82/10000;f = 5.25/10000, g = 8.31/100000\n"
+					"x (0.486 - 0.258 x ln([monovalent+]) + 5.25/1000 x ln([monovalent+] x ln([monovalent+] x ln([monovalent+]).\n"
+					"and [Monovalent+] = [Na+] + [Mg2+]\n");
+		    		}
+				else {
+					fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+					"ln([Mg2+]))\n"
+					"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
+				}
+		    	}
+		    }
+		}
+		else {
+			if (strncmp(pst_param->s_sodium_correction,"wet91a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(OUTFILE,"\nThe salt correction is from Wetmur (1991), i.e,\n"
 			            "16.6 x log([Na+] / (1 + 0.7 x [Na+])) + 3.85\n");
-		else if (strncmp(pst_param->s_sodium_correction,"san96a",sizeof(pst_param->s_sodium_correction)) == 0)
-		    fprintf(OUTFILE,"\nThe salt correction is from SantaLucia et al. (1996), i.e,\n"
+			}
+			else if (strncmp(pst_param->s_sodium_correction,"san96a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(OUTFILE,"\nThe salt correction is from SantaLucia et al. (1996), i.e,\n"
                                     "12.5 x log[Na+]\n");
-		else if (strncmp(pst_param->s_sodium_correction,"san98a",sizeof(pst_param->s_sodium_correction)) == 0){
-		    fprintf(OUTFILE,"\nThe salt correction is from SantaLucia (1998), i.e,\n"
+			}
+			else if (strncmp(pst_param->s_sodium_correction,"san98a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(OUTFILE,"\nThe salt correction is from SantaLucia (1998), i.e,\n"
                                     "DeltaS = DeltaS([Na+]=1M) + 0.368 x (N-1) x ln[Na+]\n");
-		}	
+			}
+		}
+			
 		fprintf(OUTFILE,"\nThe correction of the nucleic acid concentration is %3.1f,\n"
                                 "i.e. the Tm for [Na+]=1M is DeltaH / [DeltaS + R x ln c/%3.1f]\n",pst_param->d_gnat,pst_param->d_gnat);
  
@@ -521,8 +645,11 @@ int main(int argc, char *argv[]){
 	    if (i_dnarna == TRUE || i_rnarna == TRUE)
 		fprintf(VERBOSE,"(Note that uridine is changed into thymidine for sake of simplification. The\n"
                                 "computation has been nevertheless performed with the specified hybridisation\n"
-                                "type.)\n");
+                                "type. There is also not magnesium correction for dnarna and rnarna hybridization.\n");
 	    fprintf(VERBOSE,"Sodium concentration: %5.2e M\n",pst_param->d_conc_salt);
+	    fprintf(VERBOSE,"Potassium concentration: %5.2e M\n",pst_param->d_conc_potassium);
+	    fprintf(VERBOSE,"Tris concentration: %5.2e M\n",pst_param->d_conc_tris);
+	    fprintf(VERBOSE,"Magnesium concentration: %5.2e M\n",pst_param->d_conc_magnesium);
 	    fprintf(VERBOSE,"Nucleic acid concentration (strand in excess): %5.2e M\n",pst_param->d_conc_probe);
 	    if (i_approx == FALSE){
 		fprintf(VERBOSE,"File containing the nearest_neighbor parameters is %s.\n\n",pst_param->pst_present_nn->s_nnfile);
@@ -570,15 +697,49 @@ int main(int argc, char *argv[]){
 				    pst_param->pst_present_de->ast_dedata[i_count].d_entropy * 4.18);
 			}
 		}
-		if (strncmp(pst_param->s_sodium_correction,"wet91a",sizeof(pst_param->s_sodium_correction)) == 0)
-		    fprintf(VERBOSE,"\nThe salt correction is from Wetmur (1991), i.e,\n"
+		if (i_magnesium == TRUE){
+		    fprintf(VERBOSE,"\nThe monovalent and bivalent ions correction is from Owczarzy (2008), i.e,\n");
+		          	    
+		   if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris == 0) {
+		    	fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+			"ln([Mg2+]))\n"
+			"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
+		    	}
+		    	else {
+		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 0.22) {
+					fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000 x ln([monovalent+]) + 9.40 x 1/1000000 x ln([Mg2+]) x ln([Mg2+])\n"
+					"where : [Monovalent+] = [Na+] + [Mg2+].\n");
+		    		}
+				else {
+		    			if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 6) {
+						fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+						"ln([Mg2+]))\n"
+						"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
+						"(1.279 - 4.03/1000 x ln([monovalent+]) - 8.03/1000 x ln([monovalent+] x ln([monovalent+]),e = 4.82/10000;f = 5.25/10000, g = 8.31/100000\n"
+						"x (0.486 - 0.258 x ln([monovalent+]) + 5.25/1000 x ln([monovalent+] x ln([monovalent+] x ln([monovalent+]).\n"
+						"and [Monovalent+] = [Na+] + [Mg2+]\n");
+		    			}
+					else {
+						fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
+						"ln([Mg2+]))\n"
+						"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
+					}
+		    		}
+		    	}
+		}
+		else {
+			if (strncmp(pst_param->s_sodium_correction,"wet91a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(VERBOSE,"\nThe salt correction is from Wetmur (1991), i.e,\n"
 			            "16.6 x log([Na+] / (1 + 0.7 x [Na+])) + 3.85\n");
-		else if (strncmp(pst_param->s_sodium_correction,"san96a",sizeof(pst_param->s_sodium_correction)) == 0)
-		    fprintf(VERBOSE,"\nThe salt correction is from SantaLucia et al. (1996), i.e,\n"
+			}
+			else if (strncmp(pst_param->s_sodium_correction,"san96a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(VERBOSE,"\nThe salt correction is from SantaLucia et al. (1996), i.e,\n"
 			            "12.5 x log[Na+]\n");
-		else if (strncmp(pst_param->s_sodium_correction,"san98a",sizeof(pst_param->s_sodium_correction)) == 0){
-		    fprintf(VERBOSE,"\nThe salt correction is from SantaLucia (1998), i.e,\n"
+			}
+			else if (strncmp(pst_param->s_sodium_correction,"san98a",sizeof(pst_param->s_sodium_correction)) == 0){
+		    		fprintf(VERBOSE,"\nThe salt correction is from SantaLucia (1998), i.e,\n"
 			            "DeltaS = DeltaS([Na+]=1M) + 0.368 x (N-1) x ln[Na+]\n");
+			}
 		}	
 		fprintf(VERBOSE,"\nThe correction of the nucleic acid concentration is %3.1f,\n"
 			        "i.e. the Tm for [Na+]=1M is DeltaH / [DeltaS + R x ln c/%3.1f]\n",pst_param->d_gnat,pst_param->d_gnat);
@@ -643,6 +804,9 @@ void usage(void){
     fprintf(OUTPUT,"     -M[xxxxxx.nn]  Name of a file containing nn parameters for mismatches\n");
     fprintf(OUTPUT,"                    Default is "DEFAULT_DNADNA_MISMATCHES"             \n"); 
     fprintf(OUTPUT,"     -N[x.xe-x]     Sodium concentration in mol.l-1. Mandatory         \n");
+    fprintf(OUTPUT,"     -k[x.xe-x]     Potassium concentration in mol.l-1. Mandatory         \n");
+    fprintf(OUTPUT,"     -t[x.xe-x]     Tris concentration in mol.l-1. Mandatory         \n");
+    fprintf(OUTPUT,"     -G[x.xe-x]     Magnesium concentration in mol.l-1. Mandatory         \n");  
     fprintf(OUTPUT,"     -O[XXXXXX]     Name of an output file (the name can be omitted)   \n");
     fprintf(OUTPUT,"     -P[x.xe-x]     Concentration of single strand nucleic acid in mol.l-1. Mandatory\n");
     fprintf(OUTPUT,"     -p             Return path where to find the calorimetric tables\n");
@@ -724,6 +888,7 @@ char *make_complement(char *ps_sequence){
   *pc_base_comp = '\0';
   return ps_complement;
 }
+
 
 
 

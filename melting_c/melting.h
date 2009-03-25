@@ -46,6 +46,7 @@ extern int i_infile;		/* infile firnished? */
 extern int i_outfile;		/* outfile requested? */
 extern int i_hybridtype;	/* correct hybridisation type? */
 extern int i_salt;		/* correct sodium concentration? */
+extern int i_magnesium;		/* can we use the magnesium correction algorithm? */
 extern int i_probe;		/* correct nucleic acid concentration? */
 extern int i_seq;		/* correct sequence? */
 extern int i_dnadna;		/* those flags specify the type of hybridisation */

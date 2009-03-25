@@ -51,7 +51,7 @@ s_    character string
 /* The base directory of nn files is set up during the compilation with the 
    instruction: -DNN_BASE=$(NN_DIR) with NN_DIR is specified by the user */
 #ifndef NN_BASE		    /* default definition, in case of */
-#define NN_BASE "/usr/local/share/melting/NNFILES"
+#define NN_BASE "/nfs/research/lenovere/compneur/work/marine/MELTING_SOURCE_V2/melting/trunk/NNFILES"
 #endif /*NN_BASE*/
 /* environment variable targeting the directory containing the nn sets. Used at
    runtime to supersede the path defined during the compilation */
@@ -139,6 +139,9 @@ struct param {
     char *ps_complement;          /* sequence of the (supposed) reverse complement */
     double d_conc_probe;	  /* concentration of the strand in excess */
     double d_conc_salt;	          /* concentration in sodium */
+    double d_conc_potassium;	  /* concentration in potassium */
+    double d_conc_tris;	          /* concentration in tris */
+    double d_conc_magnesium;	  /* concentration in magnesium */
     double d_gnat;	          /* correction facteur for the probe concentration */
     struct nnset *pst_present_nn; /* Contains the current nearest-neighbor parameters set */
     struct mmset *pst_present_mm; /* Contains the current parameters for mismatches */

@@ -52,6 +52,7 @@ int i_outfile = FALSE;		 /* outfile requested? */
 int i_probe = FALSE;		 /* correct nucleic acid concentration? */
 int i_quiet = FALSE;		 /* stay quiet, i.e. no interactive correction of parameters */
 int i_salt = FALSE;		 /* correct sodium concentration? */
+int i_magnesium = FALSE;          /* can we use magnesium correction algorithm? */
 int i_seq = FALSE;		 /* correct sequence? */
 int i_verbose = FALSE;		 /* is verbose mode on? */
 int i_threshold = MAX_SIZE_NN;   /* threshold before approximative calculus */
