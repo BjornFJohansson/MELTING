@@ -44,6 +44,7 @@ extern int i_rnarna;
 extern int i_complement;	/* correct complementary sequence?  */
 extern int i_alt_de;
 extern int i_alt_mm;
+extern int i_alt_inosine;
 extern int i_threshold;         /* threshold before approximative calculus */
 extern int i_magnesium;		/* can we use the magnesium correction algorithm? */
 

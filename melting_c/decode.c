@@ -72,10 +72,11 @@ struct param *decode_input(struct param *pst_in_param, char *ps_input, char *ps_
 	  exit(EXIT_FAILURE);
       }
 	break;
-  case 'C':	    /* a complement is furnished (seems to mean mismatches or dangling ends) */
+  case 'C':	    /* a complement is furnished (seems to mean mismatches or dangling ends or inosine mismatches) */
       if ( strlen(&ps_input[2]) != 0 ){
 	  i_complement = TRUE;
 	  i_mismatchesneed = TRUE;
+	  i_inosineneed = TRUE;
 	  i_dangendsneed = TRUE;
 	  if ( ( pst_in_param->ps_complement = (char *)malloc(strlen(&ps_input[2])+1) ) == NULL){
 	      fprintf(ERROR," Function decode_input, line __LINE__:"
@@ -272,6 +273,21 @@ struct param *decode_input(struct param *pst_in_param, char *ps_input, char *ps_
 	  pst_in_param->pst_present_mm = read_mismatches(&ps_input[2],ps_path);
 	  strncpy(pst_in_param->pst_present_mm->s_mmfile,&ps_input[2],FILE_MAX); 
 	  pst_in_param->pst_present_mm->s_mmfile[FILE_MAX-1] = '\0'; /* security check */
+      } else {
+	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
+	  usage();
+	  exit(EXIT_FAILURE);
+      }
+    break;
+  case 'i':       /* Alternative Nearest-neighbor set for inosine base pairs */
+      if ( strlen(&ps_input[2]) != 0 && isalnum((int)ps_input[2]) ){
+	  i_alt_inosine = TRUE;
+	  i_inosineneed = TRUE;
+	  if (pst_in_param->pst_present_inosine != NULL)
+	      pst_in_param->pst_present_inosine = NULL; /* Reset the NN set */
+	  pst_in_param->pst_present_inosine = read_inosine(&ps_input[2],ps_path);
+	  strncpy(pst_in_param->pst_present_inosine->s_inosinefile,&ps_input[2],FILE_MAX); 
+	  pst_in_param->pst_present_inosine->s_inosinefile[FILE_MAX-1] = '\0'; /* security check */
       } else {
 	  fprintf(ERROR," I did not understand the option %s\n",ps_input);
 	  usage();
@@ -610,6 +626,91 @@ struct mmset *read_mismatches(char *ps_mm_set, char *ps_path){
     return pst_current_mm;
 }
 
+struct inosineset *read_inosine(char *ps_inosine_set, char *ps_path){
+    struct inosineset *pst_current_inosine; /* pointer on a structure containing a set of inosine mismatches NN param */
+    FILE *pF_inosine_file;		  /* handle of file containing a set of inosine mismatches NN param */
+    char s_line[MAX_LINE];	  /* contains a line of a file or of stdin */
+    char *pc_line_ptr;		  /* pointer moving along an input line */
+    int i_crickcount = 0;	  /* counter of recorded crick's pairs */
+    char *ps_inosine_path;		  /* contains the address of the inosine mismatches NN file */
+    int i_count;
+    
+           /*+-----------------------------------------------------------------+
+         | initialise a structure containing the parameters for inosine base pairs |
+         +-----------------------------------------------------------------+*/
+
+    pst_current_inosine = (struct inosineset *)calloc(1,sizeof(struct inosineset));
+    /* I AM SUPPOSED TO FREE THAT INSIDE THIS FUNCTION */
+  
+       /*+-------------------------------------+
+         | read the file containing the inosine set |
+         +-------------------------------------+*/
+
+    if ((ps_inosine_path = (char *)malloc(FILE_MAX)) == NULL){
+	fprintf(ERROR," function read_inosine, line __LINE__:\n"
+		" Memory allocation error.\n");
+	exit(EXIT_FAILURE);
+    }
+    sprintf(ps_inosine_path,"%s/%s",ps_path,ps_inosine_set);
+    /* construct the complete name of the inosine set file */
+
+    if ( (pF_inosine_file = fopen(ps_inosine_path,"r")) == NULL){
+    /* cannot open file containing alternative inosine set in this path */
+
+      fprintf(ERROR," I was not able to open the file %s,\n"
+	      " supposed to contain the set of parameters for inosine mismatches.\n",ps_inosine_path);
+      
+      sprintf(ps_inosine_path,"%s/%s",NN_BASE,ps_inosine_set);
+
+      if ( (pF_inosine_file = fopen(ps_inosine_path,"r")) == NULL){
+	/* permits to check default directory if the env defined does not work */
+	/* for instance -Hdnadna defined in default and -Afoo97a.nn define by env var*/
+	fprintf(ERROR," I was not able to open the file %s,\n"
+		" supposed to contain the set of parameters for inosine mismatches.\n",ps_inosine_path);
+	usage();
+	exit(EXIT_FAILURE);
+      }
+      fprintf(ERROR," I am going to use the file %s instead.\n",ps_inosine_path);
+    }
+    i_count = 0;		/* initialise reference counter */
+    while(!feof(pF_inosine_file)){	/* read the file inosine_file until it ends */
+	fgets(s_line,sizeof(s_line),pF_inosine_file);	/* read a line the file */
+	pc_line_ptr = s_line;
+	if(*pc_line_ptr == ' ')	/* skip uninformative spaces */
+	    pc_line_ptr++;
+	if(*pc_line_ptr == '/' || *pc_line_ptr == '\n')	/* skip empty line*/
+	    continue;
+	if(*pc_line_ptr == 'R'){
+	    if (i_count >= NUM_REF)       /* In case there are too many references */
+		continue;
+	    /*	    pst_current_inosine->s_reference[i_count] = (char *)malloc(MAX_REF); */
+	    /* FIXME: has to allocate place for a new reference */
+	    strncpy(pst_current_inosine->s_reference[i_count],s_line,MAX_REF); /* enter the reference */
+	    pst_current_inosine->s_reference[i_count][MAX_REF - 1] = '\0'; /* security lock */
+	    i_count++;		/* ready for next reference */
+	}
+	if(*pc_line_ptr == 'A'||*pc_line_ptr == 'a'
+	   ||*pc_line_ptr == 'G'||*pc_line_ptr == 'g'
+	   ||*pc_line_ptr == 'C'||*pc_line_ptr == 'c'
+	   ||*pc_line_ptr == 'T'||*pc_line_ptr == 't'
+	   ||*pc_line_ptr == 'U'||*pc_line_ptr == 'u'
+	   ||*pc_line_ptr == 'I'||*pc_line_ptr == 'i'){
+	    if (i_crickcount <= NBIN){
+	      sscanf(s_line,"%6s %lf %lf",pst_current_inosine->ast_inosinedata[i_crickcount].s_crick_pair,
+		     &(pst_current_inosine->ast_inosinedata[i_crickcount].d_enthalpy),
+		     &(pst_current_inosine->ast_inosinedata[i_crickcount].d_entropy));
+	      i_crickcount++;
+	    } else {
+		fprintf(ERROR," I detected too many Crick's pairs in that file.\n"
+			      " Only %d inosine mismatch pairs are allowed.\n",NBIN);
+		exit(EXIT_FAILURE);
+	    }
+	}
+    }
+    fclose(pF_inosine_file);
+    return pst_current_inosine;
+}
+
 struct deset *read_dangends(char *ps_de_set, char *ps_path){
     struct deset *pst_current_de; /* pointer on a structure containing a set of dangling ends NN param */
     FILE *pF_de_file;		  /* handle of file containing a set of dangling ends  NN param */
@@ -618,6 +719,7 @@ struct deset *read_dangends(char *ps_de_set, char *ps_path){
     int i_crickcount = 0;	  /* counter of recorded crick's pairs */
     char *ps_de_path;		  /* contains the address of the mismatches NN file */
     int i_count;
+
 
 
        /*+--------------------------------------------------------------------+
