@@ -39,6 +39,7 @@
 
 extern int i_alt_nn;		/* an alternative set of nn parameters? */
 extern int i_alt_mm;	        /* an alternative set of mismatches parameters is required */
+extern int i_alt_inosine;	/* an alternative set of inosine mismatches parameters is required */
 extern int i_alt_de;	        /* an alternative set of dangling ends parameters is required */
 extern int i_verbose;		/* is verbose mode on? */
 extern int i_complement;	/* correct complementary sequence? */
@@ -55,12 +56,14 @@ extern int i_rnarna;
 extern int i_approx;		/* approximative tm computation? */
 extern int i_quiet;		/* stay quiet, i.e. no interactive correction of parameters */
 extern int i_mismatchesneed;	/* We need mismaches parameters */
+extern int i_inosineneed;	/* We need mismaches parameters */
 extern int i_dangendsneed;	/* We need dangling end parameters */
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>FUNCTION PROTOTYPES<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 extern struct nnset *read_nn(char *ps_nn_set, char *ps_path);         /* read a file containing the nn set */
 extern struct mmset *read_mismatches(char *ps_mm_set, char *ps_path); /* read a file containing a mismatch set */
+extern struct inosineset *read_inosine(char *ps_inosine_set, char *ps_path); /* read a file containing a inosine mismatch set */
 extern struct deset *read_dangends(char *ps_de_set, char *ps_path);   /* read a file containing a dangling ends set */
 
 extern struct thermodynamic *get_results(struct param *pst_param);

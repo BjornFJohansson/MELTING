@@ -38,6 +38,7 @@
 
 int i_alt_nn = FALSE;		 /* an alternative set of nn parameters is required */
 int i_alt_mm = FALSE;	         /* an alternative set of mismatches parameters is required */
+int i_alt_inosine = FALSE;	 /* an alternative set of inosine mismatches parameters is required */
 int i_alt_de = FALSE;	         /* an alternative set of dangling ends parameters is required */
 int i_approx = FALSE;		 /* approximative tm computation? */
 int i_complement = FALSE;	 /* correct complementary sequence? */
@@ -47,6 +48,7 @@ int i_rnarna = FALSE;
 int i_hybridtype = FALSE;	 /* correct hybridisation type? */
 int i_infile = FALSE;		 /* infile furnished? */
 int i_mismatchesneed = FALSE;	 /* We need mismaches parameters */
+int i_inosineneed = FALSE;	 /* We need inosine mismaches parameters */
 int i_dangendsneed = FALSE;	 /* We need dangling ends parameters */
 int i_outfile = FALSE;		 /* outfile requested? */
 int i_probe = FALSE;		 /* correct nucleic acid concentration? */
@@ -64,6 +66,7 @@ extern void usage(void);         /*precises the command line parameters*/
 struct param *decode_input(struct param *pst_in_param, char *ps_input, char *ps_path);
 struct nnset *read_nn(char *ps_nn_set, char *ps_path);         /* read a file containing a nn set */
 struct mmset *read_mismatches(char *ps_mm_set, char *ps_path); /* read a file containing a mismatch set */
+struct inosineset *read_inosine(char *ps_inosine_set, char *ps_path); /* read a file containing a inosine mismatch set */
 struct deset *read_dangends(char *ps_de_set, char *ps_path);   /* read a file containing a dangling ends set */
 char *read_string(FILE *stream); /* read a line of input of unknown size */
 void legal(void);		 /* precises the copyright under which melting is released*/

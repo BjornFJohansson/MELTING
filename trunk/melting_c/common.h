@@ -86,6 +86,9 @@ for a MacOS port. maybe directly in the code rather than as MACRO.  */
 #define DEFAULT_DNADNA_MISMATCHES "dnadnamm.nn" /* default nearest-neighbor set used for DNA/DNA mismatches */ 
 #define DEFAULT_DNARNA_MISMATCHES "dnadnamm.nn" /* default nearest-neighbor set used for DNA/RNA mismatches */ 
 #define DEFAULT_RNARNA_MISMATCHES "dnadnamm.nn" /* default nearest-neighbor set used for RNA/RNA mismatches */ 
+#define DEFAULT_DNADNA_INOSINE_MISMATCHES "san05a.nn" /* default nearest-neighbor set used for DNA/DNA inosine mismatches */ 
+#define DEFAULT_DNARNA_INOSINE_MISMATCHES "san05a.nn" /* default nearest-neighbor set used for DNA/RNA inosine mismatches */ 
+#define DEFAULT_RNARNA_INOSINE_MISMATCHES "bre07a.nn" /* default nearest-neighbor set used for RNA/RNA inosine mismatches */ 
 #define DEFAULT_DNADNA_DANGENDS "dnadnade.nn"   /* default nearest-neighbor set used for DNA/DNA dangling ends */ 
 #define DEFAULT_DNARNA_DANGENDS "dnadnade.nn"   /* default nearest-neighbor set used for DNA/RNA dangling ends */ 
 #define DEFAULT_RNARNA_DANGENDS "dnadnade.nn"   /* default nearest-neighbor set used for RNA/RNA dangling ends */ 
@@ -98,6 +101,7 @@ for a MacOS port. maybe directly in the code rather than as MACRO.  */
 #define MAX_SIZE_NN  60	    /* Maximal size of a duplex being analised by the nearest-neighbor approach */
 #define NBNN         18     /* number of regular nn parameters per set */
 #define NBMM        240     /* number of mismatch parameters per set */
+#define NBIN        105     /* number of inosine mismatch parameters per set */
 #define NBDE         64     /* number of dangling end parameters per set */
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VARIABLE DEFINITIONS<<<<<<<<<<<<<<<<<<<<<<<<<*/
@@ -125,6 +129,14 @@ struct mmset{
     char s_mmfile[FILE_MAX];              /* name of the file containing the mm params */
 };
 
+/* contains the parameters for the inosine mismatches*/
+struct inosineset{
+    char   s_reference[NUM_REF][MAX_REF]; /* contains the references to the articles */
+/*  char   *s_reference[]; */   /* FIXME: A construction like this one would be better */
+    struct calor_const ast_inosinedata[NBIN];  /* parameters for present hybridization*/
+    char s_inosinefile[FILE_MAX];              /* name of the file containing the insoine params */
+};
+
 /* contains the parameters for the dangling ends*/
 struct deset{
     char   s_reference[NUM_REF][MAX_REF]; /* contains the references to the articles */
@@ -145,6 +157,7 @@ struct param {
     double d_gnat;	          /* correction facteur for the probe concentration */
     struct nnset *pst_present_nn; /* Contains the current nearest-neighbor parameters set */
     struct mmset *pst_present_mm; /* Contains the current parameters for mismatches */
+    struct inosineset *pst_present_inosine; /* Contains the current parameters for inosine mismatches */
     struct deset *pst_present_de; /* Contains the current parameters for dangling ends */
     char s_sodium_correction[7];  /* code of the selected salt correction */
     char s_outfile[FILE_MAX];     /* name of the file where to write the results */
@@ -157,6 +170,7 @@ struct thermodynamic {
     double   d_tm;	        /* temperature of halt-denaturation */
     int      i_crick[NBNN];     /* number of each Crick's pair */
     int      i_mismatch[NBMM];  /* number of each mismach */
+    int      i_inosine[NBIN];  /* number of each inosine mismach */
     int      i_dangends[NBDE]; /* number of each dangling end*/
 };
 

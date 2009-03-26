@@ -46,6 +46,7 @@
  |        -K[salt Korrection]                                            |
  |        -L     displays Legal information                              |
  |        -M[Alternative Mismaches NN set]                               |
+ |        -i[Alternative Inosine Mismaches NN set]                               |
  |        -N[salt (N states for Na)]                                     |
  |        -k[potassium]                                                  |
  |        -t[tris]                                                       |
@@ -130,6 +131,7 @@ int main(int argc, char *argv[]){
     /* the following three lines are necessary under Win32 */
     pst_param->pst_present_nn = NULL;
     pst_param->pst_present_mm = NULL;
+    pst_param->pst_present_inosine = NULL;
     pst_param->pst_present_de = NULL;
     strncpy(pst_param->s_sodium_correction, DEFAULT_SALT_CORR,sizeof(pst_param->s_sodium_correction));
     pst_param->s_sodium_correction[sizeof(pst_param->s_sodium_correction)]='\0'; 
@@ -453,6 +455,25 @@ int main(int argc, char *argv[]){
 	}
 /*	i_alt_mm = TRUE;*/
     }
+    
+        /*+------------------------------------------------------------+
+      | If we need inosine mismatches parameters but none were entered ... |
+      +------------------------------------------------------------+*/
+    if (i_inosineneed == TRUE && i_alt_inosine == FALSE){
+	if (pst_param->pst_present_inosine != NULL)
+	    pst_param->pst_present_inosine = NULL; 
+	if (i_dnadna){
+	  pst_param->pst_present_inosine = read_inosine(DEFAULT_DNADNA_INOSINE_MISMATCHES,ps_getenv);
+	  strncpy(pst_param->pst_present_inosine->s_inosinefile,DEFAULT_DNADNA_INOSINE_MISMATCHES,FILE_MAX); 
+	} else if (i_dnarna){
+	  pst_param->pst_present_inosine = read_inosine(DEFAULT_DNARNA_INOSINE_MISMATCHES,ps_getenv);
+	  strncpy(pst_param->pst_present_inosine->s_inosinefile,DEFAULT_DNARNA_INOSINE_MISMATCHES,FILE_MAX); 
+	} else if (i_rnarna){
+	  pst_param->pst_present_inosine = read_inosine(DEFAULT_RNARNA_INOSINE_MISMATCHES,ps_getenv);
+	  strncpy(pst_param->pst_present_inosine->s_inosinefile,DEFAULT_RNARNA_INOSINE_MISMATCHES,FILE_MAX); 
+	}
+/*	i_alt_inosine = TRUE;*/
+    }
 
     /*+---------------------------------------------------------------+
       | If we need dangling ends parameters but none were entered ... |
@@ -535,6 +556,22 @@ int main(int argc, char *argv[]){
 				    pst_param->pst_present_mm->ast_mmdata[i_count].d_entropy * 4.18);
 			}
 		}
+		if (i_inosineneed){
+		    fprintf(OUTFILE,"File containing the nearest_neighbor parameters for inosine mismatches is %s.\n\n",pst_param->pst_present_inosine->s_inosinefile);
+		    for (i_count = 0; i_count < NUM_REF;i_count++){
+			if (pst_param->pst_present_inosine->s_reference[i_count][0] == 'R')
+			    fprintf(OUTFILE,"%s",pst_param->pst_present_inosine->s_reference[i_count]);
+			fprintf(OUTFILE,"\n");
+		    }
+		    fprintf(OUTFILE,"NN\tenthalpy\tentropy\n\t(J.mol-1)\t(J.mol-1.K-1)\n"
+		                    "--------------------------------\n");
+		    for (i_count = 0; i_count < NBIN; i_count++)
+			if (strncmp(pst_param->pst_present_inosine->ast_inosinedata[i_count].s_crick_pair,"",2) != 0){
+			    fprintf(OUTFILE,"%s\t%8.1f\t%6.2f\n",pst_param->pst_present_inosine->ast_inosinedata[i_count].s_crick_pair,
+				    pst_param->pst_present_inosine->ast_inosinedata[i_count].d_enthalpy * 4.18,
+				    pst_param->pst_present_inosine->ast_inosinedata[i_count].d_entropy * 4.18);
+			}
+		}
 		if (i_dangendsneed){
 		    fprintf(OUTFILE,"File containing the nearest_neighbor parameters for dangling ends is %s.\n\n",pst_param->pst_present_de->s_defile);
 		    for (i_count = 0; i_count < NUM_REF;i_count++){
@@ -554,18 +591,18 @@ int main(int argc, char *argv[]){
 		
 		if (i_magnesium == TRUE){
 		    fprintf(OUTFILE,"\nThe monovalent ion correction and divalent ion correction is from owczarzy (2008), i.e,\n");
-		    if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris == 0) {
+		    if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2 == 0) {
 		    	fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
 			"ln([Mg2+]))\n"
 			"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
 		    }
 		    else {
-		    	if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 0.22) {
+		    	if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2) < 0.22) {
 				fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000 x ln([monovalent+]) + 9.40 x 1/1000000 x ln([Mg2+]) x ln([Mg2+])\n"
 				"where : [Monovalent+] = [Na+] + [Mg2+].\n");
 		    	}
 			else {
-		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 6) {
+		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2) < 6) {
 					fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
 					"ln([Mg2+]))\n"
 					"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
@@ -606,7 +643,11 @@ int main(int argc, char *argv[]){
 		fprintf(OUTFILE,"\nMismatched pairs contained in your sequence:\n");
 		for(i_count = 0; i_count< NBMM; i_count++)
 		    if (pst_results->i_mismatch[i_count] != 0)
-			fprintf(OUTFILE,"%s\t%d\n",pst_param->pst_present_mm->ast_mmdata[i_count].s_crick_pair,pst_results->i_mismatch[i_count]);		
+			fprintf(OUTFILE,"%s\t%d\n",pst_param->pst_present_mm->ast_mmdata[i_count].s_crick_pair,pst_results->i_mismatch[i_count]);
+		fprintf(OUTFILE,"\nInosine mismatched pairs contained in your sequence:\n");
+		for(i_count = 0; i_count< NBIN; i_count++)
+		    if (pst_results->i_inosine[i_count] != 0)
+			fprintf(OUTFILE,"%s\t%d\n",pst_param->pst_present_inosine->ast_inosinedata[i_count].s_crick_pair,pst_results->i_inosine[i_count]);		
 		fprintf(OUTFILE,"\nDangling ends contained in your sequence:\n");
 		for(i_count = 0; i_count< NBDE; i_count++)
 		  if (pst_results->i_dangends[i_count] != 0)
@@ -681,6 +722,22 @@ int main(int argc, char *argv[]){
 				    pst_param->pst_present_mm->ast_mmdata[i_count].d_entropy * 4.18);
 			}
 		}
+		if (i_inosineneed){
+		    fprintf(VERBOSE,"File containing the nearest_neighbor parameters for inosine mismatches is %s.\n\n",pst_param->pst_present_inosine->s_inosinefile);
+		    for (i_count = 0; i_count < NUM_REF;i_count++){
+			if (pst_param->pst_present_inosine->s_reference[i_count][0] == 'R')
+			    fprintf(VERBOSE,"%s",pst_param->pst_present_inosine->s_reference[i_count]);
+		    }
+		    fprintf(VERBOSE,"\n");
+		    fprintf(VERBOSE,"NN\tenthalpy\tentropy\n\t(J.mol-1)\t(J.mol-1.K-1)\n"
+		                    "-------------------------------\n");
+		    for (i_count = 0; i_count < NBIN; i_count++)
+			if ( pst_param->pst_present_inosine->ast_inosinedata[i_count].d_enthalpy != 99999){
+			    fprintf(VERBOSE,"%s\t%8.1f\t%6.2f\n",pst_param->pst_present_inosine->ast_inosinedata[i_count].s_crick_pair,
+				    pst_param->pst_present_inosine->ast_inosinedata[i_count].d_enthalpy * 4.18,
+				    pst_param->pst_present_inosine->ast_inosinedata[i_count].d_entropy * 4.18);
+			}
+		}
 		if (i_dangendsneed){
 		    fprintf(VERBOSE,"File containing the nearest_neighbor parameters for dangling ends is %s.\n\n",pst_param->pst_present_de->s_defile);
 		    for (i_count = 0; i_count < NUM_REF;i_count++){
@@ -700,18 +757,18 @@ int main(int argc, char *argv[]){
 		if (i_magnesium == TRUE){
 		    fprintf(VERBOSE,"\nThe monovalent and bivalent ions correction is from Owczarzy (2008), i.e,\n");
 		          	    
-		   if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris == 0) {
+		   if (pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2 == 0) {
 		    	fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
 			"ln([Mg2+]))\n"
 			"where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/100000.\n");
 		    	}
 		    	else {
-		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 0.22) {
+		    		if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2) < 0.22) {
 					fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000 x ln([monovalent+]) + 9.40 x 1/1000000 x ln([Mg2+]) x ln([Mg2+])\n"
 					"where : [Monovalent+] = [Na+] + [Mg2+].\n");
 		    		}
 				else {
-		    			if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris) < 6) {
+		    			if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2) < 6) {
 						fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
 						"ln([Mg2+]))\n"
 						"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
@@ -751,6 +808,10 @@ int main(int argc, char *argv[]){
 		for(i_count = 0; i_count< NBMM; i_count++)
 		    if (pst_results->i_mismatch[i_count] != 0)
 			fprintf(VERBOSE,"%s\t%d\n",pst_param->pst_present_mm->ast_mmdata[i_count].s_crick_pair,pst_results->i_mismatch[i_count]);
+		fprintf(VERBOSE,"\nInosine mismatched pairs contained in your sequence:\n");
+		for(i_count = 0; i_count< NBIN; i_count++)
+		    if (pst_results->i_inosine[i_count] != 0)
+			fprintf(VERBOSE,"%s\t%d\n",pst_param->pst_present_inosine->ast_inosinedata[i_count].s_crick_pair,pst_results->i_inosine[i_count]);
 		fprintf(VERBOSE,"\nDangling ends contained in your sequence:\n");
 		for(i_count = 0; i_count< NBDE; i_count++)
 		  if (pst_results->i_dangends[i_count] != 0)
@@ -802,10 +863,14 @@ void usage(void){
     fprintf(OUTPUT,"     -K             Salt correction. Default is "DEFAULT_SALT_CORR"    \n" );
     fprintf(OUTPUT,"    -L             Displays legal information and quit                \n");
     fprintf(OUTPUT,"     -M[xxxxxx.nn]  Name of a file containing nn parameters for mismatches\n");
-    fprintf(OUTPUT,"                    Default is "DEFAULT_DNADNA_MISMATCHES"             \n"); 
+    fprintf(OUTPUT,"                    Default is "DEFAULT_DNADNA_MISMATCHES"             \n");
+    fprintf(OUTPUT,"     -I[xxxxxx.nn]  Name of a file containing nn parameters for inosine mismatches\n"); 
+    fprintf(OUTPUT,"                    Defaults are: DNA/DNA: "DEFAULT_DNADNA_INOSINE_MISMATCHES"         \n");
+    fprintf(OUTPUT,"                                  DNA/RNA: "DEFAULT_DNARNA_INOSINE_MISMATCHES"         \n");
+    fprintf(OUTPUT,"                                  RNA/RNA: "DEFAULT_RNARNA_INOSINE_MISMATCHES"         \n");
     fprintf(OUTPUT,"     -N[x.xe-x]     Sodium concentration in mol.l-1. Mandatory         \n");
     fprintf(OUTPUT,"     -k[x.xe-x]     Potassium concentration in mol.l-1. Mandatory         \n");
-    fprintf(OUTPUT,"     -t[x.xe-x]     Tris concentration in mol.l-1. Mandatory         \n");
+    fprintf(OUTPUT,"     -t[x.xe-x]     Tris concentration in mol.l-1. The Tri+ concentration is about half of total Tris concentration Mandatory         \n");
     fprintf(OUTPUT,"     -G[x.xe-x]     Magnesium concentration in mol.l-1. Mandatory         \n");  
     fprintf(OUTPUT,"     -O[XXXXXX]     Name of an output file (the name can be omitted)   \n");
     fprintf(OUTPUT,"     -P[x.xe-x]     Concentration of single strand nucleic acid in mol.l-1. Mandatory\n");
@@ -839,7 +904,7 @@ int check_sequence(char *ps_sequence){
 				/* change uridine into thymidine */
       if (*pc_base == 'U')
 	  *pc_base = 'T';
-      if (*pc_base != 'A' && *pc_base != 'G' && *pc_base != 'C' && *pc_base != 'T' && *pc_base != '-')
+      if (*pc_base != 'A' && *pc_base != 'G' && *pc_base != 'C' && *pc_base != 'T' && *pc_base != '-' && *pc_base != 'I')
 	  i_mistakes++;
       pc_base++;
   }
@@ -878,6 +943,8 @@ char *make_complement(char *ps_sequence){
       break;
     case '-':
       *pc_base_comp = '-';
+    case 'I':
+      *pc_base_comp = 'I';
     default:
       fprintf(ERROR," It seems that one base of sequence is illegal.\n"
 	      " I cannot compute the complement.\n");
