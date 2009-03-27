@@ -1,6 +1,8 @@
 [27/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	Correction of the function which computes the fraction of GC base pairs.
-	We can now take in account the mismatches CXor GX and inosine mismatches IG or IC
+	We can now take in account the mismatches CXor GX and inosine mismatches 
+	IG or IC.
+	New parameters of Santalucia added
 [26/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	add the inosine parameters. (from Santalucia 2005 for DNA duplexes and
 	from Brent M. Znosko 2007 for RNA duplexes (only IU base pairs)).
