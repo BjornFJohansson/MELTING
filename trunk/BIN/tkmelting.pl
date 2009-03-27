@@ -228,20 +228,20 @@ $numericalFrame->Label(-text => ' M.l-1'
 $numericalFrame->Label(-text => "Is one strand in excess (PCR ...)?"
 		       )->grid(-column     => 0,
 			       -columnspan => 2,
-			       -row        => 2,
+			       -row        => 5,
 			       );
 
 my $self_Lb = $numericalFrame->Label(-text => "Self-complementary sequence?"
 				     )->grid(-column     => 0, 
 					     -columnspan => 2,
-					     -row        => 3,
+					     -row        => 6,
 					     );
 
 my $self_Cb = $numericalFrame->Checkbutton(-onvalue  => 1,
 					   -offvalue => 4,
 					   -variable => \$factor,
 					   )->grid(-column => 2, 
-						   -row    => 3,
+						   -row    => 7,
 						   );
 
 $numericalFrame->Checkbutton(-onvalue  => 2,
@@ -263,7 +263,7 @@ $numericalFrame->Checkbutton(-onvalue  => 2,
 # Salt corrections
 #------------------
 
-my $saltCorrFrame = $numericalFrame->Frame->grid(-row        => 4,
+my $saltCorrFrame = $numericalFrame->Frame->grid(-row        => 8,
 						 -column     => 0,
 						 -columnspan => 3
 						   );

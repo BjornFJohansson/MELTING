@@ -133,12 +133,11 @@ OPTIONS
               some  files ready-to-use:  san05a.nn (Santalucia et 
 	      al 2005) for deoxyinosine in DNA duplexes, bre07a.nn
 	      (Brent M Znosko et al 2007)for inosine in RNA duple-
-	      xes. Note  that  not all the inosine mismatched Cri-
-	      ck's pairs have been investi­gated. Therefore it co-
+	      xes. Note  that  not all the inosine mismatched wob-
+	      ble's pairs have been investi­gated. Therefore it co-
 	      uld be impossible to  compute the Tm of a duplex wi-
-	      th inosine base pairs. Moreover, those inosine base 
-	      pairs are not taken into account by the  approximat-
-	      ive mode.
+	      th inosine pairs. Moreover, those inosine pairs are 
+	      not taken into account by the  approximative mode.
 
        -Ksalt_correction
               Permits to chose another correction for the concen­
@@ -298,16 +297,16 @@ ALGORITHM
        possible. for instance (see Allawi and SanLucia 1997), the
        duplex
 
-       A          T	  	I          I		        
-        GTGAGCTCAT 	  	 GTGAGCTCAT
-        TACTCGAGTG	or	 TACTCGAGTG	   
-       T          A	  	C          A
+       A          T	  			        
+        GTGAGCTCAT 	  	 
+        TACTCGAGTG		   
+       T          A	  	
 
        is more stable than
 
-       AGTGAGCTCATT	  	IGTGAGCTCATI
-       TTACTCGAGTGA	or	CTACTCGAGTGA
-
+       AGTGAGCTCATT	  	
+       TTACTCGAGTGA	
+       
        The   dangling   ends,   that  is  the  umatched  terminal
        nucleotides, can be taken into account.
 
@@ -331,9 +330,10 @@ ALGORITHM
        Tm = DeltaH / (DeltaS + Rx ln ([nucleic acid]/F))
        Tm in K (for [Na+] = 1 M )
             + f([Na+]) - 273.15
-       correction for the salt concentration and to get the  tem­
-       perature in degree Celsius.  (In fact some corrections are
-       directly included in the DeltaS see that of SanLucia 1998)
+       correction for the salt concentration (if there are only Na+ 
+       cations in the solution) and to get the  temperature in degree 
+       Celsius.(In fact some corrections are directly included in the 
+       DeltaS see that of SanLucia 1998)
 
 
    Correction for the concentration of nucleic acid
@@ -402,8 +402,8 @@ ALGORITHM
        disregarded and the melting temperature is :
         
        1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000
-                    x ln([monovalent+]) + 9.40 x 1/1000000 x ln([Mg2+])
-		    x ln([Mg2+])
+                    x ln([mon+]) + 9.40 x 1/1000000 x ln([Mon+])
+		    x ln([Mon+])
        where : Fgc is the fraction of GC base pairs in the sequen-
        ce.
        
