@@ -271,7 +271,7 @@ struct thermodynamic *get_results(struct param *pst_param){
 		  }
 		}
 		}
-		fprintf(OUTPUT," COUCOU i_mismatch apres %i\n",i_mismatch);
+		
 		if (i_mismatch == TRUE || i_inosine == TRUE){
 		  fprintf(ERROR," NN parameters for %c%c/%c%c not found. Check the file containing\n"
 			  " the information on mismatches\n",pst_param->ps_sequence[i],pst_param->ps_sequence[i+1],pst_param->ps_complement[i],pst_param->ps_complement[i+1]);
