@@ -609,7 +609,8 @@ struct mmset *read_mismatches(char *ps_mm_set, char *ps_path){
 	   ||*pc_line_ptr == 'G'||*pc_line_ptr == 'g'
 	   ||*pc_line_ptr == 'C'||*pc_line_ptr == 'c'
 	   ||*pc_line_ptr == 'T'||*pc_line_ptr == 't'
-	   ||*pc_line_ptr == 'U'||*pc_line_ptr == 'u'){
+	   ||*pc_line_ptr == 'U'||*pc_line_ptr == 'u'
+	   ||*pc_line_ptr == 'I'||*pc_line_ptr == 'i'){
 	    if (i_crickcount <= NBMM){
 	      sscanf(s_line,"%6s %lf %lf",pst_current_mm->ast_mmdata[i_crickcount].s_crick_pair,
 		     &(pst_current_mm->ast_mmdata[i_crickcount].d_enthalpy),
@@ -782,6 +783,7 @@ struct deset *read_dangends(char *ps_de_set, char *ps_path){
 	   ||*pc_line_ptr == 'C'||*pc_line_ptr == 'c'
 	   ||*pc_line_ptr == 'T'||*pc_line_ptr == 't'
 	   ||*pc_line_ptr == 'U'||*pc_line_ptr == 'u'
+	   ||*pc_line_ptr == 'I'||*pc_line_ptr == 'i'
 	   ||*pc_line_ptr == '-' ){
 	    if (i_crickcount <= NBDE){
 		sscanf(s_line,"%6s %lf %lf",pst_current_de->ast_dedata[i_crickcount].s_crick_pair,
