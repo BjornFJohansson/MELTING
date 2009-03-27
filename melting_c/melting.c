@@ -234,7 +234,6 @@ int main(int argc, char *argv[]){
     /*-------------------------------------*
      | The different ion concentrations are mandatory |
      *-------------------------------------*/
-
     if (pst_param->d_conc_salt < MIN_SALT || pst_param->d_conc_salt >= MAX_SALT )
 	i_salt = FALSE;
 	if (pst_param->d_conc_salt == 0 && i_magnesium == FALSE){
@@ -943,11 +942,16 @@ char *make_complement(char *ps_sequence){
       break;
     case '-':
       *pc_base_comp = '-';
+      break;
     case 'I':
-      *pc_base_comp = 'I';
-    default:
+       fprintf(ERROR," There are inosine base pairs in your sequence and no complementary sequence has been entered.\n");
+       exit(EXIT_FAILURE);
+       break;
+	
+     default:
       fprintf(ERROR," It seems that one base of sequence is illegal.\n"
 	      " I cannot compute the complement.\n");
+      exit(EXIT_FAILURE);
     }
     pc_base_seq++;
     pc_base_comp++;

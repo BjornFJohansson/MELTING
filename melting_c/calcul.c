@@ -325,6 +325,7 @@ double tm_approx(struct param *pst_param){
 	pc_screen++;
     }
     d_percentgc = ( (double)i_numbergc / (double)i_size ) * 100;
+    
 
     /*+---------------------+
       | melting temperature |
@@ -362,6 +363,7 @@ double tm_approx(struct param *pst_param){
 
 double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
 
+    int i;			/* loop counters */
     double d_temp;		/* melting temperature */
     double d_temp_na;           /*melting temperature in 1M na+ */
     double d_salt_corr_value = 0.0; /* ... */
@@ -394,15 +396,24 @@ double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
       /*+----------------+
       | fraction of G+C |
       +----------------+*/
-	
-    pc_screen = pst_param->ps_sequence;
+
     i_numbergc = 0;
-    while(*pc_screen != '\0'){
-	if (*pc_screen == 'G' || *pc_screen == 'C')
-	    i_numbergc++;
-	pc_screen++;
-    }
+    for (i = 0; i < strlen(pst_param->ps_sequence); i++){
+    switch (pst_param->ps_sequence[i]) {
+	case 'G':
+	    if (pst_param->ps_complement[i] == 'C')
+		i_numbergc++;
+		break;
+        case 'C':
+	    if (pst_param->ps_complement[i] == 'G')
+		i_numbergc++;
+		break;
+	    }
+}
     d_fgc = ( (double)i_numbergc / (double)i_size );
+    fprintf(OUTPUT," d_fgc %i",i_numbergc);
+    fprintf(OUTPUT," len %i",strlen(pst_param->ps_sequence));
+    
 
 
     /*+-----------------+
