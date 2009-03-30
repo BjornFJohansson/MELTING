@@ -607,8 +607,10 @@ int main(int argc, char *argv[]){
 					"ln([Mg2+]))\n"
 					"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
 					"(1.279 - 4.03/1000 x ln([monovalent+]) - 8.03/1000 x ln([monovalent+] x ln([monovalent+]),e = 4.82/10000;f = 5.25/10000, g = 8.31/100000\n"
-					"x (0.486 - 0.258 x ln([monovalent+]) + 5.25/1000 x ln([monovalent+] x ln([monovalent+] x ln([monovalent+]).\n"
-					"and [Monovalent+] = [Na+] + [K+] + [tris+]\n");
+					"x (0.486 - 0.258 x ln([monovalent+]) +\n"
+					"5.25/1000 x ln([monovalent+] x\n");
+	                                fprintf(OUTFILE,"ln([monovalent+] x ln([monovalent+]).\n"
+				        "and [Monovalent+] = [Na+] + [K+] + [tris+]\n");
 		    		}
 				else {
 					fprintf(OUTFILE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
@@ -771,8 +773,8 @@ int main(int argc, char *argv[]){
 				else {
 		    			if (sqrt(pst_param->d_conc_magnesium)/(pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2) < 6) {
 						fprintf(VERBOSE,"1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x\n"
-						"ln([Mg2+]))\n"
-						"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
+						"ln([Mg2+]))\n");
+						fprintf(VERBOSE,"where : a = 3.92/100000 x (0.843 - 0.352 x [Monovalent+]0.5 x ln([Monovalent+])), b = 9.11/1000000, c = 6.26/100000, d = 1.42/100000 x\n"
 						"(1.279 - 4.03/1000 x ln([monovalent+]) - 8.03/1000 x ln([monovalent+] x ln([monovalent+]),e = 4.82/10000;f = 5.25/10000, g = 8.31/100000\n"
 						"x (0.486 - 0.258 x ln([monovalent+]) + 5.25/1000 x ln([monovalent+] x ln([monovalent+] x ln([monovalent+]).\n"
 						"and [Monovalent+] = [Na+] + [K+] + [Tris+]\n");

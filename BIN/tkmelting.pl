@@ -182,7 +182,7 @@ $numericalFrame->Entry(-width        => 10,
 		  -textvariable => \$potassium,
 		  -background   => '#999999',
 		  -foreground   => '#EEEEEE'
-		  )->grid(-column => 2, 
+		  )->grid(-column => 1, 
 			  -row    => 2,
 			  );
 $numericalFrame->Label(-text => ' M.l-1'
@@ -241,7 +241,7 @@ my $self_Cb = $numericalFrame->Checkbutton(-onvalue  => 1,
 					   -offvalue => 4,
 					   -variable => \$factor,
 					   )->grid(-column => 2, 
-						   -row    => 7,
+						   -row    => 5,
 						   );
 
 $numericalFrame->Checkbutton(-onvalue  => 2,
@@ -257,7 +257,7 @@ $numericalFrame->Checkbutton(-onvalue  => 2,
 				 }
 			     },
 			     )->grid(-column => 2, 
-				     -row    => 2,
+				     -row    => 6,
 				     );
 #------------------
 # Salt corrections
@@ -295,7 +295,7 @@ $NNDIR =~ s/\/$//;
 
 opendir NNF, $NNDIR or print "could not open the directory $NNDIR\n";
 
-my @files = grep {($_ !~ /(mm|de)\.nn/) && $_ !~ /^\./} readdir NNF;
+my @files = grep {($_ !~ /(mm|de)\.nn/) && ($_ !~ /(san05a|bre07a)\.nn/) && $_ !~ /^\./} readdir NNF;
 close NNF;
 
 my $AltSetMenu = $argFrame->Menubutton(-text   => "Alt NN sets\n<option -A>", 
@@ -537,7 +537,7 @@ sub compute {
 # C'est parti
 #-------------
     
-    @results=`melting $options -v -q 2>&1`;
+    @results=`./melting4_4-linuxi386 $options -v -q 2>&1`;
     print "@results";
 
 #------------------------

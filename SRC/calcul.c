@@ -371,7 +371,6 @@ double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
     int i_size;			/* size of the duplex */
     int i_numbergc;		/* ... */
     double d_fgc;		/* need an explanation? */
-    char *pc_screen;     	/* screen the sequence */
     double d_conc_monovalents = pst_param->d_conc_salt + pst_param->d_conc_potassium + pst_param->d_conc_tris/2;
     double d_ratio_ions = sqrt(pst_param->d_conc_magnesium)/d_conc_monovalents;
     double d_a = 3.92/100000.0; /*Parameters from the article of Owczarzy*/
@@ -411,8 +410,6 @@ double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
 	    }
 }
     d_fgc = ( (double)i_numbergc / (double)i_size );
-    fprintf(OUTPUT," d_fgc %i",i_numbergc);
-    fprintf(OUTPUT," len %i",strlen(pst_param->ps_sequence));
     
 
 
@@ -481,6 +478,7 @@ double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
     	fprintf(OUTPUT,"  WARNING: The magnesium correction can efficiently\n"
 			  "  account only for the DNA/DNA hybridisation. So we can't take in account the magnesium, potassium ant tris concentration for the melting temperature\n" 
 			  "computation of RNA or hybrids RNA/DNA duplexes.\n");
+    d_temp = 0.0;
     }
     return d_temp;
 }
