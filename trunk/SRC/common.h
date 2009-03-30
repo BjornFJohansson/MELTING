@@ -51,7 +51,7 @@ s_    character string
 /* The base directory of nn files is set up during the compilation with the 
    instruction: -DNN_BASE=$(NN_DIR) with NN_DIR is specified by the user */
 #ifndef NN_BASE		    /* default definition, in case of */
-#define NN_BASE "/nfs/research/lenovere/compneur/work/marine/MELTING_SOURCE_V2/melting/trunk/NNFILES"
+#define NN_BASE "/usr/local/share/melting/NNFILES"
 #endif /*NN_BASE*/
 /* environment variable targeting the directory containing the nn sets. Used at
    runtime to supersede the path defined during the compilation */
