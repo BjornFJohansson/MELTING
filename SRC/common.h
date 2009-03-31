@@ -47,7 +47,7 @@ s_    character string
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>MACRO DEFINITIONS<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-#define VERSION 4.2         /* current version */
+#define VERSION 4.4         /* current version */
 /* The base directory of nn files is set up during the compilation with the 
    instruction: -DNN_BASE=$(NN_DIR) with NN_DIR is specified by the user */
 #ifndef NN_BASE		    /* default definition, in case of */
