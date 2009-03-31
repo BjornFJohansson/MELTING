@@ -101,7 +101,7 @@ for a MacOS port. maybe directly in the code rather than as MACRO.  */
 #define MAX_SIZE_NN  60	    /* Maximal size of a duplex being analised by the nearest-neighbor approach */
 #define NBNN         18     /* number of regular nn parameters per set */
 #define NBMM        240     /* number of mismatch parameters per set */
-#define NBIN        105     /* number of inosine mismatch parameters per set */
+#define NBIN        109     /* number of inosine mismatch parameters per set */
 #define NBDE         64     /* number of dangling end parameters per set */
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>VARIABLE DEFINITIONS<<<<<<<<<<<<<<<<<<<<<<<<<*/
