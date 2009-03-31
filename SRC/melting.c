@@ -867,7 +867,7 @@ void usage(void){
     fprintf(OUTPUT,"    -L             Displays legal information and quit                \n");
     fprintf(OUTPUT,"     -M[xxxxxx.nn]  Name of a file containing nn parameters for mismatches\n");
     fprintf(OUTPUT,"                    Default is "DEFAULT_DNADNA_MISMATCHES"             \n");
-    fprintf(OUTPUT,"     -I[xxxxxx.nn]  Name of a file containing nn parameters for inosine mismatches\n"); 
+    fprintf(OUTPUT,"     -i[xxxxxx.nn]  Name of a file containing nn parameters for inosine mismatches\n"); 
     fprintf(OUTPUT,"                    Defaults are: DNA/DNA: "DEFAULT_DNADNA_INOSINE_MISMATCHES"         \n");
     fprintf(OUTPUT,"                                  DNA/RNA: "DEFAULT_DNARNA_INOSINE_MISMATCHES"         \n");
     fprintf(OUTPUT,"                                  RNA/RNA: "DEFAULT_RNARNA_INOSINE_MISMATCHES"         \n");

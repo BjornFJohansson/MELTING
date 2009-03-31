@@ -465,6 +465,7 @@ double tm_exact(struct param *pst_param, struct thermodynamic *pst_results){
 				d_magn_corr_value = d_a - d_b * log (pst_param->d_conc_magnesium) + d_fgc * (d_c + d_d * log (pst_param->d_conc_magnesium)) + 1/(2 *
 				((double)i_size - 1)) * (- d_e + d_f * log (pst_param->d_conc_magnesium) + d_g *
 				pow(log(pst_param->d_conc_magnesium),2));
+			
 			}
 		}
 	}
