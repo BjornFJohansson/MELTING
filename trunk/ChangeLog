@@ -1,3 +1,5 @@
+[31/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
+	inosine parameters added
 [30/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	Perl interface bugs correction and move some files. Calcul.c and
 	melting.c bugs correction.
