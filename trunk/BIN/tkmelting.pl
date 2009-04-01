@@ -5,7 +5,7 @@ eval '(exit $?0)' && eval 'exec perl -S $0 ${1+ "$@"}' && eval 'exec perl -S $0 
 # This program   computes for a nucleotide probe, the enthalpie, the entropy #
 # of the helix-coil transition, and then its melting temperature.            #
 # Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  #
-#                 Copyright (C) Nicolas Le Novère 1997-2007                  #
+#         Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2009   #
 ##############################################################################
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ eval '(exit $?0)' && eval 'exec perl -S $0 ${1+ "$@"}' && eval 'exec perl -S $0 
 #     along with this program; if not, write to the Free Software
 #     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA#
 #
-#     Nicolas Le Novère 
+#     Nicolas Le Novère and Marine Dumousseau
 #     Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
 #     Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk  
 

@@ -1,12 +1,12 @@
 /******************************************************************************
- *                               MELTING v4.2                                 *
+ *                               MELTING v4.3                                 *
  * This program   computes for a nucleotide probe, the enthalpy, the entropy  *
  * and the melting temperature of the binding to its complementary template.  *
  * Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  *
- *                 Copyright (C) Nicolas Le Novère 1997-2007                  *
+ *          Copyright (C) Nicolas Le Novère and Marine Dumousseau  1997-2009 *
  *                                                                            *
  * File: decode.c                                                             *
- * Date: 18/JUL/2007                                                          *
+ * Date: 01/APR/2009                                                          *
  * Aim : Read and treat the input parameters.                                 *
  ******************************************************************************/
 
@@ -24,7 +24,7 @@
       along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-      Nicolas Le Novère 
+      Nicolas Le Novère and Marine Dumousseau
       Computational Neurobiology, EMBL-EBI
       Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk
 */
@@ -866,7 +866,8 @@ char *read_string(FILE *stream){
  **************************/
 
 void legal(void){
-    fprintf(OUTPUT,"   Melting is copyright (C) 1997, 2007 by Nicolas Le Novère\n\n");
+    fprintf(OUTPUT,"   Melting is copyright (C) 1997, 2009 by Nicolas Le Novère\n\n");
+    fprintf(OUTPUT,"   and Marine Dumousseau\n\n");
     fprintf(OUTPUT,"   This  program  is  free  software; you can redistribute it\n");
     fprintf(OUTPUT,"   and/or modify it under the terms of the GNU General Public\n");
     fprintf(OUTPUT,"   License  as  published  by  the  Free Software Foundation;\n");
