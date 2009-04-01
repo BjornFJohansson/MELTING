@@ -752,15 +752,14 @@ If there are only Na+ ions, we can use the correction for the concentration of s
 from <I>Owczarzy et al (2008)</I>. (only for DNA duplexes)
        
        <P></P>
-<DIV ALIGN="CENTER"><B>
+<DIV ALIGN="CENTER">
 [Mon+] = [Na<sup>+</sup>] + [K<sup>+</sup>] + [Tris<sup>+</sup>]
-</B>
 </DIV><P></P>
 
-Where [Tris<sup>+</sup>] = [Tris buffer]/2. (in the option -t, it is the Tris buffer concentration
-which is entered). <P></P>
+Where [Tris<sup>+</sup>] is equal to half of total tris buffer concentration.<I>(in the option -t, it is the Tris buffer concentration
+which is entered)</I>. <P></P>
        
-If [Mon<sup>+</sup>] = 0, the divalent ions are the only ions present and the melting temperature is :
+When the divalent ions are the only ions present, the melting temperature is :
  
         <P></P>
 <DIV ALIGN="CENTER">
@@ -779,7 +778,7 @@ If [Mon<sup>+</sup>] = 0, the divalent ions are the only ions present and the me
        Nbp is the length of the sequence (Number of base pairs).
        <P></P>
        
-       If [Mon<sup>+</sup>] > 0, there are several cases because we can have
+       When there are both monovalent and divalent ions, there are several cases because we can have
        a competitive DNA binding between monovalent and divalent 
        cations  :
        <P></P>
@@ -1050,7 +1049,7 @@ could actually be a mistyped base).
 10 Copyright </A>
 </H1>
 Melting is copyright 
-&#169;1997, 2006 by Nicolas Le Nov&#232;re   
+&#169;1997, 2009 by Nicolas Le Nov&#232;re and Marine Dumousseau   
 
 <P>
 This program is free software; 

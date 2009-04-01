@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #*******************************************************************************
 #                                 profil.pl                                    *
-#                 Copyright (C) Nicolas Le Novère 2001                         *
+#                 Copyright (C) Nicolas Le Novère and Marine Dumousseau 2001   *
 # Run the program melting iteratively on a nucleic acid sequence entered from  *
 #  stdin (it can be a file redirected with 'multi.pl < file.seq')              *
 #*******************************************************************************/

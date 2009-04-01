@@ -1,12 +1,12 @@
 /******************************************************************************
- *                               MELTING v4.2                                 *
+ *                               MELTING v4.3                                 *
  * This program   computes for a nucleotide probe, the enthalpy, the entropy  *
  * and the melting temperature of the binding to its complementary template.  *
  * Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  *
- *                 Copyright (C) Nicolas Le Novère 1997-2007                  *
+ *          Copyright (C) Nicolas Le Novère and Marine Dumousseau  1997-2009 *
  *                                                                            *
  * File: melting.h                                                            *
- * Date: 20/JUL/2007                                                          *
+ * Date: 01/APR/2009                                                          *
  * Aim : This file contains the definitions of MACRO and variables as well as *
  *       function prototypes for the module melting.c                         *
  ******************************************************************************/
@@ -25,7 +25,7 @@
       along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-      Nicolas Le Novère 
+      Nicolas Le Novère and Marine Dumousseau
       Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
       Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk 
 */

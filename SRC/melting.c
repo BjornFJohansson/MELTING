@@ -1,12 +1,12 @@
 /******************************************************************************
- *                               MELTING v4.2                                 *
+ *                               MELTING v4.3                                 *
  * This program   computes for a nucleotide probe, the enthalpy, the entropy  *
  * and the melting temperature of the binding to its complementary template.  *
  * Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  *
- *                 Copyright (C) Nicolas Le Novère 1997-2007                  *
+ *          Copyright (C) Nicolas Le Novère and Marine Dumousseau  1997-2009 *
  *                                                                            *
  * File: melting.c                                                            *
- * Date: 20/JUL/2007                                                          *
+ * Date: 01/APR/2009                                                          *
  * Aim : program entry. Output results                                        *
  ******************************************************************************/
  
@@ -24,7 +24,7 @@
       along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
-      Nicolas Le Novère 
+      Nicolas Le Novère and Marine Dumousseau
       Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
       Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk
 */
@@ -40,16 +40,16 @@
  |        -C[Complement]                                                 |
  |        -D[Alternative Dangling ends NN set]                           |
  |        -F[Factor to correct the concentration of nucleic acid]        |
+ |        -G[magnesium]                                                  |
  |        -h     displays Help                                           |
  |        -H[Hybridation type]                                           |
  |        -I[Infile]                                                     |
+ |        -i[Alternative inosine set]                                    |
  |        -K[salt Korrection]                                            |
+ |        -k[potassium]                                                  |
  |        -L     displays Legal information                              |
  |        -M[Alternative Mismaches NN set]                               |
- |        -i[Alternative Inosine Mismaches NN set]                               |
  |        -N[salt (N states for Na)]                                     |
- |        -k[potassium]                                                  |
- |        -t[tris]                                                       |
  |        -G[magnesium]                                                  |
  |        -O[Outfile] (the name can be omitted)                          |
  |        -P[concentration of the strand in excess (P states for Probe)] |
@@ -57,6 +57,7 @@
  |        -q     Quiet. Switch off interactive correction of parameters  |
  |        -S[Sequence]                                                   |
  |        -T[Threshold for approximative computation]                    |
+ |        -t[tris]                                                       |
  |        -v     Verbose mode                                            |
  |        -V     displays Version and quit                               |
  |        -x     force approXimative calculus                            |
@@ -336,7 +337,7 @@ int main(int argc, char *argv[]){
 		    i_salt = TRUE;
 	    }
 	} else{
-	    fprintf(ERROR," No proper salt concentration has been entered.\n");
+	    fprintf(ERROR," No proper ion concentration has been entered.\n");
 	    return EXIT_FAILURE;
 	}
      }
@@ -510,7 +511,7 @@ int main(int argc, char *argv[]){
             fprintf(OUTFILE,"* This program   computes for a nucleotide probe, the enthalpy, the entropy  *\n");
             fprintf(OUTFILE,"* and the melting temperature of the binding to its complementary template.  *\n");
             fprintf(OUTFILE,"* Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  *\n");
-            fprintf(OUTFILE,"*                 Copyright (C) Nicolas Le Novère 1997-2007                  *\n");
+            fprintf(OUTFILE,"*    Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2009        *\n");
             fprintf(OUTFILE,"******************************************************************************\n");
 	    fprintf(OUTFILE,"\n");
 	    fprintf(OUTFILE,"sequence  : %s\n",pst_param->ps_sequence);
@@ -679,7 +680,7 @@ int main(int argc, char *argv[]){
             fprintf(VERBOSE,"* This program   computes for a nucleotide probe, the enthalpy, the entropy  *\n");
             fprintf(VERBOSE,"* and the melting temperature of the binding to its complementary template.  *\n");
             fprintf(VERBOSE,"* Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  *\n");
-            fprintf(VERBOSE,"*                 Copyright (C) Nicolas Le Novère 1997-2007                  *\n");
+            fprintf(VERBOSE,"*    Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2009        *\n");
             fprintf(VERBOSE,"******************************************************************************\n");
 	    fprintf(VERBOSE,"\n");
 	    fprintf(VERBOSE,"sequence  : %s\n",pst_param->ps_sequence);
@@ -873,7 +874,8 @@ void usage(void){
     fprintf(OUTPUT,"                                  RNA/RNA: "DEFAULT_RNARNA_INOSINE_MISMATCHES"         \n");
     fprintf(OUTPUT,"     -N[x.xe-x]     Sodium concentration in mol.l-1. Mandatory         \n");
     fprintf(OUTPUT,"     -k[x.xe-x]     Potassium concentration in mol.l-1. Mandatory         \n");
-    fprintf(OUTPUT,"     -t[x.xe-x]     Tris concentration in mol.l-1. The Tri+ concentration is about half of total Tris concentration Mandatory         \n");
+    fprintf(OUTPUT,"     -t[x.xe-x]     Tris concentration in mol.l-1. The Tri+ concentration is about \n");
+    fprintf(OUTPUT,"                    half of total Tris concentration Mandatory         \n");
     fprintf(OUTPUT,"     -G[x.xe-x]     Magnesium concentration in mol.l-1. Mandatory         \n");  
     fprintf(OUTPUT,"     -O[XXXXXX]     Name of an output file (the name can be omitted)   \n");
     fprintf(OUTPUT,"     -P[x.xe-x]     Concentration of single strand nucleic acid in mol.l-1. Mandatory\n");
