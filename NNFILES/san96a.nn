@@ -42,8 +42,8 @@ TA  -6300.0  -18.5
 TC  -7700.0  -20.3
 TG  -7400.0  -19.3
 TT  -8400.0  -23.6
-IA      0.0   -0.0
-IG      0.0   -5.9
+IA      0.0   -2.95
+IG      0.0   -2.95
 
 /* IMPORTANT: In the case of a duplex without GC, the IA initiation entropy   */
 /*            would better be -9.0 cal.mol-1. There is currently no way to    */
