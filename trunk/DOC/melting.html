@@ -756,24 +756,26 @@ from <I>Owczarzy et al (2008)</I>. (only for DNA duplexes)
 [Mon+] = [Na<sup>+</sup>] + [K<sup>+</sup>] + [Tris<sup>+</sup>]
 </DIV><P></P>
 
-Where [Tris<sup>+</sup>] is equal to half of total tris buffer concentration.<I>(in the option -t, it is the Tris buffer concentration
+Where [Tris<sup>+</sup>] is equal to half of total tris buffer concentration. <I>(in the option -t, it is the Tris buffer concentration
 which is entered)</I>. <P></P>
        
 When the divalent ions are the only ions present, the melting temperature is :
- 
-        <P></P>
+
+<P></P>
 <DIV ALIGN="CENTER">
-<B>
-1/Tm(Mg<sup>2+</sup>) = 1/Tm(1M Na<sup>+</sup>) + a - b x ln([Mg<sup>2+</sup>]) + Fgc x (c 
-       		        + d x ln([Mg<sup>2+</sup>]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+])
-			+ g x ln([Mg2+]) x ln([Mg2+]))
-			</B>
-</DIV><P></P>      
- 
-       where : a = 3.92/100000, b = 9.11/1000000, c = 6.26/100000
-       ,d = 1.42/100000,e = 4.82/10000;f = 5.25/10000, g = 8.31/
-       100000.<P></P>
-       
+<IMG
+ SRC="melting/magnesium1.png" height="400" width="300"
+</DIV>
+<DIV ALIGN="CENTER">     
+       where : a = 3.92 x 10<sup>-5</sup>
+       <P></P>b = 9.11 x 10<sup>-6</sup>
+       <P></P>c = 6.26 x 10<sup>-5</sup>
+       <P></P>d = 1.42 x 10<sup>-5</sup>
+       <P></P>e = 4.82 x 10<sup>-4</sup>
+       <P></P>f = 5.25 x 10<sup>-4</sup>
+       <P></P>g = 8.31 x 10<sup>-5</sup>.
+       </DIV>
+       <P></P>
        Fgc is the fraction of GC base pairs in the sequence and 
        Nbp is the length of the sequence (Number of base pairs).
        <P></P>
@@ -783,55 +785,40 @@ When the divalent ions are the only ions present, the melting temperature is :
        cations  :
        <P></P>
        
-       If the ratio [Mg<sup>2+</sup>]<sup>0,5</sup>/[Mon<sup>+</sup>] is inferior to 0.22, mono-
-       valent ion influence is dominant, divalent cations can be 
-       disregarded and the melting temperature is :
+       If the following ratio :<P></P>
+   <DIV ALIGN="CENTER">       <IMG
+ SRC="melting/ratio.png" height="300" 
+</DIV> <P></P>  
+is inferior to 0.22, monovalent ion influence is dominant, divalent cations can be 
+disregarded and the melting temperature is :
        
-       <P></P>
+ <P></P>
 <DIV ALIGN="CENTER">
-<B>
-1/Tm(Mg<sup>2+</sup>) = 1/Tm(1M Na<sup>+</sup>) + (4.29 x Fgc - 3.95) x 1/100000
-                    x ln([mon<sup>+</sup>]) + 9.40 x 1/1000000 x ln([Mon+])
-		    x ln([Mon+])
-		    </B>
-</DIV><P></P> 
+<IMG
+ SRC="melting/magnesium2.png" height="400" width="300"
+</DIV> 
         
-
-       If the ratio [Mg<sup>2+</sup>]<sup>0,5</sup>/[Mon<sup>+</sup>] is included in [0.22, 6[,
+       If the ratio is included in [0.22, 6[,
        we must take in account both Mg<sup>2+</sup> and monovalent cations 
-       concentrations. The melting temperature is :
-       
-         <P></P>
-<DIV ALIGN="CENTER">
-<B>
-1/Tm(Mg<sup>2+</sup>) = 1/Tm(1M Na<sup>+</sup>) + a - b x ln([Mg<sup>2+</sup>]) + Fgc x (c 
-       		        + d x ln([Mg<sup>2+</sup>]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+])
-			+ g x ln([Mg2+]) x ln([Mg2+]))
-</B>
-</DIV><P></P>  
-       
-       where : a = 3.92/100000 x (0.843 - 0.352 x [Mon<sup>+</sup>]0.5 x ln([Mon<sup>+</sup>])), 
+       concentrations. The melting temperature is calculated with the first equation but with monovalent ions concentration dependent parameters a, d and g :
+	<DIV ALIGN="CENTER">
+ 
+	<P></P>
+	a = 3.92 x 10<sup>-5</sup> x (0.843 - 0.352 x [Mon<sup>+</sup>]0.5 x ln([Mon<sup>+</sup>])) 
        <P></P>
-       d = 1.42/100000 x (1.279 - 4.03/1000 x ln([mon<sup>+</sup>]) - 8.03/1000 x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>]),
+       d = 1.42 x 10<sup>-5</sup> x (1.279 - 4.03 x 10<sup>-3</sup> x ln([mon<sup>+</sup>]) - 8.03 x 10<sup>-3</sup> x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>])
        <P></P> 
-       g = 8.31/100000 x (0.486 - 0.258 x ln([mon<sup>+</sup>]) + 5.25/1000 x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>]).
+       g = 8.31 x 10<sup>-5</sup> x (0.486 - 0.258 x ln([mon<sup>+</sup>]) + 5.25 x 10<sup>+</sup> x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>] x ln([mon<sup>+</sup>])
        <P></P>.
        
-       b, c, e, f are constant.
+       and b, c, e, f are constant.
+       </DIV>
+       <P></P>
        
-       Finally, if the ratio [Mg<sup>2+</sup>]<sup>0,5</sup>/[Mon<sup>+</sup>] is superior to 6,
-       divalent ion influence is dominant, monovalent cations can be disregarded and the melting temperature is :
-       
-         <P></P>
-<DIV ALIGN="CENTER">
-<B>
-1/Tm(Mg<sup>2+</sup>) = 1/Tm(1M Na<sup>+</sup>) + a - b x ln([Mg<sup>2+</sup>]) + Fgc x (c 
-       		        + d x ln([Mg<sup>2+</sup>]) + 1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+])
-			+ g x ln([Mg2+]) x ln([Mg2+]))
-</B>
-</DIV><P></P>  
-       
-       where : a, b, c, d, and g constants.
+       Finally, if the ratio is superior to 6,
+       divalent ion influence is dominant, monovalent cations can be disregarded and the melting temperature is calculated with the first equation and the constant parameters a, b, c, d,
+       e, f, g.
+
 
 <H2><A NAME="SECTION00058000000000000000">
 5.8 Long sequences </A>
