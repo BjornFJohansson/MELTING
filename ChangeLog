@@ -1,3 +1,5 @@
+[03/APR/2009] Marine Dumousseau (marine@ebi.ac.uk)
+	Documentation modified. 
 [31/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	mistakes in the thermodynamic tables corrected. Documentation
 	modification. 
@@ -16,7 +18,7 @@
 	from Brent M. Znosko 2007 for RNA duplexes (only IU base pairs)).
 	add the option -i for enter a new set of inosine parameters. 
 	
-	version 4.4
+	version 4.3
 [25/MAR/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	add the magnesium correction. (algorithm from Owczarzy 2008, only for
 	DNA/DNA duplexes)
