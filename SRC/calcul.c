@@ -225,7 +225,7 @@ struct thermodynamic *get_results(struct param *pst_param){
                                   " considered separately).\n");
 		    exit(EXIT_FAILURE);
 		}
-		if (i_dnadna == FALSE && i_alt_mm == FALSE){
+		if (i_dnadna == FALSE && i_alt_mm == FALSE && i_mismatch == TRUE){
 		  fprintf(OUTPUT,"  WARNING: The default mismatches parameters can efficiently\n"
 			  "  account only for the DNA/DNA hybridisation. You can enter an\n"
 			  "  alternative set of parameters with the option -M\n");
@@ -238,7 +238,7 @@ struct thermodynamic *get_results(struct param *pst_param){
 		if (i_rnarna == TRUE && i_alt_inosine == FALSE){
 		  fprintf(OUTPUT,"  WARNING: The only default inosine mismatches parameters available\n"
 			  "  are the I.U bas pairs. You can enter an\n"
-			  "  alternative set of parameters with the option -M\n");
+			  "  alternative set of parameters with the option -i\n");
 		}
 		if (i_mismatch == TRUE){
 				/*compare with each possible mismatched pair*/
