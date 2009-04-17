@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*      This program is free software; you can redistribute it and/or modify  */
+/*       it under the terms of the GNU General Public License as published by */
+/*       the Free Software Foundation; either version 2 of the License, or    */
+/*       (at your option) any later version.                                  */
+
+/*       This program is distributed in the hope that it will be useful, but  */
+/*       WITHOUT ANY WARRANTY; without even the implied warranty of           */
+/*       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU    */
+/*       General Public License for more details.                             */
+
+/*       You should have received a copy of the GNU General Public License    */
+/*       along with this program; if not, write to the Free Software          */
+/*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
+/*       USA                                                                  */
+
+/*       Nicolas Le Novère                                                    */
+/*       Department of Zoology, University of Cambridge, Downing street       */
+/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
+/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
+/*             file) are expressed in cal.mol-1, whereas the results output   */
+/*             by MELTING are in SI, i.e. in J.mol-1                          */
+-->
+
+<!--/******************************************************************************/
+    	/* contains the parameters for RNA/RNA single mismatches of ;
+	REF: Brent M Znosko et al (2007). Biochemistry 46: 13425-13436. 
+    	/******************************************************************************/-->
+   			
+   			<parameters pair="A/G">
+	        	<enthalpy>-6900.0</enthalpy>
+                <entropy>-21.0</entropy>
+   			</parameters>	
+   			<parameters pair="G/G">
+	        	<enthalpy>-18200.0</enthalpy>
+                <entropy>-51.8</entropy>
+   			</parameters>			
+   			<parameters pair="U/U">
+	        	<enthalpy>-12600.0</enthalpy>
+                <entropy>-39.6</entropy>
+   			</parameters>
+   			
+   			<mismatch sequence="YRR/RRY">
+	        	<enthalpy>200.0</enthalpy>
+                <entropy>-1.4</entropy>
+   			</mismatch>
+  			<mismatch sequence="RYY/YYR">
+	        	<enthalpy>-5500.0</enthalpy>
+                <entropy>-16.2S</entropy>
+   			</mismatch>
+  			<mismatch sequence="YYR/RYY">
+	        	<enthalpy>2200.0</enthalpy>
+                <entropy>5.7</entropy>
+   			</mismatch>
+  			<mismatch sequence="YRY/RYR">
+	        	<enthalpy>-7700.0</enthalpy>
+                <entropy>-23.4</entropy>
+   			</mismatch>
+  			<mismatch sequence="RRY/YYR">
+	        	<enthalpy>-19500.0</enthalpy>
+                <entropy>-59.7</entropy>
+   			</mismatch>
+   			
+  			<closure type="per_AU">
+	        	<enthalpy>-1800.0</enthalpy>
+                <entropy>-9.8</entropy>
+   			</closure>
+   			<closure type="per_GU">
+	        	<enthalpy>-1800.0</enthalpy>
+                <entropy>-9.8</entropy>
+   			</closure>
