@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+/*      This program is free software; you can redistribute it and/or modify  */
+/*       it under the terms of the GNU General Public License as published by */
+/*       the Free Software Foundation; either version 2 of the License, or    */
+/*       (at your option) any later version.                                  */
+
+/*       This program is distributed in the hope that it will be useful, but  */
+/*       WITHOUT ANY WARRANTY; without even the implied warranty of           */
+/*       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU    */
+/*       General Public License for more details.                             */
+
+/*       You should have received a copy of the GNU General Public License    */
+/*       along with this program; if not, write to the Free Software          */
+/*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
+/*       USA                                                                  */
+
+/*       Nicolas Le Novère                                                    */
+/*       Department of Zoology, University of Cambridge, Downing street       */
+/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
+/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
+/*             file) are expressed in cal.mol-1, whereas the results output   */
+/*             by MELTING are in SI, i.e. in J.mol-1                          */
+-->
+
+<!--/******************************************************************************/
+    	/* contains the parameters for RNA/RNA long bulge loops of ;
+	REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
+    	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940. 
+    	/******************************************************************************/-->
+    	
+    		<bulge type="initiation" size="1">
+    			<enthalpy>10600.0</enthalpy>
+    			<entropy>21.9</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size="2">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy>13.9</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size="3">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy>12.6</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size="4">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy>11.3</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size="5">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy>10.0</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size="6">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy>8.7</entropy>
+    		</bulge>
+    		
+    		<bulge type="initiation" size=">6">
+    			<enthalpy>7100.0</enthalpy>
+    			<entropy equation="1000/310.15 x (8.7 - 1085.5ln(n/6))"></entropy>
+    		</bulge>
