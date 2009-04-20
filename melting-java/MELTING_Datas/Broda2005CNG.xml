@@ -15,12 +15,9 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
  <!--/******************************************************************************/
@@ -28,6 +25,7 @@
 	REF: Broda et al (2005). Biochemistry 44: 10873-10882.
     	/******************************************************************************/-->
    			
+   		<datas type="repeats">
    			<CNG sequence="CAG/GAC" repeats="2">
 				<enthalpy>-40100.0</enthalpy>
 				<entropy>-110.1</entropy>
@@ -38,7 +36,7 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="2">
 				<enthalpy>-29300.0</enthalpy>
-				<entropy>-74.9/entropy>
+				<entropy>-74.9</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="2">
 				<enthalpy>-49600.0</enthalpy>
@@ -54,7 +52,7 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="3">
 				<enthalpy>-42200.0</enthalpy>
-				<entropy>-114.4/entropy>
+				<entropy>-114.4</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="3">
 				<enthalpy>-54900.0</enthalpy>
@@ -70,12 +68,11 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="4">
 				<enthalpy>-45800.0</enthalpy>
-				<entropy>-66.7/entropy>
+				<entropy>-66.7</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="4">
 				<enthalpy>-43900.0</enthalpy>
 				<entropy>-116.7</entropy>
-			</CNG>
 			</CNG>
 			<CNG sequence="CAG/GAC" repeats="5">
 				<enthalpy>-29300.0</enthalpy>
@@ -87,7 +84,7 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="5">
 				<enthalpy>-32800.0</enthalpy>
-				<entropy>-121.5/entropy>
+				<entropy>-121.5</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="5">
 				<enthalpy>-42800.0</enthalpy>
@@ -103,7 +100,7 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="6">
 				<enthalpy>-24400.0</enthalpy>
-				<entropy>-72.0/entropy>
+				<entropy>-72.0</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="6">
 				<enthalpy>-39800.0</enthalpy>
@@ -119,9 +116,10 @@
 			</CNG>
 			<CNG sequence="CCG/GCC" repeats="7">
 				<enthalpy>-27300.0</enthalpy>
-				<entropy>-80.1/entropy>
+				<entropy>-80.1</entropy>
 			</CNG>
 			<CNG sequence="CUG/GUC" repeats="7">
 				<enthalpy>-498600.0</enthalpy>
 				<entropy>-143.5</entropy>
 			</CNG>
+		</datas>

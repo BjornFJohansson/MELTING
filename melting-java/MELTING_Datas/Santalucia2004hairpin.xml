@@ -15,12 +15,9 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
@@ -28,6 +25,7 @@
 /* (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440                                            */                                                    
 /******************************************************************************/-->
     	
+    <datas type="hairpin_loop">
     	<hairpin size="3">
   			<entropy>-11.3</entropy>
   		</hairpin>
@@ -90,7 +88,7 @@
   			<enthalpy>-1500.0</enthalpy>
   			<entropy>0.0</entropy>
   		</bonus>  		
-  		<bonus type="tetraloop" sequence=TAAAA/A>
+  		<bonus type="tetraloop" sequence="TAAAA/A">
   			<enthalpy>500.0</enthalpy>
   			<entropy>-0.6</entropy>
   		</bonus>
@@ -429,7 +427,7 @@
   		<bonus type="tetraloop" sequence="TGATA/A">
   								<enthalpy>-1600.0</enthalpy>
   								<entropy>1.6</entropy>
-  							</bonus>>
+  							</bonus>
   		<bonus type="tetraloop" sequence="TGCAA/A">
   								<enthalpy>-1600.0</enthalpy>
   								<entropy>1.6</entropy>
@@ -493,6 +491,7 @@
   		<bonus type="tetraloop" sequence="TCTTG/G">
   								<enthalpy>0.0</enthalpy>
   								<entropy>3.2</entropy>
+							</bonus>
   		<bonus type="tetraloop" sequence="TGAAA/G">
   								<enthalpy>-1000.0</enthalpy>
   								<entropy>1.6</entropy>
@@ -504,7 +503,7 @@
   		<bonus type="tetraloop" sequence="TGATA/G">
   								<enthalpy>-1500.0</enthalpy>
   								<entropy>1.6</entropy>
-  							</bonus>>
+  							</bonus>
   		<bonus type="tetraloop" sequence="TGCAA/G">
   								<enthalpy>-1500.0</enthalpy>
   								<entropy>1.6</entropy>
@@ -553,3 +552,4 @@
   								<enthalpy>-500.0</enthalpy>
   								<entropy>1.6</entropy>
   		</bonus>
+  	</datas>

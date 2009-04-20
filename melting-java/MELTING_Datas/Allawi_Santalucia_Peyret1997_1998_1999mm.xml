@@ -15,12 +15,9 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
@@ -32,6 +29,7 @@
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477
     	/******************************************************************************/-->
 			
+		<datas type="single_mismatch">
 			<mismatch sequence="AA/AT">
                	<enthalpy>4700.0</enthalpy>
               	<entropy>12.9</entropy>
@@ -224,3 +222,4 @@
         		<enthalpy>-2500.0</enthalpy>
                	<entropy>-8.3</entropy>
 	    	</mismatch>
+	    </datas>
