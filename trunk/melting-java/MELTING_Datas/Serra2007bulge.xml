@@ -15,12 +15,9 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
@@ -28,6 +25,7 @@
 /* (2007). Biochemistry 46 : 15123-15135                                            */                                                    
 /******************************************************************************/-->
 			
+		<datas type="single_bulge_loop">
 			<bulge sequence="CAC/GG">
 				<enthalpy>-4700.0</enthalpy>
 				<entropy>-2.6</entropy>
@@ -227,3 +225,4 @@
 			<bulge sequence="UGU/GG">
 				<enthalpy>-17500.0</enthalpy>
 			</bulge>
+		</datas>

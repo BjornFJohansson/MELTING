@@ -15,18 +15,17 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1 
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
     	/* contains the parameters for RNA/RNA double dangling ends of ;
 	REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 
     	/******************************************************************************/-->
+			
+		<datas type="double_dangling_end">
 			<dangling sequence="pur-pyr-x/pyr" sens="3">
 				<enthalpy>0.0</enthalpy>
 				<entropy>0.0</entropy>
@@ -47,3 +46,4 @@
 				<enthalpy>-2500.0</enthalpy>
 				<entropy>-6.7</entropy>			
 			</dangling>
+		</datas>

@@ -15,12 +15,9 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
@@ -29,6 +26,7 @@
     	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940. 
     	/******************************************************************************/-->
     	
+    	<datas type="long_bulge_loop">
     		<bulge type="initiation" size="1">
     			<enthalpy>10600.0</enthalpy>
     			<entropy>21.9</entropy>
@@ -63,3 +61,4 @@
     			<enthalpy>7100.0</enthalpy>
     			<entropy equation="1000/310.15 x (8.7 - 1085.5ln(n/6))"></entropy>
     		</bulge>
+    	</datas>

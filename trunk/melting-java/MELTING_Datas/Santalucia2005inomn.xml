@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!--/*      This program is free software; you can redistribute it and/or modify  */
+<!--
+/*      This program is free software; you can redistribute it and/or modify  */
 /*       it under the terms of the GNU General Public License as published by */
 /*       the Free Software Foundation; either version 2 of the License, or    */
 /*       (at your option) any later version.                                  */
@@ -15,18 +15,16 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1                          */-->
-
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
+-->
 <!--/******************************************************************************/
     /* contains the parameters for DNA/DNA inosine pairs of Santalucia et al.      */
     /* (2005). Nucleic acids research 33 : 6258-6267                              */
     /******************************************************************************/-->
         
+       <datas type="modified_nucleotides">
         <modified sequence="AA/IT">
             <enthalpy>-3400.0</enthalpy>
             <entropy>-11.2</entropy>
@@ -203,3 +201,4 @@
 	        <enthalpy>100.0</enthalpy>
             <entropy>-2.3</entropy>
         </modified>
+      </datas>

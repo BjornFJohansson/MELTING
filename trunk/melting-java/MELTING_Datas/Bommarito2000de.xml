@@ -15,18 +15,17 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
-/*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
-/*             file) are expressed in cal.mol-1, whereas the results output   */
-/*             by MELTING are in SI, i.e. in J.mol-1 
+/*       Marine Dumousseau                                                    */
+/*       EMBL-EBI, neurobiology computational group,                          */
+/*       Cambridge, UK. e-mail: marine@ebi.ac.uk                   */
 -->
 
 <!--/******************************************************************************/
     	/* contains the parameters for DNA/DNA single dangling ends of ;
 	REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 
     	/******************************************************************************/-->
+			
+		<datas type="single_dangling_end">
 			<dangling sequence="AA/T" sens="5">
                	<enthalpy>200.0</enthalpy>
                 <entropy>2.3</entropy>
@@ -44,7 +43,6 @@
                <entropy>3.3</entropy>
 			</dangling>
 			<dangling sequence="AC/G" sens="5">
-	        <dangling sequence="A">
 	        	<enthalpy>-6300.0</enthalpy>
                	<entropy>-17.1</entropy>
 	    	</dangling>
@@ -155,4 +153,5 @@
 	    	<dangling sequence="CT/G" sens="3">
 	        	<enthalpy>-5200.0</enthalpy>
                 <entropy>-15.0</entropy>
-			</dangling>
+		</dangling>
+		</datas>
