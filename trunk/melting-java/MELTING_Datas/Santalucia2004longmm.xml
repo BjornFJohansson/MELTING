@@ -25,7 +25,7 @@
 /* (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440                                            */                                                    
 /******************************************************************************/-->
   			
-  		<datas type="long_mismatch">
+  		<data type="long_mismatch">
   			<mismatch size="3">
   				<entropy>-10.3</entropy>
   			</mismatch>
@@ -71,4 +71,4 @@
  			<mismatch size="30">
   				<entropy>-21.3</entropy>
   			</mismatch>
-  		</datas>
+  		</data>

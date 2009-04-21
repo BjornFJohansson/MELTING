@@ -25,7 +25,7 @@
 /* (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440                                            */                                                    
 /******************************************************************************/-->
     	
-    <datas type="hairpin_loop">
+    <data type="hairpin_loop">
     	<hairpin size="3">
   			<entropy>-11.3</entropy>
   		</hairpin>
@@ -552,4 +552,4 @@
   								<enthalpy>-500.0</enthalpy>
   								<entropy>1.6</entropy>
   		</bonus>
-  	</datas>
+  	</data>

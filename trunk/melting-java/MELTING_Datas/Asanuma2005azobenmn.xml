@@ -24,7 +24,7 @@
     /* contains the parameters for DNA/DNA azobenzenes of Asanuma et al.      */
     /* (2005). Nucleic acids Symposium Series 49 : 35-36                              */
     /******************************************************************************/-->
-  	<datas type="modified_nucleotides">	
+  	<data type="modified_nucleotides">	
   		<modified sequence="AxA/TT_trans">
   			<enthalpy>-13000.0</enthalpy>
   			<entropy>-35.4</entropy>
@@ -153,4 +153,4 @@
   			<enthalpy>18300.0</enthalpy>
   			<entropy>56.0</entropy>
   		</modified>
-  	</datas>
+  	</data>

@@ -27,7 +27,7 @@
 /* ARTICLE.                                                     
 /******************************************************************************/-->
 
-	<datas type="crick">
+	<data type="crick">
 		<neighbor sequence="AA/TT">
 	        <enthalpy>-7900.0</enthalpy>
             <entropy>-22.2</entropy>
@@ -83,4 +83,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry>
-      </datas>
+      </data>

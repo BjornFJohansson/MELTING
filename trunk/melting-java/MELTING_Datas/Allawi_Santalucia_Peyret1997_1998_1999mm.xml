@@ -29,7 +29,7 @@
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477
     	/******************************************************************************/-->
 			
-		<datas type="single_mismatch">
+		<data type="single_mismatch">
 			<mismatch sequence="AA/AT">
                	<enthalpy>4700.0</enthalpy>
               	<entropy>12.9</entropy>
@@ -222,4 +222,4 @@
         		<enthalpy>-2500.0</enthalpy>
                	<entropy>-8.3</entropy>
 	    	</mismatch>
-	    </datas>
+	    </data>

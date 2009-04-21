@@ -25,7 +25,7 @@
 	REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 
     	/******************************************************************************/-->
 			
-		<datas type="double_dangling_end">
+		<data type="double_dangling_end">
 			<dangling sequence="pur-pyr-x/pyr" sens="3">
 				<enthalpy>0.0</enthalpy>
 				<entropy>0.0</entropy>
@@ -46,4 +46,4 @@
 				<enthalpy>-2500.0</enthalpy>
 				<entropy>-6.7</entropy>			
 			</dangling>
-		</datas>
+		</data>

@@ -25,7 +25,7 @@
     /* (2004). Biochemistry 43 : 5388-5405                              */
     /******************************************************************************/-->
   		
-  	<datas type="modified_nucleotides">
+  	<data type="modified_nucleotides">
   		<modified type="increment" sequence="AlA/TT">
   			<enthalpy>707.0</enthalpy>
   			<entropy>2.5</entropy>
@@ -154,4 +154,4 @@
   			<enthalpy>2063.0</enthalpy>
   			<entropy>7.6</entropy>
   		</modified>
-  	</datas>
+  	</data>

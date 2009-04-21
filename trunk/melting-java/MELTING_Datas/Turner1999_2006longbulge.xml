@@ -26,7 +26,7 @@
     	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940. 
     	/******************************************************************************/-->
     	
-    	<datas type="long_bulge_loop">
+    	<data type="long_bulge_loop">
     		<bulge type="initiation" size="1">
     			<enthalpy>10600.0</enthalpy>
     			<entropy>21.9</entropy>
@@ -61,4 +61,4 @@
     			<enthalpy>7100.0</enthalpy>
     			<entropy equation="1000/310.15 x (8.7 - 1085.5ln(n/6))"></entropy>
     		</bulge>
-    	</datas>
+    	</data>

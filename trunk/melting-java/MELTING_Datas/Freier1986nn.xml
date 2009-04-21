@@ -25,7 +25,7 @@
 /* Proc Natl Acad Sci USA 83: 9373-9377                                                                   
 /******************************************************************************/-->
         
-     <datas type="crick">
+     <data type="crick">
         <neighbor sequence="AA/UU">
 	        <enthalpy>-6600.0</enthalpy>
             <entropy>-18.4</entropy>
@@ -76,4 +76,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry> 
-      </datas> 
+      </data> 

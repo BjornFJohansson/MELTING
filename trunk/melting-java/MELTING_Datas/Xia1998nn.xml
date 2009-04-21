@@ -24,7 +24,7 @@
 /* Biochemistry 37: 14719-14735                                                                         
 /******************************************************************************/-->
         
-       <datas type="crick">
+       <data type="crick">
         <neighbor sequence="AA/UU">
 	        <enthalpy>-6800.0</enthalpy>
             <entropy>-19.0</entropy>
@@ -80,4 +80,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry>
-      </datas>
+      </data>

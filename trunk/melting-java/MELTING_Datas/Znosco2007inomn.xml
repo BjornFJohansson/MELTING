@@ -24,7 +24,7 @@
     /* (2005). Biochemistry 46 : 4625-4634                              */
     /******************************************************************************/-->
         
-       <datas type="modified_nucleotides">
+       <data type="modified_nucleotides">
         <modified sequence="UA/IU">
             <enthalpy>-10080.0</enthalpy>
             <entropy>-33.8</entropy>
@@ -74,4 +74,4 @@
     		<enthalpy>-80.0</enthalpy>
         	<entropy>4.0</entropy>
     	</terminal>
-    </datas>
+    </data>

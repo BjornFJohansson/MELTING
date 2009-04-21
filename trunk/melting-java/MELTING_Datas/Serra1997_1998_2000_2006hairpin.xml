@@ -28,7 +28,7 @@
 	REF: Martin J Serra et al (2006). Biochemistry 45: 1400-1407.  
        	/******************************************************************************/-->
        	
-       <datas type="hairpin_loop">
+       <data type="hairpin_loop">
        	<hairpin type="terminal_mismatch" sequence="UA/GA">
     			<enthalpy>-3700.0</enthalpy>
     			<entropy>-9.2</entropy>
@@ -191,27 +191,27 @@
     			<entropy>-12.5</entropy>
     	</hairpin>
     	
-    	<penalty type="closure" sequence="AU">
+    	<closure type="per_A/U">
     		<enthalpy>600.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="UA">
+    	</closure>
+    	<closure type="per_U/A">
     		<enthalpy>600.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="UG">
+    	</closure>
+    	<closure type="per_U/G">
     		<enthalpy>600.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="GU">
+    	</closure>
+    	<closure type="per_G/U">
     		<enthalpy>-700.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="GA_notGU">
+    	</closure>
+    	<closure type="per_G/A_notGU">
     		<enthalpy>-800.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="UU_notGU">
+    	</closure>
+    	<closure type="per_U/U_notGU">
     		<enthalpy>-800.0</enthalpy>
-    	</penalty>
-    	<penalty type="closure" sequence="GG" closing="5purine">
+    	</closure>
+    	<closure type="per_G/G_with_5purine">
     		<enthalpy>-800.0</enthalpy>
-    	</penalty>
+    	</closure>
     	
     	<hairpin size="3">
     		<entropy>-15.5</entropy>
@@ -235,4 +235,4 @@
     	<hairpin size="9">
     		<entropy>-17.7</entropy>
     	</hairpin>
-    </datas>
+    </data>

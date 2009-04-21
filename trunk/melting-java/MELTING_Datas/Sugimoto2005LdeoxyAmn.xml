@@ -25,7 +25,7 @@
     /* (2005). Analytical sciences 21 : 77-82                              */
     /******************************************************************************/-->
   		
-  	<datas type="modified_nucleotides">
+  	<data type="modified_nucleotides">
   		<modified sequence="C-AA/GTT">
   			<enthalpy>20400.0</enthalpy>
   			<entropy>57.0</entropy>
@@ -50,4 +50,4 @@
   			<enthalpy>40200.0</enthalpy>
   			<entropy>111.0</entropy>
   		</modified>
-  	</datas>
+  	</data>
