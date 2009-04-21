@@ -26,7 +26,7 @@
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 
     	/******************************************************************************/-->
    		
-   	<datas type="tandem_mismatch">
+   	<data type="tandem_mismatch">
    		<mismatch sequence="GA/AG" closing="G/C">
    			<enthalpy>-25100.0</enthalpy>
   			<entropy>-72.5</entropy>
@@ -247,4 +247,4 @@
    		<mismatch sequence="AA/AA" closing="U/G">
    			<enthalpy>-23200.0</enthalpy>
    		</mismatch>
-   	</datas>
+   	</data>

@@ -25,7 +25,7 @@
 /* (2007). Biochemistry 46 : 15123-15135                                            */                                                    
 /******************************************************************************/-->
 			
-		<datas type="single_bulge_loop">
+		<data type="single_bulge_loop">
 			<bulge sequence="CAC/GG">
 				<enthalpy>-4700.0</enthalpy>
 				<entropy>-2.6</entropy>
@@ -225,4 +225,4 @@
 			<bulge sequence="UGU/GG">
 				<enthalpy>-17500.0</enthalpy>
 			</bulge>
-		</datas>
+		</data>

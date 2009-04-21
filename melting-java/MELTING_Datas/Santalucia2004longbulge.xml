@@ -25,7 +25,7 @@
 /* (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440                                            */                                                    
 /******************************************************************************/-->
 			
-		<datas type="long_bulge_loop">
+		<data type="long_bulge_loop">
 			<bulge size="1">
   				<entropy>-12.86</entropy>
   			</bulge>
@@ -77,4 +77,4 @@
   			<bulge size="30">
   				<entropy>-19.02</entropy>
   			</bulge>
-  		</datas>
+  		</data>

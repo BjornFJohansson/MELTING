@@ -25,7 +25,7 @@
 /* (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440                      */                                                    
 /******************************************************************************/-->
 
-	<datas type="crick">
+	<data type="crick">
         <neighbor sequence="AA/TT">
 	        <enthalpy>-7600.0</enthalpy>
             <entropy>-21.3</entropy>
@@ -81,4 +81,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry>
-      </datas>
+      </data>

@@ -25,7 +25,7 @@
 /* (1996). Biochemistry 35 : 3555-3562                                        */
 /******************************************************************************/-->
 
-	<datas type="crick">
+	<data type="crick">
 		<neighbor sequence="AA/TT">
 	        <enthalpy>-8400.0</enthalpy>
             <entropy>-23.0</entropy>
@@ -85,4 +85,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry> 
-      </datas> 
+      </data> 

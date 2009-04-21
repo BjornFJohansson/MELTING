@@ -25,7 +25,7 @@
 	REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 
     	/******************************************************************************/-->
 			
-		<datas type="single_dangling_end">
+		<data type="single_dangling_end">
 			<dangling sequence="AA/T" sens="5">
                	<enthalpy>200.0</enthalpy>
                 <entropy>2.3</entropy>
@@ -154,4 +154,4 @@
 	        	<enthalpy>-5200.0</enthalpy>
                 <entropy>-15.0</entropy>
 		</dangling>
-		</datas>
+		</data>

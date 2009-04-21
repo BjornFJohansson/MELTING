@@ -25,7 +25,7 @@
 /* (1996). Nuc Acids Res 24 : 4501-4505                         
 /******************************************************************************/-->
 
-	<datas type="crick">
+	<data type="crick">
 		<neighbor sequence="AA/TT">
 	        <enthalpy>-8000.0</enthalpy>
             <entropy>-21.9</entropy>
@@ -76,4 +76,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry>
-      </datas>
+      </data>

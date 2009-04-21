@@ -26,7 +26,7 @@
 	REF: Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 
     	/******************************************************************************/-->
 			
-		<datas type="single_dangling_end">
+		<data type="single_dangling_end">
 			<dangling sequence="UA/A" sens="3">
 				<enthalpy>-5200.0</enthalpy>
 				<entropy>-14.3</entropy>
@@ -107,4 +107,4 @@
 				<enthalpy>-2200.0</enthalpy>
 				<entropy>-6.8</entropy>
 			</dangling>
-		</datas>
+		</data>

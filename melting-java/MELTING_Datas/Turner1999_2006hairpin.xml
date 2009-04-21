@@ -26,7 +26,7 @@
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940. 
     	/******************************************************************************/-->
 
-		<datas type="hairpin_loop">
+		<data type="hairpin_loop">
 			<hairpin type="initiation" size="3">
    				<enthalpy>1300.0</enthalpy>
    				<entropy>-14.2</entropy>
@@ -68,10 +68,10 @@
    				<enthalpy>-5800.0</enthalpy>
    				<entropy>-16.1</entropy>
    			</bonus>
-   			<bonus type="closure" sequence="G/U">
+   			<closure type="per_G/U">
    				<enthalpy>-14800.0</enthalpy>
    				<entropy>-40.6</entropy>
-   			</bonus>
+   			</closure>
    			
    			<penalty type="oligo_C_loop_3">
    				<enthalpy>1860.0</enthalpy>
@@ -86,4 +86,4 @@
    					<enthalpy>7600.0</enthalpy>
    					<entropy>19.3</entropy>
    			</penalty>
-   		</datas>
+   		</data>

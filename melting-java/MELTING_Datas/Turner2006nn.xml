@@ -24,7 +24,7 @@
 /* Nucleic acids research 34: 3609-3614                                                                   
 /******************************************************************************/-->
 
-	<datas type="crick">
+	<data type="crick">
 		<neighbor sequence="mAA/UU">
 	        <enthalpy>-7480.0</enthalpy>
             <entropy>-22.3</entropy>
@@ -104,4 +104,4 @@
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
         </symetry> 
-      </datas>
+      </data>

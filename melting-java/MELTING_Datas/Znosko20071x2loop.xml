@@ -25,16 +25,21 @@
 	REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. 
     	/******************************************************************************/-->
    			
-   		<datas type="1x2_loop">
+   		<data type="1x2_loop">
    			 <mismatch type="initiation">
  				<enthalpy>3200.0</enthalpy>
  				<entropy>3.1</entropy>
  			</mismatch>
  			
- 			<penalty type="per_AU_GU_closure">
+ 			<closure type="per_AU">
  				<enthalpy>-3500.0</enthalpy>
  				<entropy>-13.6</entropy>
- 			</penalty>
+ 			</closure>
+ 			
+ 			<closure type="per_GU">
+ 				<enthalpy>-3500.0</enthalpy>
+ 				<entropy>-13.6</entropy>
+ 			</closure>
  			
  			<mismatch sequence="A/G_not_RA/YG" loop="1x2" type="first_non_canonical_pair">
  				<enthalpy>-6300.0</enthalpy>
@@ -48,4 +53,4 @@
  				<enthalpy>-11900.0</enthalpy>
  				<entropy>-35.5</entropy>
  			</mismatch>
- 		</datas>
+ 		</data>

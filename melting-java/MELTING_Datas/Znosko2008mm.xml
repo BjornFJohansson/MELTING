@@ -25,7 +25,7 @@
 	REF: Brent M Znosko et al (2008). Biochemistry 47: 10178-10187. 
     	/******************************************************************************/-->
    			
-   		<datas type="single_mismatch">
+   		<data type="single_mismatch">
    			<parameters pair="A/G">
 	        	<enthalpy>-800.0</enthalpy>
                 <entropy>-10.4</entropy>
@@ -68,4 +68,4 @@
 	        	<enthalpy>-4000.0</enthalpy>
                 <entropy>-19.3</entropy>
    			</closure>
-   		</datas>
+   		</data>

@@ -25,7 +25,7 @@
 	REF: Broda et al (2005). Biochemistry 44: 10873-10882.
     	/******************************************************************************/-->
    			
-   		<datas type="repeats">
+   		<data type="repeats">
    			<CNG sequence="CAG/GAC" repeats="2">
 				<enthalpy>-40100.0</enthalpy>
 				<entropy>-110.1</entropy>
@@ -122,4 +122,4 @@
 				<enthalpy>-498600.0</enthalpy>
 				<entropy>-143.5</entropy>
 			</CNG>
-		</datas>
+		</data>
