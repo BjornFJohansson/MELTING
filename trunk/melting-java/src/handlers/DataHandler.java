@@ -2,7 +2,6 @@ package handlers;
 
 import java.util.HashMap;
 
-import melting.FileReader;
 import melting.Thermodynamics;
 
 import org.xml.sax.Attributes;
@@ -12,6 +11,10 @@ import org.xml.sax.SAXException;
 public class DataHandler extends NodeHandler {
 		private String type;
 		private HashMap<String, Thermodynamics> map = new HashMap<String, Thermodynamics>();
+		
+		public DataHandler(HashMap<String, Thermodynamics> map){
+			this.map = map;
+		}
 		
 		public HashMap<String, Thermodynamics> getMap() {
 			return map;
@@ -33,64 +36,13 @@ public class DataHandler extends NodeHandler {
 				if (localName.equals("datas")){
 					this.setType(attributes.getValue("type"));
 				}
-				else if (localName.equals("initiation")){
-					subHandler = new InitiationHandler();
-				}
-				else if (localName.equals("neighbor")){
-					subHandler = new NeighborHandler();
-				}
-				else if (localName.equals("symetry")){
-					subHandler = new SymetryHandler();
-				}
-				else if (localName.equals("terminal")){
-					subHandler = new TerminalHandler();
-				}
-				else if (localName.equals("mismatch")){
-					subHandler = new MismatchHandler();
-				}
-				else if (localName.equals("parameters")){
-					subHandler = new MismatchHandler();
-				}
-				else if (localName.equals("closure")){
-					subHandler = new ClosureHandler();
-				}
-				else if (localName.equals("penalty")){
-					subHandler = new PenaltyHandler();
-				}
-				else if (localName.equals("asymetry")){
-					subHandler = new AsymetryHandler();
-				}
-				else if (localName.equals("modified")){
-					subHandler = new ModifiedHandler();
-				}
-				else if (localName.equals("dangling")){
-					subHandler = new DanglingHandler();
-				}
-				else if (localName.equals("bulge")){
-					subHandler = new BulgeHandler();
-				}
-				else if (localName.equals("hairpin")){
-					subHandler = new HairpinHandler();
-				}
-				else if (localName.equals("bonus")){
-					subHandler = new BonusHandler();
-				}
-				else if (localName.equals("CNG")){
-					subHandler = new CNGHandler();
+				else {
+					subHandler = new ThermoHandler(localName);
 				}
 			}
 			else {
 				subHandler.startElement(uri, localName, name, attributes);
 			}
-		}
-		
-		public void initializeNode(ThermoHandler nHandler){
-			nHandler.thermo = null;
-			nHandler.enthalpy = 0.0;
-			nHandler.entropy = 0.0;
-			nHandler.hasEnthalpy = false;
-			nHandler.hasEntropy = false;
-			subHandler = null;
 		}
 
 		@Override
@@ -99,26 +51,35 @@ public class DataHandler extends NodeHandler {
 			if (subHandler != null) {
 				subHandler.endElement(uri, localName, name);
 				if (subHandler.hasCompletedNode()) {
-					if (subHandler instanceof NeighborHandler) {
-						NeighborHandler nHandler = (NeighborHandler) subHandler;
-						map.put(nHandler.getSequence(), nHandler.getThermodynamics());
-						initializeNode(nHandler);	
+					if (subHandler instanceof ThermoHandler) {
+						ThermoHandler handler = (ThermoHandler) subHandler;
+						String key = localName;
+						if (handler.getAttribut().containsKey("type")) {
+							key += handler.getAttribut().get("type");
+						}
+						if (handler.getAttribut().containsKey("loop")) {
+							key += "loop" + handler.getAttribut().get("loop");
+						}
+						if (handler.getAttribut().containsKey("size")) {
+							key += "size" + handler.getAttribut().get("size");
+						}
+						if (handler.getAttribut().containsKey("sequence")) {
+							key += handler.getAttribut().get("sequence");
+						}
+						if (handler.getAttribut().containsKey("closing")) {
+							key += "close" + handler.getAttribut().get("closing");
+						}
+						if (handler.getAttribut().containsKey("sens")) {
+							key += "sens" + handler.getAttribut().get("sens");
+						}
+						map.put(key, handler.getThermo());
+						handler.initializeAttributes();	
 					} 
-					else if (subHandler instanceof InitiationHandler) {
-						InitiationHandler iHandler = (InitiationHandler) subHandler;
-						map.put(iHandler.getType(), iHandler.getThermodynamics());
-						initializeNode(iHandler);
-					}
-					else if (subHandler instanceof MismatchHandler) {
-						MismatchHandler mHandler = (MismatchHandler) subHandler;
-						map.put(mHandler.getType(), mHandler.getThermodynamics());
-						initializeNode(mHandler);
-					}
-					
+					subHandler = null;
 				}
-			} else {
+			} 
+			else {
 				completedNode();
 			}
-			subHandler = null;
 		}
 }

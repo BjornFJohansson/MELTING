@@ -30,11 +30,11 @@
 	        	<enthalpy>-6900.0</enthalpy>
                 <entropy>-21.0</entropy>
    			</parameters>	
-   			<parameters pair="G/G">
+   			<parameters sequence="G/G">
 	        	<enthalpy>-18200.0</enthalpy>
                 <entropy>-51.8</entropy>
    			</parameters>			
-   			<parameters pair="U/U">
+   			<parameters sequence="U/U">
 	        	<enthalpy>-12600.0</enthalpy>
                 <entropy>-39.6</entropy>
    			</parameters>
