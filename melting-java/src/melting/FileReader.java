@@ -20,9 +20,8 @@ public class FileReader {
 		this.map = map;
 		SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 		try {
-			saxParser.parse(file, new DataHandler());
+			saxParser.parse(file, new DataHandler(map));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

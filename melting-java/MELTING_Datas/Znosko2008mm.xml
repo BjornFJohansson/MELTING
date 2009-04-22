@@ -26,15 +26,15 @@
     	/******************************************************************************/-->
    			
    		<data type="single_mismatch">
-   			<parameters pair="A/G">
+   			<parameters sequence="A/G">
 	        	<enthalpy>-800.0</enthalpy>
                 <entropy>-10.4</entropy>
    			</parameters>	
-   			<parameters pair="G/G">
+   			<parameters sequence="G/G">
 	        	<enthalpy>-17900.0</enthalpy>
                 <entropy>-52.2</entropy>
    			</parameters>			
-   			<parameters pair="U/U">
+   			<parameters sequence="U/U">
 	        	<enthalpy>-14900.0</enthalpy>
                 <entropy>-45.7</entropy>
    			</parameters>
