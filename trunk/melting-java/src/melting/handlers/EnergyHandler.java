@@ -1,14 +1,15 @@
-package handlers;
+package melting.handlers;
+
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EnergyHandler extends NodeHandler{
 
-	private Double energy;
+	private double energy;
 	private boolean hasEnergy = false;
 	
-	public Double getEnergy() {
+	public double getEnergy() {
 		return energy;
 	}
 	
@@ -25,16 +26,17 @@ public class EnergyHandler extends NodeHandler{
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		String e = new String(ch,start,length);
 		energy = Double.parseDouble(e);
-		if (e != null) {
-			hasEnergy = true;
-		}
-		else {
-			System.err.println("An Energy value is missing");
-		}
+		hasEnergy = true;
 	}
 	
 	@Override
 	public void endElement(String uri, String localName, String name)
 	throws SAXException {
+		if (hasEnergy){
+			completedNode();
+		}
+		else {
+			throw new SAXException("a enthalpy or entropy value is missing, the node is incomplete");
+		}
 	}
 }

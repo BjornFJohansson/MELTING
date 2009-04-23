@@ -1,4 +1,4 @@
-package handlers;
+package melting.handlers;
 
 import java.util.HashMap;
 
@@ -31,17 +31,23 @@ public class DataHandler extends NodeHandler {
 		@Override
 		public void startElement(String uri, String localName, String name,
 				Attributes attributes) throws SAXException {
-			// If there is no subnode
 			if (subHandler == null) {
-				if (localName.equals("datas")){
+				if (name.equals("data")){
 					this.setType(attributes.getValue("type"));
 				}
 				else {
-					subHandler = new ThermoHandler(localName);
+					subHandler = new ThermoHandler(name);
 				}
 			}
 			else {
 				subHandler.startElement(uri, localName, name, attributes);
+			}
+		}
+		
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			if (subHandler != null) {
+				subHandler.characters(ch, start, length);
 			}
 		}
 
@@ -51,9 +57,8 @@ public class DataHandler extends NodeHandler {
 			if (subHandler != null) {
 				subHandler.endElement(uri, localName, name);
 				if (subHandler.hasCompletedNode()) {
-					if (subHandler instanceof ThermoHandler) {
 						ThermoHandler handler = (ThermoHandler) subHandler;
-						String key = localName;
+						String key = name;
 						if (handler.getAttribut().containsKey("type")) {
 							key += handler.getAttribut().get("type");
 						}
@@ -72,12 +77,14 @@ public class DataHandler extends NodeHandler {
 						if (handler.getAttribut().containsKey("sens")) {
 							key += "sens" + handler.getAttribut().get("sens");
 						}
+						if (handler.getAttribut().containsKey("parameter")) {
+							key += "parameter" + handler.getAttribut().get("parameter");
+						}
 						map.put(key, handler.getThermo());
 						handler.initializeAttributes();	
-					} 
 					subHandler = null;
 				}
-			} 
+			}
 			else {
 				completedNode();
 			}
