@@ -37,6 +37,7 @@ public class DataHandler extends NodeHandler {
 				}
 				else {
 					subHandler = new ThermoHandler(name);
+					subHandler.startElement(uri, localName, name, attributes);
 				}
 			}
 			else {

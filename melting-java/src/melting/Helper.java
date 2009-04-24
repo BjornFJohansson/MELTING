@@ -1,10 +1,22 @@
 package melting;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 public class Helper {
 
-	//public static int CalculateGCpercent(String seq1, String seq2){
-		
-	//}
+	public static int CalculatePercentGC(String seq1, String seq2){
+		int numberGC = 0;
+		for (int i = 0; i < Math.min(seq1.length(), seq2.length());i++){
+			if (seq1.charAt(i) == 'G' || seq1.charAt(i) == 'C'){
+				if (isComplementaryBasePair(seq1.charAt(i), seq2.charAt(i))){
+					numberGC++;
+				}
+			}
+		}
+		return numberGC / Math.min(seq1.length(), seq2.length()) * 100;
+	}
 	
 	public static boolean isComplementaryBasePair(char acid1, char acid2){
 		switch(acid1){
@@ -36,5 +48,16 @@ public class Helper {
 		default:
 			return false;
 		}
+	}
+	
+	public static boolean isCompatible(HashMap<String, String> options, HashMap<String, String> methodOptions){
+		for (Iterator<Map.Entry<String, String>> entry = methodOptions.entrySet().iterator(); entry.hasNext();){
+			if (options.containsKey(entry.next().getKey())){
+				if (methodOptions.get(entry.next().getValue()) == methodOptions.get(entry.next().getValue())){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
