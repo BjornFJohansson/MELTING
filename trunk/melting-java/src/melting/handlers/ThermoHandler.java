@@ -72,7 +72,7 @@ public class ThermoHandler extends NodeHandler{
 			}
 			else if (name.equals(this.name)){
 				for (int i = 0;i < attributes.getLength(); i++ ){
-					attribut.put(attributes.getLocalName(i), attributes.getValue(i));
+					attribut.put(attributes.getQName(i), attributes.getValue(i));
 				}
 			}
 		}

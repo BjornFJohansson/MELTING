@@ -3,7 +3,15 @@ package melting.configuration;
 import java.util.HashMap;
 
 public class OptionManagement {
-
+	
+	public static String sequence1;
+	public static String sequence2;
+	public static double Na;
+	public static double Mg;
+	public static double K;
+	public static double Tris;
+	public static double dNTP;
+	public static double nucleotides;
 	private HashMap<String, String> options = new HashMap<String, String>();
 	private HashMap<String, String> DNAdefaultOptions = new HashMap<String, String>();
 	private HashMap<String, String> RNAdefaultOptions = new HashMap<String, String>();
