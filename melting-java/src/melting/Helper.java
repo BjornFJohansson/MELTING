@@ -1,8 +1,5 @@
 package melting;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Helper {
 
@@ -50,14 +47,24 @@ public class Helper {
 		}
 	}
 	
-	public static boolean isCompatible(HashMap<String, String> options, HashMap<String, String> methodOptions){
-		for (Iterator<Map.Entry<String, String>> entry = methodOptions.entrySet().iterator(); entry.hasNext();){
-			if (options.containsKey(entry.next().getKey())){
-				if (methodOptions.get(entry.next().getValue()) == methodOptions.get(entry.next().getValue())){
-					return true;
-				}
+	public static String getComplementarySequence(String sequence){
+		String complementary = "";
+		for (int i = 0; i < sequence.length(); i++){
+			switch(sequence.charAt(i)){
+			case 'A':
+				complementary += 'T';
+				break;
+			case 'T':
+				complementary += 'A';
+				break;
+			case 'C':
+				complementary += 'G';
+				break;
+			case 'G':
+				complementary += 'C';
+				break;
 			}
 		}
-		return false;
+		return complementary;
 	}
 }

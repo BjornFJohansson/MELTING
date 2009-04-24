@@ -5,6 +5,7 @@ public class ThermoResult {
 	private double enthalpy;
 	private double entropy;
 	private double Tm;
+	
 	public double getEnthalpy() {
 		return enthalpy;
 	}
