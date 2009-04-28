@@ -5,28 +5,29 @@ import java.util.HashMap;
 import melting.CompletCalculMethod;
 import melting.Helper;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
-public class Wetmur91ApproximativeMode implements CompletCalculMethod{
+public class Wetmur91 implements CompletCalculMethod{
 	
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
 
 	public boolean isApplicable(HashMap<String, String> options) {
-		String hybridization = options.get("hybridization");
+		String hybridization = options.get(OptionManagement.hybridization);
 		
-		if (hybridization == "rnarna" || hybridization == "dnadna" || hybridization == "dnarna"){
-			return true;
+		if ((hybridization == "rnarna" || hybridization == "dnadna" || hybridization == "dnarna")){
+				return true;
 		}
 		return false;
 	}
 	
 	public ThermoResult CalculateThermodynamics(
 			HashMap<String, String> options) {
-		String hybridization = options.get("hybridization");
+		String hybridization = options.get(OptionManagement.hybridization);
 		double Tm = 0;
-		double Na = Double.parseDouble(options.get("Na"));
-		String seq1 = options.get("sequence");
-		String seq2 = options.get("complementarySequence");
+		double Na = Double.parseDouble(options.get(OptionManagement.Na));
+		String seq1 = options.get(OptionManagement.sequence);
+		String seq2 = options.get(OptionManagement.complementarySequence);
 		int percentGC = Helper.CalculatePercentGC(seq1, seq2);
 		int percentMismatching = getPercentMismatching(seq1, seq2);
 		int duplexLength = Math.min(seq1.length(),seq2.length());
@@ -37,7 +38,7 @@ public class Wetmur91ApproximativeMode implements CompletCalculMethod{
 		else if (hybridization.equals("rnarna")){
 			Tm = 78 + 16.6 * Math.log10(Na / (1.0 + 0.7 * Na)) + 0.7 * percentGC - 500/duplexLength - percentMismatching;
 		}
-		else if (hybridization.equals("dnarna")){
+		else if (hybridization.equals("dnarna") || hybridization.equals("rnadna")){
 			Tm = 67 + 16.6 * Math.log10(Na / (1.0 + 0.7 * Na)) + 0.8 * percentGC - 500/duplexLength - percentMismatching;
 		}
 		

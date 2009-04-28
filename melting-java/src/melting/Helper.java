@@ -19,7 +19,7 @@ public class Helper {
 		switch(acid1){
 		
 		case 'A': 
-			if (acid2 == 'T'){
+			if (acid2 == 'T' || acid2 == 'U'){
 				return true;
 			}
 			return false;
@@ -42,17 +42,28 @@ public class Helper {
 			}
 			return false;
 			
+		case 'U':
+			if (acid2 == 'A'){
+				return true;
+			}
+			return false;
+			
 		default:
 			return false;
 		}
 	}
 	
-	public static String getComplementarySequence(String sequence){
+	public static String getComplementarySequence(String sequence, String hybridization){
 		String complementary = "";
 		for (int i = 0; i < sequence.length(); i++){
 			switch(sequence.charAt(i)){
 			case 'A':
-				complementary += 'T';
+				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
+					complementary += 'T';
+				}
+				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("dnarna")){
+					complementary += 'U';
+				}
 				break;
 			case 'T':
 				complementary += 'A';
@@ -62,6 +73,9 @@ public class Helper {
 				break;
 			case 'G':
 				complementary += 'C';
+				break;
+			case 'U':
+				complementary += 'A';
 				break;
 			}
 		}
