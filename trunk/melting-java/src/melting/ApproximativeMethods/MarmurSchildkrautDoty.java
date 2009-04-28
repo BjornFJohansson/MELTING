@@ -5,8 +5,9 @@ import java.util.HashMap;
 import melting.CompletCalculMethod;
 import melting.Helper;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
-public class MarmurSchildkrautDotyApproximativeMode implements CompletCalculMethod{
+public class MarmurSchildkrautDoty implements CompletCalculMethod{
 
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	*1991, Critical reviews in biochemistry and molecular biology, 26, 227-259
@@ -35,15 +36,15 @@ public class MarmurSchildkrautDotyApproximativeMode implements CompletCalculMeth
 	
 	private double parameter;
 	
-	public MarmurSchildkrautDotyApproximativeMode(double parameter){
+	public MarmurSchildkrautDoty(double parameter){
 		this.parameter = parameter;
 	}
 	
 	public ThermoResult CalculateThermodynamics(HashMap<String, String> options) {
 		double Tm = 0;
-		String seq1 = options.get("sequence");
-		String seq2 = options.get("complementarySequence");
-		double Na = Double.parseDouble(options.get("Na"));
+		String seq1 = options.get(OptionManagement.sequence);
+		String seq2 = options.get(OptionManagement.complementarySequence);
+		double Na = Double.parseDouble(OptionManagement.Na);
 		int percentGC = Helper.CalculatePercentGC(seq1, seq2);
 		int duplexLength = Math.min(seq1.length(), seq2.length());
 		
@@ -55,7 +56,7 @@ public class MarmurSchildkrautDotyApproximativeMode implements CompletCalculMeth
 	}
 
 	public boolean isApplicable(HashMap<String, String> options) {
-		String hybridization = options.get("hybridization");
+		String hybridization = options.get(OptionManagement.hybridization);
 		
 		if (hybridization.equals("dnadna")){
 			return true;
