@@ -2,10 +2,10 @@ package melting.sodiumEquivalence;
 
 import java.util.HashMap;
 
-import melting.SodiumEquivalent;
+import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
 
-public class Ahsen01 implements SodiumEquivalent{
+public class Ahsen01_NaEquivalent implements SodiumEquivalentMethod{
 	
 	/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
 	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate

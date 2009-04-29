@@ -1,6 +1,8 @@
-package melting;
+package melting.calculMethodInterfaces;
 
 import java.util.HashMap;
+
+import melting.ThermoResult;
 
 public interface CompletCalculMethod {
 
