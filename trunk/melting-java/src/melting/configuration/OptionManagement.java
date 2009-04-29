@@ -357,21 +357,4 @@ public class OptionManagement {
 		return optionSet;
 	}
 	
-	/*public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
-		
-		String calculMethod = optionSet.get(completMethod);
-		
-		
-		if (calculMethod.equals("default")){
-			
-			int thres = Integer.getInteger(optionSet.get(threshold));
-			String seq = optionSet.get(sequence);
-			String seq2 = optionSet.get(complementarySequence);
-			int duplexLength = Math.min(seq.length(),seq2.length());
-			
-			if (duplexLength > thres){
-			}
-		}
-	}*/
-	
 }

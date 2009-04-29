@@ -2,13 +2,14 @@ package melting.approximativeMethods;
 
 import java.util.HashMap;
 
-import melting.CompletCalculMethod;
 import melting.Helper;
-import melting.SodiumEquivalent;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.CompletCalculMethod;
+import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
-import melting.sodiumEquivalence.Ahsen01;
-import melting.sodiumEquivalence.Owczarzy08;
+import melting.configuration.SetCalculMethod;
+import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
+import melting.sodiumEquivalence.Owczarzy08_NaEquivalent;
 
 public class ApproximativeMode implements CompletCalculMethod{
 
@@ -46,10 +47,9 @@ public class ApproximativeMode implements CompletCalculMethod{
 		double K = Double.parseDouble(options.get(OptionManagement.K));
 		double Tris = Double.parseDouble(options.get(OptionManagement.Tris));
 		double dNTP = Double.parseDouble(options.get(OptionManagement.dNTP));
-		String NaEqMethod = options.get(OptionManagement.NaEquivalentMethod);
 		
 		if (Mg > 0 || K > 0 || Tris > 0){
-			SodiumEquivalent method = setNaEqMethod(NaEqMethod);
+			SodiumEquivalentMethod method = SetCalculMethod.setNaEqMethod(options);
 			this.Na = method.getSodiumEquivalent(this.Na, Mg, K, Tris, dNTP);
 		}
 		
@@ -63,13 +63,13 @@ public class ApproximativeMode implements CompletCalculMethod{
 		this.optionSet = options;
 	}
 	
-	private SodiumEquivalent setNaEqMethod (String method){
+	private SodiumEquivalentMethod setNaEqMethod (String method){
 		
 		if (method.equals("Ahsen_2001")){
-			return new Ahsen01();
+			return new Ahsen01_NaEquivalent();
 		}
 		else if (method.equals("Owczarzy_2008")){
-			return new Owczarzy08();
+			return new Owczarzy08_NaEquivalent();
 		}
 		
 		return null;

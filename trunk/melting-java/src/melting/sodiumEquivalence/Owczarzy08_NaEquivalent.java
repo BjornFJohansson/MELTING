@@ -2,10 +2,10 @@ package melting.sodiumEquivalence;
 
 import java.util.HashMap;
 
-import melting.SodiumEquivalent;
+import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
 
-public class Owczarzy08 implements SodiumEquivalent{
+public class Owczarzy08_NaEquivalent implements SodiumEquivalentMethod{
 	
 	/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
 	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
