@@ -15,6 +15,16 @@ public class Helper {
 		return numberGC / Math.min(seq1.length(), seq2.length()) * 100;
 	}
 	
+	public static int getPercentMismatching(String seq1, String seq2){
+		int numberMismatching = 0;
+		for (int i = 0; i < Math.min(seq1.length(), seq2.length()); i++){
+			if (isComplementaryBasePair(seq1.charAt(i), seq2.charAt(i)) == false){
+				numberMismatching++;
+			}
+		}
+		return numberMismatching / Math.min(seq1.length(), seq2.length()) * 100;
+	}
+	
 	public static boolean isComplementaryBasePair(char acid1, char acid2){
 		switch(acid1){
 		

@@ -1,8 +1,6 @@
 package melting.configuration;
 
 import java.util.HashMap;
-
-import melting.CompletCalculMethod;
 import melting.Helper;
 
 public class OptionManagement {
@@ -35,8 +33,7 @@ public class OptionManagement {
 	public static final String azobenzeneMethod = "-azobenzene";
 	public static final String lockedAcidMethod = "-locked";
 	public static final String deoxyadenosineMethod = "-deoxyA";
-	public static final String oldCommandLine = "-old";
-	public static final String quitMelting = "-q";
+	public static final String NaEquivalentMethod = "-Naeq";
 	public static final String meltingHelp = "-help";
 	public static final String legalInformation = "-L";
 	public static final String dataPathway = "-p";
@@ -46,12 +43,12 @@ public class OptionManagement {
 	public static final String outPutFile = "-output";
 	public static final String inPutFile = "-input";
 	public static final String versionNumber = "-Version";
-	public static final String NaEquivalentMethod = "-Naeq";
 	
 	private static final String version = "1";
+	private static String dataPathwayValue = "../../../Data";
 	private static final int totalOptionsRequired = 3;
 	private static int thresholdValue = 60;
-	private static String dataPathwayValue = "../../../Data";
+	
 	
 	private HashMap<String, String> DNADefaultOptions = new HashMap<String, String>();
 	private HashMap<String, String> RNADefaultOptions = new HashMap<String, String>();
@@ -114,6 +111,47 @@ public class OptionManagement {
 	private boolean isAValue(String optionValue){
 		if (optionValue.charAt(0) != '-'){
 			return true;
+		}
+		return false;
+	}
+	
+	private void initializeDatapathway(String [] args){
+		for (int i = 0;i < args.length; i++){
+			String option = args[i];
+			String value = args[i+1];
+			if (isAValue(option) == false){
+				if (option.equals(NN_Path)){
+					if (isAValue(value)){
+						dataPathwayValue = value;
+						break;
+					}
+					else {
+						System.err.println("I don't understand the option "+ option + value+".");
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean isMeltingInformationOption(String [] args){
+		
+		for (int i = 0;i < args.length; i++){
+			String option = args[i];
+			if (isAValue(option) == false){
+				if (option.equals(meltingHelp)){
+					return true;
+				}
+				else if (option.equals(legalInformation)){
+					return true;
+				}
+				else if (option.equals(dataPathway)){
+					return true;
+				}
+				else if (option.equals(versionNumber)){
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -214,8 +252,8 @@ public class OptionManagement {
 		optionSet.put("K", "0");
 		optionSet.put("Tris", "0");
 		optionSet.put("dNTP", "0");
-		
-		optionSet.put(completMethod, "default");
+		optionSet.put(NN_Path, dataPathwayValue);
+		optionSet.put(threshold, Integer.toString(thresholdValue));
 		
 		return optionSet;
 	}
@@ -223,154 +261,97 @@ public class OptionManagement {
 	public HashMap<String, String> collectOptions(String [] args){
 		
 		HashMap<String, String> optionSet = new HashMap<String, String>();
-		optionSet = initializeDefaultOptions(args);
 		
-		for (int i = 0;i < args.length; i++){
-			String option = args[i];
-			String value = args[i+1];
-			
-			if (isAValue(option) == false){
-				if (option.equals(versionNumber)){
-					System.out.println("The current version is the java " + version);
-					break;
-				}
-				else if (option.equals(dataPathway)){
-					System.out.println("The set of calorimetric parameters are in " + NN_Path);
-					break;
-				}
-				else if (option.equals(legalInformation)){
-					break;
-				}
-				else if (option.equals(meltingHelp)){
-					break;
-				}
-				else if (option.equals(threshold)){
-					if (isAValue(value) && Integer.getInteger(args[i+1]) != null){
-						thresholdValue = Integer.getInteger(args[i+1]);
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(NN_Path)){
-					if (isAValue(value)){
-						dataPathwayValue = NN_Path;
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(Na)){
-					if (isAValue(value)){
-						double val = Double.parseDouble(value);
-						try {
-							if (val >= 0){
-								optionSet.put(Na, value);
-							}
-							else {
-								System.err.println("The sodium concentration must be positive.");
-							}
-						} catch (NumberFormatException e) {
-							System.err.println("The sodium concentration must be a numeric value.");
-						}
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(Mg)){
-					if (isAValue(value)){
-						double val = Double.parseDouble(value);
-						try {
-							if (val >= 0){
-								optionSet.put(Mg, value);
-							}
-							else {
-								System.err.println("The magnesium concentration must be positive.");
-							}
-						} catch (NumberFormatException e) {
-							System.err.println("The magnesium concentration must be a numeric value.");
-						}
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(K)){
-					if (isAValue(value)){
-						double val = Double.parseDouble(value);
-						try {
-							if (val >= 0){
-								optionSet.put(K, value);
-							}
-							else {
-								System.err.println("The potassium concentration must be positive.");
-							}
-						} catch (NumberFormatException e) {
-							System.err.println("The potassium concentration must be a numeric value.");
-						}
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(Tris)){
-					if (isAValue(value)){
-						double val = Double.parseDouble(value);
-						try {
-							if (val >= 0){
-								optionSet.put(Tris, value);
-							}
-							else {
-								System.err.println("The Tris concentration must be positive.");
-							}
-						} catch (NumberFormatException e) {
-							System.err.println("The Tris concentration must be a numeric value.");
-						}
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
-				else if (option.equals(dNTP)){
-					if (isAValue(value)){
-						double val = Double.parseDouble(value);
-						try {
-							if (val >= 0){
-								optionSet.put(dNTP, value);
-							}
-							else {
-								System.err.println("The dNTP concentration must be positive.");
-							}
-						} catch (NumberFormatException e) {
-							System.err.println("The dNTP concentration must be a numeric value.");
-						}
-					}
-					else {
-						System.err.println("I don't understand the option " + option + args[i+1]);
-						break;
-					}
-				}
+		initializeDatapathway(args);
+		
+		if (isMeltingInformationOption(args)){
+			for (int i = 0;i < args.length; i++){
+				String option = args[i];
+				String value = args[i+1];
 				
-				else {
-					if (option.equals(hybridization) == false) {
-						if (isAValue(value)){
-							optionSet.put(option, value);
-						}
-						else{
-							System.err.println("One option is not correct");
-						}
+				if (isAValue(option) == false){
+					if (option.equals(meltingHelp)){
+						break;
+					}
+					else if (option.equals(legalInformation)){
+						break;
+					}
+					else if (option.equals(dataPathway)){
+						System.out.println("The current data files are in "+ dataPathwayValue + ".");
+						break;
+					}
+					else if (option.equals(versionNumber)){
+						System.out.println("This MELTING program is the java version "+ version + ".");
+						break;
 					}
 				}
 			}
-			else {
-				System.err.println("I don't understand the option " + option);
+		}
+		else {
+			optionSet = initializeDefaultOptions(args);
+			
+			for (int i = 0;i < args.length; i++){
+				String option = args[i];
+				String value = args[i+1];
+				
+				if (isAValue(option) == false){
+					if (option.equals(threshold)){
+						if (isAValue(value)){
+							if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+								thresholdValue = Integer.getInteger(value);
+							}
+							else {
+								System.err.println("The threshold must be a positive numeric value.");
+								break;
+							}
+						}
+						else {
+							System.err.println("I don't understand the option " + option + value + ".");
+							break;
+						}
+					}
+					else if (option.equals(NN_Path)){
+						if (isAValue(value)){
+							dataPathwayValue = value;
+						}
+						else {
+							System.err.println("I don't understand the option " + option + value + ".");
+							break;
+						}
+					}
+					else if (option.equals(Na) || option.equals(K) || option.equals(Tris) || option.equals(Mg) || option.equals(dNTP)){
+						if (isAValue(value)){
+							double val = Double.parseDouble(value);
+							try {
+								if (val >= 0){
+									optionSet.put(option, value);
+								}
+								else {
+									System.err.println("The "+ option.substring(1) +" concentration must be positive.");
+								}
+							} catch (NumberFormatException e) {
+								System.err.println("The "+ option.substring(1) +" concentration must be a numeric value.");
+							}
+						}
+						else {
+							System.err.println("I don't understand the option " + option + value + ".");
+							break;
+						}
+					}
+					else {
+						if (option.equals(hybridization) == false) {
+							if (isAValue(value)){
+								optionSet.put(option, value);
+							}
+							else{
+								System.err.println("I don't understand the option " + option + value + ".");
+							}
+						}
+					}
+				}
+				else {
+					System.err.println("I don't understand the option " + option);
+				}
 			}
 		}
 		return optionSet;
