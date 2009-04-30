@@ -4,8 +4,16 @@ import java.util.HashMap;
 
 public class DataCollect {
 	
-	protected HashMap<String, Thermodynamics> datas = new HashMap<String, Thermodynamics>();
+	private HashMap<String, Thermodynamics> datas = new HashMap<String, Thermodynamics>();
 	
+	public HashMap<String, Thermodynamics> getDatas() {
+		return datas;
+	}
+
+	public void setDatas(HashMap<String, Thermodynamics> datas) {
+		this.datas = datas;
+	}
+
 	public DataCollect(HashMap<String, Thermodynamics> datas){
 		this.datas = datas;
 	}
