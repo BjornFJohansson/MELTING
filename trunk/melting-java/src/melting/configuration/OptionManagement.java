@@ -19,6 +19,7 @@ public class OptionManagement {
 	public static final String correctionIon = "-corr";
 	public static final String NNMethod = "-NN";
 	public static final String singleMismatchMethod = "-singleMM";
+	public static final String woddleBaseMethod = "-woddle";
 	public static final String tandemMismatchMethod = "-tandemMM";
 	public static final String internalLoopMethod = "-internalLoop";
 	public static final String singleDanglingEndMethod = "-singleDE";
@@ -56,40 +57,41 @@ public class OptionManagement {
 	private HashMap<String, String> mRNADefaultOptions = new HashMap<String, String>();
 
 	public OptionManagement(){
-		this.DNADefaultOptions.put("NNMethod", "Santalucia_2004");
-		this.DNADefaultOptions.put("singleMismatchMethod", "Allawi_Santalucia_Peyret_1997_1998_1999");
-		this.DNADefaultOptions.put("tandemMismatchMethod", "Allawi_Santalucia_Peyret_1997_1998_1999");
-		this.DNADefaultOptions.put("internalLoopMethod", "Santalucia_2004");
-		this.DNADefaultOptions.put("singleBulgeMethod", "Tanaka_2004");
-		this.DNADefaultOptions.put("longBulgeMethod", "Santalucia_2004");
-		this.DNADefaultOptions.put("hairpinMethod", "Santalucia_2004");
-		this.DNADefaultOptions.put("approximativeMode", "Wetmur_1981");
-		this.DNADefaultOptions.put("correctionIon", "Owczarzy_2008");
-		this.DNADefaultOptions.put("inosineMethod", "Santalucia_2005");
-		this.DNADefaultOptions.put("hydroxyadenineMethod", "Sugimoto_2001");
-		this.DNADefaultOptions.put("azobenzeneMethod", "Asanuma_2005");
-		this.DNADefaultOptions.put("lockedAcidMethod", "McTigue_2004");
-		this.DNADefaultOptions.put("deoxyadenosineMethod", "Sugimoto_2005");
+		this.DNADefaultOptions.put(NNMethod, "Santalucia_2004");
+		this.DNADefaultOptions.put(singleMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
+		this.DNADefaultOptions.put(tandemMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
+		this.DNADefaultOptions.put(internalLoopMethod, "Santalucia_2004");
+		this.DNADefaultOptions.put(singleBulgeLoopMethod, "Tanaka_2004");
+		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
+		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
+		this.DNADefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.DNADefaultOptions.put(correctionIon, "Owczarzy_2008");
+		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
+		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
+		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
+		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
+		this.DNADefaultOptions.put(deoxyadenosineMethod, "Sugimoto_2005");
+		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2007");
 		
-		this.RNADefaultOptions.put("NNMethod", "Xia_1998");
-		this.RNADefaultOptions.put("singleMismatchMethod", "Znosko_2008");
-		this.RNADefaultOptions.put("woddleBaseMethod", "Turner_1999");
-		this.RNADefaultOptions.put("tandemMismatchMethod", "Turner_1999_2006");
-		this.RNADefaultOptions.put("internalLoopMethod", "Turner_1999_2006");
-		this.RNADefaultOptions.put("singleBulgeMethod", "Serra_2007");
-		this.RNADefaultOptions.put("longBulgeMethod", "Turner_1999_2006");
-		this.RNADefaultOptions.put("hairpinMethod", "Serra_1997_1998_2000_2006");
-		this.RNADefaultOptions.put("CNGMethod", "Broda_2005");
-		this.DNADefaultOptions.put("approximativeMode", "Wetmur_1981");
-		this.DNADefaultOptions.put("correctionIon", "Tan_2007");
-		this.DNADefaultOptions.put("inosineMethod", "Znosko_2007");
-		this.DNADefaultOptions.put("NaEquivalentMethod", "Ahsen_2007");
+		this.RNADefaultOptions.put(NNMethod, "Xia_1998");
+		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2008");
+		this.RNADefaultOptions.put(woddleBaseMethod, "Turner_1999");
+		this.RNADefaultOptions.put(tandemMismatchMethod, "Turner_1999_2006");
+		this.RNADefaultOptions.put(internalLoopMethod, "Turner_1999_2006");
+		this.RNADefaultOptions.put(singleBulgeLoopMethod, "Serra_2007");
+		this.RNADefaultOptions.put(longBulgeLoopMethod, "Turner_1999_2006");
+		this.RNADefaultOptions.put(hairpinLoopMethod, "Serra_1997_1998_2000_2006");
+		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
+		this.RNADefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.RNADefaultOptions.put(correctionIon, "Tan_2007");
+		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
 		
-		this.hybridDefaultOptions.put("NNMethod", "Sugimoto_1995");
-		this.hybridDefaultOptions.put("ApproximativeMode", "Wetmur_1981");
-		this.hybridDefaultOptions.put("correctionIon", "Wetmur_1981");
 		
-		this.mRNADefaultOptions.put("NNArticle", "Turner_2006");
+		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
+		this.hybridDefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.hybridDefaultOptions.put(correctionIon, "Wetmur_1981");
+		
+		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
 	}
 	
 	public HashMap<String, String> getDNADefaultOptions() {

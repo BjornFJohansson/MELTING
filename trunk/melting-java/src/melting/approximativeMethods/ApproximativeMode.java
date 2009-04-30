@@ -49,7 +49,8 @@ public class ApproximativeMode implements CompletCalculMethod{
 		double dNTP = Double.parseDouble(options.get(OptionManagement.dNTP));
 		
 		if (Mg > 0 || K > 0 || Tris > 0){
-			SodiumEquivalentMethod method = SetCalculMethod.setNaEqMethod(options);
+			SetCalculMethod setNaEqMethod = new SetCalculMethod();
+			SodiumEquivalentMethod method = setNaEqMethod.setNaEqMethod(options);
 			this.Na = method.getSodiumEquivalent(this.Na, Mg, K, Tris, dNTP);
 		}
 		
@@ -61,18 +62,6 @@ public class ApproximativeMode implements CompletCalculMethod{
 		this.hybridization = options.get(OptionManagement.hybridization);
 		
 		this.optionSet = options;
-	}
-	
-	private SodiumEquivalentMethod setNaEqMethod (String method){
-		
-		if (method.equals("Ahsen_2001")){
-			return new Ahsen01_NaEquivalent();
-		}
-		else if (method.equals("Owczarzy_2008")){
-			return new Owczarzy08_NaEquivalent();
-		}
-		
-		return null;
 	}
 
 }
