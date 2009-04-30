@@ -44,11 +44,14 @@ public class OptionManagement {
 	public static final String outPutFile = "-output";
 	public static final String inPutFile = "-input";
 	public static final String versionNumber = "-Version";
+	public static final String selfComplementarity = "-self";
+	public static final String factor = "-F";
 	
 	private static final String version = "1";
 	private static String dataPathwayValue = "../../../Data";
 	private static final int totalOptionsRequired = 3;
 	private static int thresholdValue = 60;
+	private static int factorValue = 4;
 	
 	
 	private HashMap<String, String> DNADefaultOptions = new HashMap<String, String>();
@@ -256,6 +259,7 @@ public class OptionManagement {
 		optionSet.put("dNTP", "0");
 		optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
+		optionSet.put(factor, Integer.toString(factorValue));
 		
 		return optionSet;
 	}
@@ -311,6 +315,21 @@ public class OptionManagement {
 							System.err.println("I don't understand the option " + option + value + ".");
 							break;
 						}
+					}
+					else if (option.equals(factor)){
+							if (isAValue(value)){
+								if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+									factorValue = Integer.getInteger(value);
+								}
+								else {
+									System.err.println("The correction factor must be a positive numeric value.");
+									break;
+								}
+							}
+							else {
+								System.err.println("I don't understand the option " + option + value + ".");
+								break;
+							}
 					}
 					else if (option.equals(NN_Path)){
 						if (isAValue(value)){

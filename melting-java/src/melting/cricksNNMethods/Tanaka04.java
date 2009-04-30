@@ -1,0 +1,37 @@
+package melting.cricksNNMethods;
+
+import java.util.HashMap;
+
+import melting.Helper;
+import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
+
+public class Tanaka04 extends DecomposedInitiationNNMethod {
+
+	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 */
+	
+	public Tanaka04() {
+		super("Tanaka2004nn.xml");
+	}
+	
+	public boolean isApplicable(HashMap<String, String> options) {
+		boolean isApplicable = isApplicable(options);
+		String hybridization = options.get(OptionManagement.hybridization);
+		
+		
+		if (hybridization.equals("dnadna") == false){
+			isApplicable = false;
+			System.out.println("WARNING : The thermodynamic parameters of Tanaka (2004)" +
+					"are established for DNA sequences ");
+		}
+		return isApplicable;
+	}
+	
+	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
+		
+		return super.calculateInitiationHybridation(options, result);
+		
+	}
+
+}
