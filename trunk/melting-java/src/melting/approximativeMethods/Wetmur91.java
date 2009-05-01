@@ -22,13 +22,6 @@ public class Wetmur91 extends ApproximativeMode{
 			System.out.println("WARNING : the wetmur equation was originally established for DNA, RNA or hybrid DNA/RNA duplexes.");
 		}
 		
-		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) <= this.duplexLength){
-			isApplicable = false;
-			System.out.println("WARNING : the Marmur-Schildkraut-Doty equation " +
-			"was originally established for long DNA duplexes. (length superior to " +
-			 optionSet.get(OptionManagement.threshold) +")");
-		}
-		
 		return isApplicable;
 	}
 	

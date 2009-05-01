@@ -7,28 +7,27 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public class Santalucia04 extends CricksNNMethod {
+public class Turner06 extends CricksNNMethod {
 
-	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-	
-	public Santalucia04() {
-		super("Santalucia2004nn.xml");
+	public Turner06() {
+		super("Turner2006nn.xml");
 	}
 	
 	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
 		boolean isApplicable = isApplicable(options, pos1, pos2);
 		String hybridization = options.get(OptionManagement.hybridization);
 		
-		
-		if (hybridization.equals("dnadna") == false){
+		if (hybridization.equals("mrnarna") == false){
 			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Santalucia (2004)" +
-					"are established for DNA sequences ");
+			System.out.println("WARNING : The thermodynamic parameters of Turner et al. (2006)" +
+					"are established for 2-O-methylRNA/RNA sequences ");
 		}
 		return isApplicable;
 	}
 	
 	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
+		result = super.calculateInitiationHybridation(options, result);
+		
 		Thermodynamics parameter = new Thermodynamics(0,0);
 		String seq1 = "";
 		String complementarySeq = "";
@@ -37,12 +36,12 @@ public class Santalucia04 extends CricksNNMethod {
 		
 		result = super.calculateInitiationHybridation(options, result);
 		
-		if ((seq1.charAt(0) == 'A' || seq1.charAt(0) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(0), complementarySeq.charAt(0))) {
-			parameter = this.collector.getTerminal("per_A/T");
+		if ((seq1.charAt(0) == 'A' || seq1.charAt(0) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(0), complementarySeq.charAt(0))) {
+			parameter = this.collector.getTerminal("per_A/U");
 			numberParameter++;
 		}
 		
-		if ((seq1.charAt(duplexLength) == 'A' || seq1.charAt(duplexLength) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength), complementarySeq.charAt(duplexLength))) {
+		if ((seq1.charAt(duplexLength) == 'A' || seq1.charAt(duplexLength) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength), complementarySeq.charAt(duplexLength))) {
 			numberParameter++;
 		}
 		
@@ -50,7 +49,6 @@ public class Santalucia04 extends CricksNNMethod {
 		result.setEntropy(result.getEntropy() + numberParameter * parameter.getEntropy());
 		
 		return result;
-		
 	}
 
 }

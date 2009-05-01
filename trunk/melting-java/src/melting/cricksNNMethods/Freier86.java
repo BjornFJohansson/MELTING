@@ -5,23 +5,23 @@ import java.util.HashMap;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
-public class Breslauer86 extends GlobalInitiationNNMethod{
-
-	/* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 */
+public class Freier86 extends CricksNNMethod {
 	
-	public Breslauer86() {
-		super("Breslauer1986nn.xml");
-	}	
+	/*Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 */
+
+	public Freier86() {
+		super("Freier1986nn.xml");
+	}
 	
 	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
 		boolean isApplicable = isApplicable(options, pos1, pos2);
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		
-		if (hybridization.equals("dnadna") == false){
+		if (hybridization.equals("rnarna") == false){
 			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Breslauer et al (1986)" +
-					"are established for DNA sequences ");
+			System.out.println("WARNING : The thermodynamic parameters of Freier et al. (1986)" +
+					"are established for RNA/RNA sequences ");
 		}
 		return isApplicable;
 	}
@@ -29,4 +29,5 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
 		return super.calculateInitiationHybridation(options, result);
 	}
+
 }

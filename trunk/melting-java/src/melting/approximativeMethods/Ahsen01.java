@@ -30,14 +30,6 @@ public class Ahsen01 extends ApproximativeMode{
 			System.out.println("WARNING : the Ahsen et al. equation" +
 					"was originally established for DNA duplexes.");
 		}
-		
-		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) <= this.duplexLength){
-			isApplicable = false;
-			System.out.println("WARNING : the Ahsen et al. equation " +
-			"was originally established for long DNA duplexes. (length superior to " +
-			 optionSet.get(OptionManagement.threshold) +")");
-		}
-		
 		return isApplicable;
 	}
 	

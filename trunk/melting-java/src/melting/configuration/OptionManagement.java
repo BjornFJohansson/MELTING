@@ -60,6 +60,18 @@ public class OptionManagement {
 	private HashMap<String, String> mRNADefaultOptions = new HashMap<String, String>();
 
 	public OptionManagement(){
+		
+		setDNADefaultOptions();
+		setRNADefaultOptions();
+		setHybridDefaultOptions();
+		setMRNADefaultOptions();
+	}
+	
+	public HashMap<String, String> getDNADefaultOptions() {
+		return DNADefaultOptions;
+	}
+	
+	private void setDNADefaultOptions() {
 		this.DNADefaultOptions.put(NNMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(singleMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
 		this.DNADefaultOptions.put(tandemMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
@@ -75,7 +87,13 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
 		this.DNADefaultOptions.put(deoxyadenosineMethod, "Sugimoto_2005");
 		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2007");
-		
+	}
+	
+	public HashMap<String, String> getRNADefaultOptions() {
+		return RNADefaultOptions;
+	}
+	
+	private void setRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "Xia_1998");
 		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2008");
 		this.RNADefaultOptions.put(woddleBaseMethod, "Turner_1999");
@@ -88,29 +106,24 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(approximativeMode, "Wetmur_1981");
 		this.RNADefaultOptions.put(correctionIon, "Tan_2007");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
-		
-		
-		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
-		this.hybridDefaultOptions.put(approximativeMode, "Wetmur_1981");
-		this.hybridDefaultOptions.put(correctionIon, "Wetmur_1981");
-		
-		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
-	}
-	
-	public HashMap<String, String> getDNADefaultOptions() {
-		return DNADefaultOptions;
-	}
-	
-	public HashMap<String, String> getRNADefaultOptions() {
-		return RNADefaultOptions;
 	}
 	
 	public HashMap<String, String> getHybridDefaultOptions() {
 		return hybridDefaultOptions;
 	}
 	
+	private void setHybridDefaultOptions() {
+		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
+		this.hybridDefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.hybridDefaultOptions.put(correctionIon, "Wetmur_1981");
+	}
+	
 	public HashMap<String, String> getMRNADefaultOptions() {
 		return mRNADefaultOptions;
+	}
+	
+	private void setMRNADefaultOptions() {
+		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
 	}
 	
 	private boolean isAValue(String optionValue){
@@ -120,7 +133,7 @@ public class OptionManagement {
 		return false;
 	}
 	
-	private void initializeDatapathway(String [] args){
+	private void initializeOptionValues(String [] args){
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
 			String value = args[i+1];
@@ -128,12 +141,41 @@ public class OptionManagement {
 				if (option.equals(NN_Path)){
 					if (isAValue(value)){
 						dataPathwayValue = value;
-						break;
 					}
 					else {
 						System.err.println("I don't understand the option "+ option + value+".");
 						break;
 					}
+				}	
+			}
+			else if (option.equals(threshold)){
+				if (isAValue(value)){
+					if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+						thresholdValue = Integer.getInteger(value);
+					}
+					else {
+						System.err.println("The threshold must be a positive numeric value.");
+						break;
+					}
+				}
+				else {
+					System.err.println("I don't understand the option " + option + value + ".");
+					break;
+				}
+			}
+			else if (option.equals(factor)){
+				if (isAValue(value)){
+					if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+						factorValue = Integer.getInteger(value);
+					}
+					else {
+						System.err.println("The correction factor must be a positive numeric value.");
+						break;
+					}
+				}
+				else {
+					System.err.println("I don't understand the option " + option + value + ".");
+					break;
 				}
 			}
 		}
@@ -266,14 +308,11 @@ public class OptionManagement {
 	
 	public HashMap<String, String> collectOptions(String [] args){
 		
-		HashMap<String, String> optionSet = new HashMap<String, String>();
-		
-		initializeDatapathway(args);
+		initializeOptionValues(args);
 		
 		if (isMeltingInformationOption(args)){
 			for (int i = 0;i < args.length; i++){
 				String option = args[i];
-				String value = args[i+1];
 				
 				if (isAValue(option) == false){
 					if (option.equals(meltingHelp)){
@@ -294,6 +333,8 @@ public class OptionManagement {
 			}
 		}
 		else {
+			HashMap<String, String> optionSet = new HashMap<String, String>();
+			
 			optionSet = initializeDefaultOptions(args);
 			
 			for (int i = 0;i < args.length; i++){
@@ -301,46 +342,7 @@ public class OptionManagement {
 				String value = args[i+1];
 				
 				if (isAValue(option) == false){
-					if (option.equals(threshold)){
-						if (isAValue(value)){
-							if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
-								thresholdValue = Integer.getInteger(value);
-							}
-							else {
-								System.err.println("The threshold must be a positive numeric value.");
-								break;
-							}
-						}
-						else {
-							System.err.println("I don't understand the option " + option + value + ".");
-							break;
-						}
-					}
-					else if (option.equals(factor)){
-							if (isAValue(value)){
-								if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
-									factorValue = Integer.getInteger(value);
-								}
-								else {
-									System.err.println("The correction factor must be a positive numeric value.");
-									break;
-								}
-							}
-							else {
-								System.err.println("I don't understand the option " + option + value + ".");
-								break;
-							}
-					}
-					else if (option.equals(NN_Path)){
-						if (isAValue(value)){
-							dataPathwayValue = value;
-						}
-						else {
-							System.err.println("I don't understand the option " + option + value + ".");
-							break;
-						}
-					}
-					else if (option.equals(Na) || option.equals(K) || option.equals(Tris) || option.equals(Mg) || option.equals(dNTP)){
+					if (option.equals(Na) || option.equals(K) || option.equals(Tris) || option.equals(Mg) || option.equals(dNTP)){
 						if (isAValue(value)){
 							double val = Double.parseDouble(value);
 							try {
@@ -374,8 +376,9 @@ public class OptionManagement {
 					System.err.println("I don't understand the option " + option);
 				}
 			}
+			return optionSet;
 		}
-		return optionSet;
+		return null;
 	}
 	
 }

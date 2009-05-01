@@ -7,7 +7,7 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public class GlobalInitiationNNMethod extends CricksNNMethod {
+public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 
 	public GlobalInitiationNNMethod(String fileName) {
 		super(fileName);

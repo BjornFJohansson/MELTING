@@ -7,9 +7,7 @@ import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.SetCalculMethod;
-import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
-import melting.sodiumEquivalence.Owczarzy08_NaEquivalent;
+import melting.configuration.RegisterCalculMethod;
 
 public class ApproximativeMode implements CompletCalculMethod{
 
@@ -31,13 +29,25 @@ public class ApproximativeMode implements CompletCalculMethod{
 	}
 
 	public boolean isApplicable() {
+		boolean isApplicable = true;
+		
 		if (Helper.getPercentMismatching(seq, seq2) != 0){
 			System.out.println("WARNING : The approximative mode formulas" +
 					"cannot properly account for the presence of mismatches" +
 					" and unpaired nucleotides.");
-			return false;
+			isApplicable = false;
 		}
-		return true;
+		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) <= this.duplexLength){
+			
+			if (this.optionSet.get(OptionManagement.completMethod).equals("default") == false){
+				isApplicable = false;
+			}
+			
+			System.out.println("WARNING : the approximative equations " +
+			"were originally established for long DNA duplexes. (length superior to " +
+			 optionSet.get(OptionManagement.threshold) +")");
+		}
+		return isApplicable;
 	}
 
 	public void setUpVariable(HashMap<String, String> options) {
@@ -49,8 +59,8 @@ public class ApproximativeMode implements CompletCalculMethod{
 		double dNTP = Double.parseDouble(options.get(OptionManagement.dNTP));
 		
 		if (Mg > 0 || K > 0 || Tris > 0){
-			SetCalculMethod setNaEqMethod = new SetCalculMethod();
-			SodiumEquivalentMethod method = setNaEqMethod.setNaEqMethod(options);
+			RegisterCalculMethod setNaEqMethod = new RegisterCalculMethod();
+			SodiumEquivalentMethod method = setNaEqMethod.getNaEqMethod(options);
 			this.Na = method.getSodiumEquivalent(this.Na, Mg, K, Tris, dNTP);
 		}
 		
