@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
-public class DecomposedInitiationNNMethod extends CricksNNMethod {
+public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 
 	public DecomposedInitiationNNMethod(String fileName) {
 		super(fileName);

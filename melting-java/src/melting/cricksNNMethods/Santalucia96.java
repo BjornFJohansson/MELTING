@@ -14,8 +14,8 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		super("Santalucia1998nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options) {
-		boolean isApplicable = isApplicable(options);
+	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(options, pos1, pos2);
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		
@@ -35,7 +35,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		result = super.calculateInitiationHybridation(options, result);
 		
 		if (seq1.charAt(0) == 'T' && complementarySeq.charAt(0) == 'A') {
-			parameter = this.collector.getInitiation("5_T/A");
+			parameter = this.collector.getTerminal("5_T/A");
 			
 			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
 			result.setEntropy(result.getEntropy() + parameter.getEntropy());

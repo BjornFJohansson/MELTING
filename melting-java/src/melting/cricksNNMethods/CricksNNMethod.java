@@ -1,33 +1,20 @@
 package melting.cricksNNMethods;
 
-import java.io.File;
 import java.util.HashMap;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import melting.DataCollect;
-import melting.FileReader;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
-public class CricksNNMethod implements PartialCalculMethod{
+public abstract class CricksNNMethod implements PartialCalculMethod{
 
 	protected DataCollect collector;
 	
 	public CricksNNMethod(String fileName){
-		File dataFile = new File(OptionManagement.dataPathway + "/filename");
-		FileReader reader = new FileReader();
-		try {
-			reader.readFile(dataFile, collector.getDatas());
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
+		Helper.loadData(fileName, this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
@@ -36,7 +23,7 @@ public class CricksNNMethod implements PartialCalculMethod{
 		String complementarySeq = "";
 		Thermodynamics parameter = new Thermodynamics(0,0);
 		 
-		for (int i = pos1; i < pos2; i++){
+		for (int i = pos1; i <= pos2 - 2; i++){
 			seq1 = seq.substring(i, i+2);
 			complementarySeq = seq2.substring(i, i+2);
 			parameter = collector.getNNvalue(seq1, complementarySeq);
@@ -44,27 +31,18 @@ public class CricksNNMethod implements PartialCalculMethod{
 			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
 			result.setEntropy(result.getEntropy() + parameter.getEntropy());
 		}
-		return null;
+		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options) {
-		String seq = options.get(OptionManagement.sequence);
+	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
+		String seq1 = options.get(OptionManagement.sequence);
 		String seq2 = options.get(OptionManagement.complementarySequence);
-		int duplexLength = Math.min(seq.length(), seq2.length());
 		
-		if (Integer.getInteger(options.get(OptionManagement.threshold)) >= duplexLength){
-			System.out.println("WARNING : the Nearest Neighbor model is accurate for " +
-			"shorter sequences. (length superior to 6 and inferior to" +
-			 options.get(OptionManagement.threshold) +")");
-			
+		if (isMissingParameters(seq1, seq2, pos1, pos2)) {
+			System.err.println("Some thermodynamic parameters are missing to compute" +
+					"melting temperature.");
 			return false;
 		}
-		
-		if (options.containsKey(OptionManagement.selfComplementarity) && Integer.getInteger(options.get(OptionManagement.factor)) != 1){
-			System.out.println("ERROR : When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
-			return false;
-		}
-		
 		return true;
 	}
 	
@@ -86,4 +64,16 @@ public class CricksNNMethod implements PartialCalculMethod{
 		return result;
 	}
 	
+	public boolean isMissingParameters(String seq1, String seq2, int pos1, int pos2){
+		for (int i = pos1; i < pos2; i++){
+			String seq = seq1.substring(i, i+2);
+			String complementarySeq = seq2.substring(i, i+2);
+			Thermodynamics parameter = collector.getNNvalue(seq, complementarySeq);
+			
+			if (parameter == null) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

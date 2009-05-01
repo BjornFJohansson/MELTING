@@ -25,7 +25,27 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 
 	public boolean isApplicable() {
-		return false;
+		String seq = optionSet.get(OptionManagement.sequence);
+		String seq2 = optionSet.get(OptionManagement.complementarySequence);
+		int duplexLength = Math.min(seq.length(), seq2.length());
+		boolean isApplicable = true;
+		
+		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) >= duplexLength){
+			System.out.println("WARNING : the Nearest Neighbor model is accurate for " +
+			"shorter sequences. (length superior to 6 and inferior to" +
+			 optionSet.get(OptionManagement.threshold) +")");
+			
+			if (this.optionSet.get(OptionManagement.completMethod).equals("default") == false){
+				isApplicable = false;
+			}
+		}
+		
+		if (optionSet.containsKey(OptionManagement.selfComplementarity) && Integer.getInteger(optionSet.get(OptionManagement.factor)) != 1){
+			System.out.println("ERROR : When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
+			isApplicable = false;
+		}
+		
+		return isApplicable;
 	}
 
 	public void setUpVariable(HashMap<String, String> options) {

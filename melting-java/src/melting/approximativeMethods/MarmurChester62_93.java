@@ -33,6 +33,9 @@ public class MarmurChester62_93 extends ApproximativeMode{
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
+		double Mg = Double.parseDouble(optionSet.get(OptionManagement.Mg));
+		double K = Double.parseDouble(optionSet.get(OptionManagement.K));
+		double Tris = Double.parseDouble(optionSet.get(OptionManagement.Tris));
 		
 		if (this.hybridization.equals("dnadna") == false){
 			isApplicable = false;
@@ -40,18 +43,11 @@ public class MarmurChester62_93 extends ApproximativeMode{
 					"and Marshak is originally established for DNA duplexes.");
 		}
 		
-		if (this.Na != 0 || this.Mg != 0.0015 || this.Tris != 0.01 || this.K == 0.05){
+		if (this.Na != 0 || Mg != 0.0015 || Tris != 0.01 || K == 0.05){
 			isApplicable = false;
 			System.out.println("WARNING : the formula of Marmur, Doty, Chester " +
 			"and Marshak is originally established at a given ionic strength : " +
 			"Na = 0 M, Mg = 0.0015 M, Tris = 0.01 M and k = 0.05 M");
-		}
-		
-		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) <= this.duplexLength){
-			isApplicable = false;
-			System.out.println("WARNING : the formula of Marmur, Doty, Chester " +
-			"and Marshak is originally established for long DNA duplexes. (length superior to " +
-			 optionSet.get(OptionManagement.threshold) +")");
 		}
 		
 		return isApplicable;

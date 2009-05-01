@@ -11,8 +11,8 @@ public class Sugimoto95 extends CricksNNMethod {
 		super("Sugimoto1995nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options) {
-		boolean isApplicable = isApplicable(options);
+	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(options, pos1, pos2);
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		

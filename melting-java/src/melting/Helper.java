@@ -1,5 +1,13 @@
 package melting;
 
+import java.io.File;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import melting.configuration.OptionManagement;
+
+import org.xml.sax.SAXException;
+
 
 public class Helper {
 
@@ -90,5 +98,17 @@ public class Helper {
 			}
 		}
 		return complementary;
+	}
+	
+	public static void loadData(String fileName, DataCollect collector){
+		File dataFile = new File(OptionManagement.dataPathway + "/" + fileName);
+		FileReader reader = new FileReader();
+		try {
+			reader.readFile(dataFile, collector.getDatas());
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -50,13 +50,6 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 					"was originally established for DNA duplexes.");
 		}
 		
-		if (Integer.getInteger(optionSet.get(OptionManagement.threshold)) <= this.duplexLength){
-			isApplicable = false;
-			System.out.println("WARNING : the Marmur-Schildkraut-Doty equation " +
-			"was originally established for long DNA duplexes. (length superior to " +
-			 optionSet.get(OptionManagement.threshold) +")");
-		}
-		
 		return isApplicable;
 	}
 	
