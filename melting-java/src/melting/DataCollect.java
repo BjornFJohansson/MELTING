@@ -123,8 +123,8 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getClosureValue(String base){
-		Thermodynamics s = datas.get("closure"+"per_"+base);
+	public Thermodynamics getClosureValue(String base1, String base2){
+		Thermodynamics s = datas.get("closure"+"per_"+base1 + "/" + base2);
 		return s;
 	}
 	
