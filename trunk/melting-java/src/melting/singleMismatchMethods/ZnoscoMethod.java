@@ -1,4 +1,4 @@
-package singleMismatchMethods;
+package melting.singleMismatchMethods;
 
 import java.util.HashMap;
 
@@ -49,6 +49,14 @@ public abstract class ZnoscoMethod implements PartialCalculMethod{
 			if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
 				return true;
 			}
+			
+			if (this.collector.getMismatchParameterValue(seq.substring(pos1+1,pos1+2), complementarySeq.substring(pos1+1, pos1+2)) == null){
+				return true;
+			}
+			
+			//if (this.collector.getClosureValue(seq.su)){
+				
+			//}
 			
 		return false;
 	}

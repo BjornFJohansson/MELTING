@@ -1,4 +1,4 @@
-package singleMismatchMethods;
+package melting.singleMismatchMethods;
 
 import java.util.HashMap;
 
