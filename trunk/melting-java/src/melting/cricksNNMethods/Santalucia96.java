@@ -42,5 +42,4 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		}
 		return result;
 	}
-
 }

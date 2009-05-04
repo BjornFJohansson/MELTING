@@ -42,7 +42,7 @@ public class Santalucia04 extends CricksNNMethod {
 			numberParameter++;
 		}
 		
-		if ((seq1.charAt(duplexLength) == 'A' || seq1.charAt(duplexLength) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength), complementarySeq.charAt(duplexLength))) {
+		if ((seq1.charAt(duplexLength - 1) == 'A' || seq1.charAt(duplexLength - 1) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength - 1), complementarySeq.charAt(duplexLength - 1))) {
 			numberParameter++;
 		}
 		

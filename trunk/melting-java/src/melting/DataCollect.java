@@ -19,11 +19,11 @@ public class DataCollect {
 	}
 	
 	private String getInversedSequence(String sequence){
-		String newSequence = "";
+		StringBuffer newSequence = new StringBuffer(sequence.length());
 		for (int i = 0; i < sequence.length(); i++){
-			newSequence += sequence.charAt(sequence.length() - i); 
+			newSequence.append(sequence.charAt(sequence.length() - i)); 
 		}
-		return newSequence;
+		return newSequence.toString();
 	}
 	
 	private String getSymetricSequence(String seq1, String seq2){

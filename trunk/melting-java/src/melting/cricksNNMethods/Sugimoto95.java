@@ -2,7 +2,6 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
-import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Sugimoto95 extends CricksNNMethod {
@@ -29,9 +28,4 @@ public class Sugimoto95 extends CricksNNMethod {
 		}
 		return isApplicable;
 	}
-	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		return super.calculateInitiationHybridation(options, result);
-	}
-
 }

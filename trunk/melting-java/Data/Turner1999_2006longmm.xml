@@ -62,14 +62,6 @@
  				<entropy>13.86</entropy>
  			</closure>
  			
- 			<penalty type="G/G_adjacent_AA_or_nonCanonicalPyrimidine">
- 				<enthalpy>12500.0</enthalpy>
- 			</penalty>
- 			
- 			<penalty type="AG_GA_UU_adjacent_UU_CU_CC_AA">
- 				<enthalpy>2400.0</enthalpy>
- 			</penalty>
- 			
  			<asymetry>
  				<enthalpy>3200.0</enthalpy>
  				<entropy>8.38</entropy>

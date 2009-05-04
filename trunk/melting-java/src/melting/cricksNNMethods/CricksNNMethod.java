@@ -17,6 +17,10 @@ public abstract class CricksNNMethod implements PartialCalculMethod{
 		Helper.loadData(fileName, this.collector);
 	}
 	
+	public DataCollect getCollector(){
+		return this.collector;
+	}
+	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
 		String seq1 = "";

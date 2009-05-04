@@ -3,8 +3,8 @@ package melting;
 
 public class Thermodynamics {
 	
-	private double enthalpy;
-	private double entropy;
+	protected double enthalpy;
+	protected double entropy;
 	
 	public Thermodynamics(double H, double S){
 		this.enthalpy = H;

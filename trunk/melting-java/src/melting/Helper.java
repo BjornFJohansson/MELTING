@@ -72,32 +72,32 @@ public class Helper {
 	}
 	
 	public static String getComplementarySequence(String sequence, String hybridization){
-		String complementary = "";
+		StringBuffer complementary = new StringBuffer(sequence.length());
 		for (int i = 0; i < sequence.length(); i++){
 			switch(sequence.charAt(i)){
 			case 'A':
 				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
-					complementary += 'T';
+					complementary.append('T');
 				}
 				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("dnarna")){
-					complementary += 'U';
+					complementary.append('U');
 				}
 				break;
 			case 'T':
-				complementary += 'A';
+				complementary.append('A');
 				break;
 			case 'C':
-				complementary += 'G';
+				complementary.append('G');
 				break;
 			case 'G':
-				complementary += 'C';
+				complementary.append('C');
 				break;
 			case 'U':
-				complementary += 'A';
+				complementary.append('A');
 				break;
 			}
 		}
-		return complementary;
+		return complementary.toString();
 	}
 	
 	public static void loadData(String fileName, DataCollect collector){

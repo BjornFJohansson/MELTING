@@ -21,14 +21,14 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		result = super.calculateInitiationHybridation(options, result);
 		
 		parameter1 = this.collector.getInitiation("per_"+ seq1.charAt(0) + "/" + complementarySeq.charAt(0));
-		parameter2 = this.collector.getInitiation("per_"+ seq1.charAt(duplexLength) + "/" + complementarySeq.charAt(duplexLength));
+		parameter2 = this.collector.getInitiation("per_"+ seq1.charAt(duplexLength - 1) + "/" + complementarySeq.charAt(duplexLength - 1));
 		
 		if (parameter1 == null) {
 			parameter1 = this.collector.getInitiation("per_"+ complementarySeq.charAt(0) + "/" + seq1.charAt(0));
 		}
 		
 		if (parameter2 == null) {
-			parameter2 = this.collector.getInitiation("per_"+ complementarySeq.charAt(duplexLength) + "/" + seq1.charAt(duplexLength));
+			parameter2 = this.collector.getInitiation("per_"+ complementarySeq.charAt(duplexLength - 1) + "/" + seq1.charAt(duplexLength - 1));
 		}
 		result.setEnthalpy(result.getEnthalpy() + parameter1.getEnthalpy() + parameter2.getEnthalpy());
 		result.setEntropy(result.getEntropy() + parameter1.getEntropy() + parameter2.getEntropy());

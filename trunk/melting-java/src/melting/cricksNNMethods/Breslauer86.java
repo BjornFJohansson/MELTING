@@ -2,7 +2,6 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
-import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Breslauer86 extends GlobalInitiationNNMethod{
@@ -24,9 +23,5 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 					"are established for DNA sequences ");
 		}
 		return isApplicable;
-	}
-	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		return super.calculateInitiationHybridation(options, result);
 	}
 }

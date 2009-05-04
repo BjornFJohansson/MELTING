@@ -20,9 +20,11 @@ public class Xia98 extends CricksNNMethod {
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		if (hybridization.equals("rnarna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Xia et al. (1998)" +
-					"are established for RNA/RNA sequences ");
+			if (hybridization.equals("mrnarna") == false){
+				isApplicable = false;
+			}
+			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Xia et al. (1998)" +
+					"for 2_O methyl RNA dulexes but these parameters are originally established for RNA/RNA sequences.");
 		}
 		return isApplicable;
 	}
@@ -43,7 +45,7 @@ public class Xia98 extends CricksNNMethod {
 			numberParameter++;
 		}
 		
-		if ((seq1.charAt(duplexLength) == 'A' || seq1.charAt(duplexLength) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength), complementarySeq.charAt(duplexLength))) {
+		if ((seq1.charAt(duplexLength - 1) == 'A' || seq1.charAt(duplexLength - 1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength - 1), complementarySeq.charAt(duplexLength - 1))) {
 			numberParameter++;
 		}
 		

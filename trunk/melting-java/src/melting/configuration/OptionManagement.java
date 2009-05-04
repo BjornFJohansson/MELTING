@@ -48,8 +48,8 @@ public class OptionManagement {
 	public static final String factor = "-F";
 	
 	private static final String version = "1";
-	private static String dataPathwayValue = "../../../Data";
 	private static final int totalOptionsRequired = 3;
+	private static String dataPathwayValue = "../../../Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	
