@@ -16,22 +16,20 @@ public class AllawiSantaluciaPeyret97_98_99mm implements PartialCalculMethod{
 	public AllawiSantaluciaPeyret97_98_99mm(){
 		Helper.loadData("AllawiSantaluciaPeyret1997_1998_1999mm.xml", this.collector);
 	}
+	
+	public DataCollect getCollector(){
+		return this.collector;
+	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
-		
-		String seq1 = "";
-		String complementarySeq = "";
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		 
-		for (int i = pos1; i <= pos2 - 2; i++){
-			seq1 = seq.substring(i, i+2);
-			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getMismatchvalue(seq1, complementarySeq);
+
+		String seq1 = seq.substring(pos1, pos2+1);
+		String complementarySeq = seq2.substring(pos1, pos2+1);
+		Thermodynamics parameter = collector.getMismatchvalue(seq1, complementarySeq);
 			
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
-		}
+		result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
+		result.setEntropy(result.getEntropy() + parameter.getEntropy());
 		return result;
 	}
 
@@ -42,7 +40,7 @@ public class AllawiSantaluciaPeyret97_98_99mm implements PartialCalculMethod{
 		String seq2 = options.get(OptionManagement.complementarySequence);
 		
 		if (hybridization.equals("dnadna") == false){
-			System.out.println("WARNING : the single mismatches parameter of " +
+			System.out.println("WARNING : the single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
 			
@@ -62,14 +60,12 @@ public class AllawiSantaluciaPeyret97_98_99mm implements PartialCalculMethod{
 			int pos2) {
 		String seq = "";
 		String complementarySeq = "";
-	
-		for (int i = 0; i < pos2 - 2; i++){
-			seq = seq1.substring(i, i+2);
-			complementarySeq = seq2.substring(i, i+2);
+
+		seq = seq1.substring(pos1, pos2+1);
+		complementarySeq = seq2.substring(pos1, pos2+1);
 			
-			if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
-				return true;
-			}
+		if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
+			return true;
 		}
 		return false;
 	}

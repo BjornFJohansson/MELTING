@@ -2,7 +2,6 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
-import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Freier86 extends CricksNNMethod {
@@ -19,15 +18,13 @@ public class Freier86 extends CricksNNMethod {
 		
 		
 		if (hybridization.equals("rnarna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Freier et al. (1986)" +
-					"are established for RNA/RNA sequences ");
+			if (hybridization.equals("mrnarna") == false){
+				isApplicable = false;
+			}
+			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Freier et al. (1986)" +
+					"for 2_O methyl RNA dulexes but these parameters are originally established for RNA/RNA sequences.");
 		}
 		return isApplicable;
-	}
-	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		return super.calculateInitiationHybridation(options, result);
 	}
 
 }

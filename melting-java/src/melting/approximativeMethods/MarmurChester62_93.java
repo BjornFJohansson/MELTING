@@ -18,10 +18,6 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	
 	private double parameter;
 	
-	public MarmurChester62_93(double parameter){
-		this.parameter = parameter;
-	}
-	
 	public ThermoResult CalculateThermodynamics() {
 		ThermoResult result = super.CalculateThermodynamics();
 		
@@ -54,7 +50,16 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	}
 	
 	public void setUpVariable(HashMap<String, String> options) {
+		String method = options.get(OptionManagement.approximativeMode);
+		
 		super.setUpVariable(options);
+		
+		if (method.equals("MarmurChester62_93_corr")){
+			this.parameter = 535;
+		}
+		else if (method.equals("MarmurChester62_93")){
+			this.parameter = 650;
+		}
 	}
 
 }

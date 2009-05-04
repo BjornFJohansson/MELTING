@@ -2,7 +2,6 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
-import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
@@ -26,8 +25,4 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		return super.calculateInitiationHybridation(options, result);
-	}
-
 }

@@ -1,9 +1,7 @@
 package melting.approximativeMethods;
 
-import java.util.HashMap;
 
 import melting.ThermoResult;
-import melting.configuration.OptionManagement;
 
 public class MarmurSchildkrautDoty extends ApproximativeMode{
 
@@ -53,8 +51,4 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		return isApplicable;
 	}
 	
-	public void setUpVariable(HashMap<String, String> options) {
-		super.setUpVariable(options);
-	}
-
 }

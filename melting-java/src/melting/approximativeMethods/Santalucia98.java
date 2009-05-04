@@ -1,9 +1,6 @@
 package melting.approximativeMethods;
 
-import java.util.HashMap;
-
 import melting.ThermoResult;
-import melting.configuration.OptionManagement;
 
 public class Santalucia98 extends ApproximativeMode{
 	
@@ -33,9 +30,4 @@ boolean isApplicable = super.isApplicable();
 		
 		return isApplicable;
 	}
-	
-	public void setUpVariable(HashMap<String, String> options) {
-		super.setUpVariable(options);
-	}
-
 }

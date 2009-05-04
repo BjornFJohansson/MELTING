@@ -1,23 +1,14 @@
 package melting;
 
-public class ThermoResult {
+public class ThermoResult extends Thermodynamics{
 	
-	private double enthalpy;
-	private double entropy;
 	private double Tm;
 	
-	public double getEnthalpy() {
-		return enthalpy;
+	public ThermoResult(double enthalpy, double entropy, double Tm){
+		super(enthalpy, entropy);
+		this.Tm = Tm;
 	}
-	public void setEnthalpy(double enthalpy) {
-		this.enthalpy = enthalpy;
-	}
-	public double getEntropy() {
-		return entropy;
-	}
-	public void setEntropy(double entropy) {
-		this.entropy = entropy;
-	}
+	
 	public double getTm() {
 		return Tm;
 	}

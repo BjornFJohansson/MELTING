@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import melting.Helper;
 import melting.ThermoResult;
-import melting.configuration.OptionManagement;
 
 public class Wetmur91 extends ApproximativeMode{
 	

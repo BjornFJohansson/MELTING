@@ -60,11 +60,11 @@
                 <entropy>-59.7</entropy>
    			</mismatch>
    			
-  			<closure type="per_AU">
+  			<closure type="per_A/U">
 	        	<enthalpy>-1800.0</enthalpy>
                 <entropy>-9.8</entropy>
    			</closure>
-   			<closure type="per_GU">
+   			<closure type="per_G/U">
 	        	<enthalpy>-1800.0</enthalpy>
                 <entropy>-9.8</entropy>
    			</closure>

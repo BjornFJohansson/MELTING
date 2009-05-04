@@ -1,9 +1,6 @@
 package melting.approximativeMethods;
 
-import java.util.HashMap;
-
 import melting.ThermoResult;
-import melting.configuration.OptionManagement;
 
 public class Ahsen01 extends ApproximativeMode{
 	 
@@ -31,10 +28,6 @@ public class Ahsen01 extends ApproximativeMode{
 					"was originally established for DNA duplexes.");
 		}
 		return isApplicable;
-	}
-	
-	public void setUpVariable(HashMap<String, String> options) {
-		super.setUpVariable(options);
 	}
 
 }

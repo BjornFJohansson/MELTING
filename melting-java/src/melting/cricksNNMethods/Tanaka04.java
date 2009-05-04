@@ -2,9 +2,6 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
-import melting.Helper;
-import melting.ThermoResult;
-import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Tanaka04 extends DecomposedInitiationNNMethod {
@@ -27,11 +24,4 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 		}
 		return isApplicable;
 	}
-	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		
-		return super.calculateInitiationHybridation(options, result);
-		
-	}
-
 }
