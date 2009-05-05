@@ -7,6 +7,8 @@ import melting.configuration.OptionManagement;
 
 public class Znosco08mm extends ZnoscoMethod {
 
+	/*REF: Brent M Znosko et al (2008). Biochemistry 47: 10178-10187.*/
+	
 	public Znosco08mm() {
 		Helper.loadData("Znosco2008mm.xml", this.collector);
 	}

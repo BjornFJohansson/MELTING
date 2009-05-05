@@ -11,6 +11,9 @@ import melting.configuration.OptionManagement;
 
 public class Turner99_06tanmm implements PartialCalculMethod{
 
+	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
+	
 private DataCollect collector;
 	
 	public Turner99_06tanmm() {
@@ -41,22 +44,23 @@ private DataCollect collector;
 			return result;
 		}
 		
-		String symetricSequence1 = buildSymetricSequence(sequence, complementary);
-		String symetricSequence2 = "";
-		String symetricComplementary1 = "";
-		String symetricComplementary2 = "";
+		String symetricSequence1 = buildSymetricSequence(seq1, complementarySeq);
+		String symetricSequence2 = buildSymetricComplementary(seq1, complementarySeq);
+		String symetricComplementary1 = buildSymetricSequence(Helper.getInversedSequence(complementarySeq), Helper.getInversedSequence(seq1));
+		String symetricComplementary2 = buildSymetricComplementary(Helper.getInversedSequence(complementarySeq), Helper.getInversedSequence(seq1));
 
 		
 		Thermodynamics penaltyGG = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
 		Thermodynamics penaltyAG = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
 		ThermoResult result1 = new ThermoResult(0,0,0);
 		ThermoResult result2 = new ThermoResult(0,0,0);
-		result1 = calculateThermodynamics(symetricSequence1.toString(), symetricComplementary1.toString(), 0, 3, result1);
-		result1 = calculateThermodynamics(symetricSequence2.toString(), symetricComplementary2.toString(), 0, 3, result2);
+		result1 = calculateThermodynamics(symetricSequence1, symetricComplementary1, 0, 3, result1);
+		result1 = calculateThermodynamics(symetricSequence2, symetricComplementary2, 0, 3, result2);
 		
 		result.setEnthalpy(result.getEnthalpy() + (result1.getEnthalpy() + result2.getEnthalpy()) / 2 + penaltyAG.getEnthalpy() + penaltyGG.getEnthalpy());
 		result.setEntropy(result.getEntropy() + (result1.getEntropy() + result2.getEntropy()) / 2 + penaltyAG.getEntropy() + penaltyGG.getEntropy());
-		return null;
+		
+		return result;
 	}
 
 	public boolean isApplicable(HashMap<String, String> options, int pos1,
