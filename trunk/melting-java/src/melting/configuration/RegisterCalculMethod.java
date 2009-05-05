@@ -30,6 +30,9 @@ import melting.singleMismatchMethods.Znosco07mm;
 import melting.singleMismatchMethods.Znosco08mm;
 import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
 import melting.sodiumEquivalence.Owczarzy08_NaEquivalent;
+import melting.tandemMismatchMethod.AllawiSantaluciaPeyret97_98_99tanmm;
+import melting.tandemMismatchMethod.Turner99_06tanmm;
+import melting.woddleNNMethod.Turner99Woddle;
 
 public class RegisterCalculMethod {
 	
@@ -40,6 +43,8 @@ public class RegisterCalculMethod {
 	private HashMap<String, Class<? extends PartialCalculMethod>> partialCalculMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private HashMap<String, Class<? extends CompletCalculMethod>> completCalculMethod = new HashMap<String, Class<? extends CompletCalculMethod>>();
 	private HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
@@ -47,6 +52,8 @@ public class RegisterCalculMethod {
 		initializeCricksMethods();
 		initializeNaEqMethods();
 		initializeSingleMismatchMethods();
+		initializeTandemMismatchMethods();
+		initializeWoddleMismatchMethods();
 	}
 	
 	private void initializeNaEqMethods(){
@@ -86,6 +93,15 @@ public class RegisterCalculMethod {
 		this.singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
 		this.singleMismatchMethod.put("Znosco_2007", Znosco07mm.class);
 		this.singleMismatchMethod.put("Znosco_2008", Znosco08mm.class);
+	}
+	
+	private void initializeTandemMismatchMethods(){
+		this.tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
+		this.tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
+	}
+	
+	private void initializeWoddleMismatchMethods(){
+		this.woddleMethod.put("Turner_1999", Turner99Woddle.class);
 	}
 	
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
@@ -179,6 +195,45 @@ public class RegisterCalculMethod {
 		PartialCalculMethod method;
 		try {
 			method = this.singleMismatchMethod.get(methodName).newInstance();
+			if (method.isApplicable(optionSet, pos1, pos2)) {
+				return method;
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public PartialCalculMethod getTandemMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
+		initializeCricksMethods();
+		
+		String methodName = optionSet.get(OptionManagement.tandemMismatchMethod);
+		PartialCalculMethod method;
+		try {
+			method = this.tandemMismatchMethod.get(methodName).newInstance();
+			if (method instanceof AllawiSantaluciaPeyret97_98_99tanmm){
+				((AllawiSantaluciaPeyret97_98_99tanmm) method).loadSingleMismatchData(optionSet, pos1, pos2, result);
+			}
+			if (method.isApplicable(optionSet, pos1, pos2)) {
+				return method;
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public PartialCalculMethod getwoddleMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
+		initializeCricksMethods();
+		
+		String methodName = optionSet.get(OptionManagement.woddleBaseMethod);
+		PartialCalculMethod method;
+		try {
+			method = this.woddleMethod.get(methodName).newInstance();
 			if (method.isApplicable(optionSet, pos1, pos2)) {
 				return method;
 			}

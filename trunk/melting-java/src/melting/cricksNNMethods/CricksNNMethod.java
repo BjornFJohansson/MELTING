@@ -27,7 +27,7 @@ public abstract class CricksNNMethod implements PartialCalculMethod{
 		String complementarySeq = "";
 		Thermodynamics parameter = new Thermodynamics(0,0);
 		 
-		for (int i = pos1; i <= pos2 - 2; i++){
+		for (int i = pos1; i <= pos2 - 1; i++){
 			seq1 = seq.substring(i, i+2);
 			complementarySeq = seq2.substring(i, i+2);
 			parameter = collector.getNNvalue(seq1, complementarySeq);
