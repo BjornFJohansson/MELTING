@@ -68,7 +68,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 		this.seq = options.get(OptionManagement.sequence);
 		this.seq2 = options.get(OptionManagement.complementarySequence);
 		this.duplexLength = Math.min(seq.length(), seq2.length());
-		this.percentGC = Helper.CalculatePercentGC(seq, seq2);
+		this.percentGC = Helper.calculatePercentGC(seq, seq2);
 		this.hybridization = options.get(OptionManagement.hybridization);
 		
 		this.optionSet = options;

@@ -17,7 +17,7 @@ public class Turner99_06tanmm implements PartialCalculMethod{
 private DataCollect collector;
 	
 	public Turner99_06tanmm() {
-		Helper.loadData("Turner_1999_2006tanmm.xml", this.collector);
+		Helper.loadData("Turner1999_2006tanmm.xml", this.collector);
 	}
 	
 	public DataCollect getCollector(){

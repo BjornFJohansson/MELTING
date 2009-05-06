@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 
 public class Helper {
 
-	public static int CalculatePercentGC(String seq1, String seq2){
+	public static int calculatePercentGC(String seq1, String seq2){
 		int numberGC = 0;
 		for (int i = 0; i < Math.min(seq1.length(), seq2.length());i++){
 			if (seq1.charAt(i) == 'G' || seq1.charAt(i) == 'C'){
@@ -110,5 +110,63 @@ public class Helper {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getInversedSequence(String sequence){
+		StringBuffer newSequence = new StringBuffer(sequence.length());
+		for (int i = 0; i < sequence.length(); i++){
+			newSequence.append(sequence.charAt(sequence.length() - i)); 
+		}
+		return newSequence.toString();
+	}
+	
+	public static String convertToPyr_Pur(String sequence){
+		StringBuffer newSeq = new StringBuffer(sequence.length());
+		
+		for (int i = 0; i < sequence.length(); i++){
+			switch (sequence.charAt(i)) {
+			case 'A':
+				newSeq.append('R');
+				break;
+			case 'G':
+				newSeq.append('R');
+				break;
+			case 'U':
+				newSeq.append('Y');
+				break;
+			case 'C':
+				newSeq.append('Y');
+				break;
+
+			default:
+				System.err.println("There are non watson crick bases in the sequence.");
+				break;
+			}
+		}
+		return newSeq.toString();
+	}
+	
+	public static int calculateLoopLength (String seq1, String seq2){
+		int loop = seq1.length() - 2 + seq2.length() - 2;
+		
+		for (int i = 1; i < seq1.length() - 1; i++){
+			if (seq1.charAt(i) == '-'){
+				loop--;
+			}
+			if (seq2.charAt(i) == '-'){
+				loop--;
+			}
+		}
+		return loop;
+	}
+	
+public static boolean isAsymetricLoop(String seq1, String seq2){
+		
+		for (int i= 1; i < seq1.length() - 1; i++){
+			if (seq1.charAt(i) == '-' || seq2.charAt(i) == '-'){
+				return true;
+			}
+		}
+		return false;
 	}
 }

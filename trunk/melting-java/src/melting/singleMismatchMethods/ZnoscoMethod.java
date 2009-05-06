@@ -20,8 +20,8 @@ public abstract class ZnoscoMethod implements PartialCalculMethod{
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
 		
-		String seq1 = convertToPyr_Pur(seq.substring(pos1, pos2));
-		String complementarySeq = convertToPyr_Pur(seq.substring(pos1, pos2));
+		String seq1 = Helper.convertToPyr_Pur(seq.substring(pos1, pos2));
+		String complementarySeq = Helper.convertToPyr_Pur(seq.substring(pos1, pos2));
 		Thermodynamics parameter = new Thermodynamics(0,0);
 		Thermodynamics NNInteraction = new Thermodynamics(0,0);
 		Thermodynamics AUPenalty = new Thermodynamics(0,0);
@@ -80,8 +80,8 @@ public abstract class ZnoscoMethod implements PartialCalculMethod{
 	public boolean isMissingParameters(String seq1, String seq2, int pos1,
 			int pos2) {
 		
-		String seq = convertToPyr_Pur(seq1.substring(pos1, pos2+1));
-		String complementarySeq = convertToPyr_Pur(seq2.substring(pos1, pos2+1));
+		String seq = Helper.convertToPyr_Pur(seq1.substring(pos1, pos2+1));
+		String complementarySeq = Helper.convertToPyr_Pur(seq2.substring(pos1, pos2+1));
 			
 			if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
 				return true;
@@ -91,37 +91,19 @@ public abstract class ZnoscoMethod implements PartialCalculMethod{
 				return true;
 			}
 			
-			//if (this.collector.getClosureValue(seq.su)){
-				
-			//}
+			if (((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), complementarySeq.charAt(pos1))) || ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos2), complementarySeq.charAt(pos2)))){
+				if (this.collector.getClosureValue("A", "U") == null){
+					return true;
+				}
+			}
+			
+			if (((seq.charAt(pos1) == 'G' && complementarySeq.charAt(pos1) == 'U') || (seq.charAt(pos1) == 'U' && complementarySeq.charAt(pos1) == 'G')) || ((seq.charAt(pos2) == 'G' && complementarySeq.charAt(pos2) == 'U') ||( seq.charAt(pos2) == 'U' && complementarySeq.charAt(pos2) == 'G'))){
+				if (this.collector.getClosureValue("G", "U") == null){
+					return true;
+				}
+			}
 			
 		return false;
-	}
-	
-	private String convertToPyr_Pur(String sequence){
-		StringBuffer newSeq = new StringBuffer(sequence.length());
-		
-		for (int i = 0; i < sequence.length(); i++){
-			switch (sequence.charAt(i)) {
-			case 'A':
-				newSeq.append('R');
-				break;
-			case 'G':
-				newSeq.append('R');
-				break;
-			case 'U':
-				newSeq.append('Y');
-				break;
-			case 'C':
-				newSeq.append('Y');
-				break;
-
-			default:
-				System.err.println("There are non watson crick bases in the sequence.");
-				break;
-			}
-		}
-		return newSeq.toString();
 	}
 
 }

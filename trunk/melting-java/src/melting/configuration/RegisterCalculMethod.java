@@ -3,6 +3,8 @@ package melting.configuration;
 import java.util.HashMap;
 
 import melting.ThermoResult;
+import melting.InternalLoopMethod.Santalucia04InternalLoop;
+import melting.InternalLoopMethod.Turner06InternalLoop;
 import melting.approximativeMethods.Ahsen01;
 import melting.approximativeMethods.ApproximativeMode;
 import melting.approximativeMethods.MarmurChester62_93;
@@ -24,8 +26,16 @@ import melting.cricksNNMethods.Sugimoto95;
 import melting.cricksNNMethods.Tanaka04;
 import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
+import melting.longBulgeMethod.DecomposedBulgeLoopMethod;
+import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
+import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 import melting.nearestNeighborModel.NearestNeighborMode;
+import melting.singleBulgeMethod.Santalucia04SingleBulgeLoop;
+import melting.singleBulgeMethod.Serra07SingleBulgeLoop;
+import melting.singleBulgeMethod.Tanaka04SingleBulgeLoop;
+import melting.singleBulgeMethod.Turner99_06SingleBulgeLoop;
 import melting.singleMismatchMethods.AllawiSantaluciaPeyret97_98_99mm;
+import melting.singleMismatchMethods.Turner06mm;
 import melting.singleMismatchMethods.Znosco07mm;
 import melting.singleMismatchMethods.Znosco08mm;
 import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
@@ -45,6 +55,10 @@ public class RegisterCalculMethod {
 	private HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalculMethod>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalculMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalculMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+
 	
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
@@ -54,6 +68,9 @@ public class RegisterCalculMethod {
 		initializeSingleMismatchMethods();
 		initializeTandemMismatchMethods();
 		initializeWoddleMismatchMethods();
+		initializeInternalLoopMethods();
+		initializeSingleBulgeLoopMethods();
+		initializeLongBulgeLoopMethods();
 	}
 	
 	private void initializeNaEqMethods(){
@@ -93,15 +110,35 @@ public class RegisterCalculMethod {
 		this.singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
 		this.singleMismatchMethod.put("Znosco_2007", Znosco07mm.class);
 		this.singleMismatchMethod.put("Znosco_2008", Znosco08mm.class);
+		this.singleMismatchMethod.put("Turner_2006", Turner06mm.class);
 	}
 	
 	private void initializeTandemMismatchMethods(){
 		this.tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
 		this.tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
+		this.tandemMismatchMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
 	}
 	
 	private void initializeWoddleMismatchMethods(){
 		this.woddleMethod.put("Turner_1999", Turner99Woddle.class);
+	}
+	
+	private void initializeInternalLoopMethods(){
+		this.internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
+		this.internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
+	}
+	
+	private void initializeSingleBulgeLoopMethods(){
+		this.singleBulgeLoopMethod.put("Turner_2006", Turner99_06SingleBulgeLoop.class);
+		this.singleBulgeLoopMethod.put("Santalucia_2004", Santalucia04SingleBulgeLoop.class);
+		this.singleBulgeLoopMethod.put("Serra_2007", Serra07SingleBulgeLoop.class);
+		this.singleBulgeLoopMethod.put("Tanaka_2004", Tanaka04SingleBulgeLoop.class);
+
+	}
+	
+	private void initializeLongBulgeLoopMethods(){
+		this.longBulgeLoopMethod.put("Turner_2006", Turner99_06LongBulgeLoop.class);
+		this.longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
 	}
 	
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
@@ -125,7 +162,6 @@ public class RegisterCalculMethod {
 	}
 	
 	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
-		initializeCompletCalculMethods();
 		
 		String methodName = optionSet.get(OptionManagement.completMethod);
 		CompletCalculMethod method;
@@ -171,7 +207,6 @@ public class RegisterCalculMethod {
 	}
 	
 	public CricksNNMethod getWatsonCrickMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
-		initializeCricksMethods();
 		
 		String methodName = optionSet.get(OptionManagement.NNMethod);
 		CricksNNMethod method;
@@ -189,7 +224,6 @@ public class RegisterCalculMethod {
 	}
 	
 	public PartialCalculMethod getSingleMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
-		initializeCricksMethods();
 		
 		String methodName = optionSet.get(OptionManagement.singleMismatchMethod);
 		PartialCalculMethod method;
@@ -206,8 +240,7 @@ public class RegisterCalculMethod {
 		return null;
 	}
 	
-	public PartialCalculMethod getTandemMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
-		initializeCricksMethods();
+	public PartialCalculMethod getTandemMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
 		
 		String methodName = optionSet.get(OptionManagement.tandemMismatchMethod);
 		PartialCalculMethod method;
@@ -228,7 +261,6 @@ public class RegisterCalculMethod {
 	}
 	
 	public PartialCalculMethod getwoddleMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
-		initializeCricksMethods();
 		
 		String methodName = optionSet.get(OptionManagement.woddleBaseMethod);
 		PartialCalculMethod method;
@@ -244,4 +276,60 @@ public class RegisterCalculMethod {
 		}
 		return null;
 	}
+	
+	public PartialCalculMethod getInternalLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+		
+		String methodName = optionSet.get(OptionManagement.internalLoopMethod);
+		PartialCalculMethod method;
+		try {
+			method = this.internalLoopMethod.get(methodName).newInstance();
+			if (method.isApplicable(optionSet, pos1, pos2)) {
+				return method;
+			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public PartialCalculMethod getSingleBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	
+	String methodName = optionSet.get(OptionManagement.singleBulgeLoopMethod);
+	PartialCalculMethod method;
+	try {
+		method = this.singleBulgeLoopMethod.get(methodName).newInstance();
+		
+		if (method instanceof DecomposedBulgeLoopMethod){
+			((DecomposedBulgeLoopMethod) method).loadCrickNNData(optionSet, pos1, pos2, result);
+		}
+		if (method.isApplicable(optionSet, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+	
+	public PartialCalculMethod getLongBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	
+	String methodName = optionSet.get(OptionManagement.longBulgeLoopMethod);
+	PartialCalculMethod method;
+	try {
+		method = this.longBulgeLoopMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(optionSet, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	return null;
+}
 }
