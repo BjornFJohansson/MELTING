@@ -3,6 +3,7 @@ package melting.InternalLoopMethod;
 import java.util.HashMap;
 
 import melting.DataCollect;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
@@ -15,9 +16,13 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 	
 	private DataCollect collector;
 	
+	public Santalucia04InternalLoop(){
+		Helper.loadData("Santalucia2004longmm.xml", this.collector);
+	}
+	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
-		Thermodynamics 	internalSize = collector.getInternalLoopValue(Integer.toString(calculateLoopLength(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))));
+		Thermodynamics 	internalSize = collector.getInternalLoopValue(Integer.toString(Helper.calculateLoopLength(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))));
 		Thermodynamics leftTerminalMismatch = collector.getMismatchvalue(seq.substring(pos1, pos1 + 2), seq2.substring(pos1, pos1 + 2));
 		Thermodynamics rightTerminalMismatch = collector.getMismatchvalue(seq.substring(pos2 - 1, pos2 + 1), seq2.substring(pos2 - 1, pos2 + 1));
 		
@@ -29,7 +34,7 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 		result.setEnthalpy(result.getEnthalpy() + leftTerminalMismatch.getEnthalpy() + rightTerminalMismatch.getEnthalpy());
 		result.setEntropy(result.getEntropy() + internalSize.getEntropy() + leftTerminalMismatch.getEntropy() + rightTerminalMismatch.getEntropy());
 		
-		if (isAsymetricLoop(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))){
+		if (Helper.isAsymetricLoop(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))){
 			Thermodynamics 	asymetry = collector.getAsymetry();
 			
 			result.setEnthalpy(result.getEnthalpy() + asymetry.getEnthalpy());
@@ -57,7 +62,7 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 			isApplicable = false;
 		}
 
-		if (calculateLoopLength(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)) == 2){
+		if (Helper.calculateLoopLength(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)) == 2){
 			System.out.println("WARNING : The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
 			isApplicable = false;
 		}
@@ -77,7 +82,7 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 		String seq = seq1.substring(pos1, pos2+1);
 		String complementarySeq = seq2.substring(pos1, pos2+1); 
 		
-		if (isAsymetricLoop(seq, complementarySeq)){
+		if (Helper.isAsymetricLoop(seq, complementarySeq)){
 			Thermodynamics 	asymetry = collector.getAsymetry();
 			if (asymetry == null) {
 				return true;
@@ -93,38 +98,9 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 		this.collector.getDatas().putAll(singleMismatchMethod.getCollector().getDatas());
 	}
 	
-	private boolean isAsymetricLoop(String seq1, String seq2){
-		
-		for (int i= 1; i < seq1.length() - 1; i++){
-			if (seq1.charAt(i) == '-' || seq2.charAt(i) == '-'){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	private double calculateGibbs (String seq1, String seq2){
 		double gibbs = Math.abs(seq1.length() - seq2.length()) * 0.3;
 		return gibbs;
-	}
-	
-	private int calculateLoopLength (String seq1, String seq2){
-		int loop = seq1.length() - 2 + seq2.length() - 2;
-		
-		for (int i = 1; i < seq1.length() - 1; i++){
-			if (seq1.charAt(i) == '-'){
-				loop--;
-			}
-			if (seq2.charAt(i) == '-'){
-				loop--;
-			}
-		}
-		return loop;
-	}
-	
-	public ThermoResult calculateSelIndependentThermodynamics(String seq, String seq2,
-			int pos1, int pos2) { 
-		
 	}
 
 }

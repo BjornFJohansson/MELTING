@@ -18,17 +18,9 @@ public class DataCollect {
 		this.datas = datas;
 	}
 	
-	private String getInversedSequence(String sequence){
-		StringBuffer newSequence = new StringBuffer(sequence.length());
-		for (int i = 0; i < sequence.length(); i++){
-			newSequence.append(sequence.charAt(sequence.length() - i)); 
-		}
-		return newSequence.toString();
-	}
-	
 	private String getSymetricSequence(String seq1, String seq2){
-		String newSeq1 = getInversedSequence(seq1);
-		String newSeq2 = getInversedSequence(seq2);
+		String newSeq1 = Helper.getInversedSequence(seq1);
+		String newSeq2 = Helper.getInversedSequence(seq2);
 		return newSeq1+"/"+newSeq2;
 	}
 	
@@ -141,7 +133,7 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics asymetry(){
+	public Thermodynamics getAsymetry(){
 		Thermodynamics s = datas.get("symetry");
 		return s;
 	}
@@ -162,7 +154,7 @@ public class DataCollect {
 	public Thermodynamics getBonus(String base1, String lastBase, String seqLoop, String type){
 		Thermodynamics s = datas.get("bonus"+type+base1+seqLoop+"/"+lastBase);
 		if (s == null){
-			s = datas.get("bonus"+type+lastBase+getInversedSequence(seqLoop)+"/"+base1);
+			s = datas.get("bonus"+type+lastBase+Helper.getInversedSequence(seqLoop)+"/"+base1);
 		}
 		return s;
 	}
@@ -186,9 +178,9 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("bulge"+seq1+"/"+seq2);
+		Thermodynamics s = datas.get("bulge"+seq1+"/"+seq2.substring(0, 1)+seq2.substring(2,3));
 		if (s == null){
-			s = datas.get("bulge"+getSymetricSequence(seq1, seq2));
+			s = datas.get("bulge"+getSymetricSequence(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
 		}
 		return s;
 	}

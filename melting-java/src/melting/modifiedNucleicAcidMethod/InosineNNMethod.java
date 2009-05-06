@@ -1,24 +1,17 @@
-package melting.woddleNNMethod;
+package melting.modifiedNucleicAcidMethod;
 
 import java.util.HashMap;
 
 import melting.DataCollect;
-import melting.Helper;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
-public class Turner99Woddle implements PartialCalculMethod{
-	
-	/*REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
-	
-	private DataCollect collector;
-	
-	public Turner99Woddle(){
-		Helper.loadData("Turner1999woddle.xml", this.collector);
-	}
+public class InosineNNMethod implements PartialCalculMethod{
 
+	protected DataCollect collector;
+	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
 		String seq1 = "";
@@ -28,7 +21,7 @@ public class Turner99Woddle implements PartialCalculMethod{
 		for (int i = pos1; i <= pos2 - 1; i++){
 			seq1 = seq.substring(i, i+2);
 			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getMismatchvalue(seq1, complementarySeq);
+			parameter = collector.getModifiedvalue(seq1, complementarySeq);
 			
 			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
 			result.setEntropy(result.getEntropy() + parameter.getEntropy());
@@ -44,22 +37,14 @@ public class Turner99Woddle implements PartialCalculMethod{
 			int pos2) {
 		String seq1 = options.get(OptionManagement.sequence);
 		String seq2 = options.get(OptionManagement.complementarySequence);
-		boolean isApplicable = true;
-		String hybridization = options.get(OptionManagement.hybridization);
 		
 		if (isMissingParameters(seq1, seq2, pos1, pos2)) {
 			System.err.println("Some thermodynamic parameters are missing to compute the" +
 					"melting temperature.");
-			isApplicable = false;
+			return false;
 		}
 		
-		if (hybridization.equals("rnarna") == false){
-			System.out.println("WARNING : the woddle base parameters of " +
-					"Turner (1999) are originally established " +
-					"for RNA sequences.");
-			isApplicable = false;
-		}
-		return isApplicable;
+		return true;
 	}
 
 	public boolean isMissingParameters(String seq1, String seq2, int pos1,
@@ -70,7 +55,7 @@ public class Turner99Woddle implements PartialCalculMethod{
 		for (int i = pos1; i < pos2; i++){
 			seq = seq1.substring(i, i+2);
 			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getMismatchvalue(seq, complementarySeq);
+			parameter = collector.getModifiedvalue(seq, complementarySeq);
 			
 			if (parameter == null) {
 				return true;
