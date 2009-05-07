@@ -2,20 +2,16 @@ package melting.singleMismatchMethods;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
-public class Turner06mm implements PartialCalculMethod{
+public class Turner06mm extends PartialCalcul{
 	
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 
-	
-	private DataCollect collector;
-	
 	public Turner06mm(){
 		Helper.loadData("Turner1999_2006longmm.xml", this.collector);
 	}
@@ -54,27 +50,15 @@ public class Turner06mm implements PartialCalculMethod{
 		return result;
 	}
 
-	public DataCollect getCollector() {
-		return this.collector;
-	}
-
 	public boolean isApplicable(HashMap<String, String> options, int pos1,
 			int pos2) {
 		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = true;
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
-		
+		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+
 		if (hybridization.equals("rnarna") == false){
 			System.out.println("WARNING : the single mismatches parameter of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
-			
-			isApplicable = false;
-		}
-		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)){
-			System.out.println("WARNING : some thermodynamic parameters are missing.");
 			
 			isApplicable = false;
 		}
@@ -112,7 +96,7 @@ public class Turner06mm implements PartialCalculMethod{
 				return true;
 			}
 		}
-		return false;
+		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
 
 }

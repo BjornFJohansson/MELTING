@@ -1,16 +1,10 @@
 package melting.modifiedNucleicAcidMethod;
 
-import java.util.HashMap;
-
-import melting.DataCollect;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
-import melting.configuration.OptionManagement;
 
-public class InosineNNMethod implements PartialCalculMethod{
-
-	protected DataCollect collector;
+public abstract class InosineNNMethod extends PartialCalcul{
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
@@ -29,24 +23,6 @@ public class InosineNNMethod implements PartialCalculMethod{
 		return result;
 	}
 
-	public DataCollect getCollector() {
-		return this.collector;
-	}
-
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
-			int pos2) {
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
-		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)) {
-			System.err.println("Some thermodynamic parameters are missing to compute the" +
-					"melting temperature.");
-			return false;
-		}
-		
-		return true;
-	}
-
 	public boolean isMissingParameters(String seq1, String seq2, int pos1,
 			int pos2) {
 		Thermodynamics parameter = new Thermodynamics(0,0);
@@ -61,7 +37,7 @@ public class InosineNNMethod implements PartialCalculMethod{
 				return true;
 			}
 		}
-		return false;
+		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
 
 }

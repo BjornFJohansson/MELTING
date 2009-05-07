@@ -4,13 +4,14 @@ import java.util.HashMap;
 
 import melting.DataCollect;
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
-public class AllawiSantaluciaPeyret97_98_99tanmm implements PartialCalculMethod{
+public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
 	/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
 	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
@@ -18,14 +19,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm implements PartialCalculMethod{
 	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
-	private DataCollect collector;
-	
 	public AllawiSantaluciaPeyret97_98_99tanmm(){
 		Helper.loadData("AllawiSantaluciaPeyret1997_1998_1999tanmm.xml", this.collector);
-	}
-	
-	public DataCollect getCollector(){
-		return this.collector;
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
@@ -49,9 +44,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm implements PartialCalculMethod{
 			int pos2) {
 		
 		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = true;
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
+		boolean isApplicable = super.isApplicable(options, pos1, pos2);
 		
 		if (hybridization.equals("dnadna") == false){
 			System.out.println("WARNING : the tandem mismatch parameters of " +
@@ -60,13 +53,6 @@ public class AllawiSantaluciaPeyret97_98_99tanmm implements PartialCalculMethod{
 			
 			isApplicable = false;
 		}
-		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)){
-			System.out.println("WARNING : some thermodynamic parameters are missing.");
-			
-			isApplicable = false;
-		}
-		
 		return isApplicable;
 	}
 
@@ -79,13 +65,6 @@ public class AllawiSantaluciaPeyret97_98_99tanmm implements PartialCalculMethod{
 		if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
 			return true;
 		}
-		return false;
-	}
-	
-	public void loadSingleMismatchData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
-		RegisterCalculMethod getData = new RegisterCalculMethod();
-		PartialCalculMethod singleMismatchMethod = getData.getSingleMismatchMethod(optionSet, result, pos1, pos2);
-		
-		this.collector.getDatas().putAll(singleMismatchMethod.getCollector().getDatas());
+		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
 }

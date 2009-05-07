@@ -2,18 +2,15 @@ package melting.InternalLoopMethod;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
-public class Turner06InternalLoop implements PartialCalculMethod{
+public class Turner06InternalLoop extends PartialCalcul{
 
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
-	
-	private DataCollect collector;
 	
 	public Turner06InternalLoop(){
 		Helper.loadData("Turner1999_2006longmm.xml", this.collector);
@@ -60,10 +57,6 @@ public class Turner06InternalLoop implements PartialCalculMethod{
 		return result;
 	}
 
-	public DataCollect getCollector() {
-		return this.collector;
-	}
-
 	public boolean isApplicable(HashMap<String, String> options, int pos1,
 			int pos2) {
 		String hybridization = options.get(OptionManagement.hybridization);
@@ -85,12 +78,6 @@ public class Turner06InternalLoop implements PartialCalculMethod{
 					"3 x 3 internal loops with a middle GA pair. The middle GA pair is shown to enhance " +
 					"stability and this extra stability cannot be predicted by this nearest neighbor" +
 					"parameter set.");
-			
-			isApplicable = false;
-		}
-		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)){
-			System.out.println("WARNING : some thermodynamic parameters are missing.");
 			
 			isApplicable = false;
 		}

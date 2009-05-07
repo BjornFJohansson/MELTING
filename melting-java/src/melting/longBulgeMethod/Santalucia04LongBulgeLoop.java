@@ -2,18 +2,15 @@ package melting.longBulgeMethod;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public class Santalucia04LongBulgeLoop extends DecomposedBulgeLoopMethod{
+public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
 /*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
-	
-	private DataCollect collector;
 	
 	public Santalucia04LongBulgeLoop(){
 		Helper.loadData("Santalucia2004longbulge.xml", this.collector);
@@ -22,7 +19,10 @@ public class Santalucia04LongBulgeLoop extends DecomposedBulgeLoopMethod{
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
 		
-		result = super.calculateThermodynamics(seq, seq2, pos1, pos2, result);
+		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
+		Thermodynamics bulge = this.collector.getBulgeLoopvalue(bulgeSize);
+		
+		result.setEntropy(result.getEntropy() + bulge.getEntropy());
 		
 		if ((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'T') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))){
 			Thermodynamics closure = this.collector.getClosureValue("A", "T");
@@ -64,6 +64,11 @@ public class Santalucia04LongBulgeLoop extends DecomposedBulgeLoopMethod{
 			if (this.collector.getClosureValue("A", "T") == null){
 				return true;
 			}
+		}
+		
+		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
+		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
+			return true;
 		}
 		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
