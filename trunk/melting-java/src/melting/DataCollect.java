@@ -61,6 +61,7 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getModifiedvalue(String seq1, String seq2, String sens){
+	
 		Thermodynamics s = datas.get("modified"+seq1+"/"+seq2+"sens"+sens);;
 		if (s == null){
 			s = datas.get("modified"+getSymetricSequence(seq1, seq2)+"sens"+sens);
@@ -68,15 +69,101 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getModifiedvalue(String seq1, String seq2, String sens, String type){
-		Thermodynamics s = datas.get("modified"+type+seq1+"/"+seq2+"sens"+sens);
+	public Thermodynamics getAzobenzeneValue(String seq1, String seq2){
+		
+		String sequence = seq1;
+		String complementary = seq2;
+		String typeBase = "";
+		
+		if (seq1.contains("X")){
+			complementary = complementary.replaceAll("-","");
+			
+		}
+		else {
+			sequence = sequence.replace("-","");
+		}
+		
+		if (sequence.contains("_T")){
+			sequence = sequence.replace("_T", "");
+			typeBase = "trans";
+		}
+		else if (sequence.contains("_C")){
+			sequence = sequence.replace("_C", "");
+			typeBase = "cys";
+		}
+		else if (complementary.contains("_T")){
+			complementary = complementary.replace("_T", "");
+			typeBase = "trans";
+		}
+		else if (complementary.contains("_C")){
+			complementary = complementary.replace("_C", "");
+			typeBase = "cys";
+		}
+		
+		Thermodynamics s = datas.get("modified"+ "type" + typeBase + sequence+"/"+complementary);
 		if (s == null){
-			s = datas.get("modified"+type+getSymetricSequence(seq1, seq2)+"sens"+sens);
+			s = datas.get("modified"+"type" + typeBase + getSymetricSequence(sequence, complementary));
 		}
 		return s;
 	}
 	
-	public Thermodynamics getDanglingValue(String seq1, String seq2, String sens){
+	public Thermodynamics getLockedAcidValue(String seq1, String seq2){
+		String sequence = seq1;
+		String complementary = seq2;
+		
+		if (sequence.contains("L")){
+			complementary.replace("-", "");
+		}
+		
+		if (complementary.contains("L")){
+			sequence.replace("-", "");
+		}
+		
+		Thermodynamics s = getModifiedvalue(sequence, complementary);
+		return s;
+	}
+	
+	public Thermodynamics getDeoxyadenosineValue(String seq1, String seq2){
+		String sequence = seq1;
+		String complementary = seq2;
+		
+		if ((sequence.contains("-A") || sequence.contains("-X")) && (complementary.contains("-A") == false && complementary.contains("-X") == false)){
+			complementary.replace("-", "");
+		}
+		if ((complementary.contains("-A") || complementary.contains("-X")) && (sequence.contains("-A") == false && sequence.contains("-X") == false)){
+			sequence.replace("-", "");
+		}
+		
+		Thermodynamics s = getModifiedvalue(sequence, complementary);
+		return s;
+	}
+	
+	public Thermodynamics getHydroxyadenosineValue(String seq1, String seq2){
+		String sequence = seq1;
+		String complementary = seq2;
+		String sens = getSens(seq1, seq2);
+		
+		if (sequence.contains("A*")){
+			complementary = complementary.replaceAll("-", "");
+		}
+		else {
+			sequence = sequence.replaceAll("-", "");
+		}
+		
+		if (sens == null){
+			Thermodynamics s = getModifiedvalue(sequence, complementary);
+			return s;
+		}
+		else {
+			Thermodynamics s = getModifiedvalue(sequence, complementary, sens);
+			return s;
+		}
+	}
+	
+	public Thermodynamics getDanglingValue(String seq1, String seq2){
+		String sens = getSens(seq1, seq2);
+		seq1.replaceAll("-", "");
+		seq2.replaceAll("-", "");
 		Thermodynamics s = datas.get("dangling"+seq1+"/"+seq2+"sens"+sens);
 		if (s == null){
 			s = datas.get("dangling"+getSymetricSequence(seq1, seq2)+"sens"+sens);
@@ -193,6 +280,22 @@ public class DataCollect {
 	public Thermodynamics getInitiationBulgevalue(String size){
 		Thermodynamics s = datas.get("mismatch"+"initiation"+"size"+size);
 		return s;
+	}
+	
+	private String getSens(String seq1, String seq2){
+		if (seq2.charAt(0) == '-'){
+			return "5";
+		}
+		else if (seq1.charAt(0) == '-'){
+			return "3";
+		}
+		else if (seq2.charAt(seq2.length() - 1) == '-'){
+			return "3";
+		}
+		else if (seq1.charAt(seq1.length() - 1) == '-'){
+			return "5";
+		}
+		return null;
 	}
 
 }

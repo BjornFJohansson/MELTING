@@ -2,19 +2,15 @@ package melting.InternalLoopMethod;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
-public class Santalucia04InternalLoop implements PartialCalculMethod{
+public class Santalucia04InternalLoop extends PartialCalcul{
 
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-	
-	private DataCollect collector;
 	
 	public Santalucia04InternalLoop(){
 		Helper.loadData("Santalucia2004longmm.xml", this.collector);
@@ -43,14 +39,10 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 		return result;
 	}
 
-	public DataCollect getCollector() {
-		return this.collector;
-	}
-
 	public boolean isApplicable(HashMap<String, String> options, int pos1,
 			int pos2) {
 		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = true;
+		boolean isApplicable = super.isApplicable(options, pos1, pos2);
 		String seq1 = options.get(OptionManagement.sequence);
 		String seq2 = options.get(OptionManagement.complementarySequence);
 		
@@ -67,12 +59,6 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 			isApplicable = false;
 		}
 		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)){
-			System.out.println("WARNING : some thermodynamic parameters are missing.");
-			
-			isApplicable = false;
-		}
-		
 		return isApplicable;
 	}
 
@@ -81,21 +67,15 @@ public class Santalucia04InternalLoop implements PartialCalculMethod{
 		
 		String seq = seq1.substring(pos1, pos2+1);
 		String complementarySeq = seq2.substring(pos1, pos2+1); 
+		boolean isMissingParameters = super.isMissingParameters(seq1, seq2, pos1, pos2);
 		
 		if (Helper.isAsymetricLoop(seq, complementarySeq)){
 			Thermodynamics 	asymetry = collector.getAsymetry();
 			if (asymetry == null) {
-				return true;
+				isMissingParameters = true;
 			}
 		}
-		return false;
-	}
-	
-	public void loadSingleMismatchData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
-		RegisterCalculMethod getData = new RegisterCalculMethod();
-		PartialCalculMethod singleMismatchMethod = getData.getSingleMismatchMethod(optionSet, result, pos1, pos2);
-		
-		this.collector.getDatas().putAll(singleMismatchMethod.getCollector().getDatas());
+		return isMissingParameters;
 	}
 	
 	private double calculateGibbs (String seq1, String seq2){

@@ -3,22 +3,27 @@ package melting.longBulgeMethod;
 import java.util.HashMap;
 
 import melting.Helper;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public class Turner99_06LongBulgeLoop extends DecomposedBulgeLoopMethod{
+public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
-	public Turner99_06SingleBulgeLoop(){
+	public Turner99_06LongBulgeLoop(){
 		Helper.loadData("Turner1999_2006longbulge.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
-		result = super.calculateThermodynamics(seq, seq2, pos1, pos2, result);
+		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
+		Thermodynamics bulge = this.collector.getInitiationBulgevalue(bulgeSize);
+		
+		result.setEnthalpy(result.getEnthalpy() + bulge.getEnthalpy());
+		result.setEntropy(result.getEntropy() + bulge.getEntropy());
 		
 		if ((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))){
 			Thermodynamics closure = this.collector.getClosureValue("A", "T");
@@ -79,6 +84,11 @@ public class Turner99_06LongBulgeLoop extends DecomposedBulgeLoopMethod{
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
+		}
+		
+		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
+		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
+			return true;
 		}
 		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
