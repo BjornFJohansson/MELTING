@@ -10,7 +10,7 @@ public class Santalucia05Inosine extends InosineNNMethod{
 	/*Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267*/
 	
 	public Santalucia05Inosine(){
-		Helper.loadData("Santalucia2005inomn.xml", this.collector);
+		loadData("Santalucia2005inomn.xml", this.collector);
 	}
 	
 	public boolean isApplicable(HashMap<String, String> options, int pos1,

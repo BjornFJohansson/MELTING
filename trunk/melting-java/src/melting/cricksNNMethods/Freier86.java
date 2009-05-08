@@ -1,8 +1,6 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
-
-import melting.configuration.OptionManagement;
+import melting.Environment;
 
 public class Freier86 extends CricksNNMethod {
 	
@@ -12,13 +10,11 @@ public class Freier86 extends CricksNNMethod {
 		super("Freier1986nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
-		
-		if (hybridization.equals("rnarna") == false){
-			if (hybridization.equals("mrnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
+			if (environment.getHybridization().equals("mrnarna") == false){
 				isApplicable = false;
 			}
 			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Freier et al. (1986)" +

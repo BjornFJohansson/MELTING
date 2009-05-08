@@ -2,7 +2,6 @@ package melting.modifiedNucleicAcidMethod;
 
 import java.util.HashMap;
 
-import melting.Helper;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
@@ -12,7 +11,7 @@ public class Znosco07Inosine extends InosineNNMethod {
 	/*Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 */
 	
 	public Znosco07Inosine(){
-		Helper.loadData("Znosco2007inomn.xml", this.collector);
+		loadData("Znosco2007inomn.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

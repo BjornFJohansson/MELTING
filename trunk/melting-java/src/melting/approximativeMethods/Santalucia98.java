@@ -10,19 +10,16 @@ public class Santalucia98 extends ApproximativeMode{
 	 * */
 
 	public ThermoResult CalculateThermodynamics() {
-		ThermoResult result = super.CalculateThermodynamics();
+		double Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528 / this.environment.getSequences().getDuplexLength();
 		
-		this.Tm = 77.1 + 11.7 * Math.log10(this.Na) + 0.41 * this.percentGC - 528 / this.duplexLength;
-		
-		
-		result.setTm(this.Tm);
-		return result;
+		this.environment.setResult(Tm);
+		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
-boolean isApplicable = super.isApplicable();
+		boolean isApplicable = super.isApplicable();
 		
-		if (this.hybridization.equals("dnadna") == false){
+		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : the polymer Santalucia equation" +
 					"was originally established for DNA duplexes.");

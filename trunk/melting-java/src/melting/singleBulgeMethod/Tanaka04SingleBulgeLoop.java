@@ -2,7 +2,6 @@ package melting.singleBulgeMethod;
 
 import java.util.HashMap;
 
-import melting.Helper;
 import melting.configuration.OptionManagement;
 
 public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
@@ -10,7 +9,7 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150*/
 	
 	public Tanaka04SingleBulgeLoop(){
-		Helper.loadData("Tanaka2004Bulge.xml", this.collector);
+		loadData("Tanaka2004Bulge.xml", this.collector);
 	}
 
 	public boolean isApplicable(HashMap<String, String> options, int pos1,

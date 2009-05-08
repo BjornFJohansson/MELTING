@@ -31,18 +31,16 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	 */
 	
 	public ThermoResult CalculateThermodynamics() {
-		ThermoResult result = super.CalculateThermodynamics();
-		
-		this.Tm = 81.5 + 16.6 * Math.log10(this.Na) + 0.41 * this.percentGC - 675 / this.duplexLength;
-		
-		result.setTm(this.Tm);
-		return result;
+		double Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
+
+		this.environment.setResult(Tm);
+		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		
-		if (this.hybridization.equals("dnadna") == false){
+		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : the Marmur-Schildkraut-Doty equation" +
 					"was originally established for DNA duplexes.");

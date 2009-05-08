@@ -2,7 +2,6 @@ package melting.singleBulgeMethod;
 
 import java.util.HashMap;
 
-import melting.Helper;
 import melting.configuration.OptionManagement;
 
 public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
@@ -10,7 +9,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
 	
 	public Serra07SingleBulgeLoop(){
-		Helper.loadData("Serra07bulge.xml", this.collector);
+		loadData("Serra07bulge.xml", this.collector);
 	}
 
 	public boolean isApplicable(HashMap<String, String> options, int pos1,

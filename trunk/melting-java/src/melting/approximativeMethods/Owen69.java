@@ -21,18 +21,17 @@ public class Owen69 extends ApproximativeMode{
 */
 	
 	public ThermoResult CalculateThermodynamics() {
-		ThermoResult result = super.CalculateThermodynamics();
+		int percentGC = this.environment.getSequences().calculatePercentGC();
+		double Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
 		
-		this.Tm = 87.16 + 0.345 * this.percentGC + Math.log10(this.Na) * (20.17 - 0.066 * this.percentGC);
-		
-		result.setTm(this.Tm);
-		return result;
+		this.environment.setResult(Tm);
+		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
-boolean isApplicable = super.isApplicable();
+		boolean isApplicable = super.isApplicable();
 		
-		if (this.hybridization.equals("dnadna") == false){
+		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : the Owen et al. equation" +
 					"was originally established for DNA duplexes.");

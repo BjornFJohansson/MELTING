@@ -1,6 +1,11 @@
 package melting;
 
+import java.io.File;
 import java.util.HashMap;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
@@ -10,7 +15,7 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 
 	protected DataCollect collector;
 	
-	public abstract ThermoResult calculateThermodynamics(String seq, String seq2,
+	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
 
@@ -18,12 +23,11 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		return this.collector;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
+		NucleotidSequences sequences = new NucleotidSequences(environment.getOptions().get(OptionManagement.sequence),environment.getOptions().get(OptionManagement.complementarySequence));
 		
-		if (isMissingParameters(seq1, seq2, pos1, pos2)) {
+		if (isMissingParameters(sequences, pos1, pos2)) {
 			System.err.println("Some thermodynamic parameters are missing to compute" +
 					"melting temperature.");
 			return false;
@@ -31,7 +35,7 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		return true;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		return false;
 	}
@@ -49,25 +53,16 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		
 		this.collector.getDatas().putAll(crickNNMethod.getCollector().getDatas());
 	}
-	
-	protected String getSens(String seq1, String seq2, int pos1, int pos2){
-		if (pos1 == 0){
-			if (seq2.contains("-")){
-				return "5";
-			}
-			else if (seq1.contains("-")){
-				return "3";
-			}
-		}
-		else if (pos2 == Math.min(seq1.length(), seq2.length())){
-			if (seq2.contains("-")){
-				return "3";
-			}
-			else if (seq1.contains("-")){
-				return "5";
-			}
-		}
-		return null;
-	}
 
+	public void loadData(String fileName, DataCollect collector){
+		File dataFile = new File(OptionManagement.dataPathway + "/" + fileName);
+		FileReader reader = new FileReader();
+		try {
+			reader.readFile(dataFile, collector.getDatas());
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
+	}
 }

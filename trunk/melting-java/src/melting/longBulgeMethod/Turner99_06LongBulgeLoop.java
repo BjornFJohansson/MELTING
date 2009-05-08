@@ -14,13 +14,18 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 	public Turner99_06LongBulgeLoop(){
-		Helper.loadData("Turner1999_2006longbulge.xml", this.collector);
+		loadData("Turner1999_2006longbulge.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
 			int pos1, int pos2, ThermoResult result) {
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		Thermodynamics bulge = this.collector.getInitiationBulgevalue(bulgeSize);
+		
+		if (bulge == null){
+			Thermodynamics experimentalBulge = this.collector.getInitiationBulgevalue("6");
+			bulge = new Thermodynamics(0, experimentalBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6)));
+		}
 		
 		result.setEnthalpy(result.getEnthalpy() + bulge.getEnthalpy());
 		result.setEntropy(result.getEntropy() + bulge.getEntropy());
@@ -87,8 +92,10 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		}
 		
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
-		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
-			return true;
+		if (this.collector.getInitiationBulgevalue(bulgeSize) == null){
+			if (this.collector.getInitiationBulgevalue("6") == null){
+				return true;
+			}
 		}
 		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}

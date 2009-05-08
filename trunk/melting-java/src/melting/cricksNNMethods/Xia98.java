@@ -1,11 +1,7 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
-
-import melting.Helper;
+import melting.Environment;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Xia98 extends CricksNNMethod {
 
@@ -15,12 +11,11 @@ public class Xia98 extends CricksNNMethod {
 		super("Xia1998nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("rnarna") == false){
-			if (hybridization.equals("mrnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
+			if (environment.getHybridization().equals("mrnarna") == false){
 				isApplicable = false;
 			}
 			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Xia et al. (1998)" +
@@ -29,30 +24,21 @@ public class Xia98 extends CricksNNMethod {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		result = super.calculateInitiationHybridation(options, result);
+	public ThermoResult calculateInitiationHybridation(Environment environment){
+		environment.setResult(calculateInitiationHybridation(environment));
 		
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		String seq1 = "";
-		String complementarySeq = "";
-		int duplexLength = Math.min(seq1.length(), complementarySeq.length());
-		int numberParameter = 0;
+		int numberTerminalAU = environment.getSequences().calculateNumberOfTerminal('A', 'U');
+		double enthalpy = 0;
+		double entropy = 0;
 		
-		result = super.calculateInitiationHybridation(options, result);
-		
-		if ((seq1.charAt(0) == 'A' || seq1.charAt(0) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(0), complementarySeq.charAt(0))) {
-			parameter = this.collector.getTerminal("per_A/U");
-			numberParameter++;
+		if (numberTerminalAU != 0) {
+			enthalpy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEnthalpy();
+			entropy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEntropy();
 		}
 		
-		if ((seq1.charAt(duplexLength - 1) == 'A' || seq1.charAt(duplexLength - 1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength - 1), complementarySeq.charAt(duplexLength - 1))) {
-			numberParameter++;
-		}
+		environment.setResult(enthalpy, entropy);
 		
-		result.setEnthalpy(result.getEnthalpy() + numberParameter * parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + numberParameter * parameter.getEntropy());
-		
-		return result;
+		return environment.getResult();
 	}
 
 }

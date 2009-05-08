@@ -13,7 +13,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 /*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	public Santalucia04LongBulgeLoop(){
-		Helper.loadData("Santalucia2004longbulge.xml", this.collector);
+		loadData("Santalucia2004longbulge.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
@@ -21,6 +21,11 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		Thermodynamics bulge = this.collector.getBulgeLoopvalue(bulgeSize);
+		
+		if (bulge == null){
+			Thermodynamics experimentalBulge = this.collector.getBulgeLoopvalue("30");
+			bulge = new Thermodynamics(0, experimentalBulge.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.getInteger(bulgeSize) / 30));
+		}
 		
 		result.setEntropy(result.getEntropy() + bulge.getEntropy());
 		
@@ -68,7 +73,9 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
+			if (this.collector.getBulgeLoopvalue("30") == null){
 			return true;
+			}
 		}
 		return super.isMissingParameters(seq1, seq2, pos1, pos2);
 	}
