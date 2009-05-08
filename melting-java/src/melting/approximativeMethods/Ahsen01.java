@@ -11,18 +11,17 @@ public class Ahsen01 extends ApproximativeMode{
 	 * */
 
 	public ThermoResult CalculateThermodynamics() {
-		ThermoResult result = super.CalculateThermodynamics();
+		int percentGC = this.environment.getSequences().calculatePercentGC();
+		double Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550 / this.environment.getSequences().getDuplexLength();
+		environment.setResult(Tm);
 		
-		this.Tm = 80.4 + 0.345 * this.percentGC + Math.log10(this.Na) * (17.0 - 0.135 * this.percentGC) - 550 / this.duplexLength;
-
-		result.setTm(this.Tm);		
-		return result;
+		return environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		
-		if (this.hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : the Ahsen et al. equation" +
 					"was originally established for DNA duplexes.");

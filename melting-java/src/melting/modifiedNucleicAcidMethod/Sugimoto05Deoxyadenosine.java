@@ -10,8 +10,10 @@ import melting.configuration.OptionManagement;
 
 public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	
+	/*Sugimoto et al. (2005). Analytical sciences 21 : 77-82*/ 
+	
 	public Sugimoto05Deoxyadenosine(){
-		Helper.loadData("Sugimoto2005LdeoxyAmn.xml", this.collector);
+		loadData("Sugimoto2005LdeoxyAmn.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

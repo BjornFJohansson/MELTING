@@ -2,12 +2,9 @@ package melting.woddleNNMethod;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
-import melting.Helper;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
 public class Turner99Woddle extends PartialCalcul{
@@ -15,7 +12,7 @@ public class Turner99Woddle extends PartialCalcul{
 	/*REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
 	public Turner99Woddle(){
-		Helper.loadData("Turner1999woddle.xml", this.collector);
+		loadData("Turner1999woddle.xml", this.collector);
 	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

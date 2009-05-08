@@ -14,7 +14,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
 	public Turner99_06tanmm() {
-		Helper.loadData("Turner1999_2006tanmm.xml", this.collector);
+		loadData("Turner1999_2006tanmm.xml", this.collector);
 	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

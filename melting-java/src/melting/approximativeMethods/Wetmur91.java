@@ -9,14 +9,12 @@ public class Wetmur91 extends ApproximativeMode{
 	
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
-
-	private int percentMismatching;
 	
 	public boolean isApplicable() {
 
 		boolean isApplicable = super.isApplicable();
 		
-		if (this.hybridization.equals("rnarna") == false || this.hybridization.equals("dnadna") == false || this.hybridization.equals("dnarna") == false || this.hybridization.equals("rnadna") == false){
+		if (this.environment.getHybridization().equals("rnarna") == false || this.environment.getHybridization().equals("dnadna") == false || this.environment.getHybridization().equals("dnarna") == false || this.environment.getHybridization().equals("rnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : the wetmur equation was originally established for DNA, RNA or hybrid DNA/RNA duplexes.");
 		}
@@ -25,26 +23,22 @@ public class Wetmur91 extends ApproximativeMode{
 	}
 	
 	public ThermoResult CalculateThermodynamics() {
-		ThermoResult result = super.CalculateThermodynamics();
+		int percentGC = this.environment.getSequences().calculatePercentGC();
+		int percentMismatching = this.environment.getSequences().getPercentMismatching();
+		int duplexLength = this.environment.getSequences().getDuplexLength();
+		double Tm = 0;
 		
-		if (this.hybridization.equals("dnadna")){
-			this.Tm = 81.5 + 16.6 * Math.log10(this.Na / (1.0 + 0.7 * this.Na)) + 0.41 * this.percentGC - 500 / this.duplexLength - this.percentMismatching;
+		if (this.environment.getHybridization().equals("dnadna")){
+			Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 * this.environment.getNa())) + 0.41 * percentGC - 500 / duplexLength - percentMismatching;
 		}
-		else if (this.hybridization.equals("rnarna")){
-			this.Tm = 78 + 16.6 * Math.log10(this.Na / (1.0 + 0.7 * this.Na)) + 0.7 * this.percentGC - 500 / this.duplexLength - this.percentMismatching;
+		else if (this.environment.getHybridization().equals("rnarna")){
+			Tm = 78 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 * this.environment.getNa())) + 0.7 * percentGC - 500 / duplexLength - percentMismatching;
 		}
-		else if (this.hybridization.equals("dnarna") ||this. hybridization.equals("rnadna")){
-			this.Tm = 67 + 16.6 * Math.log10(this.Na / (1.0 + 0.7 *this.Na)) + 0.8 * this.percentGC - 500 / this.duplexLength - this.percentMismatching;
+		else if (this.environment.getHybridization().equals("dnarna") ||this.environment.getHybridization().equals("rnadna")){
+			Tm = 67 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 *this.environment.getNa())) + 0.8 * percentGC - 500 / duplexLength - percentMismatching;
 		}
 		
-		result.setTm(this.Tm);
-		return result;
+		this.environment.setResult(Tm);
+		return this.environment.getResult();
 	}
-	
-	public void setUpVariable(HashMap<String, String> options) {
-		super.setUpVariable(options);
-		
-		this.percentMismatching = Helper.getPercentMismatching(this.seq, this.seq2);
-	}
-
 }

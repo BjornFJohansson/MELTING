@@ -5,6 +5,7 @@ import java.util.HashMap;
 import melting.ThermoResult;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
+import melting.InternalLoopMethod.Znosco071x2Loop;
 import melting.approximativeMethods.Ahsen01;
 import melting.approximativeMethods.ApproximativeMode;
 import melting.approximativeMethods.MarmurChester62_93;
@@ -26,7 +27,6 @@ import melting.cricksNNMethods.Sugimoto95;
 import melting.cricksNNMethods.Tanaka04;
 import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
-import melting.longBulgeMethod.DecomposedBulgeLoopMethod;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 import melting.nearestNeighborModel.NearestNeighborMode;
@@ -116,7 +116,6 @@ public class RegisterCalculMethod {
 	private void initializeTandemMismatchMethods(){
 		this.tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
 		this.tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
-		this.tandemMismatchMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
 	}
 	
 	private void initializeWoddleMismatchMethods(){
@@ -126,6 +125,7 @@ public class RegisterCalculMethod {
 	private void initializeInternalLoopMethods(){
 		this.internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
 		this.internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
+		this.internalLoopMethod.put("Znosco_2007", Znosco071x2Loop.class);
 	}
 	
 	private void initializeSingleBulgeLoopMethods(){
@@ -301,8 +301,11 @@ public class RegisterCalculMethod {
 	try {
 		method = this.singleBulgeLoopMethod.get(methodName).newInstance();
 		
-		if (method instanceof DecomposedBulgeLoopMethod){
-			((DecomposedBulgeLoopMethod) method).loadCrickNNData(optionSet, pos1, pos2, result);
+		if (method instanceof Santalucia04SingleBulgeLoop){
+			((Santalucia04SingleBulgeLoop) method).loadCrickNNData(optionSet, pos1, pos2, result);
+		}
+		if (method instanceof Turner99_06SingleBulgeLoop){
+			((Turner99_06SingleBulgeLoop) method).loadCrickNNData(optionSet, pos1, pos2, result);
 		}
 		if (method.isApplicable(optionSet, pos1, pos2)) {
 			return method;

@@ -1,9 +1,10 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
 
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
-import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 
@@ -11,29 +12,36 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		super(fileName);
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		Thermodynamics parameter1 = new Thermodynamics(0,0);
-		Thermodynamics parameter2 = new Thermodynamics(0,0);
-		String seq1 = "";
-		String complementarySeq = "";
-		int duplexLength = Math.min(seq1.length(), complementarySeq.length());
+	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
-		result = super.calculateInitiationHybridation(options, result);
+		environment.setResult(super.calculateInitiationHybridation(environment));
 		
-		parameter1 = this.collector.getInitiation("per_"+ seq1.charAt(0) + "/" + complementarySeq.charAt(0));
-		parameter2 = this.collector.getInitiation("per_"+ seq1.charAt(duplexLength - 1) + "/" + complementarySeq.charAt(duplexLength - 1));
+		NucleotidSequences sequences = new NucleotidSequences(environment.getOptions().get(OptionManagement.sequence), environment.getOptions().get(OptionManagement.complementarySequence));
+		int numberTerminalGC = sequences.calculateNumberOfTerminal('G', 'C');
+		int numberTerminalAT = sequences.calculateNumberOfTerminal('A', 'T');
+		int numberTerminalAU = sequences.calculateNumberOfTerminal('A', 'U');
 		
-		if (parameter1 == null) {
-			parameter1 = this.collector.getInitiation("per_"+ complementarySeq.charAt(0) + "/" + seq1.charAt(0));
+		double enthalpy = 0;
+		double entropy = 0;
+		
+		if (numberTerminalAT != 0){
+			enthalpy += numberTerminalAT * this.collector.getInitiation("per_A/T").getEnthalpy();
+			entropy += numberTerminalAT * this.collector.getInitiation("per_A/T").getEntropy();
 		}
 		
-		if (parameter2 == null) {
-			parameter2 = this.collector.getInitiation("per_"+ complementarySeq.charAt(duplexLength - 1) + "/" + seq1.charAt(duplexLength - 1));
+		if (numberTerminalAU != 0){
+			enthalpy += numberTerminalAU * this.collector.getInitiation("per_A/U").getEnthalpy();
+			entropy += numberTerminalAU * this.collector.getInitiation("per_A/U").getEntropy();
 		}
-		result.setEnthalpy(result.getEnthalpy() + parameter1.getEnthalpy() + parameter2.getEnthalpy());
-		result.setEntropy(result.getEntropy() + parameter1.getEntropy() + parameter2.getEntropy());
 		
-		return result;
+		if (numberTerminalGC != 0){
+			enthalpy += numberTerminalGC * this.collector.getInitiation("per_G/C").getEnthalpy();
+			entropy += numberTerminalGC * this.collector.getInitiation("per_G/C").getEntropy();
+		}
+		
+		environment.setResult(enthalpy, entropy);
+		
+		return environment.getResult();
 	}
 
 }

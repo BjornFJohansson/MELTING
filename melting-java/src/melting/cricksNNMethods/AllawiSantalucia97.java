@@ -1,8 +1,6 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
-
-import melting.configuration.OptionManagement;
+import melting.Environment;
 
 public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 
@@ -12,12 +10,10 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 		super("AllawiSantalucia1997nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
-		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : The thermodynamic parameters of Allawi and Santalucia (1997)" +
 					"are established for DNA sequences ");

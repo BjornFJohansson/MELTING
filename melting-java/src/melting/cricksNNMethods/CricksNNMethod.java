@@ -1,8 +1,8 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -11,53 +11,51 @@ import melting.configuration.OptionManagement;
 public abstract class CricksNNMethod extends PartialCalcul{
 	
 	public CricksNNMethod(String fileName){
-		Helper.loadData(fileName, this.collector);
+		loadData(fileName, this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		String seq1 = "";
-		String complementarySeq = "";
-		Thermodynamics parameter = new Thermodynamics(0,0);
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
 		 
 		for (int i = pos1; i <= pos2 - 1; i++){
-			seq1 = seq.substring(i, i+2);
-			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getNNvalue(seq1, complementarySeq);
-			
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
-		}
-		return result;
-	}
-	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		Thermodynamics parameter = this.collector.getInitiation();
-		
-		if (parameter != null) {
-			result.setEnthalpy(parameter.getEnthalpy());
-			result.setEntropy(parameter.getEntropy());
+			enthalpy += this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
+			entropy += this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
 		}
 		
-		if (options.containsKey(OptionManagement.selfComplementarity)){
-			parameter = this.collector.getSymetry();
-			
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
-		}
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 	
-	public boolean isMissingParameters(String seq1, String seq2, int pos1, int pos2){
-		Thermodynamics parameter = new Thermodynamics(0,0);
+	public ThermoResult calculateInitiationHybridation(Environment environment){
+		double enthalpy = 0;
+		double entropy = 0;
+		
+		Thermodynamics initiation = this.collector.getInitiation();
+		
+		if (initiation != null) {
+			enthalpy += initiation.getEnthalpy();
+			entropy += initiation.getEntropy();
+		}
+		
+		if (environment.getOptions().containsKey(OptionManagement.selfComplementarity)){
+			enthalpy += this.collector.getSymetry().getEnthalpy();
+			entropy += this.collector.getSymetry().getEntropy();
+		}
+		
+		environment.setResult(enthalpy, entropy);
+		
+		return environment.getResult();
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 		
 		for (int i = pos1; i < pos2; i++){
-			String seq = seq1.substring(i, i+2);
-			String complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getNNvalue(seq, complementarySeq);
 			
-			if (parameter == null) {
+			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
 				return true;
 			}
 		}

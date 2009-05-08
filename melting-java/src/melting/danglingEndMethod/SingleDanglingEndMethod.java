@@ -1,26 +1,40 @@
 package melting.danglingEndMethod;
 
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
 
 public abstract class SingleDanglingEndMethod extends PartialCalcul {
 
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		Thermodynamics parameter = this.collector.getDanglingValue(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
-			
-		result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + parameter.getEntropy());
+		double enthalpy = result.getEnthalpy() + this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEnthalpy() + this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();		
+					
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 	
-	public boolean isMissingParameters(String seq1, String seq2, int pos1, int pos2){
-		if (this.collector.getDanglingValue(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)) == null){
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		
+		if (pos1 != 0 && pos2 != environment.getSequences().getDuplexLength() - 1){
+			isApplicable = false;
+			System.out.println("ERROR : It is possible to use Thermodynamic parameters only for dangling" +
+					"ends");
+		}
+		return isApplicable;
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
+		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 }

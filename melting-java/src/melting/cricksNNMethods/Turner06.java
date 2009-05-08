@@ -1,11 +1,9 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Turner06 extends CricksNNMethod {
 
@@ -13,12 +11,27 @@ public class Turner06 extends CricksNNMethod {
 		super("Turner2006nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
+		 
+		for (int i = pos1; i <= pos2 - 1; i++){
+			enthalpy += this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
+			entropy += this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
+		}
 		
-		if (hybridization.equals("mrnarna") == false){
-			if (hybridization.equals("rnarna") == false){
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		return result;
+	}
+	
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
+		
+		if (environment.getHybridization().equals("mrnarna") == false){
+			if (environment.getHybridization().equals("rnarna") == false){
 				isApplicable = false;
 			}
 			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Turner et al. (2006)" +
@@ -27,30 +40,20 @@ public class Turner06 extends CricksNNMethod {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		result = super.calculateInitiationHybridation(options, result);
+	public ThermoResult calculateInitiationHybridation(Environment environment){
+		environment.setResult(super.calculateInitiationHybridation(environment));
+		int numberTerminalAU = environment.getSequences().calculateNumberOfTerminal('A', 'U');
+		double enthalpy = 0;
+		double entropy = 0;
 		
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		String seq1 = "";
-		String complementarySeq = "";
-		int duplexLength = Math.min(seq1.length(), complementarySeq.length());
-		int numberParameter = 0;
-		
-		result = super.calculateInitiationHybridation(options, result);
-		
-		if ((seq1.charAt(0) == 'A' || seq1.charAt(0) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(0), complementarySeq.charAt(0))) {
-			parameter = this.collector.getTerminal("per_A/U");
-			numberParameter++;
+		if (numberTerminalAU != 0) {
+			enthalpy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEnthalpy();
+			entropy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEntropy();
 		}
 		
-		if ((seq1.charAt(duplexLength - 1) == 'A' || seq1.charAt(duplexLength - 1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength - 1), complementarySeq.charAt(duplexLength - 1))) {
-			numberParameter++;
-		}
+		environment.setResult(enthalpy, entropy);
 		
-		result.setEnthalpy(result.getEnthalpy() + numberParameter * parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + numberParameter * parameter.getEntropy());
-		
-		return result;
+		return environment.getResult();
 	}
 
 }

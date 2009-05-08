@@ -2,6 +2,7 @@ package melting.cricksNNMethods;
 
 import java.util.HashMap;
 
+import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
@@ -14,12 +15,10 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		super("Santalucia1998nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
-		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : The thermodynamic parameters of Santalucia et al (1996)" +
 					"are established for DNA sequences ");
@@ -27,19 +26,18 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		String seq1 = "";
-		String complementarySeq = "";
+	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
-		result = super.calculateInitiationHybridation(options, result);
+		environment.setResult(super.calculateInitiationHybridation(environment));
+		double enthalpy = 0;
+		double entropy = 0;
 		
-		if (seq1.charAt(0) == 'T' && complementarySeq.charAt(0) == 'A') {
-			parameter = this.collector.getTerminal("5_T/A");
-			
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
+		if (environment.getSequences().isTerminal5AT()) {
+			enthalpy += this.collector.getTerminal("5_T/A").getEnthalpy();
+			entropy += this.collector.getTerminal("5_T/A").getEntropy();
 		}
-		return result;
+		
+		environment.setResult(enthalpy, entropy);
+		return environment.getResult();
 	}
 }

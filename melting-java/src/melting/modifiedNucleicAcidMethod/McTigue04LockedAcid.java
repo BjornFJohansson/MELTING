@@ -13,7 +13,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
 	
 	public McTigue04LockedAcid(){
-		Helper.loadData("McTigue2004lockedmn.xml", this.collector);
+		loadData("McTigue2004lockedmn.xml", this.collector);
 	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

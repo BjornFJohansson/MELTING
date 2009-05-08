@@ -1,11 +1,7 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
-
-import melting.Helper;
+import melting.Environment;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Santalucia04 extends CricksNNMethod {
 
@@ -15,12 +11,10 @@ public class Santalucia04 extends CricksNNMethod {
 		super("Santalucia2004nn.xml");
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(options, pos1, pos2);
-		String hybridization = options.get(OptionManagement.hybridization);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
-		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
 			System.out.println("WARNING : The thermodynamic parameters of Santalucia (2004)" +
 					"are established for DNA sequences ");
@@ -28,28 +22,21 @@ public class Santalucia04 extends CricksNNMethod {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(HashMap<String, String> options, ThermoResult result){
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		String seq1 = "";
-		String complementarySeq = "";
-		int duplexLength = Math.min(seq1.length(), complementarySeq.length());
-		int numberParameter = 0;
+	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
-		result = super.calculateInitiationHybridation(options, result);
+		environment.setResult(super.calculateInitiationHybridation(environment));
+		int numberTerminalAT = environment.getSequences().calculateNumberOfTerminal('A', 'T');
+		double enthalpy = 0;
+		double entropy = 0;
 		
-		if ((seq1.charAt(0) == 'A' || seq1.charAt(0) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(0), complementarySeq.charAt(0))) {
-			parameter = this.collector.getTerminal("per_A/T");
-			numberParameter++;
+		if (numberTerminalAT != 0){
+			enthalpy += numberTerminalAT * this.collector.getTerminal("per_A/T").getEnthalpy();
+			entropy += numberTerminalAT * this.collector.getTerminal("per_A/T").getEntropy();
 		}
 		
-		if ((seq1.charAt(duplexLength - 1) == 'A' || seq1.charAt(duplexLength - 1) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(duplexLength - 1), complementarySeq.charAt(duplexLength - 1))) {
-			numberParameter++;
-		}
+		environment.setResult(enthalpy, entropy);
 		
-		result.setEnthalpy(result.getEnthalpy() + numberParameter * parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + numberParameter * parameter.getEntropy());
-		
-		return result;
+		return environment.getResult();
 		
 	}
 

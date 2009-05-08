@@ -2,7 +2,6 @@ package melting.singleMismatchMethods;
 
 import java.util.HashMap;
 
-import melting.Helper;
 import melting.configuration.OptionManagement;
 
 public class Znosco08mm extends ZnoscoMethod {
@@ -10,7 +9,7 @@ public class Znosco08mm extends ZnoscoMethod {
 	/*REF: Brent M Znosko et al (2008). Biochemistry 47: 10178-10187.*/
 	
 	public Znosco08mm() {
-		Helper.loadData("Znosco2008mm.xml", this.collector);
+		loadData("Znosco2008mm.xml", this.collector);
 	}
 
 	public boolean isApplicable(HashMap<String, String> options, int pos1,

@@ -3,6 +3,7 @@ package melting.InternalLoopMethod;
 import java.util.HashMap;
 
 import melting.Helper;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -13,15 +14,32 @@ public class Turner06InternalLoop extends PartialCalcul{
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 	
 	public Turner06InternalLoop(){
-		Helper.loadData("Turner1999_2006longmm.xml", this.collector);
+		loadData("Turner1999_2006longmm.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+	
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
 		
-		Thermodynamics loopInitiation = this.collector.getInitiationLoopValue(Integer.toString(Helper.calculateLoopLength(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))));
-		Thermodynamics firstMismatch = this.collector.getFirstMismatch(seq.substring(pos1 + 1, pos1 + 2), seq2.substring(pos1 + 1, pos1 + 2), getLoopType(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)));
+		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))) != null){
+			enthalpy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEnthalpy();
+			entropy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+		}
+		else {
+			enthalpy += this.collector.getInitiationLoopValue(">6").getEnthalpy();
+			entropy += this.collector.getInitiationLoopValue(">6").getEntropy() - 1.08 * Math.log(sequences.calculateLoopLength(pos1, pos2) / 6);
+		}
+		
+		String mismatch1 = seq.substring(pos1, pos1 + 2).replace(seq.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq.substring(pos1, pos1 + 1)));
+		String mismatch2 = seq2.substring(pos1, pos1 + 2).replace(seq2.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq2.substring(pos1, pos1 + 1)));
 		String loopType = getLoopType(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
+		
+		if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
+			firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
+		}
 		
 		if (((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))) || ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos2), seq2.charAt(pos2)))){
 			Thermodynamics closure = this.collector.getClosureValue("A", "U");
@@ -89,7 +107,9 @@ public class Turner06InternalLoop extends PartialCalcul{
 			int pos2) {
 		
 		if (this.collector.getInitiationLoopValue(Integer.toString(Helper.calculateLoopLength(seq1.substring(pos1,pos2), seq2.substring(pos1, pos2)))) == null){
-			return true;
+			if (this.collector.getInitiationLoopValue("6") == null){
+				return true;
+			}
 		}
 		
 		if (((seq1.charAt(pos1) == 'A' || seq1.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos1), seq2.charAt(pos1))) || ((seq1.charAt(pos2) == 'A' || seq1.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos2), seq2.charAt(pos2)))){
@@ -110,7 +130,16 @@ public class Turner06InternalLoop extends PartialCalcul{
 			}
 		}
 		
-		if (this.collector.getFirstMismatch(seq1.substring(pos1 + 1, pos1 + 2), seq2.substring(pos1 + 1, pos1 + 2), getLoopType(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))) == null){
+		String mismatch1 = seq1.substring(pos1, pos1 + 2).replace(seq1.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq1.substring(pos1, pos1 + 1)));
+		String mismatch2 = seq2.substring(pos1, pos1 + 2).replace(seq2.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq2.substring(pos1, pos1 + 1)));
+		String loopType = getLoopType(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
+		
+		if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
+			firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
+		}
+		
+		if (firstMismatch == null){
 			return true;
 		}
 		return false;
@@ -131,8 +160,15 @@ public class Turner06InternalLoop extends PartialCalcul{
 					internalLoopSize2 ++;
 				}
 			}
-			
-			return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
+			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
+				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
+			}
+			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3) || (internalLoopSize2 == 2 && internalLoopSize1 != 3)){
+				return "others_non_2x2";
+			}
+			else {
+				return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
+			}
 		}
 		else{
 			String internalLoopSize = Integer.toString(seq1.length() - 2);

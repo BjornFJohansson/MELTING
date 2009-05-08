@@ -13,7 +13,7 @@ public class Turner06mm extends PartialCalcul{
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 
 	public Turner06mm(){
-		Helper.loadData("Turner1999_2006longmm.xml", this.collector);
+		loadData("Turner1999_2006longmm.xml", this.collector);
 	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

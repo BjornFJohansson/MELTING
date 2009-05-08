@@ -2,14 +2,10 @@ package melting.tandemMismatchMethod;
 
 import java.util.HashMap;
 
-import melting.DataCollect;
-import melting.Helper;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
@@ -20,7 +16,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
 	public AllawiSantaluciaPeyret97_98_99tanmm(){
-		Helper.loadData("AllawiSantaluciaPeyret1997_1998_1999tanmm.xml", this.collector);
+		loadData("AllawiSantaluciaPeyret1997_1998_1999tanmm.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

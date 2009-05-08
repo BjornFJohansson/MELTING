@@ -13,7 +13,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
 	
 	public Sugimoto01Hydroxyadenine(){
-		Helper.loadData("Sugimoto2001hydroxyAmn.xml", this.collector);
+		loadData("Sugimoto2001hydroxyAmn.xml", this.collector);
 	}
 	
 	public ThermoResult calculateThermodynamics(String seq, String seq2,

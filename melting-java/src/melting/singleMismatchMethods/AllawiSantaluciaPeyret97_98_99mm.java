@@ -17,7 +17,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
 	public AllawiSantaluciaPeyret97_98_99mm(){
-		Helper.loadData("AllawiSantaluciaPeyret1997_1998_1999mm.xml", this.collector);
+		loadData("AllawiSantaluciaPeyret1997_1998_1999mm.xml", this.collector);
 	}
 
 	public ThermoResult calculateThermodynamics(String seq, String seq2,
