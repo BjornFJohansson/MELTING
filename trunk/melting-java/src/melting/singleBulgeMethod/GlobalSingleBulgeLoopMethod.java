@@ -1,27 +1,29 @@
 package melting.singleBulgeMethod;
 
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 
 public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		Thermodynamics bulge = this.collector.getSingleBulgeLoopvalue(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		double enthalpy = result.getEnthalpy() + this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEntropy() + this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
 		
-		result.setEnthalpy(result.getEnthalpy() + bulge.getEnthalpy());
-		result.setEntropy(result.getEntropy() + bulge.getEntropy());
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 
 		return result;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		if (this.collector.getSingleBulgeLoopvalue(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)) == null){
+		if (this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
 }

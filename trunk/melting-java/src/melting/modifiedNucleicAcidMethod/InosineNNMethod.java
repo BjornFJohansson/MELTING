@@ -1,43 +1,37 @@
 package melting.modifiedNucleicAcidMethod;
 
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
 
 public abstract class InosineNNMethod extends PartialCalcul{
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		String seq1 = "";
-		String complementarySeq = "";
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		 
+			 
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
+		
 		for (int i = pos1; i <= pos2 - 1; i++){
-			seq1 = seq.substring(i, i+2);
-			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getModifiedvalue(seq1, complementarySeq);
-			
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
+			enthalpy += collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
+			entropy += collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
 		}
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		return result;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		String seq;
-		String complementarySeq; 
+		
 		for (int i = pos1; i < pos2; i++){
-			seq = seq1.substring(i, i+2);
-			complementarySeq = seq2.substring(i, i+2);
-			parameter = collector.getModifiedvalue(seq, complementarySeq);
-			
-			if (parameter == null) {
+	
+			if (collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
 				return true;
 			}
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
 }

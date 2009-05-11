@@ -1,12 +1,11 @@
 package melting.tandemMismatchMethod;
 
-import java.util.HashMap;
 
+import melting.Environment;
 import melting.Helper;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Turner99_06tanmm extends PartialCalcul{
 
@@ -17,51 +16,77 @@ public class Turner99_06tanmm extends PartialCalcul{
 		loadData("Turner1999_2006tanmm.xml", this.collector);
 	}
 
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		String seq1 = seq.substring(pos1, pos2+1);
-		String complementarySeq = seq2.substring(pos1, pos2+1);
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
 		StringBuffer closing = new StringBuffer();
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		
-		if (isSymetric(seq1, complementarySeq)){
-			closing.append(seq.charAt(0));
+	
+		if (sequences.isSymetric(pos1, pos2)){
+			closing.append(sequences.getSequence(pos1, pos2).charAt(0));
 			closing.append("/");
-			closing.append(complementarySeq.charAt(0));
+			closing.append(sequences.getComplementary(pos1, pos2).charAt(0));
 			
-			parameter = this.collector.getMismatchValue(seq1, complementarySeq, closing.toString());
-			result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-			result.setEntropy(result.getEntropy() + parameter.getEntropy());
-			
-			return result;
+			enthalpy += this.collector.getMismatchValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2), closing.toString()).getEnthalpy();
+			entropy += this.collector.getMismatchValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2), closing.toString()).getEntropy();
 		}
-		
-		String symetricSequence1 = buildSymetricSequence(seq1, complementarySeq);
-		String symetricSequence2 = buildSymetricComplementary(seq1, complementarySeq);
-		String symetricComplementary1 = buildSymetricSequence(Helper.getInversedSequence(complementarySeq), Helper.getInversedSequence(seq1));
-		String symetricComplementary2 = buildSymetricComplementary(Helper.getInversedSequence(complementarySeq), Helper.getInversedSequence(seq1));
+		else {
+			String symetricSequence1 = sequences.buildSymetricSequence(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+			String symetricSequence2 = sequences.buildSymetricComplementary(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+			String symetricComplementary1 = sequences.buildSymetricSequence(sequences.getInversedSequence(sequences.getComplementary(pos1, pos2)), sequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
+			String symetricComplementary2 = sequences.buildSymetricComplementary(sequences.getInversedSequence(sequences.getComplementary(pos1, pos2)), sequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
+			
+			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
+			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
 
-		
-		Thermodynamics penaltyGG = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
-		Thermodynamics penaltyAG = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
-		ThermoResult result1 = new ThermoResult(0,0,0);
-		ThermoResult result2 = new ThermoResult(0,0,0);
-		result1 = calculateThermodynamics(symetricSequence1, symetricComplementary1, 0, 3, result1);
-		result1 = calculateThermodynamics(symetricSequence2, symetricComplementary2, 0, 3, result2);
-		
-		result.setEnthalpy(result.getEnthalpy() + (result1.getEnthalpy() + result2.getEnthalpy()) / 2 + penaltyAG.getEnthalpy() + penaltyGG.getEnthalpy());
-		result.setEntropy(result.getEntropy() + (result1.getEntropy() + result2.getEntropy()) / 2 + penaltyAG.getEntropy() + penaltyGG.getEntropy());
+			ThermoResult result1 = new ThermoResult(0,0,0);
+			ThermoResult result2 = new ThermoResult(0,0,0);
+			
+			result1 = calculateThermodynamics(sequences1, 0, 3, result1);
+			result2 = calculateThermodynamics(sequences2, 0, 3, result2);
+			
+			enthalpy += (result1.getEnthalpy() + result2.getEnthalpy()) / 2;
+			entropy += (result1.getEntropy() + result2.getEntropy()) / 2;
+			
+			if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('G', 'G', pos1 + 2)){
+				if ((sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) && sequences.isBasePairEqualsTo('A','A', pos1 + 2)) || (sequences.isBasePairEqualsTo('G', 'G', pos1 + 2) && sequences.isBasePairEqualsTo('A','A', pos1 + 1))){
+					enthalpy += this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine").getEnthalpy();
+					entropy += this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine").getEntropy();
+				}
+				else if (Helper.isPyrimidine(sequences.getSequence().charAt(1)) || (Helper.isPyrimidine(sequences.getSequence().charAt(2))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(1))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(2)))){
+					enthalpy += this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine").getEnthalpy();
+					entropy += this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine").getEntropy();
+				}
+			}
+			
+			else if (sequences.isBasePairEqualsTo('A', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('A', 'G', pos1 + 2)){
+				if (sequences.isBasePairEqualsTo('C', 'U', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'U', pos1 + 2)){
+					enthalpy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEnthalpy();
+					entropy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEntropy();
+				}
+				else if (sequences.isBasePairEqualsTo('C', 'C', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'C', pos1 + 2)){
+					enthalpy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEnthalpy();
+					entropy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEntropy();
+				}
+			}
+			else if ((sequences.isBasePairEqualsTo('U', 'U', pos1 + 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (sequences.isBasePairEqualsTo('U', 'U', pos1 + 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
+				enthalpy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEnthalpy();
+				entropy += this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA").getEntropy();
+			}
+		}
+	
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("rnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
 			System.out.println("WARNING : the tandem mismatch parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
@@ -72,57 +97,51 @@ public class Turner99_06tanmm extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		String seq = seq1.substring(pos1, pos2+1);
-		String complementarySeq = seq2.substring(pos1, pos2+1);
+		
 		StringBuffer closing = new StringBuffer();
 		
-		closing.append(seq.charAt(0));
+		closing.append(sequences.getSequence(pos1, pos2).charAt(0));
 		closing.append("/");
-		closing.append(complementarySeq.charAt(0));
+		closing.append(sequences.getComplementary(pos1, pos2).charAt(0));
 		
-		if (this.collector.getMismatchValue(seq, complementarySeq, closing.toString()) == null){
+		if (this.collector.getMismatchValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2), closing.toString()) == null){
 			return true;
 		}
-		if (isSymetric(seq1, seq2) == false){
-			if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
+		if (sequences.isSymetric(pos1, pos2) == false){
+			boolean needPenaltyGG = false;
+			boolean needPenaltyAG = false;
+			
+			if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('G', 'G', pos1 + 2)){
+				if ((sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) && sequences.isBasePairEqualsTo('A','A', pos1 + 2)) || (sequences.isBasePairEqualsTo('G', 'G', pos1 + 2) && sequences.isBasePairEqualsTo('A','A', pos1 + 1))){
+					needPenaltyGG = true;
+				}
+				else if (Helper.isPyrimidine(sequences.getSequence().charAt(1)) || (Helper.isPyrimidine(sequences.getSequence().charAt(2))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(1))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(2)))){
+					needPenaltyGG = true;
+				}
+			}
+			
+			else if (sequences.isBasePairEqualsTo('A', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('A', 'G', pos1 + 2)){
+				if (sequences.isBasePairEqualsTo('C', 'U', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'U', pos1 + 2)){
+					needPenaltyAG = true;
+				}
+				else if (sequences.isBasePairEqualsTo('C', 'C', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'C', pos1 + 2)){
+					needPenaltyAG = true;
+				}
+			}
+			else if ((sequences.isBasePairEqualsTo('U', 'U', pos1 + 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (sequences.isBasePairEqualsTo('U', 'U', pos1 + 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
+				needPenaltyAG = true;
+			}
+				
+			if (needPenaltyGG && this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
 				return true;
 			}
-			if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
+			else if (needPenaltyAG && this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
 				return true;
 			}
 		}
 		
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
-	}
-	
-	private boolean isSymetric(String seq1, String seq2){
-		for (int i = 0; i < Math.max(seq1.length(), seq2.length()); i++){
-			if (seq1.charAt(i) == seq2.charAt(seq2.length() - i - 1)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private String buildSymetricSequence(String sequence, String complementary){
-		StringBuffer symetricSequence = new StringBuffer(sequence.length());
-		
-		symetricSequence.append(sequence.substring(0, 2));
-		symetricSequence.append(complementary.charAt(1));
-		symetricSequence.append(complementary.charAt(0));
-	
-		return symetricSequence.toString();
-	}
-	
-	private String buildSymetricComplementary(String sequence, String complementary){
-		StringBuffer symetricComplementary = new StringBuffer(complementary.length());
-		
-		symetricComplementary.append(complementary.substring(0, 2));
-		symetricComplementary.append(sequence.charAt(1));
-		symetricComplementary.append(sequence.charAt(0));
-	
-		return symetricComplementary.toString();
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 }

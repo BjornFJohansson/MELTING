@@ -1128,7 +1128,7 @@
     		
     		<bulge type="initiation" size=">6">
     			<enthalpy>7100.0</enthalpy>
-    			<entropy equation="1000/310.15 x (8.7 - 1085.5ln(n/6))"></entropy>
+    			<entropy equation="1000/310.15 x (8.7 - 1085.5ln(n/6))">1000</entropy>
     		</bulge>
     	</origine>
     </loop>

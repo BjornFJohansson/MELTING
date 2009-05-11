@@ -1,12 +1,10 @@
 package melting.longBulgeMethod;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
@@ -17,56 +15,46 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		loadData("Turner1999_2006longbulge.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
-		Thermodynamics bulge = this.collector.getInitiationBulgevalue(bulgeSize);
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
+		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 		
-		if (bulge == null){
-			Thermodynamics experimentalBulge = this.collector.getInitiationBulgevalue("6");
-			bulge = new Thermodynamics(0, experimentalBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6)));
+		if (this.collector.getInitiationBulgevalue(bulgeSize) == null){
+			enthalpy += this.collector.getInitiationBulgevalue(">6").getEnthalpy();
+			entropy += this.collector.getInitiationBulgevalue("6").getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6));
+		}
+		else{
+			enthalpy += this.collector.getInitiationBulgevalue(bulgeSize).getEnthalpy();
+			entropy += this.collector.getInitiationBulgevalue(bulgeSize).getEntropy();
 		}
 		
-		result.setEnthalpy(result.getEnthalpy() + bulge.getEnthalpy());
-		result.setEntropy(result.getEntropy() + bulge.getEntropy());
-		
-		if ((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "T");
+		if (numberAU > 0){
 			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
+			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
+			entropy += numberAU * this.collector.getClosureValue("A", "U").getEntropy();
 		}
 		
-		if ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos2), seq2.charAt(pos2))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "T");
+		if (numberGU > 0){
 			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
+			enthalpy += numberGU * this.collector.getClosureValue("G", "U").getEnthalpy();
+			entropy += numberGU * this.collector.getClosureValue("G", "U").getEntropy();
 		}
 		
-		if ((seq.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G')){
-			Thermodynamics closure = this.collector.getClosureValue("G", "U");
-			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
-		}
-		
-		if ((seq.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') || (seq.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G')){
-			Thermodynamics closure = this.collector.getClosureValue("G", "U");
-			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
-		}
-		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("rnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
 			System.out.println("WARNING : the single bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
@@ -77,15 +65,20 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		if (((seq1.charAt(pos1) == 'A' || seq1.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos1), seq2.charAt(pos1))) || ((seq1.charAt(pos2) == 'A' || seq1.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos2), seq2.charAt(pos2)))){
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
+		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
+		
+		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
 				return true;
 			}
 		}
 		
-		if ((seq1.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq1.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G') || (seq1.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') || (seq1.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G')){
+		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
@@ -97,6 +90,6 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 				return true;
 			}
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return isMissingParameters;
 	}
 }

@@ -1,11 +1,10 @@
 package melting.tandemMismatchMethod;
 
-import java.util.HashMap;
 
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
@@ -19,30 +18,27 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		loadData("AllawiSantaluciaPeyret1997_1998_1999tanmm.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		String seq1 ="";
-		String complementarySeq = "";
-		Thermodynamics parameter = new Thermodynamics(0,0);
-		
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
 		for (int i = pos1; i < pos2; i++){
-		seq1 = seq1.substring(i, i+2);
-		complementarySeq = seq2.substring(i, i+2);
-		parameter = collector.getMismatchvalue(seq1, complementarySeq);
-			
-		result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + parameter.getEntropy());
+		
+			enthalpy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
+			entropy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
 		}
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			System.out.println("WARNING : the tandem mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
@@ -52,15 +48,14 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 
-		String seq = seq1.substring(pos1, pos2+1);
-		String complementarySeq = seq2.substring(pos1, pos2+1);
-			
-		if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
-			return true;
+		for (int i = pos1; i < pos2; i++){
+			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+				return true;
+			}
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 }

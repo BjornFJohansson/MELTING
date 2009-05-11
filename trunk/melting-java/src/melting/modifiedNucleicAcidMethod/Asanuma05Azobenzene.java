@@ -1,12 +1,10 @@
 package melting.modifiedNucleicAcidMethod;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Asanuma05Azobenzene extends PartialCalcul{
 
@@ -16,31 +14,31 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		loadData("Asanuma2005azobenmn.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		Thermodynamics parameter = this.collector.getAzobenzeneValue(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		double enthalpy = result.getEnthalpy() + this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEnthalpy() + this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
 		
-		result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + parameter.getEntropy());
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
 		
-		if (hybridization.equals("dnadna") == false) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
+		
+		if (environment.getHybridization().equals("dnadna") == false) {
 			System.err.println("WARNING : The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
 			isApplicable = false;
 		}
 		
-		if ((pos1 == 0 && (seq1.charAt(pos1) == 'X' || seq2.charAt(pos1) == 'X')) || (pos2 == Math.min(seq1.length(), seq2.length()) && (seq1.charAt(pos2) == 'X' || seq2.charAt(pos2) == 'X'))){
+		if (modified.calculateNumberOfTerminal('X', '-') > 0){
 			System.err.println("WARNING : The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
 			isApplicable = false;
@@ -48,13 +46,13 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
-		if (this.collector.getAzobenzeneValue(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1)) == null){
+		if (this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2),sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
 }

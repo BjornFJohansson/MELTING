@@ -1,12 +1,10 @@
 package melting.longBulgeMethod;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
@@ -16,42 +14,38 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		loadData("Santalucia2004longbulge.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
-		Thermodynamics bulge = this.collector.getBulgeLoopvalue(bulgeSize);
 		
-		if (bulge == null){
-			Thermodynamics experimentalBulge = this.collector.getBulgeLoopvalue("30");
-			bulge = new Thermodynamics(0, experimentalBulge.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.getInteger(bulgeSize) / 30));
+		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
+			entropy += this.collector.getBulgeLoopvalue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.getInteger(bulgeSize) / 30);
+		}
+		else {
+			entropy += this.collector.getBulgeLoopvalue(bulgeSize).getEntropy();
 		}
 		
-		result.setEntropy(result.getEntropy() + bulge.getEntropy());
+		if (numberAT> 0){
+			enthalpy += numberAT * this.collector.getClosureValue("A", "T").getEnthalpy();
+			enthalpy += numberAT * this.collector.getClosureValue("A", "T").getEntropy();
 		
-		if ((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'T') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "T");
-			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
 		}
 		
-		if ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'T') && Helper.isComplementaryBasePair(seq.charAt(pos2), seq2.charAt(pos2))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "T");
-			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
-		}
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			System.out.println("WARNING : the single bulge loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
@@ -62,21 +56,24 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
+		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		
-		if (((seq1.charAt(pos1) == 'A' || seq1.charAt(pos1) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(pos1), seq2.charAt(pos1))) || ((seq1.charAt(pos2) == 'A' || seq1.charAt(pos2) == 'T') && Helper.isComplementaryBasePair(seq1.charAt(pos2), seq2.charAt(pos2)))){
+		if (numberAT > 0){
 			if (this.collector.getClosureValue("A", "T") == null){
 				return true;
 			}
 		}
-		
-		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
+
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){
 			return true;
 			}
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return isMissingParameters;
 	}
 }

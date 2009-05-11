@@ -2,6 +2,8 @@ package melting.singleMismatchMethods;
 
 import java.util.HashMap;
 
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.configuration.OptionManagement;
 
 public class Znosco08mm extends ZnoscoMethod {
@@ -12,24 +14,17 @@ public class Znosco08mm extends ZnoscoMethod {
 		loadData("Znosco2008mm.xml", this.collector);
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		NucleotidSequences mismatch = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
-		if ((seq1.charAt(pos1) != 'G' && seq1.charAt(pos1) != 'U') || (seq1.charAt(pos2) != 'G' && seq1.charAt(pos2) != 'U')){
+		if (mismatch.calculateNumberOfTerminal('G', 'U') == 0){
 			isApplicable = false;
-		}
-		else if ((seq1.charAt(pos1) == 'G' && seq2.charAt(pos1) != 'U') || (seq1.charAt(pos2) == 'U' && seq2.charAt(pos2) != 'G')){
-			isApplicable = false;
-		}
-		
-		if (isApplicable == false){
 			System.out.println("WARNING : The thermodynamic parameters of Znosco (2008)" +
-					"are originally established for single mismatches with GU nearest neighbors.");
+			"are originally established for single mismatches with GU nearest neighbors.");
 		}
-		
+	
 		return isApplicable;
 	}
 }

@@ -26,27 +26,27 @@
     /******************************************************************************/-->
   		
   	<data type="modified_nucleotides">
-  		<modified sequence="C-AA/GTT">
+  		<modified sequence="C_AA/GTT">
   			<enthalpy>20400.0</enthalpy>
   			<entropy>57.0</entropy>
   		</modified>
-  		<modified sequence="CAA/G-XT">
+  		<modified sequence="CAA/G_XT">
   			<enthalpy>40300.0</enthalpy>
   			<entropy>114.0</entropy>
   		</modified>
-  		<modified sequence="C-AA/G-XT">
+  		<modified sequence="C_AA/G_XT">
   			<enthalpy>25200.0</enthalpy>
   			<entropy>68.0</entropy>
   		</modified> 		
-  		<modified sequence="A-AG/TTC">
+  		<modified sequence="A_AG/TTC">
   			<enthalpy>29600.0.0</enthalpy>
   			<entropy>86.0</entropy>
   		</modified>
-  		<modified sequence="AAG/T-XC">
+  		<modified sequence="AAG/T_XC">
   			<enthalpy>49600.0.0</enthalpy>
   			<entropy>140.7</entropy>
   		</modified>
-  		<modified sequence="A-AG/T-XC">
+  		<modified sequence="A_AG/T_XC">
   			<enthalpy>40200.0</enthalpy>
   			<entropy>111.0</entropy>
   		</modified>
