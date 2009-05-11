@@ -1,9 +1,7 @@
 package melting.modifiedNucleicAcidMethod;
 
-import java.util.HashMap;
 
-import melting.Helper;
-import melting.configuration.OptionManagement;
+import melting.Environment;
 
 public class Santalucia05Inosine extends InosineNNMethod{
 
@@ -13,12 +11,12 @@ public class Santalucia05Inosine extends InosineNNMethod{
 		loadData("Santalucia2005inomn.xml", this.collector);
 	}
 	
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("dnadna") == false) {
+		if (environment.getHybridization().equals("dnadna") == false) {
 			System.err.println("WARNING : The thermodynamic parameters for inosine base of" +
 					"Santalucia (2005) are established for DNA sequences.");
 			isApplicable = false;

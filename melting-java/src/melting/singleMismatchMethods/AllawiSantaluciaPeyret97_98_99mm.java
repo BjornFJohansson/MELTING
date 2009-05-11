@@ -1,12 +1,10 @@
 package melting.singleMismatchMethods;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 
@@ -20,23 +18,21 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		loadData("AllawiSantaluciaPeyret1997_1998_1999mm.xml", this.collector);
 	}
 
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 
-		String seq1 = seq.substring(pos1, pos2+1);
-		String complementarySeq = seq2.substring(pos1, pos2+1);
-		Thermodynamics parameter = collector.getMismatchvalue(seq1, complementarySeq);
-			
-		result.setEnthalpy(result.getEnthalpy() + parameter.getEnthalpy());
-		result.setEntropy(result.getEntropy() + parameter.getEntropy());
+		double enthalpy = result.getEnthalpy() + collector.getMismatchvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEntropy() + collector.getMismatchvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1, int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			System.out.println("WARNING : the single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
@@ -47,18 +43,13 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		String seq = "";
-		String complementarySeq = "";
-
-		seq = seq1.substring(pos1, pos2+1);
-		complementarySeq = seq2.substring(pos1, pos2+1);
 			
-		if (this.collector.getMismatchvalue(seq, complementarySeq) == null){
+		if (this.collector.getMismatchvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 	
 }

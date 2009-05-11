@@ -1,8 +1,7 @@
 package melting.singleBulgeMethod;
 
-import java.util.HashMap;
 
-import melting.configuration.OptionManagement;
+import melting.Environment;
 
 public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 
@@ -12,12 +11,11 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		loadData("Serra07bulge.xml", this.collector);
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("rnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
 			System.out.println("WARNING : the single bulge loop parameters of " +
 					"Serra et al. (2007) are originally established " +
 					"for RNA sequences.");

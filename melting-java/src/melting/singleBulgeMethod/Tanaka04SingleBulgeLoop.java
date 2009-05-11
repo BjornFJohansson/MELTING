@@ -1,8 +1,7 @@
 package melting.singleBulgeMethod;
 
-import java.util.HashMap;
 
-import melting.configuration.OptionManagement;
+import melting.Environment;
 
 public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 
@@ -12,12 +11,11 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		loadData("Tanaka2004Bulge.xml", this.collector);
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (hybridization.equals("dnadna") == false){
+		if (environment.getHybridization().equals("dnadna") == false){
 			System.out.println("WARNING : the single bulge loop parameters of " +
 					"Tanaka (2004) are originally established " +
 					"for DNA sequences.");

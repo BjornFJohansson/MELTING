@@ -49,7 +49,7 @@
  			</mismatch>
  			<mismatch size=">6" type="initiation">
  				<enthalpy>-1300.0</enthalpy>
- 				<entropy formule="-3.3 - 1.08ln(n/6)">-3.3</entropy>
+ 				<entropy>-3.3</entropy>
  			</mismatch>
  			
  			<closure type="per_AU">
@@ -71,7 +71,7 @@
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
- 			<mismatch sequence="RA/YG" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="RA/YG" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
@@ -88,7 +88,7 @@
  				<enthalpy>-5800.0</enthalpy>
  				<entropy>-14.83</entropy>
  			</mismatch>
- 			<mismatch sequence="YA/RG" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="YA/RG" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
@@ -103,7 +103,7 @@
  				<enthalpy>-5800.0</enthalpy>
  				<entropy>-14.83</entropy>
  			</mismatch>
- 			<mismatch sequence="RG/YA" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="RG/YA" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
@@ -119,7 +119,7 @@
  				<enthalpy>-5800.0</enthalpy>
  				<entropy>-14.83</entropy>
  			</mismatch>
- 			<mismatch sequence="YG/RA" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="YG/RA" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
@@ -139,7 +139,7 @@
  				<enthalpy>-5800.0</enthalpy>
  				<entropy>-14.83</entropy>
  			</mismatch>
- 			<mismatch sequence="G/G" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="G/G" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>
@@ -155,7 +155,7 @@
  				<enthalpy>-10100.0</enthalpy>
  				<entropy>-29.99</entropy>
  			</mismatch>
- 			<mismatch sequence="U/U" loop="1xn_n>3" type="first_non_canonical_pair">
+ 			<mismatch sequence="U/U" loop="1xn_n>2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>
  				<entropy>0.0</entropy>
  			</mismatch>

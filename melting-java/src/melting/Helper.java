@@ -69,42 +69,8 @@ public class Helper {
 		}
 		return complementary.toString();
 	}
-	
-	public static String getInversedSequence(String sequence){
-		StringBuffer newSequence = new StringBuffer(sequence.length());
-		for (int i = 0; i < sequence.length(); i++){
-			newSequence.append(sequence.charAt(sequence.length() - i)); 
-		}
-		return newSequence.toString();
-	}
-	
-	public static String convertToPyr_Pur(String sequence){
-		StringBuffer newSeq = new StringBuffer(sequence.length());
-		
-		for (int i = 0; i < sequence.length(); i++){
-			switch (sequence.charAt(i)) {
-			case 'A':
-				newSeq.append('R');
-				break;
-			case 'G':
-				newSeq.append('R');
-				break;
-			case 'U':
-				newSeq.append('Y');
-				break;
-			case 'C':
-				newSeq.append('Y');
-				break;
 
-			default:
-				System.err.println("There are non watson crick bases in the sequence.");
-				break;
-			}
-		}
-		return newSeq.toString();
-	}
-
-public static boolean isWatsonCrickBase(char base){
+	public static boolean isWatsonCrickBase(char base){
 	switch (base) {
 	case 'A':
 		return true;
@@ -118,4 +84,19 @@ public static boolean isWatsonCrickBase(char base){
 		return false;
 	}
 }
+	
+	public static boolean isPyrimidine(char base){
+		switch (base) {
+			case 'A':
+				return false;
+			case 'T':
+				return true;
+			case 'C':
+				return true;
+			case 'G':
+				return false;
+			default:
+				return false;
+		}
+	}
 }

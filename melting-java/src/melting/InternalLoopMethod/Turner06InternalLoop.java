@@ -1,13 +1,11 @@
 package melting.InternalLoopMethod;
 
-import java.util.HashMap;
 
-import melting.Helper;
+import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Turner06InternalLoop extends PartialCalcul{
 
@@ -22,6 +20,19 @@ public class Turner06InternalLoop extends PartialCalcul{
 	
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
+		boolean needFirstMismatchEnergy = true;
+		String loopType = sequences.getLoopType(pos1, pos2);
+		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(), sequences.getComplementary());
+		String mismatch1 = sequences.getLoopFistMismatch(internalLoop.getSequence());
+		String mismatch2 = sequences.getLoopFistMismatch(internalLoop.getComplementary());
+		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
+		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
+		
+		
+		if (loopType.charAt(0) == '1' && Integer.getInteger(loopType.substring(2, 3)) > 2){
+			
+			needFirstMismatchEnergy = false;
+		}
 		
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))) != null){
 			enthalpy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEnthalpy();
@@ -32,58 +43,51 @@ public class Turner06InternalLoop extends PartialCalcul{
 			entropy += this.collector.getInitiationLoopValue(">6").getEntropy() - 1.08 * Math.log(sequences.calculateLoopLength(pos1, pos2) / 6);
 		}
 		
-		String mismatch1 = seq.substring(pos1, pos1 + 2).replace(seq.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq.substring(pos1, pos1 + 1)));
-		String mismatch2 = seq2.substring(pos1, pos1 + 2).replace(seq2.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq2.substring(pos1, pos1 + 1)));
-		String loopType = getLoopType(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
-		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
 		
-		if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
-			firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
-		}
-		
-		if (((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))) || ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos2), seq2.charAt(pos2)))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "U");
-			
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEnthalpy());
-		}
-		
-		if (((seq.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G')) || ((seq.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') ||( seq.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G'))){
-			Thermodynamics closure = this.collector.getClosureValue("G", "U");
+		if (numberAU > 0){
 
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEnthalpy());
-		}
-		
-		if (Helper.isAsymetricLoop(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))){
-			Thermodynamics asymetry = this.collector.getAsymetry();
-				
-			result.setEnthalpy(result.getEnthalpy() + asymetry.getEnthalpy());
-			result.setEntropy(result.getEntropy() + asymetry.getEnthalpy());
-		}
-		
-		if (loopType.charAt(0) == '1' && Integer.getInteger(loopType.substring(2, 3)) > 2){
-			result.setEnthalpy(result.getEnthalpy() + loopInitiation.getEnthalpy());
-			result.setEntropy(result.getEntropy() + loopInitiation.getEnthalpy());
+			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
+			entropy += numberAU * this.collector.getClosureValue("A", "U").getEntropy();
 			
-			return result;
 		}
 		
-		result.setEnthalpy(result.getEnthalpy() + loopInitiation.getEnthalpy() + firstMismatch.getEnthalpy());
-		result.setEntropy(result.getEntropy() + loopInitiation.getEnthalpy() + firstMismatch.getEnthalpy());
+		if (numberGU > 0){
+			
+			enthalpy += numberGU *  this.collector.getClosureValue("G", "U").getEnthalpy();
+			entropy += numberGU * this.collector.getClosureValue("G", "U").getEntropy();
+		}
+		
+		if (sequences.isAsymetricLoop(pos1, pos2)){
+				
+			enthalpy += this.collector.getAsymetry().getEnthalpy();
+			entropy += this.collector.getAsymetry().getEntropy();
+		}
+		
+		if (needFirstMismatchEnergy == true){
+			
+			if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
+				enthalpy += this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType).getEnthalpy();
+				entropy += this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType).getEntropy();
+			}
+			else {
+				enthalpy += this.collector.getFirstMismatch(mismatch1, mismatch2, loopType).getEnthalpy();
+				entropy += this.collector.getFirstMismatch(mismatch1, mismatch2, loopType).getEntropy();
+			}
+			
+		}
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = true;
-		String seq1 = options.get(OptionManagement.sequence);
-		String seq2 = options.get(OptionManagement.complementarySequence);
-		String loopType = getLoopType(seq1.substring(pos1,pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		String loopType = environment.getSequences().getLoopType(pos1,pos2);
 		
-		if (hybridization.equals("rnarna") == false){
+		if (environment.getHybridization().equals("rnarna") == false){
 			System.out.println("WARNING : the internal loop parameters of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
@@ -91,7 +95,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 			isApplicable = false;
 		}
 		
-		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && ((seq1.charAt(pos1 + 2) == 'G' && seq2.charAt(pos1 + 2) == 'A') || (seq1.charAt(pos1 + 2) == 'A' && seq2.charAt(pos1 + 2) == 'G'))){
+		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && environment.getSequences().isBasePairEqualsTo('A', 'G', pos1 + 2)){
 			System.out.println("WARNING : The thermodynamic parameters of Turner (2006) excluded" +
 					"3 x 3 internal loops with a middle GA pair. The middle GA pair is shown to enhance " +
 					"stability and this extra stability cannot be predicted by this nearest neighbor" +
@@ -103,36 +107,39 @@ public class Turner06InternalLoop extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		
-		if (this.collector.getInitiationLoopValue(Integer.toString(Helper.calculateLoopLength(seq1.substring(pos1,pos2), seq2.substring(pos1, pos2)))) == null){
+		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("6") == null){
 				return true;
 			}
 		}
 		
-		if (((seq1.charAt(pos1) == 'A' || seq1.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos1), seq2.charAt(pos1))) || ((seq1.charAt(pos2) == 'A' || seq1.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos2), seq2.charAt(pos2)))){
+		if (sequences.calculateNumberOfTerminal('A', 'U') > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
 				return true;
 			}
 		}
 		
-		if (((seq1.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq1.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G')) || ((seq1.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') ||( seq1.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G'))){
+		if (sequences.calculateNumberOfTerminal('G', 'U') > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
 		}
 		
-		if (Helper.isAsymetricLoop(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1))){
+		if (sequences.isAsymetricLoop(pos1, pos2)){
 			if (this.collector.getAsymetry() == null){
 				return true;
 			}
 		}
 		
-		String mismatch1 = seq1.substring(pos1, pos1 + 2).replace(seq1.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq1.substring(pos1, pos1 + 1)));
-		String mismatch2 = seq2.substring(pos1, pos1 + 2).replace(seq2.substring(pos1, pos1 + 1), Helper.convertToPyr_Pur(seq2.substring(pos1, pos1 + 1)));
-		String loopType = getLoopType(seq1.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(), sequences.getComplementary());
+		String mismatch1 = sequences.getLoopFistMismatch(internalLoop.getSequence());
+		String mismatch2 = sequences.getLoopFistMismatch(internalLoop.getComplementary());
+		String loopType = sequences.getLoopType(pos1, pos2);
+		
 		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
 		
 		if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
@@ -142,38 +149,6 @@ public class Turner06InternalLoop extends PartialCalcul{
 		if (firstMismatch == null){
 			return true;
 		}
-		return false;
+		return isMissingParameters;
 	}
-	
-	private String getLoopType(String seq1, String seq2){
-		
-		if (Helper.isAsymetricLoop(seq1, seq2)){
-			int internalLoopSize1 = 0;
-			int internalLoopSize2 = 0;
-			
-			for (int i = 1; i < seq1.length() - 1; i++ ){
-				if (seq1.charAt(i) != '-'){
-					internalLoopSize1 ++;
-				}
-				
-				if (seq2.charAt(i) != '-'){
-					internalLoopSize2 ++;
-				}
-			}
-			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
-				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
-			}
-			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3) || (internalLoopSize2 == 2 && internalLoopSize1 != 3)){
-				return "others_non_2x2";
-			}
-			else {
-				return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
-			}
-		}
-		else{
-			String internalLoopSize = Integer.toString(seq1.length() - 2);
-			return internalLoopSize + "x" + internalLoopSize;
-		}
-	}
-
 }

@@ -18,9 +18,10 @@ public class DataCollect {
 		this.datas = datas;
 	}
 	
-	private String getSymetricSequence(String seq1, String seq2){
-		String newSeq1 = Helper.getInversedSequence(seq1);
-		String newSeq2 = Helper.getInversedSequence(seq2);
+	private String getSymetricSequencePairs(String seq1, String seq2){
+		
+		String newSeq1 = NucleotidSequences.getInversedSequence(seq1);
+		String newSeq2 = NucleotidSequences.getInversedSequence(seq2);
 		return newSeq1+"/"+newSeq2;
 	}
 	
@@ -32,7 +33,7 @@ public class DataCollect {
 	public Thermodynamics getNNvalue(String seq1, String seq2){
 		Thermodynamics s = datas.get("neighbor"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("neighbor"+getSymetricSequence(seq1, seq2));
+			s = datas.get("neighbor"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
@@ -55,7 +56,7 @@ public class DataCollect {
 	public Thermodynamics getModifiedvalue(String seq1, String seq2){
 		Thermodynamics s = datas.get("modified"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("modified"+getSymetricSequence(seq1, seq2));
+			s = datas.get("modified"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
@@ -64,62 +65,34 @@ public class DataCollect {
 	
 		Thermodynamics s = datas.get("modified"+seq1+"/"+seq2+"sens"+sens);;
 		if (s == null){
-			s = datas.get("modified"+getSymetricSequence(seq1, seq2)+"sens"+sens);
+			s = datas.get("modified"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
 		}
 		return s;
 	}
 	
 	public Thermodynamics getAzobenzeneValue(String seq1, String seq2){
 		
-		String sequence = seq1;
-		String complementary = seq2;
 		String typeBase = "";
-		
-		if (seq1.contains("X")){
-			complementary = complementary.replaceAll("-","");
-			
-		}
-		else {
-			sequence = sequence.replace("-","");
-		}
-		
-		if (sequence.contains("_T")){
-			sequence = sequence.replace("_T", "");
+		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
+	
+		if (seq1.contains("_T") || seq2.contains("_T")){
 			typeBase = "trans";
 		}
-		else if (sequence.contains("_C")){
-			sequence = sequence.replace("_C", "");
-			typeBase = "cys";
-		}
-		else if (complementary.contains("_T")){
-			complementary = complementary.replace("_T", "");
-			typeBase = "trans";
-		}
-		else if (complementary.contains("_C")){
-			complementary = complementary.replace("_C", "");
+		else if (seq1.contains("_C") || seq2.contains("_C")){
 			typeBase = "cys";
 		}
 		
-		Thermodynamics s = datas.get("modified"+ "type" + typeBase + sequence+"/"+complementary);
+		Thermodynamics s = datas.get("modified"+ "type" + typeBase + sequences.getSequence()+"/"+sequences.getComplementary());
 		if (s == null){
-			s = datas.get("modified"+"type" + typeBase + getSymetricSequence(sequence, complementary));
+			s = datas.get("modified"+"type" + typeBase + getSymetricSequencePairs(sequences.getSequence(), sequences.getComplementary()));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getLockedAcidValue(String seq1, String seq2){
-		String sequence = seq1;
-		String complementary = seq2;
+		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
-		if (sequence.contains("L")){
-			complementary.replace("-", "");
-		}
-		
-		if (complementary.contains("L")){
-			sequence.replace("-", "");
-		}
-		
-		Thermodynamics s = getModifiedvalue(sequence, complementary);
+		Thermodynamics s = getModifiedvalue(sequences.getSequence(), sequences.getComplementary());
 		return s;
 	}
 	
@@ -139,34 +112,26 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getHydroxyadenosineValue(String seq1, String seq2){
-		String sequence = seq1;
-		String complementary = seq2;
-		String sens = getSens(seq1, seq2);
-		
-		if (sequence.contains("A*")){
-			complementary = complementary.replaceAll("-", "");
-		}
-		else {
-			sequence = sequence.replaceAll("-", "");
-		}
+		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
+		String sens = NucleotidSequences.getSens(seq1, seq2);
 		
 		if (sens == null){
-			Thermodynamics s = getModifiedvalue(sequence, complementary);
+			Thermodynamics s = getModifiedvalue(sequences.getSequence(), sequences.getComplementary());
 			return s;
 		}
 		else {
-			Thermodynamics s = getModifiedvalue(sequence, complementary, sens);
+			Thermodynamics s = getModifiedvalue(sequences.getSequence(), sequences.getComplementary(), sens);
 			return s;
 		}
 	}
 	
 	public Thermodynamics getDanglingValue(String seq1, String seq2){
-		String sens = getSens(seq1, seq2);
+		String sens = NucleotidSequences.getSens(seq1, seq2);
 		seq1.replaceAll("-", "");
 		seq2.replaceAll("-", "");
 		Thermodynamics s = datas.get("dangling"+seq1+"/"+seq2+"sens"+sens);
 		if (s == null){
-			s = datas.get("dangling"+getSymetricSequence(seq1, seq2)+"sens"+sens);
+			s = datas.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
 		}
 		return s;
 	}
@@ -174,7 +139,7 @@ public class DataCollect {
 	public Thermodynamics getMismatchvalue(String seq1, String seq2){
 		Thermodynamics s = datas.get("mismatch"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("mismatch"+getSymetricSequence(seq1, seq2));
+			s = datas.get("mismatch"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
@@ -197,7 +162,7 @@ public class DataCollect {
 	public Thermodynamics getMismatchParameterValue(String base1, String base2){
 		Thermodynamics s = datas.get("parameters"+base1+"/"+base2);
 		if (s == null){
-			s = datas.get("parameters"+getSymetricSequence(base1, base2));
+			s = datas.get("parameters"+getSymetricSequencePairs(base1, base2));
 		}
 		return s;
 	}
@@ -210,7 +175,7 @@ public class DataCollect {
 	public Thermodynamics getMismatchValue(String seq1, String seq2, String closing){
 		Thermodynamics s = datas.get("mismatch" + seq1+"/"+seq2 + "close" + closing);
 		if (s == null){
-			s = datas.get("mismatch"+getSymetricSequence(seq1, seq2) + "close" + closing);
+			s = datas.get("mismatch"+getSymetricSequencePairs(seq1, seq2) + "close" + closing);
 		}
 		return s;
 	}
@@ -228,7 +193,7 @@ public class DataCollect {
 	public Thermodynamics getFirstMismatch(String seq1, String seq2, String loop){
 		Thermodynamics s = datas.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+getSymetricSequence(seq1, seq2));
+			s = datas.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
@@ -241,7 +206,7 @@ public class DataCollect {
 	public Thermodynamics getBonus(String base1, String lastBase, String seqLoop, String type){
 		Thermodynamics s = datas.get("bonus"+type+base1+seqLoop+"/"+lastBase);
 		if (s == null){
-			s = datas.get("bonus"+type+lastBase+Helper.getInversedSequence(seqLoop)+"/"+base1);
+			s = datas.get("bonus"+type+lastBase+NucleotidSequences.getInversedSequence(seqLoop)+"/"+base1);
 		}
 		return s;
 	}
@@ -254,7 +219,7 @@ public class DataCollect {
 	public Thermodynamics getTerminalMismatchvalue(String seq1, String seq2){
 		Thermodynamics s = datas.get("hairpin"+"terminal_mismatch"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("hairpin"+"terminal_mismatch"+getSymetricSequence(seq1, seq2));
+			s = datas.get("hairpin"+"terminal_mismatch"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
@@ -267,7 +232,7 @@ public class DataCollect {
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
 		Thermodynamics s = datas.get("bulge"+seq1+"/"+seq2.substring(0, 1)+seq2.substring(2,3));
 		if (s == null){
-			s = datas.get("bulge"+getSymetricSequence(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
+			s = datas.get("bulge"+getSymetricSequencePairs(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
 		}
 		return s;
 	}
@@ -281,21 +246,4 @@ public class DataCollect {
 		Thermodynamics s = datas.get("mismatch"+"initiation"+"size"+size);
 		return s;
 	}
-	
-	private String getSens(String seq1, String seq2){
-		if (seq2.charAt(0) == '-'){
-			return "5";
-		}
-		else if (seq1.charAt(0) == '-'){
-			return "3";
-		}
-		else if (seq2.charAt(seq2.length() - 1) == '-'){
-			return "3";
-		}
-		else if (seq1.charAt(seq1.length() - 1) == '-'){
-			return "5";
-		}
-		return null;
-	}
-
 }

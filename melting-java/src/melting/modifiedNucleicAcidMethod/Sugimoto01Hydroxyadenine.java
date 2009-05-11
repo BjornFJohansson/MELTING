@@ -3,6 +3,7 @@ package melting.modifiedNucleicAcidMethod;
 import java.util.HashMap;
 
 import melting.Helper;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -16,12 +17,15 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		loadData("Sugimoto2001hydroxyAmn.xml", this.collector);
 	}
 	
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		Thermodynamics increment = this.collector.getHydroxyadenosineValue(seq.substring(pos1, pos2 + 1), seq2.substring(pos1, pos2 + 1));
+		result = calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences, pos1, pos2, result);
 		
-		result = calculateThermodynamicsNoModifiedAcid(seq, seq2, pos1, pos2, result);
+		double enthalpy = result.getEnthalpy() + this.collector.getHydroxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEntropy() + this.collector.getHydroxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
+		
+		
 		
 		result.setEnthalpy(result.getEnthalpy() + increment.getEnthalpy());
 		result.setEntropy(result.getEntropy() + increment.getEntropy());
@@ -96,7 +100,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		return super.isMissingParameters(seq1, seq2, pos1, pos2);	
 	}
 	
-	private ThermoResult calculateThermodynamicsNoModifiedAcid(String seq, String seq2,
+	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
 		
 		if (pos1 != 0 && pos2 != Math.min(seq.length(), seq2.length())){

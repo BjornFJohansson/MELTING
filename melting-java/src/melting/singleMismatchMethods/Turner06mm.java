@@ -1,12 +1,9 @@
 package melting.singleMismatchMethods;
 
-import java.util.HashMap;
-
-import melting.Helper;
+import melting.Environment;
+import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Turner06mm extends PartialCalcul{
 	
@@ -16,46 +13,49 @@ public class Turner06mm extends PartialCalcul{
 		loadData("Turner1999_2006longmm.xml", this.collector);
 	}
 
-	public ThermoResult calculateThermodynamics(String seq, String seq2,
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		Thermodynamics loopInitiation = this.collector.getInitiationLoopValue("2");
+		double enthalpy = result.getEnthalpy() + this.collector.getInitiationLoopValue("2").getEnthalpy();
+		double entropy = result.getEntropy() + this.collector.getInitiationLoopValue("2").getEntropy();
+		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
+		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		
-		if (((seq.charAt(pos1) == 'A' || seq.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos1), seq2.charAt(pos1))) || ((seq.charAt(pos2) == 'A' || seq.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq.charAt(pos2), seq2.charAt(pos2)))){
-			Thermodynamics closure = this.collector.getClosureValue("A", "U");
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
+		if (numberAU > 0){
+			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
+			entropy += numberAU * this.collector.getClosureValue("A", "U").getEntropy();
 		}
 		
-		if (((seq.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G')) || ((seq.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') ||( seq.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G'))){
-			Thermodynamics closure = this.collector.getClosureValue("G", "U");
-			result.setEnthalpy(result.getEnthalpy() + closure.getEnthalpy());
-			result.setEntropy(result.getEntropy() + closure.getEntropy());
+		if (numberGU > 0){
+			enthalpy += numberGU * this.collector.getClosureValue("G", "U").getEnthalpy();
+			entropy += numberGU * this.collector.getClosureValue("G", "U").getEntropy();
 		}
 		
-		if (seq.charAt(pos1+1) == 'G' && seq2.charAt(pos1+1) == 'G'){
-			Thermodynamics mismatch = this.collector.getFirstMismatch("G", "G", "1x1");
-			result.setEnthalpy(result.getEnthalpy() + mismatch.getEnthalpy());
-			result.setEntropy(result.getEntropy() + mismatch.getEntropy());
+		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
+			enthalpy += this.collector.getFirstMismatch("G", "G", "1x1").getEnthalpy();
+			entropy += this.collector.getFirstMismatch("G", "G", "1x1").getEntropy();
 		}
 		
-		if ((Helper.convertToPyr_Pur(seq.substring(pos1, pos1+1)) + seq.substring(pos1 + 1, pos1+2)).equals("RU") && (Helper.convertToPyr_Pur(seq2.substring(pos1, pos1+1)) + seq2.substring(pos1+1, pos1+2)).equals("U")){
-			Thermodynamics mismatch = this.collector.getFirstMismatch("RU", "YU", "1x1");
-			result.setEnthalpy(result.getEnthalpy() + mismatch.getEnthalpy());
-			result.setEntropy(result.getEntropy() + mismatch.getEntropy());
+		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
+			enthalpy += this.collector.getFirstMismatch("RU", "YU", "1x1").getEnthalpy();
+			entropy += this.collector.getFirstMismatch("RU", "YU", "1x1").getEntropy();
 		}
-		result.setEnthalpy(result.getEnthalpy() + loopInitiation.getEnthalpy());
-		result.setEntropy(result.getEntropy() + loopInitiation.getEntropy());
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
 		
 		return result;
 	}
 
-	public boolean isApplicable(HashMap<String, String> options, int pos1,
+	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		String hybridization = options.get(OptionManagement.hybridization);
-		boolean isApplicable = super.isApplicable(options, pos1, pos2);
 
-		if (hybridization.equals("rnarna") == false){
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		if (environment.getHybridization().equals("rnarna") == false){
 			System.out.println("WARNING : the single mismatches parameter of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
@@ -66,37 +66,43 @@ public class Turner06mm extends PartialCalcul{
 		return isApplicable;
 	}
 
-	public boolean isMissingParameters(String seq1, String seq2, int pos1,
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		
+		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
+		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		
 		if (this.collector.getInitiationLoopValue("2") == null){
 			return true;
 		}
 		
-		if (((seq1.charAt(pos1) == 'A' || seq1.charAt(pos1) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos1), seq2.charAt(pos1))) || ((seq1.charAt(pos2) == 'A' || seq1.charAt(pos2) == 'U') && Helper.isComplementaryBasePair(seq1.charAt(pos2), seq2.charAt(pos2)))){
+		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
 				return true;
 			}
 		}
 		
-		if (((seq1.charAt(pos1) == 'G' && seq2.charAt(pos1) == 'U') || (seq1.charAt(pos1) == 'U' && seq2.charAt(pos1) == 'G')) || ((seq1.charAt(pos2) == 'G' && seq2.charAt(pos2) == 'U') ||( seq1.charAt(pos2) == 'U' && seq2.charAt(pos2) == 'G'))){
+		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
 		}
 		
-		if (seq1.charAt(pos1+1) == 'G' && seq2.charAt(pos1+1) == 'G'){
+		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
 			if (this.collector.getFirstMismatch("G", "G", "1x1") == null){
 				return true;
 			}
 		}
 		
-		if ((Helper.convertToPyr_Pur(seq1.substring(pos1, pos1+1)) + seq1.substring(pos1 + 1, pos1+2)).equals("RU") && (Helper.convertToPyr_Pur(seq2.substring(pos1, pos1+1)) + seq2.substring(pos1+1, pos1+2)).equals("U")){
+		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
 			if (this.collector.getFirstMismatch("RU", "YU", "1x1") == null){
 				return true;
 			}
 		}
-		return super.isMissingParameters(seq1, seq2, pos1, pos2);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
 }
