@@ -1,10 +1,7 @@
 package melting.singleMismatchMethods;
 
-import java.util.HashMap;
-
 import melting.Environment;
 import melting.NucleotidSequences;
-import melting.configuration.OptionManagement;
 
 public class Znosco08mm extends ZnoscoMethod {
 

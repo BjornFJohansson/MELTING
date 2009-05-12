@@ -1,4 +1,4 @@
-package melting.danglingEndMethod;
+package melting.singleDanglingEndMethod;
 
 
 import melting.Environment;

@@ -1,22 +1,18 @@
 package melting.singleMismatchMethods;
 
-import java.util.HashMap;
 
 import melting.Environment;
-import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public abstract class ZnoscoMethod extends PartialCalcul{
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		double enthalpy = result.getEnthalpy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(sequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
-		double entropy = result.getEntropy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(sequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double enthalpy = result.getEnthalpy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		double entropy = result.getEntropy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
 		
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
@@ -55,7 +51,7 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 			int pos2) {
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		
-			if (this.collector.getMismatchvalue(sequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2))) == null){
+			if (this.collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), NucleotidSequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2))) == null){
 				return true;
 			}
 			

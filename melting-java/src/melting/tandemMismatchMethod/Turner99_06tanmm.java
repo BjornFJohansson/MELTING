@@ -34,8 +34,8 @@ public class Turner99_06tanmm extends PartialCalcul{
 		else {
 			String symetricSequence1 = sequences.buildSymetricSequence(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 			String symetricSequence2 = sequences.buildSymetricComplementary(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-			String symetricComplementary1 = sequences.buildSymetricSequence(sequences.getInversedSequence(sequences.getComplementary(pos1, pos2)), sequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
-			String symetricComplementary2 = sequences.buildSymetricComplementary(sequences.getInversedSequence(sequences.getComplementary(pos1, pos2)), sequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
+			String symetricComplementary1 = sequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(sequences.getComplementary(pos1, pos2)),NucleotidSequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
+			String symetricComplementary2 = sequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(sequences.getComplementary(pos1, pos2)), NucleotidSequences.getInversedSequence(sequences.getSequence(pos1, pos2)));
 			
 			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
 			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
