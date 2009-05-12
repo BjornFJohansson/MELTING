@@ -1,7 +1,7 @@
 package melting.configuration;
 
 import java.util.HashMap;
-import melting.Helper;
+import melting.NucleotidSequences;
 
 public class OptionManagement {
 	
@@ -206,7 +206,7 @@ public class OptionManagement {
 	private boolean hasRequiredOptions(String [] args, HashMap<String, String> optionSet){
 		int numberRequiredOptions = 0;
 		boolean hasComplementarySequence = false;
-		boolean containsInosineBase = false;
+		boolean needComplementaryInput = false;
 		
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
@@ -236,12 +236,17 @@ public class OptionManagement {
 			else if (option.equals(sequence)){
 				if (isAValue(value)) {
 					value = value.toUpperCase();
-					if (value.contains("I") == false){
-						numberRequiredOptions ++;
-						value = value.toUpperCase();
+					if (NucleotidSequences.checkSequence(value)){
+						if (value.contains("I") == false && value.contains("A*") == false && (value.contains("X") == false || value.contains("_X"))){
+							numberRequiredOptions ++;
+							value = value.toUpperCase();
+						}
+						else {
+							needComplementaryInput = true;
+						}
 					}
 					else {
-						containsInosineBase = true;
+						System.err.println("ERROR : the sequence contains some characters we cannot understand.");
 					}
 				}
 			}
@@ -253,12 +258,12 @@ public class OptionManagement {
 			}
 		}
 		
-		if (containsInosineBase && hasComplementarySequence == true){
+		if (needComplementaryInput && hasComplementarySequence == true){
 			numberRequiredOptions ++;
 		}
 		
-		if (hasComplementarySequence == false){
-			String seq2 = Helper.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
+		if (hasComplementarySequence == false && needComplementaryInput == false){
+			String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 			optionSet.put(complementarySequence, seq2);
 		}
 		

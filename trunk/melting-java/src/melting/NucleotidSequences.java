@@ -1,14 +1,99 @@
 package melting;
 
+import java.util.ArrayList;
+
 public class NucleotidSequences {
 
 	private String sequence;
 	private String complementary;
+	private static ArrayList<String> modifiedNucleotides = new ArrayList<String>();
 	
 	public NucleotidSequences(String sequence, String complementary){
+		modifiedNucleotides.add("_A");
+		modifiedNucleotides.add("_T");
+		modifiedNucleotides.add("_C");
+		modifiedNucleotides.add("_X");
+		modifiedNucleotides.add("X");
+		modifiedNucleotides.add("A*");
+		modifiedNucleotides.add("L");
+		modifiedNucleotides.add("I");
+		
 		this.sequence = sequence;
 		this.complementary = complementary;
 		encodeSequences();
+		
+	}
+	
+	public static String getComplementarySequence(String sequence, String hybridization){
+		StringBuffer complementary = new StringBuffer(sequence.length());
+		for (int i = 0; i < sequence.length(); i++){
+			switch(sequence.charAt(i)){
+			case 'A':
+				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
+					complementary.append('T');
+				}
+				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("dnarna")){
+					complementary.append('U');
+				}
+				break;
+			case 'T':
+				complementary.append('A');
+				break;
+			case 'C':
+				complementary.append('G');
+				break;
+			case 'G':
+				complementary.append('C');
+				break;
+			case 'U':
+				complementary.append('A');
+				break;
+			case 'X':
+				if (i != 0 && sequence.charAt(i - 1) == '_'){
+					complementary.append('A');
+				}
+			}
+		}
+		return complementary.toString();
+	}
+	
+	public static boolean checkSequence(String sequence){
+		
+		String modifiedAcid = null;
+		int position = 0;
+		
+		for (int i = 0; i < sequence.length(); i++){
+			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && modifiedAcid == null){
+				modifiedAcid = getModifiedAcid(sequence, i);
+				position = i;
+			}
+			else if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && modifiedAcid != null){
+				if (i > position + modifiedAcid.length()){
+					position = 0;
+					modifiedAcid = null;
+				}
+				else if (i == position + modifiedAcid.length()){
+					if (modifiedNucleotides.contains(modifiedAcid) == false){
+						System.err.println("ERROR : There is no implemented method for computing the" +
+								"melting temperature of a sequence containing " + modifiedAcid + ".");
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+	
+	private static String getModifiedAcid(String sequence, int pos){
+		
+		StringBuffer modifiedAcid = new StringBuffer();
+		int index = pos;
+		
+		while (Helper.isWatsonCrickBase(sequence.charAt(index)) == false && index <= sequence.length() - 1){
+			modifiedAcid.append(sequence.charAt(index));
+			index ++;
+		}
+		return modifiedAcid.toString();
 	}
 	
 	public String getSequence() {
