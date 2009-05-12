@@ -21,8 +21,8 @@ public class Turner06mm extends PartialCalcul{
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
 		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
-		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
-		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		
 		if (numberAU > 0){
 			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
@@ -72,8 +72,8 @@ public class Turner06mm extends PartialCalcul{
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
 		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
-		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
-		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		
 		if (this.collector.getInitiationLoopValue("2") == null){
 			return true;

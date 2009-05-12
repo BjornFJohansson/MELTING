@@ -26,15 +26,15 @@
     	/******************************************************************************/-->
 			
 		<data type="double_dangling_end">
-			<dangling sequence="x-pyr-x/x-x" sens="3">
+			<dangling sequence="Y/" sens="3">
 				<enthalpy>0.0</enthalpy>
 				<entropy>0.0</entropy>
 			</dangling>
-			<dangling sequence="x-pur-pyr/x" sens="3">
+			<dangling sequence="RY/" sens="3">
 				<enthalpy>-6200.0</enthalpy>
 				<entropy>-18.2</entropy>
 			</dangling>
-			<dangling sequence="x-pur-pur/x" sens="3">
+			<dangling sequence="RR/" sens="3">
 				<enthalpy>-4300.0</enthalpy>
 				<entropy>-12.4</entropy>
 			</dangling>

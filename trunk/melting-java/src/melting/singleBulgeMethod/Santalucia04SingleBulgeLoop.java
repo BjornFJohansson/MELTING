@@ -3,7 +3,6 @@ package melting.singleBulgeMethod;
 import melting.DataCollect;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
-import melting.Thermodynamics;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 
 public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{

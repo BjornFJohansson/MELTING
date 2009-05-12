@@ -23,8 +23,8 @@ public class Turner06InternalLoop extends PartialCalcul{
 		boolean needFirstMismatchEnergy = true;
 		String loopType = sequences.getLoopType(pos1, pos2);
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(), sequences.getComplementary());
-		String mismatch1 = sequences.getLoopFistMismatch(internalLoop.getSequence());
-		String mismatch2 = sequences.getLoopFistMismatch(internalLoop.getComplementary());
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
 		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
 		
@@ -136,8 +136,8 @@ public class Turner06InternalLoop extends PartialCalcul{
 		}
 		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(), sequences.getComplementary());
-		String mismatch1 = sequences.getLoopFistMismatch(internalLoop.getSequence());
-		String mismatch2 = sequences.getLoopFistMismatch(internalLoop.getComplementary());
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		String loopType = sequences.getLoopType(pos1, pos2);
 		
 		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);

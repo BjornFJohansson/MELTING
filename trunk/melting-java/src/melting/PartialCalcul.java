@@ -53,6 +53,13 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		
 		this.collector.getDatas().putAll(crickNNMethod.getCollector().getDatas());
 	}
+	
+	public void loadSingleDanglingEndData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
+		RegisterCalculMethod getData = new RegisterCalculMethod();
+		PartialCalculMethod singleDanglingEndMethod = getData.getSingleDanglingEndMethod(optionSet, result, pos1, pos2);
+		
+		this.collector.getDatas().putAll(singleDanglingEndMethod.getCollector().getDatas());
+	}
 
 	public void loadData(String fileName, DataCollect collector){
 		File dataFile = new File(OptionManagement.dataPathway + "/" + fileName);

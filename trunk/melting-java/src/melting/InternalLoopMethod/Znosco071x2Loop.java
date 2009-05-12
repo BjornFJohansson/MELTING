@@ -18,8 +18,8 @@ public class Znosco071x2Loop extends PartialCalcul {
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
-		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
 		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
@@ -79,8 +79,8 @@ public class Znosco071x2Loop extends PartialCalcul {
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		String mismatch1 = sequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
-		String mismatch2 = sequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		

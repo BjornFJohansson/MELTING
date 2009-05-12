@@ -44,6 +44,19 @@ public class NucleotidSequences {
 		return numberOfTerminal;
 	}
 	
+	public int calculateNumberOfTerminal(String base1, String base2){
+		int numberOfTerminal = 0;
+		
+		if ((this.sequence.startsWith(base1) && this.complementary.startsWith(base2)) || (this.sequence.startsWith(base2) && complementary.startsWith(base1))){
+			numberOfTerminal++;
+		}
+		
+		if ((this.sequence.endsWith(base1) && this.complementary.endsWith(base2)) || (this.sequence.endsWith(base2) && complementary.endsWith(base1))){
+			numberOfTerminal++;
+		}
+		return numberOfTerminal;
+	}
+	
 	public boolean isTerminal5AT(){
 		
 		if (this.sequence.charAt(0) == 'T' && this.complementary.charAt(0) == 'A'){
@@ -60,16 +73,15 @@ public class NucleotidSequences {
 		return false;
 	}
 	
-	public boolean isDanglingEnds(){
+	public int calculateNumberDanglingEnds(){
+		int numberDe = 0;
 		if ((sequence.charAt(0) == '-' && Helper.isWatsonCrickBase(complementary.charAt(0))) || (complementary.charAt(0) == '-' && Helper.isWatsonCrickBase(sequence.charAt(0)))){
-			return true;
+			numberDe ++;
 		}
 		else if ((sequence.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(complementary.charAt(getDuplexLength() - 1))) || (complementary.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(sequence.charAt(getDuplexLength() - 1)))){
-			return true;
+			numberDe ++;
 		}
-		else {
-			return false;
-		}
+		return numberDe;
 	}
 	
 	public static String getSens(String seq1, String seq2){
@@ -155,7 +167,7 @@ public class NucleotidSequences {
 		return false;
 	}
 	
-	public String convertToPyr_Pur(String sequence){
+	public static String convertToPyr_Pur(String sequence){
 		StringBuffer newSeq = new StringBuffer(sequence.length());
 		
 		for (int i = 0; i < sequence.length(); i++){
@@ -211,7 +223,7 @@ public class NucleotidSequences {
 		}
 	}
 
-	public String getLoopFistMismatch(String loop){
+	public static String getLoopFistMismatch(String loop){
 		String mismatch = convertToPyr_Pur(loop.substring(1,2)) + loop.substring(3, 4);
 		
 		return mismatch;
@@ -269,34 +281,34 @@ public class NucleotidSequences {
 		for (int i = 0; i < Math.max(this.sequence.length(), this.complementary.length());i++){
 			
 			if (this.sequence.charAt(i) == '_' && (this.sequence.charAt(i + 1) == 'A' || this.sequence.charAt(i + 1) == 'X')){
-				comp.insert(i,"-");
+				comp.insert(i," ");
 			}
 			else if (this.complementary.charAt(i) == '_' && (this.complementary.charAt(i + 1) == 'A' || this.complementary.charAt(i + 1) == 'X')){
-				seq.insert(i,"-");
+				seq.insert(i," ");
 			}
 			else if (this.sequence.charAt(i - 1) == '_' && (this.sequence.charAt(i) == 'T' || this.sequence.charAt(i) == 'C')){
-				comp.insert(i,"-");
+				comp.insert(i," ");
 			}
 			else if (this.complementary.charAt(i - 1) == '_' && (this.complementary.charAt(i) == 'T' || this.complementary.charAt(i) == 'C')){
-				seq.insert(i,"-");
+				seq.insert(i," ");
 			}
 			else if (this.sequence.charAt(i) == 'X' && this.sequence.charAt(i - 1) != '_'){
-				comp.insert(i,"-");
+				comp.insert(i," ");
 			}
 			else if (this.complementary.charAt(i) == 'X' && this.complementary.charAt(i - 1) != '_'){
-				seq.insert(i,"-");
+				seq.insert(i," ");
 			}
 			else if (this.sequence.charAt(i) == 'L'){
-				comp.insert(i,"-");
+				comp.insert(i," ");
 			}
 			else if (this.complementary.charAt(i) == 'L'){
-				seq.insert(i,"-");
+				seq.insert(i," ");
 			}
 			else if (this.sequence.charAt(i) == '*'){
-				comp.insert(i,"-");
+				comp.insert(i," ");
 			}
 			else if (this.complementary.charAt(i) == '*'){
-				seq.insert(i,"-");
+				seq.insert(i," ");
 			}
 		}
 		
@@ -348,5 +360,29 @@ public class NucleotidSequences {
 		NucleotidSequences DecodedSequences = new NucleotidSequences(seq.toString(), comp.toString());
 		
 		return DecodedSequences;
+	}
+	
+	public String getComplementaryTo(String sequence, int pos1, int pos2){
+		if (sequence.equals(getSequence(pos1, pos2))){
+			return getComplementary(pos1, pos2);
+		}
+		else if (sequence.equals(getComplementary(pos1, pos2))){
+			return getSequence(pos1, pos2);
+		}
+		else{
+			return null;
+		}
+	}
+	
+	public String getSequenceContainig(String motif, int pos1, int pos2){
+		if (getSequence(pos1, pos2).contains(motif)){
+			return getSequence(pos1, pos2);
+		}
+		else if (getComplementary(pos1, pos2).contains(motif)){
+			return getComplementary(pos1, pos2);
+		}
+		else{
+			return null;
+		}
 	}
 }

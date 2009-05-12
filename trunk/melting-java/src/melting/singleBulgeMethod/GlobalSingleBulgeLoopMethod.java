@@ -3,7 +3,6 @@ package melting.singleBulgeMethod;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
-import melting.Thermodynamics;
 
 public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 	
