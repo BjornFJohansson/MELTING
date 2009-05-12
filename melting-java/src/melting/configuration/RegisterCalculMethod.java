@@ -2,7 +2,10 @@ package melting.configuration;
 
 import java.util.HashMap;
 
+import melting.Environment;
+import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.CNGRepeatsMethods.Broda05CNGRepeats;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
 import melting.InternalLoopMethod.Znosco071x2Loop;
@@ -14,8 +17,6 @@ import melting.approximativeMethods.Owen69;
 import melting.approximativeMethods.Santalucia98;
 import melting.approximativeMethods.Wetmur91;
 import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.cricksNNMethods.AllawiSantalucia97;
 import melting.cricksNNMethods.Breslauer86;
@@ -29,11 +30,23 @@ import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
+import melting.longDanglingEndMethod.Sugimoto02DNADanglingEnd;
+import melting.longDanglingEndMethod.Sugimoto02RNADanglingEnd;
+import melting.modifiedNucleicAcidMethod.Asanuma05Azobenzene;
+import melting.modifiedNucleicAcidMethod.McTigue04LockedAcid;
+import melting.modifiedNucleicAcidMethod.Santalucia05Inosine;
+import melting.modifiedNucleicAcidMethod.Sugimoto01Hydroxyadenine;
+import melting.modifiedNucleicAcidMethod.Sugimoto05Deoxyadenosine;
+import melting.modifiedNucleicAcidMethod.Znosco07Inosine;
 import melting.nearestNeighborModel.NearestNeighborMode;
+import melting.secondDanglingEndMethod.Serra05DoubleDanglingEnd;
+import melting.secondDanglingEndMethod.Serra06DoubleDanglingEnd;
 import melting.singleBulgeMethod.Santalucia04SingleBulgeLoop;
 import melting.singleBulgeMethod.Serra07SingleBulgeLoop;
 import melting.singleBulgeMethod.Tanaka04SingleBulgeLoop;
 import melting.singleBulgeMethod.Turner99_06SingleBulgeLoop;
+import melting.singleDanglingEndMethod.Bommarito00SingleDanglingEnd;
+import melting.singleDanglingEndMethod.Serra06_08SingleDanglingEnd;
 import melting.singleMismatchMethods.AllawiSantaluciaPeyret97_98_99mm;
 import melting.singleMismatchMethods.Turner06mm;
 import melting.singleMismatchMethods.Znosco07mm;
@@ -49,17 +62,23 @@ public class RegisterCalculMethod {
 	private HashMap<String, Class<? extends SodiumEquivalentMethod>> NaEqMethod = new HashMap<String, Class<? extends SodiumEquivalentMethod>>();
 	private HashMap<String, Class<? extends ApproximativeMode>> approximativeMethod = new HashMap<String, Class<? extends ApproximativeMode>>();
 	private HashMap<String, Class<? extends CricksNNMethod>> cricksMethod = new HashMap<String, Class<? extends CricksNNMethod>>();
-	private HashMap<String, Class<? extends IonCorrectionMethod>> ionCorrectionMethod = new HashMap<String, Class<? extends IonCorrectionMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> partialCalculMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private HashMap<String, Class<? extends CompletCalculMethod>> completCalculMethod = new HashMap<String, Class<? extends CompletCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private HashMap<String, Class<? extends PartialCalcul>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> woddleMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> singleDangingEndMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> doubleDangingEndMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> longDangingEndMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> inosineMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> CNGRepeatsMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> azobenzeneMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> lockedAcidMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalcul>>();
+	private HashMap<String, Class<? extends PartialCalcul>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalcul>>();
 
-	
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
 		initializeCompletCalculMethods();
@@ -71,6 +90,15 @@ public class RegisterCalculMethod {
 		initializeInternalLoopMethods();
 		initializeSingleBulgeLoopMethods();
 		initializeLongBulgeLoopMethods();
+		initializeSingleDanglingEndMethods();
+		initializeDoubleDanglingEndMethods();
+		initializeLongDanglingEndMethods();
+		initializeCNGRepeatsMethods();
+		initializeInosineMethods();
+		initializeAzobenzeneMethods();
+		initializeDeoxyadenosineMethods();
+		initializeHydroxyadenosineMethods();
+		initializeLockedAcidMethods();
 	}
 	
 	private void initializeNaEqMethods(){
@@ -141,6 +169,46 @@ public class RegisterCalculMethod {
 		this.longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
 	}
 	
+	private void initializeSingleDanglingEndMethods(){
+		this.singleDangingEndMethod.put("Bommarito_2000", Bommarito00SingleDanglingEnd.class);
+		this.longBulgeLoopMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
+	}
+	
+	private void initializeDoubleDanglingEndMethods(){
+		this.doubleDangingEndMethod.put("Serra_2005", Serra05DoubleDanglingEnd.class);
+		this.doubleDangingEndMethod.put("Serra_2006", Serra06DoubleDanglingEnd.class);
+	}
+	
+	private void initializeLongDanglingEndMethods(){
+		this.longDangingEndMethod.put("Sugimoto_2002_dna", Sugimoto02DNADanglingEnd.class);
+		this.longDangingEndMethod.put("Sugimoto_2002_rna", Sugimoto02RNADanglingEnd.class);
+	}
+	
+	private void initializeCNGRepeatsMethods(){
+		this.CNGRepeatsMethod.put("Sugimoto_2002_dna", Broda05CNGRepeats.class);
+	}
+	
+	private void initializeInosineMethods(){
+		this.inosineMethod.put("Santalucia_2005", Santalucia05Inosine.class);
+		this.inosineMethod.put("Znosco_2007", Znosco07Inosine.class);
+	}
+	
+	private void initializeAzobenzeneMethods(){
+		this.azobenzeneMethod.put("Asanuma_2005", Asanuma05Azobenzene.class);
+	}
+	
+	private void initializeLockedAcidMethods(){
+		this.lockedAcidMethod.put("McTigue_2004", McTigue04LockedAcid.class);
+	}
+	
+	private void initializeHydroxyadenosineMethods(){
+		this.hydroxyadenosineMethod.put("Sugimoto_2001", Sugimoto01Hydroxyadenine.class);
+	}
+	
+	private void initializeDeoxyadenosineMethods(){
+		this.deoxyadenosineMethod.put("Sugimoto_2005", Sugimoto05Deoxyadenosine.class);
+	}
+	
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
 		
@@ -164,6 +232,7 @@ public class RegisterCalculMethod {
 	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
 		
 		String methodName = optionSet.get(OptionManagement.completMethod);
+		
 		CompletCalculMethod method;
 		try {
 			method = this.completCalculMethod.get(methodName).newInstance();
@@ -209,27 +278,34 @@ public class RegisterCalculMethod {
 	public CricksNNMethod getWatsonCrickMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
 		
 		String methodName = optionSet.get(OptionManagement.NNMethod);
-		CricksNNMethod method;
-		try {
-			method = this.cricksMethod.get(methodName).newInstance();
-			if (method.isApplicable(optionSet, pos1, pos2)) {
-				return method;
+		Environment environment = new Environment(optionSet);
+		
+		if (methodName != null){
+			CricksNNMethod method;
+			try {
+				method = this.cricksMethod.get(methodName).newInstance();
+				if (method.isApplicable(environment, pos1, pos2)) {
+					return method;
+				}
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
 			}
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public PartialCalculMethod getSingleMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
+	public PartialCalcul getSingleMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
 		
 		String methodName = optionSet.get(OptionManagement.singleMismatchMethod);
-		PartialCalculMethod method;
+		Environment environment = new Environment(optionSet);
+		
+		if (methodName != null){
+		PartialCalcul method;
 		try {
 			method = this.singleMismatchMethod.get(methodName).newInstance();
-			if (method.isApplicable(optionSet, pos1, pos2)) {
+			if (method.isApplicable(environment, pos1, pos2)) {
 				return method;
 			}
 		} catch (InstantiationException e) {
@@ -237,19 +313,23 @@ public class RegisterCalculMethod {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		}
 		return null;
 	}
 	
-	public PartialCalculMethod getTandemMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	public PartialCalcul getTandemMismatchMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
 		
 		String methodName = optionSet.get(OptionManagement.tandemMismatchMethod);
-		PartialCalculMethod method;
+		Environment environment = new Environment(optionSet);
+		
+		if (methodName != null){
+		PartialCalcul method;
 		try {
 			method = this.tandemMismatchMethod.get(methodName).newInstance();
 			if (method instanceof AllawiSantaluciaPeyret97_98_99tanmm){
-				((AllawiSantaluciaPeyret97_98_99tanmm) method).loadSingleMismatchData(optionSet, pos1, pos2, result);
+				method.loadSingleMismatchData(optionSet, pos1, pos2, result);
 			}
-			if (method.isApplicable(optionSet, pos1, pos2)) {
+			if (method.isApplicable(environment, pos1, pos2)) {
 				return method;
 			}
 		} catch (InstantiationException e) {
@@ -257,16 +337,20 @@ public class RegisterCalculMethod {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		}
 		return null;
 	}
 	
-	public PartialCalculMethod getwoddleMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
+	public PartialCalcul getwoddleMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){
 		
 		String methodName = optionSet.get(OptionManagement.woddleBaseMethod);
-		PartialCalculMethod method;
+		Environment environment = new Environment(optionSet);
+
+		if (methodName != null){
+		PartialCalcul method;
 		try {
 			method = this.woddleMethod.get(methodName).newInstance();
-			if (method.isApplicable(optionSet, pos1, pos2)) {
+			if (method.isApplicable(environment, pos1, pos2)) {
 				return method;
 			}
 		} catch (InstantiationException e) {
@@ -274,16 +358,20 @@ public class RegisterCalculMethod {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		}
 		return null;
 	}
 	
-	public PartialCalculMethod getInternalLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	public PartialCalcul getInternalLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
 		
 		String methodName = optionSet.get(OptionManagement.internalLoopMethod);
-		PartialCalculMethod method;
+		Environment environment = new Environment(optionSet);
+		
+		if (methodName != null){
+		PartialCalcul method;
 		try {
 			method = this.internalLoopMethod.get(methodName).newInstance();
-			if (method.isApplicable(optionSet, pos1, pos2)) {
+			if (method.isApplicable(environment, pos1, pos2)) {
 				return method;
 			}
 		} catch (InstantiationException e) {
@@ -291,23 +379,24 @@ public class RegisterCalculMethod {
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		}
 		return null;
 	}
 	
-	public PartialCalculMethod getSingleBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	public PartialCalcul getSingleBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
 	
 	String methodName = optionSet.get(OptionManagement.singleBulgeLoopMethod);
-	PartialCalculMethod method;
+	Environment environment = new Environment(optionSet);
+	
+	if (methodName != null){
+	PartialCalcul method;
 	try {
 		method = this.singleBulgeLoopMethod.get(methodName).newInstance();
 		
-		if (method instanceof Santalucia04SingleBulgeLoop){
-			((Santalucia04SingleBulgeLoop) method).loadCrickNNData(optionSet, pos1, pos2, result);
+		if (method instanceof Santalucia04SingleBulgeLoop || method instanceof Turner99_06SingleBulgeLoop){
+			method.loadCrickNNData(optionSet, pos1, pos2, result);
 		}
-		if (method instanceof Turner99_06SingleBulgeLoop){
-			((Turner99_06SingleBulgeLoop) method).loadCrickNNData(optionSet, pos1, pos2, result);
-		}
-		if (method.isApplicable(optionSet, pos1, pos2)) {
+		if (method.isApplicable(environment, pos1, pos2)) {
 			return method;
 		}
 	} catch (InstantiationException e) {
@@ -315,17 +404,21 @@ public class RegisterCalculMethod {
 	} catch (IllegalAccessException e) {
 		e.printStackTrace();
 	}
+	}
 	return null;
 }
 	
-	public PartialCalculMethod getLongBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	public PartialCalcul getLongBulgeLoopMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
 	
 	String methodName = optionSet.get(OptionManagement.longBulgeLoopMethod);
-	PartialCalculMethod method;
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
 	try {
 		method = this.longBulgeLoopMethod.get(methodName).newInstance();
 		
-		if (method.isApplicable(optionSet, pos1, pos2)) {
+		if (method.isApplicable(environment, pos1, pos2)) {
 			return method;
 		}
 	} catch (InstantiationException e) {
@@ -333,6 +426,209 @@ public class RegisterCalculMethod {
 	} catch (IllegalAccessException e) {
 		e.printStackTrace();
 	}
+	}
 	return null;
 }
+	
+public PartialCalcul getSingleDanglingEndMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+	
+	String methodName = optionSet.get(OptionManagement.singleDanglingEndMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.singleDangingEndMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+}
+
+	public PartialCalcul getDoubleDanglingEndMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.doubleDanglingEndMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.doubleDangingEndMethod.get(methodName).newInstance();
+		method.loadSingleDanglingEndData(optionSet, pos1, pos2, result);
+	
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getLongDanglingEndMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.longDanglingEndMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.longDangingEndMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getCNGRepeatsMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.CNGMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.CNGRepeatsMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getInosineMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.inosineMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.inosineMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getDeoxyadenosineMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.deoxyadenosineMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.deoxyadenosineMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getHydroxyadenosineMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.hydroxyadenineMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.hydroxyadenosineMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getAzobenzeneMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.azobenzeneMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.azobenzeneMethod.get(methodName).newInstance();
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
+	
+	public PartialCalcul getLockedAcidMethod(HashMap<String, String> optionSet, ThermoResult result, int pos1, int pos2){;
+
+	String methodName = optionSet.get(OptionManagement.lockedAcidMethod);
+	Environment environment = new Environment(optionSet);
+
+	if (methodName != null){
+	PartialCalcul method;
+	try {
+		method = this.lockedAcidMethod.get(methodName).newInstance();
+		if (method instanceof McTigue04LockedAcid || method instanceof Sugimoto05Deoxyadenosine || method instanceof Sugimoto01Hydroxyadenine){
+			method.loadCrickNNData(optionSet, pos1, pos2, result);
+		}
+		
+		if (method.isApplicable(environment, pos1, pos2)) {
+			return method;
+		}
+	} catch (InstantiationException e) {
+		e.printStackTrace();
+	} catch (IllegalAccessException e) {
+		e.printStackTrace();
+	}
+	}
+	return null;
+	}
 }

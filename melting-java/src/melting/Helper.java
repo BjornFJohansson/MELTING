@@ -40,35 +40,6 @@ public class Helper {
 			return false;
 		}
 	}
-	
-	public static String getComplementarySequence(String sequence, String hybridization){
-		StringBuffer complementary = new StringBuffer(sequence.length());
-		for (int i = 0; i < sequence.length(); i++){
-			switch(sequence.charAt(i)){
-			case 'A':
-				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
-					complementary.append('T');
-				}
-				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("dnarna")){
-					complementary.append('U');
-				}
-				break;
-			case 'T':
-				complementary.append('A');
-				break;
-			case 'C':
-				complementary.append('G');
-				break;
-			case 'G':
-				complementary.append('C');
-				break;
-			case 'U':
-				complementary.append('A');
-				break;
-			}
-		}
-		return complementary.toString();
-	}
 
 	public static boolean isWatsonCrickBase(char base){
 	switch (base) {
