@@ -16,14 +16,17 @@ import org.xml.sax.SAXException;
 
 public class FileReader {
 
-	public void readFile(File file, HashMap<String, Thermodynamics> map) throws ParserConfigurationException,
+	public HashMap<String, Thermodynamics> readFile(File file, HashMap<String, Thermodynamics> map) throws ParserConfigurationException,
 			SAXException {
 		SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 		try {
-			saxParser.parse(file, new DataHandler(map));
+			DataHandler dataHandler = new DataHandler(map);
+			saxParser.parse(file, dataHandler);
+			return dataHandler.getMap();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 }

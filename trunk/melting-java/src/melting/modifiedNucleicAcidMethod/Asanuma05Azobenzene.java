@@ -11,7 +11,7 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	/*Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36 */
 
 	public Asanuma05Azobenzene(){
-		loadData("Asanuma2005azobenmn.xml", this.collector);
+		this.fileName = "Asanuma2005azobenmn.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

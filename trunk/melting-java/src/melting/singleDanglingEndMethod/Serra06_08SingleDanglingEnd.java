@@ -9,7 +9,7 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 	REF: Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 */
 	
 	public Serra06_08SingleDanglingEnd(){
-		loadData("Serra2006_2008de.xml",this.collector);
+		this.fileName = "Serra2006_2008de.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

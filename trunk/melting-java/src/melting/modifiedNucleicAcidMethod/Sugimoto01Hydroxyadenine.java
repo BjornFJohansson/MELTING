@@ -1,18 +1,22 @@
 package melting.modifiedNucleicAcidMethod;
 
 
+import java.util.HashMap;
+
 import melting.Environment;
 import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 
 	/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
 	
 	public Sugimoto01Hydroxyadenine(){
-		loadData("Sugimoto2001hydroxyAmn.xml", this.collector);
+		this.fileName = "Sugimoto2001hydroxyAmn.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -41,7 +45,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			isApplicable = false;
 		}
 		
-		if (pos1 == 0 || pos2 == modified.getDuplexLength() - 1){
+		if (pos1 == 0 || pos2 == pos1 + modified.getDuplexLength() - 1){
 			StringBuffer seq = new StringBuffer(modified.getDuplexLength());
 			StringBuffer comp = new StringBuffer(modified.getDuplexLength());
 			
@@ -81,6 +85,13 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
 			
+		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
+		for (int i = 0; i < noModified.getDuplexLength(); i++){
+			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
+				return true;
+			}
+		}
+		
 		if (this.collector.getHydroxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
@@ -92,23 +103,13 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		NucleotidSequences modified = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		StringBuffer seq = new StringBuffer(modified.getDuplexLength());
-		StringBuffer comp = new StringBuffer(modified.getDuplexLength());
+		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
 		
-		seq.append(sequences.getSequenceContainig("A*", pos1, pos2));
-		comp.append(sequences.getComplementaryTo(seq.toString(), pos1, pos2));
-		
-		if (pos1 != 0 && pos2 != modified.getDuplexLength()){
-			int index = seq.toString().indexOf("*");
-			seq.deleteCharAt(index);
-			comp.deleteCharAt(index);
-			comp.deleteCharAt(index - 1);
-			comp.insert(index - 1, 'T');
+		if (pos1 != 0 && pos2 != sequences.getDuplexLength()){
 			
-			for (int i = pos1; i < pos2; i++){
-				enthalpy += this.collector.getNNvalue(seq.toString().substring(i, i + 2), comp.toString().substring(i, i + 2)).getEnthalpy();
-				entropy += this.collector.getNNvalue(seq.toString().substring(i, i + 2), comp.toString().substring(i, i + 2)).getEntropy();
+			for (int i = 0; i < noModified.getDuplexLength(); i++){
+				enthalpy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEnthalpy();
+				entropy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEntropy();
 			}
 		
 			result.setEnthalpy(enthalpy);
@@ -118,6 +119,17 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		else{
 			return null;
 		}
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		
+		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
+		loadFile(NNFile, this.collector);
 	}
 
 }

@@ -10,10 +10,6 @@ import melting.configuration.OptionManagement;
 
 public abstract class CricksNNMethod extends PartialCalcul{
 	
-	public CricksNNMethod(String fileName){
-		loadData(fileName, this.collector);
-	}
-	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		double enthalpy = result.getEnthalpy();

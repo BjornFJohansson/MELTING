@@ -1,9 +1,13 @@
 package melting.secondDanglingEndMethod;
 
+import java.util.HashMap;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public abstract class SecondDanglingEndMethod extends PartialCalcul {
 
@@ -39,6 +43,17 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		result.setEntropy(entropy);
 		
 		return result;
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalcul secondDangling = register.getPartialCalculMethod(OptionManagement.doubleDanglingEndMethod, options);
+		
+		String secondDanglingFile = secondDangling.getFileName(OptionManagement.doubleDanglingEndMethod);
+		loadFile(secondDanglingFile, this.collector);
 	}
 
 }

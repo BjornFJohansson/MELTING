@@ -10,7 +10,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	public Santalucia04InternalLoop(){
-		loadData("Santalucia2004longmm.xml", this.collector);
+		this.fileName = "Santalucia2004longmm.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

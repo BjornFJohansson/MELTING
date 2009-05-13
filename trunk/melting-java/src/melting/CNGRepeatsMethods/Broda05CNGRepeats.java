@@ -9,8 +9,8 @@ public class Broda05CNGRepeats extends PartialCalcul {
 
 	/*REF: Broda et al (2005). Biochemistry 44: 10873-10882.*/
 	
-	public Broda05CNGRepeats(){
-		loadData("Broda2005CNG.xml", this.collector);
+	public Broda05CNGRepeats() {
+		this.fileName = "Broda2005CNG.xml";
 	}
 	
 	@Override

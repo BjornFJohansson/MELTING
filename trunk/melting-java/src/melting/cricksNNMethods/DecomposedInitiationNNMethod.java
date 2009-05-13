@@ -7,10 +7,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
-
-	public DecomposedInitiationNNMethod(String fileName) {
-		super(fileName);
-	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		

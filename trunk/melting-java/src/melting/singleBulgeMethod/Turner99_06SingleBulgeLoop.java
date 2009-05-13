@@ -1,7 +1,12 @@
 package melting.singleBulgeMethod;
 
+import java.util.HashMap;
+
 import melting.NucleotidSequences;
+import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 
 public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
@@ -32,6 +37,17 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		}
 		
 		return super.isMissingParameters(sequences, pos1, pos2);
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		
+		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
+		loadFile(NNFile, this.collector);
 	}
 
 }

@@ -11,7 +11,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	/*Sugimoto et al. (2005). Analytical sciences 21 : 77-82*/ 
 	
 	public Sugimoto05Deoxyadenosine(){
-		loadData("Sugimoto2005LdeoxyAmn.xml", this.collector);
+		this.fileName = "Sugimoto2005LdeoxyAmn.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -50,6 +50,14 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
+		NucleotidSequences noModified = sequences.removeDeoxyadenine(pos1, pos2);
+
+		for (int i = 0; i < noModified.getDuplexLength(); i++){
+			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
+				return true;
+			}
+		} 
+		
 		if (this.collector.getDeoxyadenosineValue(sequences.getSequence(pos1, pos2),sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}
@@ -59,30 +67,14 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	
 	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
-		
-		StringBuffer seq = new StringBuffer();
-		StringBuffer comp = new StringBuffer();
-
-		seq.append(sequences.getSequenceContainig("_", pos1, pos2));
-		comp.append(sequences.getComplementaryTo(seq.toString(), pos1, pos2));
-		
-		int index = seq.toString().indexOf("_");
+		NucleotidSequences noModified = sequences.removeDeoxyadenine(pos1, pos2);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		seq.deleteCharAt(index);
-		comp.deleteCharAt(index);
-			
-		if (seq.toString().contains("X")){
-			int Xpos = seq.toString().indexOf("X");
-				comp.deleteCharAt(Xpos);
-				comp.insert(Xpos, 'T');
-			}
-		
-		for (int i = pos1; i < pos2; i++){
-			enthalpy += this.collector.getNNvalue(seq.toString().substring(i, i + 2), comp.toString().substring(i, i + 2)).getEnthalpy();
-			entropy += this.collector.getNNvalue(seq.toString().substring(i, i + 2), comp.toString().substring(i, i + 2)).getEntropy();
+		for (int i = 0; i < noModified.getDuplexLength(); i++){
+			enthalpy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEnthalpy();
+			entropy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEntropy();
 		} 
 		
 		result.setEnthalpy(enthalpy);

@@ -9,18 +9,31 @@ import org.xml.sax.SAXException;
 
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
 public abstract class PartialCalcul implements PartialCalculMethod{
 
-	protected DataCollect collector;
+	protected DataCollect collector = new DataCollect();
+	protected String fileName;
 	
 	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
-
 	public DataCollect getCollector() {
 		return this.collector;
+	}
+	
+	public String getFileName(String methodName){
+		String file = this.fileName;
+		if (useOtherDataFile(methodName)){
+			file = getDataFileName(methodName);
+		}
+		return file;
+	}
+	
+	public void setFileName(String methodName){
+		if (useOtherDataFile(methodName)){
+			this.fileName = getDataFileName(methodName);
+		}
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,
@@ -39,37 +52,33 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 			int pos2) {
 		return false;
 	}
-	
-	public void loadSingleMismatchData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
-		RegisterCalculMethod getData = new RegisterCalculMethod();
-		PartialCalculMethod singleMismatchMethod = getData.getSingleMismatchMethod(optionSet, result, pos1, pos2);
-		
-		this.collector.getDatas().putAll(singleMismatchMethod.getCollector().getDatas());
-	}
-	
-	public void loadCrickNNData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
-		RegisterCalculMethod getData = new RegisterCalculMethod();
-		PartialCalculMethod crickNNMethod = getData.getWatsonCrickMethod(optionSet, result, pos1, pos2);
-		
-		this.collector.getDatas().putAll(crickNNMethod.getCollector().getDatas());
-	}
-	
-	public void loadSingleDanglingEndData(HashMap<String, String> optionSet,int pos1, int pos2, ThermoResult result){
-		RegisterCalculMethod getData = new RegisterCalculMethod();
-		PartialCalculMethod singleDanglingEndMethod = getData.getSingleDanglingEndMethod(optionSet, result, pos1, pos2);
-		
-		this.collector.getDatas().putAll(singleDanglingEndMethod.getCollector().getDatas());
-	}
 
-	public void loadData(String fileName, DataCollect collector){
-		File dataFile = new File(OptionManagement.dataPathway + "/" + fileName);
+	public void loadData(HashMap<String, String> options){
+		loadFile(this.fileName, this.collector);
+	}
+	
+	public void loadFile(String name, DataCollect collector){
+		File dataFile = new File(OptionManagement.dataPathway + "/" + name);
 		FileReader reader = new FileReader();
 		try {
-			reader.readFile(dataFile, collector.getDatas());
+			collector.setData(reader.readFile(dataFile, collector.getData()));
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean useOtherDataFile(String methodName){
+		if (methodName.contains(":")){
+			return true;
+		}
+		return false;
+	}
+	
+	public String getDataFileName(String methodName){
+		String [] newName = methodName.split(":");
+		
+		return newName[1]; 
 	}
 }

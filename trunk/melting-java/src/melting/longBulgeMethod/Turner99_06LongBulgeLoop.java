@@ -12,7 +12,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 	public Turner99_06LongBulgeLoop(){
-		loadData("Turner1999_2006longbulge.xml", this.collector);
+		this.fileName = "Turner1999_2006longbulge.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

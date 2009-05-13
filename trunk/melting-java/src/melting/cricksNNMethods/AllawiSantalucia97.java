@@ -7,7 +7,7 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 	/*Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 */
 	
 	public AllawiSantalucia97() {
-		super("AllawiSantalucia1997nn.xml");
+		this.fileName = "AllawiSantalucia1997nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

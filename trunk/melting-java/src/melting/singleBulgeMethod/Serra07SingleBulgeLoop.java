@@ -8,7 +8,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
 	
 	public Serra07SingleBulgeLoop(){
-		loadData("Serra07bulge.xml", this.collector);
+		this.fileName = "Serra07bulge.xml";
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,

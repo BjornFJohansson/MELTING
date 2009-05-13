@@ -5,9 +5,9 @@ import melting.Environment;
 public class Sugimoto96 extends CricksNNMethod {
 	
 	/*Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505*/ 
-
-	public Sugimoto96() {
-		super("Sugimoto1996nn.xml");
+	
+	public Sugimoto96(){
+		this.fileName = "Sugimoto1996nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

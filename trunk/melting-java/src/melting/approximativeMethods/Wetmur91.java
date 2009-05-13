@@ -1,8 +1,5 @@
 package melting.approximativeMethods;
 
-import java.util.HashMap;
-
-import melting.Helper;
 import melting.ThermoResult;
 
 public class Wetmur91 extends ApproximativeMode{

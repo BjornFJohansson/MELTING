@@ -8,6 +8,10 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 
 	/*REF: Martin J Serra et al. (2005). RNA 11: 512-516*/ 
 	
+	public Serra05DoubleDanglingEnd(){
+		this.fileName = "Serra2005doublede.xml";
+	}
+	
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
