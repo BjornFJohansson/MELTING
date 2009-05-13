@@ -17,6 +17,14 @@ public interface PartialCalculMethod {
 	
 	public DataCollect getCollector();
 	
-	public void loadData(String fileName, DataCollect collector);
+	public void loadData(HashMap<String, String> options);
+	
+	public String getFileName(String methodName);
+	
+	public void loadFile(String name, DataCollect collector);
+	
+	public boolean useOtherDataFile(String methodName);
+	
+	public String getDataFileName(String methodName);
 
 }

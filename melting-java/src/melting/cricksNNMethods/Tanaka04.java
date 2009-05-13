@@ -6,8 +6,8 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 
 	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 */
 	
-	public Tanaka04() {
-		super("Tanaka2004nn.xml");
+	public Tanaka04(){
+		this.fileName = "Tanaka2004nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

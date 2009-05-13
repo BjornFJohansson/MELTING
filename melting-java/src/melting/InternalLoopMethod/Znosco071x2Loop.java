@@ -12,7 +12,7 @@ public class Znosco071x2Loop extends PartialCalcul {
 	/*REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. */
 	
 	public Znosco071x2Loop(){
-		loadData("Znosco20071x2loop.xml", this.collector);
+		this.fileName = "Znosco20071x2loop.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

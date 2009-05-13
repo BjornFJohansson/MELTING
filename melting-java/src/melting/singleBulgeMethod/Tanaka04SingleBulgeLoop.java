@@ -8,7 +8,7 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150*/
 	
 	public Tanaka04SingleBulgeLoop(){
-		loadData("Tanaka2004Bulge.xml", this.collector);
+		this.fileName = "Tanaka2004Bulge.xml";
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,

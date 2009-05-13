@@ -6,9 +6,9 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 
 public class Turner06 extends CricksNNMethod {
-
-	public Turner06() {
-		super("Turner2006nn.xml");
+	
+	public Turner06(){
+		this.fileName = "Turner2006nn.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

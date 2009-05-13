@@ -4,18 +4,18 @@ import java.util.HashMap;
 
 public class DataCollect {
 	
-	private HashMap<String, Thermodynamics> datas = new HashMap<String, Thermodynamics>();
+	private HashMap<String, Thermodynamics> data = new HashMap<String, Thermodynamics>();
 	
-	public HashMap<String, Thermodynamics> getDatas() {
-		return datas;
+	public HashMap<String, Thermodynamics> getData() {
+		return data;
 	}
 
+	public void setData(HashMap<String, Thermodynamics> parameters) {
+		this.data.putAll(parameters);
+	}
+	
 	public void setDatas(HashMap<String, Thermodynamics> datas) {
-		this.datas = datas;
-	}
-
-	public DataCollect(HashMap<String, Thermodynamics> datas){
-		this.datas = datas;
+		this.data = datas;
 	}
 	
 	private String getSymetricSequencePairs(String seq1, String seq2){
@@ -26,46 +26,46 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getTerminal(String type){
-		Thermodynamics s = datas.get("terminal" + type);
+		Thermodynamics s = data.get("terminal" + type);
 		return s;
 	}
 	
 	public Thermodynamics getNNvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("neighbor"+seq1+"/"+seq2);
+		Thermodynamics s = data.get("neighbor"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("neighbor"+getSymetricSequencePairs(seq1, seq2));
+			s = data.get("neighbor"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getInitiation(){
-		Thermodynamics s = datas.get("initiation");
+		Thermodynamics s = data.get("initiation");
 		return s;
 	}
 	
 	public Thermodynamics getInitiation(String type){
-		Thermodynamics s = datas.get("initiation" + type);
+		Thermodynamics s = data.get("initiation" + type);
 		return s;
 	}
 	
 	public Thermodynamics getSymetry(){
-		Thermodynamics s = datas.get("symetry");
+		Thermodynamics s = data.get("symetry");
 		return s;
 	}
 	
 	public Thermodynamics getModifiedvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("modified"+seq1+"/"+seq2);
+		Thermodynamics s = data.get("modified"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("modified"+getSymetricSequencePairs(seq1, seq2));
+			s = data.get("modified"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getModifiedvalue(String seq1, String seq2, String sens){
 	
-		Thermodynamics s = datas.get("modified"+seq1+"/"+seq2+"sens"+sens);;
+		Thermodynamics s = data.get("modified"+seq1+"/"+seq2+"sens"+sens);;
 		if (s == null){
-			s = datas.get("modified"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
+			s = data.get("modified"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
 		}
 		return s;
 	}
@@ -82,9 +82,9 @@ public class DataCollect {
 			typeBase = "cys";
 		}
 		
-		Thermodynamics s = datas.get("modified"+ "type" + typeBase + sequences.getSequence()+"/"+sequences.getComplementary());
+		Thermodynamics s = data.get("modified"+ "type" + typeBase + sequences.getSequence()+"/"+sequences.getComplementary());
 		if (s == null){
-			s = datas.get("modified"+"type" + typeBase + getSymetricSequencePairs(sequences.getSequence(), sequences.getComplementary()));
+			s = data.get("modified"+"type" + typeBase + getSymetricSequencePairs(sequences.getSequence(), sequences.getComplementary()));
 		}
 		return s;
 	}
@@ -129,121 +129,121 @@ public class DataCollect {
 		String sens = NucleotidSequences.getSens(seq1, seq2);
 		seq1.replaceAll("-", "");
 		seq2.replaceAll("-", "");
-		Thermodynamics s = datas.get("dangling"+seq1+"/"+seq2+"sens"+sens);
+		Thermodynamics s = data.get("dangling"+seq1+"/"+seq2+"sens"+sens);
 		if (s == null){
-			s = datas.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
+			s = data.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
 		}
 		return s;
 	}
 	
 	public Thermodynamics getMismatchvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("mismatch"+seq1+"/"+seq2);
+		Thermodynamics s = data.get("mismatch"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("mismatch"+getSymetricSequencePairs(seq1, seq2));
+			s = data.get("mismatch"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getInternalLoopValue(String size){
-		Thermodynamics s = datas.get("mismatch"+"size"+size);
+		Thermodynamics s = data.get("mismatch"+"size"+size);
 		return s;
 	}
 	
 	public Thermodynamics getInitiationLoopValue(String size){
-		Thermodynamics s = datas.get("mismatch"+"initiation"+"size"+size);
+		Thermodynamics s = data.get("mismatch"+"initiation"+"size"+size);
 		return s;
 	}
 	
 	public Thermodynamics getInitiationLoopValue(){
-		Thermodynamics s = datas.get("mismatch"+"initiation");
+		Thermodynamics s = data.get("mismatch"+"initiation");
 		return s;
 	}
 	
 	public Thermodynamics getMismatchParameterValue(String base1, String base2){
-		Thermodynamics s = datas.get("parameters"+base1+"/"+base2);
+		Thermodynamics s = data.get("parameters"+base1+"/"+base2);
 		if (s == null){
-			s = datas.get("parameters"+getSymetricSequencePairs(base1, base2));
+			s = data.get("parameters"+getSymetricSequencePairs(base1, base2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getClosureValue(String base1, String base2){
-		Thermodynamics s = datas.get("closure"+"per_"+base1 + "/" + base2);
+		Thermodynamics s = data.get("closure"+"per_"+base1 + "/" + base2);
 		return s;
 	}
 	
 	public Thermodynamics getMismatchValue(String seq1, String seq2, String closing){
-		Thermodynamics s = datas.get("mismatch" + seq1+"/"+seq2 + "close" + closing);
+		Thermodynamics s = data.get("mismatch" + seq1+"/"+seq2 + "close" + closing);
 		if (s == null){
-			s = datas.get("mismatch"+getSymetricSequencePairs(seq1, seq2) + "close" + closing);
+			s = data.get("mismatch"+getSymetricSequencePairs(seq1, seq2) + "close" + closing);
 		}
 		return s;
 	}
 	
 	public Thermodynamics getPenalty(String type){
-		Thermodynamics s = datas.get("penalty" + type);
+		Thermodynamics s = data.get("penalty" + type);
 		return s;
 	}
 	
 	public Thermodynamics getAsymetry(){
-		Thermodynamics s = datas.get("symetry");
+		Thermodynamics s = data.get("symetry");
 		return s;
 	}
 	
 	public Thermodynamics getFirstMismatch(String seq1, String seq2, String loop){
-		Thermodynamics s = datas.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+seq1+"/"+seq2);
+		Thermodynamics s = data.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+getSymetricSequencePairs(seq1, seq2));
+			s = data.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getHairpinLoopvalue(String size){
-		Thermodynamics s = datas.get("hairpin"+size);
+		Thermodynamics s = data.get("hairpin"+size);
 		return s;
 	}
 	
 	public Thermodynamics getBonus(String base1, String lastBase, String seqLoop, String type){
-		Thermodynamics s = datas.get("bonus"+type+base1+seqLoop+"/"+lastBase);
+		Thermodynamics s = data.get("bonus"+type+base1+seqLoop+"/"+lastBase);
 		if (s == null){
-			s = datas.get("bonus"+type+lastBase+NucleotidSequences.getInversedSequence(seqLoop)+"/"+base1);
+			s = data.get("bonus"+type+lastBase+NucleotidSequences.getInversedSequence(seqLoop)+"/"+base1);
 		}
 		return s;
 	}
 	
 	public Thermodynamics getPenalty(String type, String parameter){
-		Thermodynamics s = datas.get("penalty"+type+"parameter"+parameter);
+		Thermodynamics s = data.get("penalty"+type+"parameter"+parameter);
 		return s;
 	}
 	
 	public Thermodynamics getTerminalMismatchvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("hairpin"+"terminal_mismatch"+seq1+"/"+seq2);
+		Thermodynamics s = data.get("hairpin"+"terminal_mismatch"+seq1+"/"+seq2);
 		if (s == null){
-			s = datas.get("hairpin"+"terminal_mismatch"+getSymetricSequencePairs(seq1, seq2));
+			s = data.get("hairpin"+"terminal_mismatch"+getSymetricSequencePairs(seq1, seq2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getCNGvalue(String repeats, String seq1, String seq2){
-		Thermodynamics s = datas.get("CNG"+"repeats"+repeats+seq1+"/"+seq2);
+		Thermodynamics s = data.get("CNG"+"repeats"+repeats+seq1+"/"+seq2);
 		return s;
 	}
 	
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
-		Thermodynamics s = datas.get("bulge"+seq1+"/"+seq2.substring(0, 1)+seq2.substring(2,3));
+		Thermodynamics s = data.get("bulge"+seq1+"/"+seq2.substring(0, 1)+seq2.substring(2,3));
 		if (s == null){
-			s = datas.get("bulge"+getSymetricSequencePairs(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
+			s = data.get("bulge"+getSymetricSequencePairs(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getBulgeLoopvalue(String size){
-		Thermodynamics s = datas.get("mismatch"+"size"+size);
+		Thermodynamics s = data.get("mismatch"+"size"+size);
 		return s;
 	}
 	
 	public Thermodynamics getInitiationBulgevalue(String size){
-		Thermodynamics s = datas.get("mismatch"+"initiation"+"size"+size);
+		Thermodynamics s = data.get("mismatch"+"initiation"+"size"+size);
 		return s;
 	}
 }

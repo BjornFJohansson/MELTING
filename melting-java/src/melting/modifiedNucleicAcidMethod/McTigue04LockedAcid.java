@@ -1,17 +1,21 @@
 package melting.modifiedNucleicAcidMethod;
 
 
+import java.util.HashMap;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public class McTigue04LockedAcid extends PartialCalcul{
 	
 	/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
 	
 	public McTigue04LockedAcid(){
-		loadData("McTigue2004lockedmn.xml", this.collector);
+		this.fileName = "McTigue2004lockedmn.xml";
 	}
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -60,6 +64,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 			return true;
 		}
 		
+		if (this.collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)) == null || this.collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3)) == null){
+			return true;
+		}
+		
 		for (int i = pos1; i < pos2 -1; i++){
 			if (this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 				return true;
@@ -79,6 +87,17 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		result.setEntropy(entropy);
 		
 		return result;
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		
+		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
+		loadFile(NNFile, this.collector);
 	}
 	
 }

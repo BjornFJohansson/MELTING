@@ -8,7 +8,7 @@ public class Santalucia04 extends CricksNNMethod {
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	public Santalucia04() {
-		super("Santalucia2004nn.xml");
+		this.fileName = "Santalucia2004nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

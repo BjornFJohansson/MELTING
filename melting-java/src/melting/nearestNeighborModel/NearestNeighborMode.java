@@ -1,16 +1,21 @@
 package melting.nearestNeighborModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import melting.Environment;
+import melting.Helper;
 import melting.NucleotidSequences;
+import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 
 public class NearestNeighborMode implements CompletCalculMethod{
 
 	private Environment environment;
+	private ArrayList<PartialCalculMethod>
 	
 	public ThermoResult CalculateThermodynamics() {
 		return null;
@@ -42,10 +47,47 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		
 		}
 	
-	private void analyzeSequence(){
-		
-		for (int i = 0; i < duplexLength; i++){
-			
+	private int [] getPositionsMotif(NucleotidSequences sequences, int pos1){
+		if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos1), sequences.getComplementary().charAt(pos1))){
+			int position = pos1;
+			while (Helper.isComplementaryBasePair(sequences.getSequence().charAt(position + 1), sequences.getComplementary().charAt(position + 1))){
+				position ++;
+			}
+
+			int [] positions = {pos1, position};
+			return positions;
 		}
+		
+		else {
+			int position = pos1;
+			while (Helper.isComplementaryBasePair(sequences.getSequence().charAt(position + 1), sequences.getComplementary().charAt(position + 1)) == false){
+				position ++;
+			}
+			if (pos1 == 0 && position == sequences.getDuplexLength()){
+				int [] positions = {pos1, position};
+				return positions;
+			}
+			if (position == sequences.getDuplexLength() - 1){
+				int [] positions = {pos1 - 1, position};
+				return positions;
+			}
+			if (pos1 == 0){
+				int [] positions = {pos1, position + 1};
+				return positions;
+			}
+			int [] positions = {pos1 - 1, position + 1};
+			return positions;
+		}
+	}
+	
+	private PartialCalculMethod getMethod(NucleotidSequences sequences, int [] positions){
+		
+		return null;
+	}
+	
+	private ArrayList<PartialCalculMethod> initializeNecessaryMethods
+	
+	private void analyzeSequence(NucleotidSequences sequences){
+		
 	}
 }

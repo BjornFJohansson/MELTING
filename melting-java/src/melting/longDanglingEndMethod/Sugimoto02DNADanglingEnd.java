@@ -6,7 +6,7 @@ import melting.Environment;
 public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 
 	public Sugimoto02DNADanglingEnd(){
-		loadData("Sugimoto2002longdde.xml", this.collector);
+		this.fileName = "Sugimoto2002longdde.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

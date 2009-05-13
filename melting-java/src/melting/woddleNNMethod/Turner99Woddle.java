@@ -10,7 +10,7 @@ public class Turner99Woddle extends PartialCalcul{
 	/*REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
 	public Turner99Woddle(){
-		loadData("Turner1999woddle.xml", this.collector);
+		this.fileName = "Turner1999woddle.xml";
 	}
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

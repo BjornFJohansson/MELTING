@@ -4,10 +4,6 @@ import melting.Environment;
 import melting.ThermoResult;
 
 public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
-
-	public GlobalInitiationNNMethod(String fileName) {
-		super(fileName);
-	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		

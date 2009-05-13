@@ -470,4 +470,50 @@ public class NucleotidSequences {
 			return null;
 		}
 	}
+	
+	public NucleotidSequences removeHydroxyadenine(int pos1, int pos2){
+		NucleotidSequences modifiedSequence = new NucleotidSequences(getSequence(pos1, pos2), getComplementary(pos1, pos2));
+		StringBuffer seq = new StringBuffer(modifiedSequence.getDuplexLength());
+		StringBuffer comp = new StringBuffer(modifiedSequence.getDuplexLength());
+		
+		seq.append(getSequenceContainig("A*", pos1, pos2));
+		comp.append(getComplementaryTo(seq.toString(), pos1, pos2));
+		
+		int index = seq.toString().indexOf("*");
+		seq.deleteCharAt(index);
+		comp.deleteCharAt(index);
+		if (index > 0){
+			comp.deleteCharAt(index - 1);
+			comp.insert(index - 1, 'T');
+		}
+		
+		NucleotidSequences noModifiedSequence = new NucleotidSequences(seq.toString(), comp.toString());
+
+		return noModifiedSequence;
+	}
+	
+	public NucleotidSequences removeDeoxyadenine(int pos1, int pos2){
+		
+		NucleotidSequences modifiedSequence = new NucleotidSequences(getSequence(pos1, pos2), getComplementary(pos1, pos2));
+		StringBuffer seq = new StringBuffer(modifiedSequence.getDuplexLength());
+		StringBuffer comp = new StringBuffer(modifiedSequence.getDuplexLength());
+		
+		seq.append(getSequenceContainig("_", pos1, pos2));
+		comp.append(getComplementaryTo(seq.toString(), pos1, pos2));
+		
+		int index = seq.toString().indexOf("_");
+		
+		seq.deleteCharAt(index);
+		comp.deleteCharAt(index);
+			
+		if (seq.toString().contains("X")){
+			int Xpos = seq.toString().indexOf("X");
+				comp.deleteCharAt(Xpos);
+				comp.insert(Xpos, 'T');
+			}
+
+		NucleotidSequences noModifiedSequence = new NucleotidSequences(seq.toString(), comp.toString());
+
+		return noModifiedSequence;
+	}
 }

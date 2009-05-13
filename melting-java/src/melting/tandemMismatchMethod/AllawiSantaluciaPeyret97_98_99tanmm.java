@@ -1,10 +1,14 @@
 package melting.tandemMismatchMethod;
 
 
+import java.util.HashMap;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
@@ -15,7 +19,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
 	public AllawiSantaluciaPeyret97_98_99tanmm(){
-		loadData("AllawiSantaluciaPeyret1997_1998_1999tanmm.xml", this.collector);
+		this.fileName = "AllawiSantaluciaPeyret1997_1998_1999tanmm.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -57,5 +61,16 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 			}
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalcul singleMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		
+		String singleMismatchFile = singleMethod.getFileName(OptionManagement.singleMismatchMethod);
+		loadFile(singleMismatchFile, this.collector);
 	}
 }

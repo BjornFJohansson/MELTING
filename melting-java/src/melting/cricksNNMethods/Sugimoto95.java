@@ -5,9 +5,11 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 
 public class Sugimoto95 extends CricksNNMethod {
-
-	public Sugimoto95() {
-		super("Sugimoto1995nn.xml");
+	
+	/*Sugimoto et al. (1995). Biochemistry 34 : 11211-11216*/ 
+	
+	public Sugimoto95(){
+		this.fileName = "Sugimoto1995nn.xml";
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

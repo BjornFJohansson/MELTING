@@ -5,10 +5,10 @@ import melting.Environment;
 public class Freier86 extends CricksNNMethod {
 	
 	/*Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 */
-
+	
 	public Freier86() {
-		super("Freier1986nn.xml");
-	}
+		this.fileName = "Freier1986nn.xml";	
+		}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = isApplicable(environment, pos1, pos2);

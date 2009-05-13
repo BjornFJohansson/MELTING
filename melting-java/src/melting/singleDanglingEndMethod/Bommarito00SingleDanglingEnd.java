@@ -8,7 +8,7 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 	/*REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 */
 	
 	public Bommarito00SingleDanglingEnd(){
-		loadData("Bommarito2000de.xml",this.collector);
+		this.fileName = "Bommarito2000de.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

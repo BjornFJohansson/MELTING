@@ -1,18 +1,14 @@
 package melting.cricksNNMethods;
 
-import java.util.HashMap;
-
 import melting.Environment;
 import melting.ThermoResult;
-import melting.Thermodynamics;
-import melting.configuration.OptionManagement;
 
 public class Santalucia96 extends GlobalInitiationNNMethod {
 
 	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
 	
 	public Santalucia96() {
-		super("Santalucia1998nn.xml");
+		this.fileName = "Santalucia1998nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

@@ -7,8 +7,8 @@ public class Xia98 extends CricksNNMethod {
 
 	/*Xia et al (1998) Biochemistry 37: 14719-14735 */
 	
-	public Xia98() {
-		super("Xia1998nn.xml");
+	public Xia98(){
+		this.fileName = "Xia1998nn.xml";
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
