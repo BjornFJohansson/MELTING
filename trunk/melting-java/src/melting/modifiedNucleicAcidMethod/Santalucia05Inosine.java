@@ -7,8 +7,15 @@ public class Santalucia05Inosine extends InosineNNMethod{
 
 	/*Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267*/
 	
-	public Santalucia05Inosin(){
-		this.fileName = "Santalucia2005inomn.xml";
+	public static String defaultFileName = "Santalucia2005inomn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

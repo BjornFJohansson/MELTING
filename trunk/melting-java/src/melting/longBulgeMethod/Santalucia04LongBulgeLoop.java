@@ -10,8 +10,15 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
 /*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
-	public Santalucia04LongBulgeLoop(){
-		this.fileName = "Santalucia2004longbulge.xml";
+	public static String defaultFileName = "Santalucia2004longbulge.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

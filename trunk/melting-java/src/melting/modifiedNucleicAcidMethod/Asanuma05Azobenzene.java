@@ -9,9 +9,16 @@ import melting.ThermoResult;
 public class Asanuma05Azobenzene extends PartialCalcul{
 
 	/*Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36 */
-
-	public Asanuma05Azobenzene(){
-		this.fileName = "Asanuma2005azobenmn.xml";
+	
+	public static String defaultFileName = "Asanuma2005azobenmn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

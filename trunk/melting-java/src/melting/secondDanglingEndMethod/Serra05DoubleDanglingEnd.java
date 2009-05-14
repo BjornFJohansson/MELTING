@@ -8,8 +8,15 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 
 	/*REF: Martin J Serra et al. (2005). RNA 11: 512-516*/ 
 	
-	public Serra05DoubleDanglingEnd(){
-		this.fileName = "Serra2005doublede.xml";
+	public static String defaultFileName = "Serra2005doublede.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	@Override

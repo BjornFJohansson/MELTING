@@ -6,8 +6,15 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 
 	/* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 */
 	
-	public Breslauer86() {
-		this.fileName = "Breslauer1986nn.xml";
+	public static String defaultFileName = "Breslauer1986nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

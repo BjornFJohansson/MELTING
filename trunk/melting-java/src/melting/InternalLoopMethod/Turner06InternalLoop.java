@@ -11,8 +11,15 @@ public class Turner06InternalLoop extends PartialCalcul{
 
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 	
-	public Turner06InternalLoop(){
-		this.fileName = "Turner1999_2006longmm.xml";
+	public static String defaultFileName = "Turner1999_2006longmm.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

@@ -8,8 +8,15 @@ public class Sugimoto95 extends CricksNNMethod {
 	
 	/*Sugimoto et al. (1995). Biochemistry 34 : 11211-11216*/ 
 	
-	public Sugimoto95(){
-		this.fileName = "Sugimoto1995nn.xml";
+	public static String defaultFileName = "Sugimoto1995nn.xml";
+
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

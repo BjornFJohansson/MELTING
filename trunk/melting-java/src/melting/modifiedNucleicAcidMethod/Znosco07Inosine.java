@@ -9,8 +9,15 @@ public class Znosco07Inosine extends InosineNNMethod {
 
 	/*Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 */
 	
-	public Znosco07Inosine(){
-		this.fileName = "Znosco2007inomn.xml";
+	public static String defaultFileName = "Znosco2007inomn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

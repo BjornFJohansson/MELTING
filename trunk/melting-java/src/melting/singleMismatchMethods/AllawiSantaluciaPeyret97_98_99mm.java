@@ -14,8 +14,15 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
 	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
-	public AllawiSantaluciaPeyret97_98_99mm(){
-		this.fileName = "AllawiSantaluciaPeyret1997_1998_1999mm.xml";
+	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999mm.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

@@ -14,26 +14,12 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 
 	protected DataCollect collector = new DataCollect();
 	protected String fileName;
-	
+
 	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
 	public DataCollect getCollector() {
 		return this.collector;
-	}
-	
-	public String getFileName(String methodName){
-		String file = this.fileName;
-		if (useOtherDataFile(methodName)){
-			file = getDataFileName(methodName);
-		}
-		return file;
-	}
-	
-	public void setFileName(String methodName){
-		if (useOtherDataFile(methodName)){
-			this.fileName = getDataFileName(methodName);
-		}
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,
@@ -69,16 +55,21 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		}
 	}
 	
-	public boolean useOtherDataFile(String methodName){
-		if (methodName.contains(":")){
-			return true;
-		}
-		return false;
+	public String getDataFileName(String methodName){
+		return this.fileName; 
 	}
 	
-	public String getDataFileName(String methodName){
-		String [] newName = methodName.split(":");
-		
-		return newName[1]; 
+	public void initializeFileName(String methodName){
+		if (Helper.useOtherDataFile(methodName)){
+			this.fileName = Helper.getOptionFileName(methodName);
+		}
+		else{
+			this.fileName = null;
+		}
 	}
+	
+	public static String getData(){
+		return null;
+	}
+	
 }

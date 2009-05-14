@@ -9,8 +9,15 @@ public class Turner99Woddle extends PartialCalcul{
 	
 	/*REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
-	public Turner99Woddle(){
-		this.fileName = "Turner1999woddle.xml";
+	public static String defaultFileName = "Turner1999woddle.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

@@ -7,8 +7,15 @@ public class Znosco08mm extends ZnoscoMethod {
 
 	/*REF: Brent M Znosko et al (2008). Biochemistry 47: 10178-10187.*/
 	
-	public Znosco08mm() {
-		this.fileName = "Znosco2008mm.xml";
+	public static String defaultFileName = "Znosco2008mm.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,

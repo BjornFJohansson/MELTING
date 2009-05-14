@@ -9,8 +9,16 @@ public class Broda05CNGRepeats extends PartialCalcul {
 
 	/*REF: Broda et al (2005). Biochemistry 44: 10873-10882.*/
 	
-	public Broda05CNGRepeats() {
-		this.fileName = "Broda2005CNG.xml";
+	
+	public static String defaultFileName = "Broda2005CNG.xml";
+
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	@Override

@@ -6,8 +6,15 @@ public class Sugimoto96 extends CricksNNMethod {
 	
 	/*Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505*/ 
 	
-	public Sugimoto96(){
-		this.fileName = "Sugimoto1996nn.xml";
+	public static String defaultFileName = "Sugimoto1996nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

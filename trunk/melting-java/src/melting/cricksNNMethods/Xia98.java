@@ -7,8 +7,15 @@ public class Xia98 extends CricksNNMethod {
 
 	/*Xia et al (1998) Biochemistry 37: 14719-14735 */
 	
-	public Xia98(){
-		this.fileName = "Xia1998nn.xml";
+	public static String defaultFileName = "Xia1998nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

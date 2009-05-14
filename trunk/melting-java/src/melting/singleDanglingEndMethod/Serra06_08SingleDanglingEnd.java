@@ -8,8 +8,15 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 	/*REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344
 	REF: Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 */
 	
-	public Serra06_08SingleDanglingEnd(){
-		this.fileName = "Serra2006_2008de.xml";
+	public static String defaultFileName = "Serra2006_2008de.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

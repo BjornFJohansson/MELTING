@@ -6,6 +6,7 @@ import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
@@ -49,11 +50,13 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
+		String doubleDanglingName = options.get(OptionManagement.doubleDanglingEndMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalcul secondDangling = register.getPartialCalculMethod(OptionManagement.doubleDanglingEndMethod, options);
+		PartialCalculMethod secondDangling = register.getPartialCalculMethod(OptionManagement.doubleDanglingEndMethod, doubleDanglingName);
+		String fileDoubleDangling = secondDangling.getDataFileName(doubleDanglingName);
 		
-		String secondDanglingFile = secondDangling.getFileName(OptionManagement.doubleDanglingEndMethod);
-		loadFile(secondDanglingFile, this.collector);
+		
+		loadFile(fileDoubleDangling, this.collector);
 	}
 
 }
