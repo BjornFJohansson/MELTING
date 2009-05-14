@@ -9,8 +9,15 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
-	public Santalucia04InternalLoop(){
-		this.fileName = "Santalucia2004longmm.xml";
+	public static String defaultFileName = "Santalucia2004longmm.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

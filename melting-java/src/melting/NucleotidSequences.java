@@ -158,15 +158,12 @@ public class NucleotidSequences {
 		return false;
 	}
 	
-	public int calculateNumberDanglingEnds(){
-		int numberDe = 0;
-		if ((sequence.charAt(0) == '-' && Helper.isWatsonCrickBase(complementary.charAt(0))) || (complementary.charAt(0) == '-' && Helper.isWatsonCrickBase(sequence.charAt(0)))){
-			numberDe ++;
+	public boolean isBasePair(char base1, char base2, int pos){
+		
+		if (this.sequence.charAt(pos) == base1 && this.complementary.charAt(pos) == base2){
+			return true;
 		}
-		else if ((sequence.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(complementary.charAt(getDuplexLength() - 1))) || (complementary.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(sequence.charAt(getDuplexLength() - 1)))){
-			numberDe ++;
-		}
-		return numberDe;
+		return false;
 	}
 	
 	public static String getSens(String seq1, String seq2){
@@ -515,5 +512,128 @@ public class NucleotidSequences {
 		NucleotidSequences noModifiedSequence = new NucleotidSequences(seq.toString(), comp.toString());
 
 		return noModifiedSequence;
+	}
+	
+	public boolean isCNGMotif(int pos1, int pos2){
+		int index = pos1;
+		
+		if (pos2 > getDuplexLength() - 1 || pos2 - pos1 + 1 < 3 || pos1 < 0){
+			return false;
+		}
+		
+		while (index <= pos2 - 3){
+			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
+				return false;
+			}
+			else {
+				if(isBasePair('G', 'C', index + 2) && isBasePair('C', 'G', index)){
+					index += 3;
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isPerfectMatchSequence(int pos1, int pos2){
+		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
+			return false;
+		}
+		
+		for (int i = pos1; i <= pos2; i++){
+			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i)) == false){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public int calculateNumberDanglingEnds(){
+		int numberDe = 0;
+		if ((sequence.charAt(0) == '-' && Helper.isWatsonCrickBase(complementary.charAt(0))) || (complementary.charAt(0) == '-' && Helper.isWatsonCrickBase(sequence.charAt(0)))){
+			numberDe ++;
+		}
+		else if ((sequence.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(complementary.charAt(getDuplexLength() - 1))) || (complementary.charAt(getDuplexLength() - 1) == '-' && Helper.isWatsonCrickBase(sequence.charAt(getDuplexLength() - 1)))){
+			numberDe ++;
+		}
+		return numberDe;
+	}
+	
+	public boolean isDanglingEnd(int pos1, int pos2){
+		
+		if ((getSequence(pos1, pos2).contains("-") && getComplementary(pos1, pos2).contains("-")) || (getSequence(pos1, pos2).contains("-") == false && getComplementary(pos1, pos2).contains("-") == false)){
+			return false;
+		}
+		
+		if (pos1 != 0 && pos2 != getDuplexLength() - 1){
+			return false;
+		}
+		 
+		String sequenceWithoutDanglingEnd = getSequenceContainig("-", pos1, pos2);
+		String sequenceWithDanglingEnd = getComplementaryTo(sequenceWithoutDanglingEnd, pos1, pos2);
+		
+		for (int i = pos1; i <= pos2; i++){
+			if (sequenceWithoutDanglingEnd.charAt(i) != '-' || Helper.isWatsonCrickBase(sequenceWithDanglingEnd.charAt(i)) == false){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isMismatch(int pos1, int pos2){
+		
+		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
+			return false;
+		}
+		int numbergapSequence = 0;
+		int numbergapComplementary = 0;
+		for (int i = pos1; i <= pos2 ; i++){
+			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i))){
+				return false;
+			}
+			else if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false){
+				if (this.sequence.charAt(i) != '-'){
+					return false;
+				}
+				numbergapSequence ++;
+			}
+			else if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false){
+				if (this.complementary.charAt(i) != '-'){
+					return false;
+				}
+				numbergapComplementary ++;
+			}
+		}
+		
+		if (numbergapSequence == pos2 - pos1 || numbergapComplementary == pos2 - pos1){
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isBulgeLoop(int pos1, int pos2){
+		
+		if (pos2 > getDuplexLength() - 2 || pos1 < 0){
+			return false;
+		}
+		
+		if ((getSequence(pos1, pos2).contains("-") && getComplementary(pos1, pos2).contains("-")) || (getSequence(pos1, pos2).contains("-") == false && getComplementary(pos1, pos2).contains("-") == false)){
+			return false;
+		}
+		
+		String sequenceWithGap = getSequenceContainig("-", pos1, pos2);
+		
+		int numbergap = 0;
+		
+		for (int i = pos1; i <= pos2 ; i++){
+			if (sequenceWithGap.charAt(i) == '-'){
+				numbergap ++;
+			}
+		}
+		
+		if (numbergap != pos2 - pos1){
+			return false;
+		}
+		return true;
 	}
 }

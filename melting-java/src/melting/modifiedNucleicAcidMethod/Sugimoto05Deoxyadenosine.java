@@ -1,17 +1,29 @@
 package melting.modifiedNucleicAcidMethod;
 
 
+import java.util.HashMap;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.PartialCalculMethod;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	
 	/*Sugimoto et al. (2005). Analytical sciences 21 : 77-82*/ 
 	
-	public Sugimoto05Deoxyadenosine(){
-		this.fileName = "Sugimoto2005LdeoxyAmn.xml";
+	public static String defaultFileName = "Sugimoto2005LdeoxyAmn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -81,6 +93,19 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		result.setEntropy(entropy);
 		
 		return result;
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		String deoxyadenineName = options.get(OptionManagement.deoxyadenosineMethod);
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalculMethod deoxyadenine = register.getPartialCalculMethod(OptionManagement.deoxyadenosineMethod, deoxyadenineName);
+		String fileDeoxyadenine = deoxyadenine.getDataFileName(deoxyadenineName);
+		
+		
+		loadFile(fileDeoxyadenine, this.collector);
 	}
 
 }

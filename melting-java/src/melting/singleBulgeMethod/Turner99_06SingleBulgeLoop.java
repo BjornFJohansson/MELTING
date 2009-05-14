@@ -3,8 +3,8 @@ package melting.singleBulgeMethod;
 import java.util.HashMap;
 
 import melting.NucleotidSequences;
-import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
@@ -13,10 +13,6 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	
 	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
-	
-	public Turner99_06SingleBulgeLoop(){
-		super();
-	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -43,11 +39,13 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
+		String singleBulgeName = options.get(OptionManagement.singleBulgeLoopMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		PartialCalculMethod singleBulge = register.getPartialCalculMethod(OptionManagement.singleBulgeLoopMethod, singleBulgeName);
+		String fileSingleBulge = singleBulge.getDataFileName(singleBulgeName);
 		
-		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
-		loadFile(NNFile, this.collector);
+		
+		loadFile(fileSingleBulge, this.collector);
 	}
 
 }

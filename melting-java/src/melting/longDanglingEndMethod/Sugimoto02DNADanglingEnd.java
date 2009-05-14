@@ -5,8 +5,17 @@ import melting.Environment;
 
 public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 
-	public Sugimoto02DNADanglingEnd(){
-		this.fileName = "Sugimoto2002longdde.xml";
+	/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
+	
+	public static String defaultFileName = "Sugimoto2002longdde.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,

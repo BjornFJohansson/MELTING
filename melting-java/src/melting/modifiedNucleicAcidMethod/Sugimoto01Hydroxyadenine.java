@@ -8,6 +8,7 @@ import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
@@ -15,8 +16,15 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 
 	/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
 	
-	public Sugimoto01Hydroxyadenine(){
-		this.fileName = "Sugimoto2001hydroxyAmn.xml";
+	public static String defaultFileName = "Sugimoto2001hydroxyAmn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -125,11 +133,13 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
+		String hydroxyadenineName = options.get(OptionManagement.hydroxyadenineMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		PartialCalculMethod hydroxyadenine = register.getPartialCalculMethod(OptionManagement.hydroxyadenineMethod, hydroxyadenineName);
+		String fileHydroxyadenine = hydroxyadenine.getDataFileName(hydroxyadenineName);
 		
-		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
-		loadFile(NNFile, this.collector);
+		
+		loadFile(fileHydroxyadenine, this.collector);
 	}
 
 }

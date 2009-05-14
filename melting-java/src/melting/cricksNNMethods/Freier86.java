@@ -6,9 +6,16 @@ public class Freier86 extends CricksNNMethod {
 	
 	/*Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 */
 	
-	public Freier86() {
-		this.fileName = "Freier1986nn.xml";	
+	public static String defaultFileName = "Freier1986nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
 		}
+	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = isApplicable(environment, pos1, pos2);

@@ -7,6 +7,7 @@ import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
@@ -14,10 +15,17 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	
 	/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
 	
-	public McTigue04LockedAcid(){
-		this.fileName = "McTigue2004lockedmn.xml";
+	public static String defaultFileName = "McTigue2004lockedmn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
-
+	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
@@ -93,11 +101,13 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
+		String azobenzeneName = options.get(OptionManagement.azobenzeneMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalcul NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, options);
+		PartialCalculMethod azobenzene = register.getPartialCalculMethod(OptionManagement.azobenzeneMethod, azobenzeneName);
+		String fileAzobenzene = azobenzene.getDataFileName(azobenzeneName);
 		
-		String NNFile = NNMethod.getFileName(OptionManagement.NNMethod);
-		loadFile(NNFile, this.collector);
+		
+		loadFile(fileAzobenzene, this.collector);
 	}
 	
 }

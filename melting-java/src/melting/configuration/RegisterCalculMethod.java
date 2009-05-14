@@ -2,6 +2,7 @@ package melting.configuration;
 
 import java.util.HashMap;
 
+import melting.Helper;
 import melting.CNGRepeatsMethods.Broda05CNGRepeats;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
@@ -56,26 +57,27 @@ import melting.woddleNNMethod.Turner99Woddle;
 
 public class RegisterCalculMethod {
 	
-	private HashMap<String, Class<? extends SodiumEquivalentMethod>> NaEqMethod = new HashMap<String, Class<? extends SodiumEquivalentMethod>>();
-	private HashMap<String, Class<? extends ApproximativeMode>> approximativeMethod = new HashMap<String, Class<? extends ApproximativeMode>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> cricksMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends CompletCalculMethod>> completCalculMethod = new HashMap<String, Class<? extends CompletCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> singleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> doubleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> longDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> inosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> CNGRepeatsMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private HashMap<String, Class<? extends PartialCalculMethod>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-
+	private static HashMap<String, Class<? extends SodiumEquivalentMethod>> NaEqMethod = new HashMap<String, Class<? extends SodiumEquivalentMethod>>();
+	private static HashMap<String, Class<? extends ApproximativeMode>> approximativeMethod = new HashMap<String, Class<? extends ApproximativeMode>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> cricksMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends CompletCalculMethod>> completCalculMethod = new HashMap<String, Class<? extends CompletCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> singleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> doubleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> longDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> inosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> CNGRepeatsMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, Class<? extends PartialCalculMethod>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
+	private static HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>>();
+	
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
 		initializeCompletCalculMethods();
@@ -96,176 +98,152 @@ public class RegisterCalculMethod {
 		initializeDeoxyadenosineMethods();
 		initializeHydroxyadenosineMethods();
 		initializeLockedAcidMethods();
+		
+		initializePartialCalculMethods();
 	}
 	
 	private void initializeNaEqMethods(){
-		this.NaEqMethod.put("Ahsen_2001", Ahsen01_NaEquivalent.class);
-		this.NaEqMethod.put("Owczarzy_2008", Owczarzy08_NaEquivalent.class);
+		NaEqMethod.put("Ahsen_2001", Ahsen01_NaEquivalent.class);
+		NaEqMethod.put("Owczarzy_2008", Owczarzy08_NaEquivalent.class);
 	}
 	
 	private void initializeCompletCalculMethods(){
-		this.completCalculMethod.put("approximate", ApproximativeMode.class);
-		this.completCalculMethod.put("nearest_neighbor", NearestNeighborMode.class);
-		this.completCalculMethod.put("default", null);
+		completCalculMethod.put("approximate", ApproximativeMode.class);
+		completCalculMethod.put("nearest_neighbor", NearestNeighborMode.class);
+		completCalculMethod.put("default", null);
 	}
 	
 	private void initializeApproximativeMethods(){
-		this.approximativeMethod.put("Ahsen_2001", Ahsen01.class);
-		this.approximativeMethod.put("Marmur_Chester_1962_1993", MarmurChester62_93.class);//650
-		this.approximativeMethod.put("Marmur_Chester_1962_1993_corr", MarmurChester62_93.class);//535
-		this.approximativeMethod.put("Marmur_Schildkraut_Doty", MarmurSchildkrautDoty.class);
-		this.approximativeMethod.put("Owen_1969", Owen69.class);
-		this.approximativeMethod.put("Santalucia_1998", Santalucia98.class);
-		this.approximativeMethod.put("Wetmur_1991", Wetmur91.class);
+		approximativeMethod.put("Ahsen_2001", Ahsen01.class);
+		approximativeMethod.put("Marmur_Chester_1962_1993", MarmurChester62_93.class);//650
+		approximativeMethod.put("Marmur_Chester_1962_1993_corr", MarmurChester62_93.class);//535
+		approximativeMethod.put("Marmur_Schildkraut_Doty", MarmurSchildkrautDoty.class);
+		approximativeMethod.put("Owen_1969", Owen69.class);
+		approximativeMethod.put("Santalucia_1998", Santalucia98.class);
+		approximativeMethod.put("Wetmur_1991", Wetmur91.class);
 	}
 	
 	private void initializeCricksMethods(){
-		this.cricksMethod.put("Allawi_Santalucia_1997", AllawiSantalucia97.class);
-		this.cricksMethod.put("Beslauer_1986", Breslauer86.class);
-		this.cricksMethod.put("Freier_1986", Freier86.class);
-		this.cricksMethod.put("Santalucia_2004", Santalucia04.class);
-		this.cricksMethod.put("Santalucia_1996", Santalucia96.class);
-		this.cricksMethod.put("Sugimoto_1995", Sugimoto95.class);
-		this.cricksMethod.put("Tanaka_2004", Tanaka04.class);
-		this.cricksMethod.put("Turner_2006", Turner06.class);
-		this.cricksMethod.put("Xia_1998", Xia98.class);
+		cricksMethod.put("Allawi_Santalucia_1997", AllawiSantalucia97.class);
+		cricksMethod.put("Beslauer_1986", Breslauer86.class);
+		cricksMethod.put("Freier_1986", Freier86.class);
+		cricksMethod.put("Santalucia_2004", Santalucia04.class);
+		cricksMethod.put("Santalucia_1996", Santalucia96.class);
+		cricksMethod.put("Sugimoto_1995", Sugimoto95.class);
+		cricksMethod.put("Tanaka_2004", Tanaka04.class);
+		cricksMethod.put("Turner_2006", Turner06.class);
+		cricksMethod.put("Xia_1998", Xia98.class);
 	}
 	
 	private void initializeSingleMismatchMethods(){
-		this.singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
-		this.singleMismatchMethod.put("Znosco_2007", Znosco07mm.class);
-		this.singleMismatchMethod.put("Znosco_2008", Znosco08mm.class);
-		this.singleMismatchMethod.put("Turner_2006", Turner06mm.class);
+		singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
+		singleMismatchMethod.put("Znosco_2007", Znosco07mm.class);
+		singleMismatchMethod.put("Znosco_2008", Znosco08mm.class);
+		singleMismatchMethod.put("Turner_2006", Turner06mm.class);
 	}
 	
 	private void initializeTandemMismatchMethods(){
-		this.tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
-		this.tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
+		tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
+		tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
 	}
 	
 	private void initializeWoddleMismatchMethods(){
-		this.woddleMethod.put("Turner_1999", Turner99Woddle.class);
+		woddleMethod.put("Turner_1999", Turner99Woddle.class);
 	}
 	
 	private void initializeInternalLoopMethods(){
-		this.internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
-		this.internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
-		this.internalLoopMethod.put("Znosco_2007", Znosco071x2Loop.class);
+		internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
+		internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
+		internalLoopMethod.put("Znosco_2007", Znosco071x2Loop.class);
 	}
 	
 	private void initializeSingleBulgeLoopMethods(){
-		this.singleBulgeLoopMethod.put("Turner_2006", Turner99_06SingleBulgeLoop.class);
-		this.singleBulgeLoopMethod.put("Santalucia_2004", Santalucia04SingleBulgeLoop.class);
-		this.singleBulgeLoopMethod.put("Serra_2007", Serra07SingleBulgeLoop.class);
-		this.singleBulgeLoopMethod.put("Tanaka_2004", Tanaka04SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("Turner_2006", Turner99_06SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("Santalucia_2004", Santalucia04SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("Serra_2007", Serra07SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("Tanaka_2004", Tanaka04SingleBulgeLoop.class);
 
 	}
 	
 	private void initializeLongBulgeLoopMethods(){
-		this.longBulgeLoopMethod.put("Turner_2006", Turner99_06LongBulgeLoop.class);
-		this.longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
+		longBulgeLoopMethod.put("Turner_2006", Turner99_06LongBulgeLoop.class);
+		longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
 	}
 	
 	private void initializeSingleDanglingEndMethods(){
-		this.singleDangingEndMethod.put("Bommarito_2000", Bommarito00SingleDanglingEnd.class);
-		this.longBulgeLoopMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
+		singleDangingEndMethod.put("Bommarito_2000", Bommarito00SingleDanglingEnd.class);
+		longBulgeLoopMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
 	}
 	
 	private void initializeDoubleDanglingEndMethods(){
-		this.doubleDangingEndMethod.put("Serra_2005", Serra05DoubleDanglingEnd.class);
-		this.doubleDangingEndMethod.put("Serra_2006", Serra06DoubleDanglingEnd.class);
+		doubleDangingEndMethod.put("Serra_2005", Serra05DoubleDanglingEnd.class);
+		doubleDangingEndMethod.put("Serra_2006", Serra06DoubleDanglingEnd.class);
 	}
 	
 	private void initializeLongDanglingEndMethods(){
-		this.longDangingEndMethod.put("Sugimoto_2002_dna", Sugimoto02DNADanglingEnd.class);
-		this.longDangingEndMethod.put("Sugimoto_2002_rna", Sugimoto02RNADanglingEnd.class);
+		longDangingEndMethod.put("Sugimoto_2002_dna", Sugimoto02DNADanglingEnd.class);
+		longDangingEndMethod.put("Sugimoto_2002_rna", Sugimoto02RNADanglingEnd.class);
 	}
 	
 	private void initializeCNGRepeatsMethods(){
-		this.CNGRepeatsMethod.put("Sugimoto_2002_dna", Broda05CNGRepeats.class);
+		CNGRepeatsMethod.put("Sugimoto_2002_dna", Broda05CNGRepeats.class);
 	}
 	
 	private void initializeInosineMethods(){
-		this.inosineMethod.put("Santalucia_2005", Santalucia05Inosine.class);
-		this.inosineMethod.put("Znosco_2007", Znosco07Inosine.class);
+		inosineMethod.put("Santalucia_2005", Santalucia05Inosine.class);
+		inosineMethod.put("Znosco_2007", Znosco07Inosine.class);
 	}
 	
 	private void initializeAzobenzeneMethods(){
-		this.azobenzeneMethod.put("Asanuma_2005", Asanuma05Azobenzene.class);
+		azobenzeneMethod.put("Asanuma_2005", Asanuma05Azobenzene.class);
 	}
 	
 	private void initializeLockedAcidMethods(){
-		this.lockedAcidMethod.put("McTigue_2004", McTigue04LockedAcid.class);
+		lockedAcidMethod.put("McTigue_2004", McTigue04LockedAcid.class);
 	}
 	
 	private void initializeHydroxyadenosineMethods(){
-		this.hydroxyadenosineMethod.put("Sugimoto_2001", Sugimoto01Hydroxyadenine.class);
+		hydroxyadenosineMethod.put("Sugimoto_2001", Sugimoto01Hydroxyadenine.class);
 	}
 	
 	private void initializeDeoxyadenosineMethods(){
-		this.deoxyadenosineMethod.put("Sugimoto_2005", Sugimoto05Deoxyadenosine.class);
+		deoxyadenosineMethod.put("Sugimoto_2005", Sugimoto05Deoxyadenosine.class);
 	}
 	
-	private HashMap<String , Class<? extends PartialCalculMethod>> getCalculMethodHashMap(String optionName){
-		if (optionName.equals(OptionManagement.azobenzeneMethod)){
-			return this.azobenzeneMethod;
-		}
-		else if(optionName.equals(OptionManagement.CNGMethod)){
-			return this.CNGRepeatsMethod;
-		}
-		else if(optionName.equals(OptionManagement.deoxyadenosineMethod)){
-			return this.deoxyadenosineMethod;
-		}
-		else if(optionName.equals(OptionManagement.doubleDanglingEndMethod)){
-			return this.doubleDangingEndMethod;
-		}
-		else if(optionName.equals(OptionManagement.hydroxyadenineMethod)){
-			return this.hydroxyadenosineMethod;
-		}
-		else if(optionName.equals(OptionManagement.inosineMethod)){
-			return this.inosineMethod;
-		}
-		else if(optionName.equals(OptionManagement.internalLoopMethod)){
-			return this.internalLoopMethod;
-		}
-		else if(optionName.equals(OptionManagement.lockedAcidMethod)){
-			return this.lockedAcidMethod;
-		}
-		else if(optionName.equals(OptionManagement.longBulgeLoopMethod)){
-			return this.longBulgeLoopMethod;
-		}
-		else if(optionName.equals(OptionManagement.longDanglingEndMethod)){
-			return this.longDangingEndMethod;
-		}
-		else if(optionName.equals(OptionManagement.NNMethod)){
-			return this.cricksMethod;
-		}
-		else if(optionName.equals(OptionManagement.singleBulgeLoopMethod)){
-			return this.singleBulgeLoopMethod;
-		}
-		else if(optionName.equals(OptionManagement.singleDanglingEndMethod)){
-			return this.singleDangingEndMethod;
-		}
-		else if(optionName.equals(OptionManagement.singleMismatchMethod)){
-			return this.singleMismatchMethod;
-		}
-		else if(optionName.equals(OptionManagement.tandemMismatchMethod)){
-			return this.tandemMismatchMethod;
-		}
-		else if(optionName.equals(OptionManagement.woddleBaseMethod)){
-			return this.tandemMismatchMethod;
-		}
-		return null;
+	private void initializePartialCalculMethods(){
+		PartialCalculMethods.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
+		PartialCalculMethods.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
+		PartialCalculMethods.put(OptionManagement.deoxyadenosineMethod, deoxyadenosineMethod);
+		PartialCalculMethods.put(OptionManagement.doubleDanglingEndMethod, doubleDangingEndMethod);
+		PartialCalculMethods.put(OptionManagement.hydroxyadenineMethod, hydroxyadenosineMethod);
+		PartialCalculMethods.put(OptionManagement.inosineMethod, inosineMethod);
+		PartialCalculMethods.put(OptionManagement.internalLoopMethod, internalLoopMethod);
+		PartialCalculMethods.put(OptionManagement.lockedAcidMethod, lockedAcidMethod);
+		PartialCalculMethods.put(OptionManagement.longBulgeLoopMethod, longBulgeLoopMethod);
+		PartialCalculMethods.put(OptionManagement.longDanglingEndMethod, longDangingEndMethod);
+		PartialCalculMethods.put(OptionManagement.NNMethod, cricksMethod);
+		PartialCalculMethods.put(OptionManagement.singleBulgeLoopMethod, singleBulgeLoopMethod);
+		PartialCalculMethods.put(OptionManagement.singleDanglingEndMethod, singleDangingEndMethod);
+		PartialCalculMethods.put(OptionManagement.singleMismatchMethod, singleMismatchMethod);
+		PartialCalculMethods.put(OptionManagement.tandemMismatchMethod, tandemMismatchMethod);
+		PartialCalculMethods.put(OptionManagement.woddleBaseMethod, woddleMethod);
+
 	}
 	
-	public PartialCalculMethod getPartialCalculMethod(String optionName, HashMap<String, String> optionSet){
+	private HashMap<String , Class<? extends PartialCalculMethod>> getPartialCalculMethodHashMap(String optionName){
 		
-		String methodName = optionSet.get(optionName);
+		return PartialCalculMethods.get(optionName);
+	}
+	
+	public PartialCalculMethod getPartialCalculMethod(String optionName, String methodName){
 		
 		if (methodName != null){
 			PartialCalculMethod method;
 			try {
-				method = getCalculMethodHashMap(optionName).get(methodName).newInstance();
+				if (Helper.useOtherDataFile(methodName)){
+					methodName = Helper.getOptionFileName(methodName);
+				}
+				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
 				
 				return method;
 			} catch (InstantiationException e) {
@@ -285,7 +263,7 @@ public class RegisterCalculMethod {
 		}
 		SodiumEquivalentMethod method;
 		try {
-			method = this.NaEqMethod.get(methodName).newInstance();
+			method = NaEqMethod.get(methodName).newInstance();
 			if (method.isApplicable(optionSet)) {
 				return method;
 			}
@@ -303,7 +281,7 @@ public class RegisterCalculMethod {
 		
 		CompletCalculMethod method;
 		try {
-			method = this.completCalculMethod.get(methodName).newInstance();
+			method = completCalculMethod.get(methodName).newInstance();
 			
 			if (method == null){
 				int thres = Integer.getInteger(optionSet.get(OptionManagement.threshold));
@@ -316,7 +294,7 @@ public class RegisterCalculMethod {
 					
 					methodName = optionSet.get(OptionManagement.approximativeMode);
 					try {
-						method = this.approximativeMethod.get(methodName).newInstance();
+						method = approximativeMethod.get(methodName).newInstance();
 						method.setUpVariable(optionSet);
 					} catch (InstantiationException e) {
 						e.printStackTrace();

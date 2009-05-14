@@ -7,8 +7,15 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 
 	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
 	
-	public Santalucia96() {
-		this.fileName = "Santalucia1998nn.xml";
+	public static String defaultFileName = "Santalucia1998nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {

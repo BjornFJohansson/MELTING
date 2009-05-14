@@ -7,8 +7,15 @@ import melting.ThermoResult;
 
 public class Turner06 extends CricksNNMethod {
 	
-	public Turner06(){
-		this.fileName = "Turner2006nn.xml";
+	public static String defaultFileName = "Turner2006nn.xml";
+	
+	@Override
+	public void initializeFileName(String methodName){
+		super.initializeFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,

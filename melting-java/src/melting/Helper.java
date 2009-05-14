@@ -70,4 +70,15 @@ public class Helper {
 				return false;
 		}
 	}
+	
+	public static boolean useOtherDataFile(String methodName){
+		if (methodName.contains(":")){
+			return true;
+		}
+		return false;
+	}
+	
+	public static String getOptionFileName(String methodName){
+		return methodName.split(":")[1];
+	}
 }
