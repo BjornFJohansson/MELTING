@@ -2,7 +2,6 @@ package melting;
 
 import java.io.File;
 import java.util.HashMap;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -67,7 +66,7 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 			this.fileName = null;
 		}
 	}
-	
+		
 	public static String getData(){
 		return null;
 	}

@@ -5,11 +5,11 @@ import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 
-public class Turner99Woddle extends PartialCalcul{
+public class Turner99Wobble extends PartialCalcul{
 	
 	/*REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
-	public static String defaultFileName = "Turner1999woddle.xml";
+	public static String defaultFileName = "Turner1999wobble.xml";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -25,7 +25,7 @@ public class Turner99Woddle extends PartialCalcul{
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		for (int i = pos1; i <= pos2 - 1; i++){
+		for (int i = pos1; i <= pos2; i++){
 			enthalpy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
 			entropy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy(); 
 		}
@@ -51,7 +51,7 @@ public class Turner99Woddle extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
  
-		for (int i = pos1; i < pos2; i++){
+		for (int i = pos1; i <= pos2; i++){
 			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}

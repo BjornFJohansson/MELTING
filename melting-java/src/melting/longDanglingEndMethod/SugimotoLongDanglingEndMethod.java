@@ -8,7 +8,7 @@ import melting.ThermoResult;
 public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 
 	/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
-	
+
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {

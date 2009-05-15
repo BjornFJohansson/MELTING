@@ -12,6 +12,7 @@ public class Environment {
 	private double K;
 	private double dNTP;
 	private double nucleotides;
+	private int factor;
 	private boolean IsSelfComplementarity = false;
 	private String Hybridization;
 	private NucleotidSequences sequences;
@@ -28,6 +29,7 @@ public class Environment {
 		this.dNTP = Double.parseDouble(options.get(OptionManagement.dNTP));
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization);
+		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
 		
 		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
@@ -37,6 +39,10 @@ public class Environment {
 		this.result = new ThermoResult(0,0,0);
 	}
 	
+	public int getFactor() {
+		return factor;
+	}
+
 	public ThermoResult getResult() {
 		return result;
 	}

@@ -32,10 +32,8 @@ import melting.longDanglingEndMethod.Sugimoto02DNADanglingEnd;
 import melting.longDanglingEndMethod.Sugimoto02RNADanglingEnd;
 import melting.modifiedNucleicAcidMethod.Asanuma05Azobenzene;
 import melting.modifiedNucleicAcidMethod.McTigue04LockedAcid;
-import melting.modifiedNucleicAcidMethod.Santalucia05Inosine;
 import melting.modifiedNucleicAcidMethod.Sugimoto01Hydroxyadenine;
 import melting.modifiedNucleicAcidMethod.Sugimoto05Deoxyadenosine;
-import melting.modifiedNucleicAcidMethod.Znosco07Inosine;
 import melting.nearestNeighborModel.NearestNeighborMode;
 import melting.secondDanglingEndMethod.Serra05DoubleDanglingEnd;
 import melting.secondDanglingEndMethod.Serra06DoubleDanglingEnd;
@@ -53,7 +51,9 @@ import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
 import melting.sodiumEquivalence.Owczarzy08_NaEquivalent;
 import melting.tandemMismatchMethod.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.tandemMismatchMethod.Turner99_06tanmm;
-import melting.woddleNNMethod.Turner99Woddle;
+import melting.woddleNNMethod.Santalucia05Inosine;
+import melting.woddleNNMethod.Turner99Wobble;
+import melting.woddleNNMethod.Znosco07Inosine;
 
 public class RegisterCalculMethod {
 	
@@ -148,7 +148,7 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeWoddleMismatchMethods(){
-		woddleMethod.put("Turner_1999", Turner99Woddle.class);
+		woddleMethod.put("Turner_1999", Turner99Wobble.class);
 	}
 	
 	private void initializeInternalLoopMethods(){
@@ -213,7 +213,7 @@ public class RegisterCalculMethod {
 	private void initializePartialCalculMethods(){
 		PartialCalculMethods.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
 		PartialCalculMethods.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
-		PartialCalculMethods.put(OptionManagement.deoxyadenosineMethod, deoxyadenosineMethod);
+		PartialCalculMethods.put(OptionManagement.deoxyadenineMethod, deoxyadenosineMethod);
 		PartialCalculMethods.put(OptionManagement.doubleDanglingEndMethod, doubleDangingEndMethod);
 		PartialCalculMethods.put(OptionManagement.hydroxyadenineMethod, hydroxyadenosineMethod);
 		PartialCalculMethods.put(OptionManagement.inosineMethod, inosineMethod);
@@ -226,7 +226,7 @@ public class RegisterCalculMethod {
 		PartialCalculMethods.put(OptionManagement.singleDanglingEndMethod, singleDangingEndMethod);
 		PartialCalculMethods.put(OptionManagement.singleMismatchMethod, singleMismatchMethod);
 		PartialCalculMethods.put(OptionManagement.tandemMismatchMethod, tandemMismatchMethod);
-		PartialCalculMethods.put(OptionManagement.woddleBaseMethod, woddleMethod);
+		PartialCalculMethods.put(OptionManagement.wobbleBaseMethod, woddleMethod);
 
 	}
 	

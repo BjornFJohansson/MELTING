@@ -1,5 +1,6 @@
 package melting.CNGRepeatsMethods;
 
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;

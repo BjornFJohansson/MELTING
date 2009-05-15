@@ -53,7 +53,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			isApplicable = false;
 		}
 		
-		if (pos1 == 0 || pos2 == pos1 + modified.getDuplexLength() - 1){
+		if (pos1 != 0 && pos2 != pos1 + modified.getDuplexLength() - 1){
 			StringBuffer seq = new StringBuffer(modified.getDuplexLength());
 			StringBuffer comp = new StringBuffer(modified.getDuplexLength());
 			
@@ -94,10 +94,15 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			int pos2) { 
 			
 		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
-		for (int i = 0; i < noModified.getDuplexLength(); i++){
-			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
-				return true;
+		if (pos1 != 0 && pos2 != pos1 + sequences.getDuplexLength() - 1){
+			for (int i = 0; i < noModified.getDuplexLength(); i++){
+				if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
+					return true;
+				}
 			}
+		}
+		else {
+			return true;
 		}
 		
 		if (this.collector.getHydroxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
@@ -113,7 +118,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		double entropy = result.getEntropy();
 		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
 		
-		if (pos1 != 0 && pos2 != sequences.getDuplexLength()){
+		if (pos1 != 0 && pos2 != sequences.getDuplexLength() - 1){
 			
 			for (int i = 0; i < noModified.getDuplexLength(); i++){
 				enthalpy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEnthalpy();

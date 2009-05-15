@@ -19,7 +19,7 @@ public class OptionManagement {
 	public static final String correctionIon = "-corr";
 	public static final String NNMethod = "-NN";
 	public static final String singleMismatchMethod = "-singleMM";
-	public static final String woddleBaseMethod = "-woddle";
+	public static final String wobbleBaseMethod = "-woddle";
 	public static final String tandemMismatchMethod = "-tandemMM";
 	public static final String internalLoopMethod = "-internalLoop";
 	public static final String singleDanglingEndMethod = "-singleDE";
@@ -33,7 +33,7 @@ public class OptionManagement {
 	public static final String hydroxyadenineMethod = "-HydroxyA";
 	public static final String azobenzeneMethod = "-azobenzene";
 	public static final String lockedAcidMethod = "-locked";
-	public static final String deoxyadenosineMethod = "-deoxyA";
+	public static final String deoxyadenineMethod = "-deoxyA";
 	public static final String NaEquivalentMethod = "-Naeq";
 	public static final String meltingHelp = "-help";
 	public static final String legalInformation = "-L";
@@ -85,7 +85,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
 		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
 		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
-		this.DNADefaultOptions.put(deoxyadenosineMethod, "Sugimoto_2005");
+		this.DNADefaultOptions.put(deoxyadenineMethod, "Sugimoto_2005");
 		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2007");
 	}
 	
@@ -96,7 +96,7 @@ public class OptionManagement {
 	private void setRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "Xia_1998");
 		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2008");
-		this.RNADefaultOptions.put(woddleBaseMethod, "Turner_1999");
+		this.RNADefaultOptions.put(wobbleBaseMethod, "Turner_1999");
 		this.RNADefaultOptions.put(tandemMismatchMethod, "Turner_1999_2006");
 		this.RNADefaultOptions.put(internalLoopMethod, "Turner_1999_2006");
 		this.RNADefaultOptions.put(singleBulgeLoopMethod, "Serra_2007");

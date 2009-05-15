@@ -1,30 +1,14 @@
 package melting.singleMismatchMethods;
 
-
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 
-public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
+public class Sugimoto00mm extends PartialCalcul {
 
-	/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
-	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
-	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
-	
-
-	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999mm.xml";
-	
-	@Override
-	public void initializeFileName(String methodName){
-		super.initializeFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	/*Sugimoto Naoki, Mariko Nakano, Shu-ichi Nakano, Thermodynamics- structure relationship of single mismatches in RNA/DNA duplexes,
+	 * Biochemistry 2000, 39: 11270-11281*/
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -45,10 +29,10 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
-		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("WARNING : the single mismatch parameters of " +
-					"Allawi, Santalucia and Peyret are originally established " +
-					"for DNA duplexes.");
+		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
+			System.out.println("WARNING : the single mismatch approximation of " +
+					"Sugimoto et al. are originally established " +
+					"for RNA/DNA duplexes.");
 			
 			isApplicable = false;
 		}
@@ -67,4 +51,5 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 	
+
 }

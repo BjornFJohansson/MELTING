@@ -6,7 +6,7 @@ import melting.PartialCalcul;
 import melting.ThermoResult;
 
 public abstract class SingleDanglingEndMethod extends PartialCalcul {
-
+	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		

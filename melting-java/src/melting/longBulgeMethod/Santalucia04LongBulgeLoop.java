@@ -12,6 +12,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 	
 	public static String defaultFileName = "Santalucia2004longbulge.xml";
 	
+	
 	@Override
 	public void initializeFileName(String methodName){
 		super.initializeFileName(methodName);

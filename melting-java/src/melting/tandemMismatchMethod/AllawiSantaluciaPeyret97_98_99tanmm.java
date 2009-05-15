@@ -1,12 +1,9 @@
 package melting.tandemMismatchMethod;
 
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import melting.Environment;
-import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
@@ -37,7 +34,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		for (int i = pos1; i < pos2; i++){
+		for (int i = pos1; i <= pos2; i++){
 		
 			enthalpy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
 			entropy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
@@ -66,7 +63,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 
-		for (int i = pos1; i < pos2; i++){
+		for (int i = pos1; i <= pos2; i++){
 			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}

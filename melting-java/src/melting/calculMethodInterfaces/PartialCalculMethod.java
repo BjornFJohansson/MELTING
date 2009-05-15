@@ -24,5 +24,5 @@ public interface PartialCalculMethod {
 	public String getDataFileName(String methodName);
 	
 	public void initializeFileName(String methodName);
-
+	
 }
