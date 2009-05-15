@@ -1,4 +1,4 @@
-package melting.modifiedNucleicAcidMethod;
+package melting.woddleNNMethod;
 
 
 import melting.Environment;

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import melting.Environment;
 import melting.Helper;
-import melting.NucleotidSequences;
+import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
@@ -16,7 +16,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private Environment environment;
 	private PartialCalculMethod azobenzeneMethod;
 	private PartialCalculMethod CNGRepeatsMethod;
-	private PartialCalculMethod deoxyadenosineMethod;
+	private PartialCalculMethod deoxyadenineMethod;
 	private PartialCalculMethod doubleDangingEndMethod;
 	private PartialCalculMethod hydroxyadenosineMethod;
 	private PartialCalculMethod inosineMethod;
@@ -29,10 +29,57 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private PartialCalculMethod singleDangingEndMethod;
 	private PartialCalculMethod singleMismatchMethod;
 	private PartialCalculMethod tandemMismatchMethod;
-	private PartialCalculMethod woddleMethod;
+	private PartialCalculMethod wobbleMethod;
+	
+	private HashMap<PartialCalculMethod, String> matchingOptionNames = new HashMap<PartialCalculMethod, String>();
+	
+	public NearestNeighborMode(){
+		initializeMatchingOptionNames();
+	}
+	
+	private void initializeMatchingOptionNames(){
+		
+		matchingOptionNames.put(lockedAcidMethod, OptionManagement.lockedAcidMethod);
+		matchingOptionNames.put(azobenzeneMethod, OptionManagement.azobenzeneMethod);
+		matchingOptionNames.put(CNGRepeatsMethod, OptionManagement.CNGMethod);
+		matchingOptionNames.put(deoxyadenineMethod, OptionManagement.deoxyadenineMethod);
+		matchingOptionNames.put(doubleDangingEndMethod, OptionManagement.doubleDanglingEndMethod);
+		matchingOptionNames.put(hydroxyadenosineMethod, OptionManagement.hydroxyadenineMethod);
+		matchingOptionNames.put(inosineMethod, OptionManagement.inosineMethod);
+		matchingOptionNames.put(internalLoopMethod, OptionManagement.internalLoopMethod);
+		matchingOptionNames.put(longBulgeLoopMethod, OptionManagement.longBulgeLoopMethod);
+		matchingOptionNames.put(longDangingEndMethod, OptionManagement.longDanglingEndMethod);
+		matchingOptionNames.put(cricksMethod, OptionManagement.NNMethod);
+		matchingOptionNames.put(singleBulgeLoopMethod, OptionManagement.singleBulgeLoopMethod);
+		matchingOptionNames.put(singleDangingEndMethod, OptionManagement.singleDanglingEndMethod);
+		matchingOptionNames.put(singleMismatchMethod, OptionManagement.singleMismatchMethod);
+		matchingOptionNames.put(tandemMismatchMethod, OptionManagement.tandemMismatchMethod);
+		matchingOptionNames.put(wobbleMethod, OptionManagement.wobbleBaseMethod);
+	}
 	
 	public ThermoResult CalculateThermodynamics() {
-		return null;
+		
+		this.analyzeSequence();
+		
+		int pos1 = 0; 
+		
+		while (pos1 <= this.environment.getSequences().getDuplexLength() - 1){
+			int [] positions = getPositionsMotif(pos1);
+			int pos2 = positions[1];
+			
+			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
+			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
+			
+			this.environment.setResult(newResult);
+		}
+		
+		double enthalpy = this.environment.getResult().getEnthalpy();
+		double entropy = this.environment.getResult().getEntropy();
+		
+		double Tm = enthalpy / (entropy + 1.99 * Math.log( this.environment.getNucleotides() / this.environment.getFactor() ));
+		
+		this.environment.setResult(Tm);
+		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
@@ -61,21 +108,21 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		
 		}
 	
-	private int [] getPositionsMotif(NucleotidSequences sequences, int pos1){
+	private int [] getPositionsMotif(int pos1){
 		
-		if(sequences.isCNGMotif(pos1, pos1 + 5)){
+		if(environment.getSequences().isCNGMotif(pos1, pos1 + 5)){
 			int position = pos1;
-			while (sequences.isCNGMotif(position + 3, position + 5)){
+			while (environment.getSequences().isCNGMotif(position + 3, position + 5)){
 				position += 3;
 			}
 			int [] positions = {pos1, position};
 			return positions;
 		}
 		else {
-			if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos1), sequences.getComplementary().charAt(pos1))){
+			if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
 				int position = pos1;
 				
-				while (Helper.isComplementaryBasePair(sequences.getSequence().charAt(position + 1), sequences.getComplementary().charAt(position + 1))){
+				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1))){
 					position ++;
 				}
 
@@ -85,14 +132,36 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			
 			else {
 				int position = pos1;
-				while (Helper.isComplementaryBasePair(sequences.getSequence().charAt(position + 1), sequences.getComplementary().charAt(position + 1)) == false){
+				if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
+					while (environment.getSequences().isBasePairEqualsTo('G', 'U', position + 1)){
+						position ++;
+					}
+					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
+						if (pos1 == 0){
+							int [] positions = {pos1, position};
+							return positions;
+						}
+						else{
+							int [] positions = {pos1 - 1, position};
+							return positions;
+						}
+					}
+					else{
+						int [] positions = {pos1 - 1, pos1 + 1};
+						return positions;
+					}
+				}
+				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false && position + 1 <= environment.getSequences().getDuplexLength() - 1){
 					position ++;
 				}
-				if (pos1 == 0 && position == sequences.getDuplexLength()){
+				if (environment.getSequences().isBasePairEqualsTo('G', 'U', position)){
+					position --;
+				}
+				if (pos1 == 0 && position == environment.getSequences().getDuplexLength()){
 					int [] positions = {pos1, position};
 					return positions;
 				}
-				else if (position == sequences.getDuplexLength() - 1){
+				else if (position == environment.getSequences().getDuplexLength() - 1){
 					int [] positions = {pos1 - 1, position};
 					return positions;
 				}
@@ -110,22 +179,33 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
+		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
+			if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
+				if (positions[1] - positions[0] + 1 == 2){
+					return this.singleDangingEndMethod;
+				}
+				else if (positions[1] - positions[0] + 1 == 3){
+					return this.doubleDangingEndMethod;
+				}
+				else if (positions[1] - positions[0] + 1 > 3){
+					return this.longDangingEndMethod;
+				}
+			}
+			
+			if ((environment.getSequences().isMismatch(positions[0], positions[1]))){
+				System.out.println("ERROR : No method for terminal mismatches have been implemented yet.");
+				return null;
+			}
+		}
+		
 		if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
 			return this.cricksMethod;
 		}
 		else if (environment.getSequences().isCNGMotif(positions[0], positions[1])){
 			return this.CNGRepeatsMethod;
 		}
-		else if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
-			if (positions[1] - positions[0] + 1 == 2){
-				return this.singleDangingEndMethod;
-			}
-			else if (positions[1] - positions[0] + 1 == 3){
-				return this.doubleDangingEndMethod;
-			}
-			else if (positions[1] - positions[0] + 1 > 3){
-				return this.longDangingEndMethod;
-			}
+		else if (environment.getSequences().isGUSequences(positions[0], positions[1])){
+			return this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
 			if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
@@ -149,31 +229,81 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				return this.longBulgeLoopMethod;
 			}
 		}
+		else if (environment.getSequences().isListedModifiedAcid(positions[0], positions[1])){
+			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1]));
+			if (environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1])) != null){
+				switch (acidName) {
+				case inosine:
+					return this.inosineMethod;
+				case azobenzene:
+					return this.azobenzeneMethod;
+				case hydroxyadenine:
+					return this.hydroxyadenosineMethod;
+				case L_deoxyadenine:
+					return this.deoxyadenineMethod;
+				case lockedAcidNucleic:
+					return this.lockedAcidMethod;
+				default:
+					System.err.println("ERROR : There is a unknown modified acid nucleic in the sequences.");
+					break;
+				}
+			}
+		}
 		return null;
 	}
 	
-	private void initializeNecessaryMethods(NucleotidSequences sequences){
+	private void initializeNecessaryMethods(){
 		int pos1 = 0;
 		RegisterCalculMethod register = new RegisterCalculMethod();
 		
-		while (pos1 <= sequences.getDuplexLength() - 1){
-			int pos2 = getPositionsMotif(sequences, pos1)[1];
-			if (sequences.isPerfectMatchSequence(pos1, pos2)){
-				if (this.cricksMethod == null){
-					this.cricksMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, environment.getOptions().get(OptionManagement.NNMethod));
-					this.cricksMethod.initializeFileName(environment.getOptions().get(OptionManagement.NNMethod));
-					this.cricksMethod.loadData(environment.getOptions());
-				}
+		while (pos1 <= environment.getSequences().getDuplexLength() - 1){
+			int [] positions = getPositionsMotif(pos1);
+			int pos2 = positions[1];
+			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+			
+			if (necessaryMethod == null){
+				String optionName = this.matchingOptionNames.get(necessaryMethod);
+				String methodName = environment.getOptions().get(optionName);
 				
-				if (this.cricksMethod.isApplicable(environment, pos1, pos2) == false){
-					System.err.println("ERROR : we cannot compute the melting temperature for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2));
+				necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
+				
+				if (necessaryMethod != null){
+					necessaryMethod.initializeFileName(methodName);
+					necessaryMethod.loadData(environment.getOptions());
 				}
 			}
-			pos1 = pos2 + 1;
+			
+			pos1 = pos2;
 		}
 	}
 	
-	private void analyzeSequence(NucleotidSequences sequences){
+	private boolean checkIfMethodsAreApplicable(){
+		int pos1 = 0;
 		
+		while (pos1 <= environment.getSequences().getDuplexLength() - 1){
+			int [] positions = getPositionsMotif(pos1);
+			int pos2 = positions[1];
+			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+			
+			if (necessaryMethod == null){
+				System.err.println("ERROR : We cannot comput the melting temperature, there is an option we don't understand.");
+				return false;
+			}
+			
+			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
+				System.err.println("ERROR : We cannot comput the melting temperature, a method is not applicable with the chosen options.");
+				return false;
+			}
+			pos1 = pos2;
+		}
+		return true;
+	}
+	
+	private void analyzeSequence(){
+		initializeNecessaryMethods();
+		
+		if (checkIfMethodsAreApplicable() == false){
+			System.err.println("ERROR : we cannot compute the melting. Check the sequences.");
+		}
 	}
 }

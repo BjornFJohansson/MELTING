@@ -8,6 +8,7 @@ import melting.ThermoResult;
 
 public abstract class ZnoscoMethod extends PartialCalcul{
 	
+	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		

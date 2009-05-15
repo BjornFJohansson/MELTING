@@ -26,67 +26,67 @@
     /******************************************************************************/-->
   		
   	<data type="modified_nucleotides">
-  		<<modified sequence="TAA/AA*T">
+  		<modified sequence="TAA/AA*T">
   			<enthalpy>26500.0</enthalpy>
   			<entropy>71.0</entropy>
   		</modified>
-  		<<modified sequence="TGA/AA*T">
+  		<modified sequence="TGA/AA*T">
   			<enthalpy>21000.0</enthalpy>
   			<entropy>61.0</entropy>
   		</modified>
-  		<<modified sequence="TCA/AA*T">
+  		<modified sequence="TCA/AA*T">
   			<enthalpy>9000.0</enthalpy>
   			<entropy>27.0</entropy>
   		</modified>
-  		<<modified sequence="TTA/AA*T">
+  		<modified sequence="TTA/AA*T">
   			<enthalpy>14000.0</enthalpy>
   			<entropy>38.0</entropy>
   		</modified>
-  		<<modified sequence="GAC/CA*G">
+  		<modified sequence="GAC/CA*G">
   			<enthalpy>70800.0</enthalpy>
   			<entropy>203.0</entropy>
   		</modified>
-  		<<modified sequence="GGC/CA*G">
+  		<modified sequence="GGC/CA*G">
   			<enthalpy>25600.0</enthalpy>
   			<entropy>76.0</entropy>
   		</modified>
-  		<<modified sequence="GCC/CA*G">
+  		<modified sequence="GCC/CA*G">
   			<enthalpy>19000.0</enthalpy>
   			<entropy>54.0</entropy>
   		</modified>
-  		<<modified sequence="GTC/CA*G">
+  		<modified sequence="GTC/CA*G">
   			<enthalpy>9000.0</enthalpy>
   			<entropy>29.0</entropy>
   		</modified>  		
-  		<<modified sequence="CTA*A/AT" sens="5">
+  		<modified sequence="CTA*A/AT" sens="5">
   			<enthalpy>6.0</enthalpy>
   			<entropy>18.0</entropy>
   		</modified>				
-  		<<modified sequence="TGA*C/AG" sens="5">
+  		<modified sequence="TGA*C/AG" sens="5">
   			<enthalpy>76600.0</enthalpy>
   			<entropy>227.0</entropy>
   		</modified>
-  		<<modified sequence="CTA*A/GT" sens="5">
+  		<modified sequence="CTA*A/GT" sens="5">
   			<enthalpy>48.3</enthalpy>
   			<entropy>144.0</entropy>
   		</modified>	
-  		<<modified sequence="TGA*C/GG" sens="5">
+  		<modified sequence="TGA*C/GG" sens="5">
   			<enthalpy>21000.0</enthalpy>
   			<entropy>63.0</entropy>
   		</modified>
-  		<<modified sequence="CTA*A/CT" sens="5">
+  		<modified sequence="CTA*A/CT" sens="5">
   			<enthalpy>15600.0</enthalpy>
   			<entropy>45.0</entropy>
   		</modified>	
-  		<<modified sequence="TGA*C/CG" sens="5">
+  		<modified sequence="TGA*C/CG" sens="5">
   			<enthalpy>37000.0</enthalpy>
   			<entropy>110.0</entropy>
   		</modified>
-  		<<modified sequence="CTA*A/TT" sens="5">
+  		<modified sequence="CTA*A/TT" sens="5">
   			<enthalpy>-4000.0</enthalpy>
   			<entropy>-13.0</entropy>
   		</modified>
-  		<<modified sequence="TGA*C/TG" sens="5">
+  		<modified sequence="TGA*C/TG" sens="5">
   			<enthalpy>15000.0</enthalpy>
   			<entropy>47.0</entropy>
   		</modified>

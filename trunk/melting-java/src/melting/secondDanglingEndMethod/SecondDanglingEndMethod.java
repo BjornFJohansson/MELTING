@@ -12,6 +12,7 @@ import melting.configuration.RegisterCalculMethod;
 
 public abstract class SecondDanglingEndMethod extends PartialCalcul {
 
+	
 	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	

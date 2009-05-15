@@ -11,6 +11,7 @@ public class Turner06mm extends PartialCalcul{
 
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
+	
 	@Override
 	public void initializeFileName(String methodName){
 		super.initializeFileName(methodName);

@@ -13,7 +13,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
 	public static String defaultFileName = "Turner1999_2006tanmm.xml";
-	
+
 	@Override
 	public void initializeFileName(String methodName){
 		super.initializeFileName(methodName);

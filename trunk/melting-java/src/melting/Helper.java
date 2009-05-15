@@ -51,10 +51,22 @@ public class Helper {
 		return true;
 	case 'G':
 		return true;
+	case 'U':
+		return true;
 	default:
 		return false;
 	}
 }
+	
+	public static boolean isWobbleBasePair(char base1, char base2){
+		if ((base1 == 'G' && base2 == 'U') || (base1 == 'U' && base2 == 'G')){
+			return true;
+		}
+		else if ((base1 == 'I' && (base2 == 'U' || base2 == 'A' || base2 == 'C')) || (base2 == 'I' && (base1 == 'U' || base1 == 'A' || base1 == 'C'))){
+			return true;
+		}
+		return false;
+	}
 	
 	public static boolean isPyrimidine(char base){
 		switch (base) {

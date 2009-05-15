@@ -99,9 +99,9 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String deoxyadenineName = options.get(OptionManagement.deoxyadenosineMethod);
+		String deoxyadenineName = options.get(OptionManagement.deoxyadenineMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod deoxyadenine = register.getPartialCalculMethod(OptionManagement.deoxyadenosineMethod, deoxyadenineName);
+		PartialCalculMethod deoxyadenine = register.getPartialCalculMethod(OptionManagement.deoxyadenineMethod, deoxyadenineName);
 		String fileDeoxyadenine = deoxyadenine.getDataFileName(deoxyadenineName);
 		
 		

@@ -1,6 +1,7 @@
 package melting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NucleotidSequences {
 
@@ -8,7 +9,19 @@ public class NucleotidSequences {
 	private String complementary;
 	private static ArrayList<String> modifiedNucleotides = new ArrayList<String>();
 	
+	private static HashMap<String, ModifiedAcidNucleic> modifiedAcidNames = new HashMap<String, ModifiedAcidNucleic>();
+	
 	public NucleotidSequences(String sequence, String complementary){
+		initializeModifiedAcidArrayList();
+		initializeModifiedAcidHashmap();
+		
+		this.sequence = sequence;
+		this.complementary = complementary;
+		encodeSequences();
+		
+	}
+	
+	private void initializeModifiedAcidArrayList(){
 		modifiedNucleotides.add("_A");
 		modifiedNucleotides.add("_T");
 		modifiedNucleotides.add("_C");
@@ -17,11 +30,15 @@ public class NucleotidSequences {
 		modifiedNucleotides.add("A*");
 		modifiedNucleotides.add("L");
 		modifiedNucleotides.add("I");
-		
-		this.sequence = sequence;
-		this.complementary = complementary;
-		encodeSequences();
-		
+	}
+	
+	private void initializeModifiedAcidHashmap(){
+		modifiedAcidNames.put("I", ModifiedAcidNucleic.inosine);
+		modifiedAcidNames.put("L", ModifiedAcidNucleic.lockedAcidNucleic);
+		modifiedAcidNames.put("A*", ModifiedAcidNucleic.hydroxyadenine);
+		modifiedAcidNames.put("X", ModifiedAcidNucleic.azobenzene);
+		modifiedAcidNames.put("_A", ModifiedAcidNucleic.L_deoxyadenine);
+		modifiedAcidNames.put("_X", ModifiedAcidNucleic.L_deoxyadenine);
 	}
 	
 	public static String getComplementarySequence(String sequence, String hybridization){
@@ -63,11 +80,11 @@ public class NucleotidSequences {
 		int position = 0;
 		
 		for (int i = 0; i < sequence.length(); i++){
-			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && modifiedAcid == null){
+			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-' && modifiedAcid == null){
 				modifiedAcid = getModifiedAcid(sequence, i);
 				position = i;
 			}
-			else if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && modifiedAcid != null){
+			else if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-' && modifiedAcid != null){
 				if (i > position + modifiedAcid.length()){
 					position = 0;
 					modifiedAcid = null;
@@ -82,18 +99,6 @@ public class NucleotidSequences {
 			}
 		}
 		return true;
-	}
-	
-	private static String getModifiedAcid(String sequence, int pos){
-		
-		StringBuffer modifiedAcid = new StringBuffer();
-		int index = pos;
-		
-		while (Helper.isWatsonCrickBase(sequence.charAt(index)) == false && index <= sequence.length() - 1){
-			modifiedAcid.append(sequence.charAt(index));
-			index ++;
-		}
-		return modifiedAcid.toString();
 	}
 	
 	public String getSequence() {
@@ -580,6 +585,27 @@ public class NucleotidSequences {
 		return true;
 	}
 	
+	public boolean isGUSequences(int pos1, int pos2){
+		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
+			return false;
+		}
+		
+		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false && isBasePairEqualsTo('G', 'U', pos1) == false){
+			return false;
+		}
+		
+		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false && isBasePairEqualsTo('G', 'U', pos2) == false){
+			return false;
+		}
+		
+		for (int i = pos1 + 1; i <= pos2 - 1; i++){
+			if (isBasePairEqualsTo('G', 'U', i) == false){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public boolean isMismatch(int pos1, int pos2){
 		
 		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
@@ -587,7 +613,24 @@ public class NucleotidSequences {
 		}
 		int numbergapSequence = 0;
 		int numbergapComplementary = 0;
-		for (int i = pos1; i <= pos2 ; i++){
+		
+		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) || Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2))){
+			return true;
+		}
+		
+		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos1)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos1)) == false){
+			if ((this.sequence.charAt(pos1) != '-' && this.complementary.charAt(pos1) != '-') && isBasePairEqualsTo('G', 'U', pos1) == false){
+				return true;
+			}
+		}
+		
+		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos2)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos2)) == false){
+			if ((this.sequence.charAt(pos2) != '-' && this.complementary.charAt(pos2) != '-') && isBasePairEqualsTo('G', 'U', pos2) == false){
+				return true;
+			}
+		}
+		
+		for (int i = pos1 + 1; i <= pos2 - 1 ; i++){
 			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i))){
 				return false;
 			}
@@ -635,5 +678,89 @@ public class NucleotidSequences {
 			return false;
 		}
 		return true;
+	}
+	
+	private static String getModifiedAcid(String sequence, int pos){
+		
+		StringBuffer modifiedAcid = new StringBuffer();
+		int index = pos;
+		
+		while (Helper.isWatsonCrickBase(sequence.charAt(index)) == false && index <= sequence.length() - 1){
+			modifiedAcid.append(sequence.charAt(index));
+			index ++;
+		}
+		return modifiedAcid.toString();
+	}
+	
+	public boolean isListedModifiedAcid(int pos1, int pos2){
+		if (pos2 > getDuplexLength() - 2 || pos1 < 0){
+			return false;
+		}
+		
+		String modifiedAcid1 = null;
+		String modifiedAcid2 = null;
+		
+		for (int i = pos1; i <= pos2; i++){
+			if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false && this.sequence.charAt(i) != '-'){
+				modifiedAcid1 = getModifiedAcid(this.sequence, i);
+				break;
+			}
+		}
+		
+		for (int i = pos1; i <= pos2; i++){
+			if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false && this.complementary.charAt(i) != '-'){
+				modifiedAcid2 = getModifiedAcid(this.complementary, i);
+				break;
+			}
+		}
+		
+		if (modifiedAcid1 != null && modifiedNucleotides.contains(modifiedAcid1) == false){
+			return false;
+		}
+		
+		if (modifiedAcid2 != null && modifiedNucleotides.contains(modifiedAcid2) == false){
+			return false;
+		}
+		
+		if (modifiedAcid1 == null && modifiedAcid2 == null){
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public ModifiedAcidNucleic getModifiedAcidName(String sequence, String complementary){
+		String modifiedAcid1 = null;
+		String modifiedAcid2 = null;
+		ModifiedAcidNucleic name;
+		
+		for (int i = 0; i <= sequence.length() - 1; i++){
+			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-'){
+				modifiedAcid1 = getModifiedAcid(sequence, i);
+				break;
+			}
+		}
+		
+		for (int i = 0; i <= complementary.length(); i++){
+			if (Helper.isWatsonCrickBase(complementary.charAt(i)) == false && complementary.charAt(i) != '-'){
+				modifiedAcid2 = getModifiedAcid(complementary, i);
+				break;
+			}
+		}
+		
+		if (modifiedAcid1 != null){
+			name = modifiedAcidNames.get(modifiedAcid1);
+			if (name != null){
+				return name;
+			}
+		}
+		
+		if (modifiedAcid2 != null){
+			name = modifiedAcidNames.get(modifiedAcid2);
+			if (name != null){
+				return name;
+			}
+		}
+		return null;
 	}
 }

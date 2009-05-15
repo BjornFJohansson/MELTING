@@ -33,7 +33,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		for (int i = pos1; i < pos2 -1; i++){
+		for (int i = pos1; i <= pos2; i++){
 			enthalpy += this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
 			entropy += this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
 		}
@@ -48,7 +48,6 @@ public class McTigue04LockedAcid extends PartialCalcul{
 			int pos2) {
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			System.err.println("WARNING : The thermodynamic parameters for locked acid nucleiques of" +
@@ -56,7 +55,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 			isApplicable = false;
 		}
 		
-		if (modified.calculateNumberOfTerminal('L', '-') > 0){
+		if ((pos1 == 0 || pos2 == environment.getSequences().getDuplexLength() - 1) && environment.getSequences().calculateNumberOfTerminal('L', '-') > 0){
 			System.err.println("WARNING : The thermodynamics parameters for locked acid nucleiques of " +
 					"McTigue (2004) are not established for terminal locked acid nucleiques.");
 			isApplicable = false;
@@ -68,15 +67,11 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
-		if (this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2),sequences.getComplementary(pos1, pos2)) == null){
-			return true;
-		}
-		
 		if (this.collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)) == null || this.collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3)) == null){
 			return true;
 		}
 		
-		for (int i = pos1; i < pos2 -1; i++){
+		for (int i = pos1; i <= pos2; i++){
 			if (this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 				return true;
 			}
