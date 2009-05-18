@@ -221,16 +221,16 @@ See Wetmur J.G. (1991) and SantaLucia (1998)
 for deep reviews on the nucleic  acid hybridisation and on the different 
 set of nearest-neighbor parameters.    
 
-\begin{figure}
+\begin{figure}[h]
+\includegraphics{image1M.eps}
 \caption{Comparison of experimental and computed Tm for various sets of
   nearest-neighbor parameters. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
-\includegraphics{image1M.eps}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
+\includegraphics{image0_11M.eps}
 \caption{Comparison of experimental and computed Tm for various sets of
   nearest-neighbor parameters. $[\mbox{Na}^+] = 0.11$~M, $[\mbox{nucleic acid}] = 8\cdot{}10^{-6}$~M}
-\includegraphics{image0_11M.eps}
 \end{figure}
    
 \subsection{Effect of mismatches and dangling ends}  
@@ -329,10 +329,10 @@ of the entropic term without modification of enthalpy
 \end{displaymath}
   Where \emph{N} is the length of the duplex.   
    
-\begin{figure}
+\begin{figure}[h]
+\includegraphics{salt.eps}
 \caption{Comparison of experimental and computed Tm for various correction
 of salt concentration.}
-\includegraphics{salt.eps}
 \end{figure}
 
 \subsection{Correction for the concentration of ions when other monovalent ions such as 
@@ -350,8 +350,10 @@ which is entered).
 When the divalent ions are the only ions present, the melting temperature is :
 \begin{displaymath}
 \frac{1}{Tm_{[\mbox{Mg}^{2+}]}} = \frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}} + a
-- b (\ln [\mbox{Mg}^{2+}]) + Fgc (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} (-e
-+ f \ln [\mbox{Mg}^{2+}] + g (\ln [\mbox{Mg}^{2+}])^{2}])
+- b (\ln [\mbox{Mg}^{2+}]) + Fgc (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} 
+\end{displaymath}
+\begin{displaymath}
+(-e + f \ln [\mbox{Mg}^{2+}] + g (\ln [\mbox{Mg}^{2+}])^{2}])
 \end{displaymath}
    where : 
 a = 3.92 x $10^{-5}$
@@ -380,15 +382,15 @@ disregarded and the melting temperature is :
 Fgc - 3.95)\cdot{}10^{-5} \ln [\mbox{Mon}^+] + 9.40\cdot{}10^{-6} (\ln [\mbox{Mg}^{2+}])^{2})
 \end{displaymath}
   
-\begin{figure}
+\begin{figure}[H]
+\includegraphics{Owczarzy2.eps}
 \caption{Comparison of experimental and computed Tm with the algorithm of Owczarzy (2008). 
 $[\mbox{Mon}^+] = 0.055$~M, $[\mbox{Mg}^{2+}] = 0$~M, $[\mbox{nucleic acid}] =
-2\cdot{}10^{-6}$~M}
-\includegraphics{Owczarzy2.eps}
+2\cdot{}10^{-6}$~M. The ratio is inferior to 0.22}
 \end{figure}
 
 
-If the ratio is included in [0.22, 6[,we must take in account both Mg<sup>2+</sup> and monovalent cations 
+If the ratio is included in [0.22, 6[,we must take in account both Mg2+ and monovalent cations 
 concentrations. The melting temperature is calculated with the first equation but with monovalent 
 ions concentration dependent parameters a, d and g :
 
@@ -404,22 +406,22 @@ g = 8.31\cdot{}10^{-5} (0.486 - 0.258 \ln [\mbox{Mon}^+] + 5.25\cdot{}10^{-3}
 \ln [\mbox{Mon}^+]^{3} 
 \end{displaymath}
 
-\begin{figure}
+\begin{figure}[H]
+\includegraphics{Owczarzy3.eps}
 \caption{Comparison of experimental and computed Tm with the algorithm of Owczarzy (2008). 
 $[\mbox{Mon}^+] = 0.055$~M, $[\mbox{Mg}^{2+}] = 0.0015$~M, $[\mbox{nucleic acid}] =
-2\cdot{}10^{-6}$~M}
-\includegraphics{Owczarzy3.eps}
+2\cdot{}10^{-6}$~M. The ratio is included in [0.22, 6[.}
 \end{figure}
 
 Finally, if the ratio is superior to 6,divalent ion influence is dominant, monovalent cations can be 
 disregarded and the melting temperature is calculated with the first equation and the constant parameters a, b, c, d,
 e, f, g.
 
-\begin{figure}
+\begin{figure}[H]
+\includegraphics{Owczarzy1.eps}
 \caption{Comparison of experimental and computed Tm with the algorithm of Owczarzy (2008). 
 $[\mbox{Mon}^+] = 0.001$~M, $[\mbox{Mg}^{2+}] = 0.0015$~M, $[\mbox{nucleic acid}] =
-2\cdot{}10^{-6}$~M}
-\includegraphics{Owczarzy1.eps}
+2\cdot{}10^{-6}$~M. The ratio is superior to 6.}
 \end{figure}
     
 \subsection{Long sequences }  
@@ -570,11 +572,12 @@ along with this program; if not, write to the Free Software Foundation,
 Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA   
    
 \section{Acknowledgements}
-Nicolas Joly is an efficient and kind debugger and advisor.  Catherine Letondal
-wrote the HTML interface to melting. Thanks to Nirav Merchant, Taejoon Kwon, Leo
-Schalkwyk, Mauro Petrillo, Andrew Thompson and Wong Chee Hong for their bug fixes and comments.
-Finally thanks to the usenet helpers, particularly Olivier Dehon and Nicolas
-Chuche.
+Nicolas Joly is an efficient and kind debugger and advisor.  Catherine
+Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
+Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee Hong, Ivano
+Zara for their bug fixes and comments.  Finally thanks to the usenet
+helpers, particularly Olivier Dehon and Nicolas Chuche.
+Thanks to Owczarzy for his magnesium correction.
    
 \section{Author }
 Nicolas Le Nov\`ere and Marine Dumousseau, \\
