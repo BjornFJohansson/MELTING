@@ -1,6 +1,7 @@
 package melting.cricksNNMethods;
 
 import melting.Environment;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
 
 public class Santalucia04 extends CricksNNMethod {
@@ -32,7 +33,12 @@ public class Santalucia04 extends CricksNNMethod {
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
-		int numberTerminalAT = environment.getSequences().calculateNumberOfTerminal('A', 'T');
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
+		
+		if (withoutTerminalUnpairedNucleotides == null){
+			return null;
+		}
+		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
 		double enthalpy = 0;
 		double entropy = 0;
 		

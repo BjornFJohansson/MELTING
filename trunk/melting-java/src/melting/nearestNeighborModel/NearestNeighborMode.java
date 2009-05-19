@@ -10,6 +10,7 @@ import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
+import melting.cricksNNMethods.CricksNNMethod;
 
 public class NearestNeighborMode implements CompletCalculMethod{
 
@@ -60,6 +61,10 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	public ThermoResult CalculateThermodynamics() {
 		
 		this.analyzeSequence();
+	
+		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
+		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
+		this.environment.setResult(resultinitiation);
 		
 		int pos1 = 0; 
 		
@@ -73,10 +78,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			this.environment.setResult(newResult);
 		}
 		
-		double enthalpy = this.environment.getResult().getEnthalpy();
-		double entropy = this.environment.getResult().getEntropy();
-		
-		double Tm = enthalpy / (entropy + 1.99 * Math.log( this.environment.getNucleotides() / this.environment.getFactor() ));
+		double Tm = calculateMeltingTemperature(this.environment);
 		
 		this.environment.setResult(Tm);
 		return this.environment.getResult();
@@ -305,5 +307,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		if (checkIfMethodsAreApplicable() == false){
 			System.err.println("ERROR : we cannot compute the melting. Check the sequences.");
 		}
+	}
+	
+	public static double calculateMeltingTemperature(Environment environment){
+		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() ) - 273.15);
+		
+		return Tm;
 	}
 }

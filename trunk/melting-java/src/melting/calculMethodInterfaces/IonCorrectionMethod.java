@@ -1,12 +1,12 @@
 package melting.calculMethodInterfaces;
 
-import java.util.HashMap;
 
+import melting.Environment;
 import melting.ThermoResult;
 
 public interface IonCorrectionMethod {
 
-	public boolean isApplicable(HashMap<String, String> options);
+	public boolean isApplicable(Environment environment);
 	
-	public ThermoResult correctMeltingResult(String seq, String seq2, ThermoResult result);
+	public ThermoResult correctMeltingResult(Environment environment);
 }
