@@ -1,6 +1,7 @@
 package melting.cricksNNMethods;
 
 import melting.Environment;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
 
 public class Xia98 extends CricksNNMethod {
@@ -33,8 +34,13 @@ public class Xia98 extends CricksNNMethod {
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		environment.setResult(calculateInitiationHybridation(environment));
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
 		
-		int numberTerminalAU = environment.getSequences().calculateNumberOfTerminal('A', 'U');
+		if (withoutTerminalUnpairedNucleotides == null){
+			return null;
+		}
+		
+		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
 		double enthalpy = 0;
 		double entropy = 0;
 		

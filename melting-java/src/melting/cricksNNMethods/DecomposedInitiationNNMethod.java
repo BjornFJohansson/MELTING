@@ -12,10 +12,15 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
 		
-		NucleotidSequences sequences = new NucleotidSequences(environment.getOptions().get(OptionManagement.sequence), environment.getOptions().get(OptionManagement.complementarySequence));
-		int numberTerminalGC = sequences.calculateNumberOfTerminal('G', 'C');
-		int numberTerminalAT = sequences.calculateNumberOfTerminal('A', 'T');
-		int numberTerminalAU = sequences.calculateNumberOfTerminal('A', 'U');
+		NucleotidSequences sequences = environment.getSequences();
+		NucleotidSequences withoutTerminalUnpairedNucleotides = sequences.removeTerminalUnpairedNucleotides();
+		
+		if (withoutTerminalUnpairedNucleotides == null){
+			return null;
+		}
+		int numberTerminalGC = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('G', 'C');
+		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
+		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
 		
 		double enthalpy = 0;
 		double entropy = 0;

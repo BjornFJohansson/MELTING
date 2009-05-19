@@ -1,6 +1,7 @@
 package melting.cricksNNMethods;
 
 import melting.Environment;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
 
 public class Santalucia96 extends GlobalInitiationNNMethod {
@@ -32,10 +33,15 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
+		
+		if (withoutTerminalUnpairedNucleotides == null){
+			return null;
+		}
 		double enthalpy = 0;
 		double entropy = 0;
 		
-		if (environment.getSequences().isTerminal5AT()) {
+		if (withoutTerminalUnpairedNucleotides.isTerminal5AT()) {
 			enthalpy += this.collector.getTerminal("5_T/A").getEnthalpy();
 			entropy += this.collector.getTerminal("5_T/A").getEntropy();
 		}

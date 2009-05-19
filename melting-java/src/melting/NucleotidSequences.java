@@ -155,6 +155,39 @@ public class NucleotidSequences {
 		return false;
 	}
 	
+	public NucleotidSequences removeTerminalUnpairedNucleotides(){
+		StringBuffer seq = new StringBuffer();
+		StringBuffer comp = new StringBuffer();
+		
+		seq.append(this.sequence);
+		comp.append(this.complementary);
+		
+		int indexStart = 0;
+		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexStart), this.complementary.charAt(indexStart)) == false && indexStart <= getDuplexLength() - 1){
+			seq.deleteCharAt(indexStart);
+			comp.deleteCharAt(indexStart);
+		}
+		
+		if (indexStart == getDuplexLength() - 1){
+			System.out.println("error : the sequences can be hybridezed.");
+			return null;
+		}
+		
+		int indexEnd = 0;
+		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false && indexEnd >= 0){
+			seq.deleteCharAt(indexEnd);
+			comp.deleteCharAt(indexEnd);
+		}
+		
+		if (indexEnd == 0){
+			System.out.println("error : the sequences can be hybridezed.");
+			return null;
+		}
+		
+		NucleotidSequences newSequences = new NucleotidSequences(seq.toString(), comp.toString());
+		return newSequences;
+	}
+	
 	public boolean isBasePairEqualsTo(char base1, char base2, int pos){
 		
 		if ((this.sequence.charAt(pos) == base1 && this.complementary.charAt(pos) == base2) || (this.sequence.charAt(pos) == base2 && complementary.charAt(pos) == base1)){
