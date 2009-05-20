@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #*******************************************************************************
 #                                 profil.pl                                    *
-#                 Copyright (C) Nicolas Le Novère and Marine Dumousseau 2001   *
+#                 Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009   *
 # Run the program melting iteratively on a nucleic acid sequence entered from  *
 #  stdin (it can be a file redirected with 'multi.pl < file.seq')              *
 #*******************************************************************************/
@@ -20,9 +20,10 @@
 #      along with this program; if not, write to the Free Software
 #      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #
-#      Nicolas Le Novère 
-#      Department of Zoology, University of Cambridge, Downing street
-#      CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk
+#      Nicolas Le Novère and Marine Dumousseau
+#      EMBL-EBI, Wellcome-Trust Genome Campus
+#      Hinxton Cambridge, CB10 1SD, UK
+#      lenov@ebi.ac.uk
 
        ###################################################################
        # Usage is: profil.pl -Iinfile -Wwindow < inputfile > outputfile  #
