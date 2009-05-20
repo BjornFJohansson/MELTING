@@ -21,9 +21,10 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère                                                    */
-/*       Department of Zoology, University of Cambridge, Downing street       */
-/*       CB2 3EJ Cambridge, UK. e-mail: nl223@cus.cam.ac.uk                   */
+/*       Nicolas Le Novère  and Marine Dumousseau                             */
+/*       EMBL-EBI, Wellcome-Trust Genome Campus                               */
+/*       Hinxton Cambridge, CB10 1SD, UK                                      */
+/*      lenov@ebi.ac.uk                                                       */
 /*  IMPORTANT: the parameters appearing in litterature (and therefore in this */
 /*             file) are expressed in cal.mol-1, whereas the results output   */
 /*             by MELTING are in SI, i.e. in J.mol-1                          */
