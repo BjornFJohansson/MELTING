@@ -1,6 +1,7 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.SodiumCorrections;
 
@@ -15,9 +16,9 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection extends
 	 *  temperature, J. Mol. Biol. 5, 109-118.
 	 * */
 	
-public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();
 		
 		double Tm = environment.getResult().getTm() + (8.75 - 2.83 * Fgc) * Math.log(NaEq);
@@ -28,10 +29,11 @@ public ThermoResult correctMeltingResult(Environment environment) {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
-		if (NaEq < 0){
-			System.out.println("ERROR : The sodium concentration must be strictly positive.");
+		if (NaEq < 0.069 || NaEq > 1.02){
+			System.out.println("ERROR : The sodium correction of Marmur Schildkraut and Doty (1962, 1998)" +
+					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 			isApplicable = false;
 		}
 		

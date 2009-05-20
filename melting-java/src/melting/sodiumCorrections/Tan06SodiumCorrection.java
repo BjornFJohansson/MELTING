@@ -1,8 +1,11 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
+import melting.ThermoResult;
+import melting.ionCorrections.EntropyCorrection;
 
-public class Tan06SodiumCorrection extends EntropySodiumCorrection {
+public class Tan06SodiumCorrection extends EntropyCorrection {
 
 	/* Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
 	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
@@ -10,7 +13,7 @@ public class Tan06SodiumCorrection extends EntropySodiumCorrection {
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.001 && NaEq > 1){
 			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2006)" +
@@ -36,5 +39,11 @@ public class Tan06SodiumCorrection extends EntropySodiumCorrection {
 		double entropy = -3.22 * (duplexLength - 1) * g;
 		
 		return entropy;
+	}
+	
+	public ThermoResult correctMeltingResult(Environment environment) {
+		double NaEq = Helper.calculateNaEquivalent(environment);
+		
+		return super.correctMeltingResult(environment, NaEq);
 	}
 }

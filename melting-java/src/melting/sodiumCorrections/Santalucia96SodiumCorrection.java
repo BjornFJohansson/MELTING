@@ -1,6 +1,7 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.SodiumCorrections;
 
@@ -44,7 +45,7 @@ public class Santalucia96SodiumCorrection extends SodiumCorrections {
 		}
 		
 		if (NaEq == 0){
-			NaEq = super.calculateNaEqEquivalent(environment);
+			NaEq = Helper.calculateNaEquivalent(environment);
 		}
 		return NaEq;
 	}
