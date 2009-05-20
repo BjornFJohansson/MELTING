@@ -95,7 +95,7 @@ in the computation of the melting temperature. See section ALGORITHM for details
 Magnesium  concentration  (No maximum concentration for the moment). The effect  
    of  ions  on  thermodynamic  stability  of nucleic  acid duplexes is complex,
    and the correct­ing functions are  at  best rough  approximations.The published 
-   Tm  correction formula for divalent Mg2+ ions of  Owczarzy  (2008) can
+   Tm  correction formula for divalent Mg2+ ions of  Owczarzy  et al(2008) can
    take in account the competitive binding of monovalent and divalent ions on DNA. 
    However this formula is only for DNA duplexes.
 .TP
@@ -169,7 +169,7 @@ BI. "\-k" "x.xxe-xx"
    Potassium  concentration  (No maximum concentration for the moment). The effect of ions 
    on  thermodynamic  stability  of nucleic  acid duplexes is complex, and the correct­ing 
    functions are  at  best rough  approximations.The published  Tm  correction formula for 
-   sodium ions of Owczarzy (2004)is therefore also applicable to buffers containing Tris or
+   sodium ions of Owczarzy et al (2008)is therefore also applicable to buffers containing Tris or
    KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA duplexes 
    with similar potency, and their effects on duplex stability are additive. However this formula 
    is only for DNA duplexes.
@@ -233,7 +233,7 @@ Tris buffer  concentration  (No maximum concentration for the moment).
    The effect  of  ions  on  thermodynamic  stability  of nucleic  acid 
    duplexes is complex, and the correct­ing functions are  at  best
    rough  approximations.The published  Tm  correction formula for sodium ions of 
-   Owczarzy (2004)is therefore also applicable to buffers containing Tris or
+   Owczarzy et al(2008)is therefore also applicable to buffers containing Tris or
    KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA duplexes with similar potency, and 
    their effects on duplex stability are additive. However this formula is only for DNA 
    duplexes. Be careful, the Tris+ ion concentration is about half of the total tris buffer
@@ -353,9 +353,10 @@ the computation does not take any entropic term to correct for self-complementar
 
 .SS Correction for the concentration of salt
 
-Currently, the only available correction is for sodium (i.e. monovalent cations).
+If there are only sodium ions in the solution, we can use the following
+corrections:
 
-the correction can be chosen between
+The correction can be chosen between
 .I wet91a, 
 presented in Wetmur 1991
 .I i.e.
@@ -378,6 +379,75 @@ DeltaS = DeltaS([Na+]=1M) + 0.368 x (N-1) x ln[Na+]
 
 Where N is the length of the duplex (SantaLucia 1998 actually used 'N' the number of non-terminal phosphates, that is effectively equal to our N-1). CAUTION, this correction is meant to correct entropy values expressed in cal.mol-1.K-1!!!
 
+.SS Correction for the concentration of ions when other monovalent ions such as Tris+ and K+ or divalent Mg2+ ions are added 
+   
+If there are only Na+ ions, we can use the correction for the concentration of salt(see above). In the opposite case
+, we will use the magnesium and monovalent ions correction from Owczarzy et al (2008). (only for DNA duplexes)
+
+[Mon+] = [Na+] + [K+] + [Tris+] 
+
+Where [Tris+] = [Tris buffer]/2. (in the option -t, it is the Tris buffer concentration which is entered). 
+      
+If [Mon+] = 0, the divalent ions are the only ions present
+ and the melting temperature is :
+      
+1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) + 1/(2 x (Nbp - 1)) x (- e +f x ln([Mg2+]) + g x ln([Mg2+]) x ln([Mg2+]))
+      
+where : 
+a = 3.92/100000.
+b = 9.11/1000000.
+c = 6.26/100000.
+d = 1.42/100000.
+e = 4.82/10000.
+f = 5.25/10000.
+g = 8.31/100000.
+Fgc is the fraction of GC base pairs in the sequence and Nbp is the length of the sequence (Number of base pairs).
+      
+If [Mon+] > 0, there are several cases because we can have a competitive DNA binding between monovalent and divalent 
+cations  :
+       
+If the ratio [Mg2+]^(0.5)/[Mon+] is inferior to 0.22, monovalent ion influence is dominant, divalent cations can be disregarded and the melting temperature is :
+       
+1/Tm(Mg2+) = 1/Tm(1M Na+) + (4.29 x Fgc - 3.95) x 1/100000 x ln([mon+]) + 9.40 x
+1/1000000 x ln([Mon+]) x ln([Mon+])
+
+where : Fgc is the fraction of GC base pairs in the sequence.
+       
+If the ratio [Mg2+]^(0.5)/[Mon+] is included in [0.22, 6[,
+we must take in account both Mg2+ and monovalent cations 
+concentrations. The melting temperature is :
+      
+1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) +
+1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x ln([Mg2+]))
+      
+where : a = 3.92/100000 x (0.843 - 0.352 x [Mon+]0.5 x ln([Mon+])).
+        b = 9.11/1000000.
+	c = 6.26/100000.
+        d = 1.42/100000 x (1.279 - 4.03/1000 x ln([mon+]) - 8.03/1000 x
+	ln([mon+] x ln([mon+]).
+	e = 4.82/10000.
+	f = 5.25/10000.
+	g = 8.31/100000 x (0.486 - 0.258 x ln([mon+]) + 5.25/1000 x ln([mon+] x ln([mon+] x ln([mon+]).
+       
+Fgc is the fraction of GC base pairs in the sequence and Nbp is the length of the sequence (Number of base pairs).
+       
+Finally, if the ratio [Mg2+]^(0.5)/[Mon+] is superior to 6, divalent ion influence is dominant, monovalent cations can be disregarded and the melting temperature is :
+      
+1/Tm(Mg2+) = 1/Tm(1M Na+) + a - b x ln([Mg2+]) + Fgc x (c + d x ln([Mg2+]) +
+1/(2 x (Nbp - 1)) x (- e + f x ln([Mg2+]) + g x ln([Mg2+]) x ln([Mg2+]))
+      
+where : 
+a = 3.92/100000.
+b = 9.11/1000000.
+c = 6.26/100000.
+d = 1.42/100000.
+e = 4.82/10000.
+f = 5.25/10000.
+g = 8.31/100000.
+
+Fgc is the fraction of GC base pairs in the sequence and 
+Nbp is the length of the sequence (Number of base pairs).
+   
 .SS Long sequences
 
 It is important to realise that the nearest-neighbor approach has been established 

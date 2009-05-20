@@ -81,7 +81,7 @@ OPTIONS
 	      ynamic  stability  of nucleic  acid duplexes is co-
 	      mplex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for divalent Mg2+ ions of  Owczarzy  (2008)
+	      formula for divalent Mg2+ ions of  Owczarzy et al.(2008)
 	      can take in account the competitive binding of mono-
 	      valent and divalent ions on DNA. However this formula
 	      is only for DNA duplexes.
@@ -150,7 +150,7 @@ OPTIONS
 	      ynamic  stability  of nucleic  acid duplexes is co-
 	      mplex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for sodium ions of Owczarzy (2004)is there-
+	      formula for sodium ions of Owczarzy et al.(2008)is there-
 	      fore also applicable to buffers containing Tris or
 	      KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA
 	      duplexes with similar potency, and their effects on
@@ -232,7 +232,7 @@ OPTIONS
 	      rmodynamic  stability  of nucleic  acid duplexes is
 	      complex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for sodium ions of Owczarzy (2004)is there-
+	      formula for sodium ions of Owczarzy et al(2008)is there-
 	      fore also applicable to buffers containing Tris or
 	      KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA
 	      duplexes with similar potency, and their effects on

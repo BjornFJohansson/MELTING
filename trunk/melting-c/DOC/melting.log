@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2009.5.18)  20 MAY 2009 09:47
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=latex 2009.5.18)  20 MAY 2009 11:18
 entering extended mode
  %&-line parsing enabled.
 **melting.tex
@@ -249,13 +249,13 @@ File: Owczarzy3.eps Graphic file (type eps)
  <Owczarzy3.eps>
 File: Owczarzy1.eps Graphic file (type eps)
  <Owczarzy1.eps> [9] [10]
-Overfull \hbox (60.35985pt too wide) in paragraph at lines 547--550
+Overfull \hbox (60.35985pt too wide) in paragraph at lines 546--549
 \T1/pcr/m/n/10 recherche / unites / neubiomol / meltinghome . html$ \T1/ptm/m/n
 /10 and at $\T1/pcr/m/n/10 https : / / sourceforge .
  []
 
 [11]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 574.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 573.
 
 
 (/automount/nfs7_vol-vol6/research-software/Linux/opt/stow/texlive/2007/texmf-d
@@ -263,9 +263,9 @@ ist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 574.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 573.
 
-Overfull \hbox (0.82664pt too wide) in paragraph at lines 590--595
+Overfull \hbox (0.82664pt too wide) in paragraph at lines 589--594
 \T1/ptm/m/n/10 the HTML in-ter-face to melt-ing. Thanks to Ni-rav Mer-chant, Ta
 e-joon Kwon, Leo Schalk-
  []
@@ -278,6 +278,6 @@ Here is how much of TeX's memory you used:
  4783 multiletter control sequences out of 10000+50000
  28350 words of font info for 37 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 27i,11n,20p,437b,238s stack positions out of 10000i,500n,6000p,200000b,5000s
+ 27i,11n,20p,453b,238s stack positions out of 10000i,500n,6000p,200000b,5000s
 
-Output written on melting.dvi (16 pages, 37036 bytes).
+Output written on melting.dvi (16 pages, 37092 bytes).
