@@ -477,59 +477,65 @@ ALGORITHM
 
 
 REFERENCES
-       Allawi H.T., SantaLucia J. (1997).  Thermodynamics and NMR
-       of  internal  G-T  mismatches  in  DNA.   Biochemistry 36:
-       10581-10594
+       Allawi H.T., SantaLucia J. (1997). Thermodynamics and NMR of 
+       internal G-T mismatches in DNA. Biochemistry  36: 10581-10594   
 
-       Bommarito S., Peyret N., SantaLucia J. (2000).   Thermody­
-       namic  parameters  for  DNA  sequences with dangling ends.
-       Nucleic Acids Res 28: 1929-1934
+       Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics 
+       parameters for internal G.A mismatches in DNA. Biochemistry 37: 
+       2170-2179
 
-       Breslauer K.J., Frank R., Blöcker H., Marky  L.A.  (1986).
-       Predicting  DNA  duplex  stability from the base sequence.
-       Proc Natl Acad Sci USA 83: 3746-3750
+       Allawi H.T., SantaLucia J. (1998).Thermodynamics of internal C.T 
+       mismatches in DNA. Biochemistry 26: 2694-2701.
 
-       Freier  S.M.,  Kierzek  R.,  Jaeger  J.A.,  Sugimoto   N.,
-       Caruthers  M.H., Neilson T., Turner D.H. (1986).  Biochem­
-       istry 83:9373-9377
-       
-       Owczarzy R., Moreira B.G., You Y., Behlke M.B., Walder J.A.
-       (2008) Predicting stability of DNA duplexes in solutions
-       containing Magnesium and Monovalent Cations. Biochemistry 
-       47: 5336-5353.
+       Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics 
+       of internal A.C mismatches in DNA: sequence dependence and pH effects.
+       Biochemistry 37: 9435-9444.
 
-       SantaLucia J. Jr, Allawi H.T.,  Seneviratne  P.A.  (1996).
-       Improved  nearest-neighbor  parameters  for predicting DNA
-       duplex stability.  Biochemistry 35: 3555-3562
+       Bommarito S., Peyret N., SantaLucia J. (2000).  Thermodynamic parameters 
+       for DNA sequences with dangling ends.Nucleic Acids Res 28: 1929-1934
 
-       Sugimoto N., Katoh M., Nakano S., Ohmichi  T.,  Sasaki  M.
-       (1994).   RNA/DNA  hybrid duplexes with identical nearest-
-       neighbor base-pairs hve identical stability.  FEBS Letters
-       354: 74-78
+       Breslauer K.J., Frank R., Blocker H., Marky L.A. (1986). Predicting DNA 
+       duplex stability from the base sequence. Proc Natl Acad Sci USA  83: 
+       3746-3750   
 
-       Sugimoto  N.,  Nakano S., Katoh M., Matsumura A., Nakamuta
-       H., Ohmichi T., Yoneyama M., Sasaki M. (1995).   Thermody­
-       namic  parameters  to  predict stability of RNA/DNA hybrid
-       duplexes.  Biochemistry 34: 11211-11216
+       Freier S.M., Kierzek R., Jaeger J.A., Sugimoto N., Caruthers M.H., 
+       Neilson T., Turner D.H. (1986). Biochemistry 83:9373-9377 
+ 
+       Owczarzy R., Moreira B.G., You Y., Behlke M.B., Walder J.A.(2008) 
+       Predicting stability of DNA duplexes in solutions containing Magnesium 
+       and Monovalent Cations. Biochemistry 47: 5336-5353.  
 
-       Sugimoto N., Nakano S.,  Yoneyama  M.,  Honda  K.  (1996).
-       Improved  thermodynamic  parameters  and  helix initiation
-       factor to predict stability of DNA  duplexes.   Nuc  Acids
-       Res 24: 4501-4505
-       
-       Watkins N.E., Santalucia J. Jr. (2005). Nearest-neighbor t-
-       hermodynamics of deoxyinosine pairs in DNA duplexes. Nucleic
-       Acids Research 33: 6258-6267
-       
-       Wright D.J., Rice J.L., Yanker D.M., Znosko B.M. (2007). 
-       Nearest neighbor parameters for inosine-uridine pairs in 
-       RNA duplexes. Biochemistry 46: 4625-4634 
+       Peyret N., Seneviratne P.A., Allawi H.T., SantaLucia J. (1999). Nearest 
+       Neighbor thermodynamics and NMR of DNA sequences with internal A.A, C.C,
+       G.G and T.T mismatches. dependence and pH effects. Biochemistry} 38:3468
+       -3477
 
-       Xia T., SantaLucia J., Burkard M.E., Kierzek R., Schroeder
-       S.J., Jiao X., Cox C., Turner D.H. (1998).  Thermodynamics
-       parameters for an expanded nearest-neighbor model for for­
-       mation of RNA duplexes with Watson-Crick base pairs.  Bio­
-       chemistry 37: 14719-14735
+       SantaLucia J. Jr, Allawi H.T., Seneviratne P.A. (1996). Improved nearest-
+       neighbor parameters for predicting DNA duplex stability.Biochemistry 35: 
+       3555-3562   
+
+       Sugimoto N., Katoh M., Nakano S., Ohmichi T., Sasaki M. (1994). RNA/DNA 
+       hybrid duplexes with identical nearest-neighbor base-pairs have identical 
+       stability. FEBS Letters 354: 74-78   
+
+       Sugimoto N., Nakano S., Katoh M., Matsumura A., Nakamuta H., Ohmichi T., 
+       Yoneyama M., Sasaki M. (1995). Thermodynamic parameters to predict stability 
+       of RNA/DNA hybrid duplexes. Biochemistry 34: 11211-11216 
+  
+       Sugimoto N., Nakano S., Yoneyama M., Honda K. (1996).  Improved thermodynamic 
+       parameters and helix initiation factor to predict stability of DNA duplexes. 
+       Nuc Acids Res 24: 4501-4505  
+
+       Watkins N.E., Santalucia J. Jr. (2005). Nearest-neighbor thermodynamics of 
+       deoxyinosine pairs in DNA duplexes. Nuc Acids Res 33: 6258-6267 
+
+       Wright D.J., Rice J.L., Yanker D.M., Znosko B.M. (2007). Nearest neighbor parameters 
+       for inosine-uridine pairs in RNA duplexes. Biochemistry 46: 4625-4634
+
+       Xia T., SantaLucia J., Burkard M.E., Kierzek R., Schroeder S.J., Jiao X., 
+       Cox C., Turner D.H. (1998). Thermodynamics parameters expanded nearest-neighbor model for formation of RNA duplexes with 
+       Watson-Crick base pairs. Biochemistry  37: 14719-14735   
+
 
        For review see:
 
@@ -569,7 +575,7 @@ FILES
 SEE ALSO
        New  versions  and  related  material  can  be  found   at
        http://www.pasteur.fr/recherche/unites/neubiomol/melt­
-       inghome.html
+       inghome.html and at https://sourceforge.net/projects/melting/.
 
        You  can   use   MELTING   through   a   web   server   at
        http://bioweb.pasteur.fr/seqanal/interfaces/melting.html
@@ -600,7 +606,7 @@ KNOWN BUGS
 
 
 COPYRIGHT
-       Melting is copyright (C) 1997, 2000 by Nicolas Le Novère
+       Melting is copyright (C) 1997, 2009 by Nicolas Le Novère
        and Marine Dumousseau
 
        This  program  is  free  software; you can redistribute it
@@ -611,7 +617,7 @@ COPYRIGHT
 
 
 
-Debian GNU/Linux          2001 April 08                         8
+Debian GNU/Linux          2009 April 08                         8
 
 
 
@@ -633,25 +639,22 @@ MELTING(1)              Melting user-guide             MELTING(1)
 
 
 ACKNOWLEDGEMENTS
-       Nicolas Joly is an efficient and kind debugger  and  advi­
-       sor.  Catherine Letondal wrote the HTML interface to melt­
-       ing. Thanks to Nirav Merchant, Taejoon Kwon, Leo Schalkwyk, 
-       and  Mauro Petrillo   for  their bug fixes  and  comments.  
-       Finally  thanks  to  the  usenet  helpers,  in  particular 
+       Nicolas Joly is an efficient and kind debugger and advisor.  Catherine
+       Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
+       Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee 
+       Hong, Ivano Zara for their bug fixes and comments. Thanks to Richard Owczarzy 
+       for his magnesium correction. Finally thanks to the usenet helpers, particularly 
        Olivier Dehon and Nicolas Chuche.
 
 
-AUTHOR
-       Nicolas Le Novère,
-       Receptors and Cognition, Institut Pasteur
-       25, rue du Dr ROUX, 75724 Paris cedex, France
-       lenov@pasteur.fr
+AUTHORs
+       Nicolas Le Novère and Marine Dumousseau,
+       EMBL-EBI, Wellcome-Trust Genome Campus
+       Hinxton Cambridge, CB10 1SD, UK
+       lenov@ebi.ac.uk
 
 
 HISTORY
-       The  version  4  has  been  entirely  rewritten from zero.
-       Therefore an history of previous versions would be of lit­
-       tle interest.
 
        See  the  file ChangeLog for the changes of the versions 4
        and more recent.
