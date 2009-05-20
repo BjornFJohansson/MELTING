@@ -1,6 +1,7 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.SodiumCorrections;
 
@@ -14,7 +15,7 @@ public class FrankKamenetskii71SodiumCorrection extends SodiumCorrections {
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();
 		
 		double Tm = environment.getResult().getTm() + (7.95 - 3.06 * Fgc) * Math.log(NaEq);
@@ -25,10 +26,11 @@ public class FrankKamenetskii71SodiumCorrection extends SodiumCorrections {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
-		if (NaEq < 0){
-			System.out.println("ERROR : The sodium concentration must be strictly positive.");
+		if (NaEq < 0.069 || NaEq > 1.02){
+			System.out.println("ERROR : The sodium correction of Frank Kamenetskii (1971)" +
+					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 			isApplicable = false;
 		}
 		

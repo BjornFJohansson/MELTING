@@ -1,8 +1,11 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
+import melting.ThermoResult;
+import melting.ionCorrections.EntropyCorrection;
 
-public class Ahsen01SodiumCorrection extends EntropySodiumCorrection {
+public class Ahsen01SodiumCorrection extends EntropyCorrection {
 
 	/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
 	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
@@ -12,7 +15,7 @@ public class Ahsen01SodiumCorrection extends EntropySodiumCorrection {
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq == 0){
 			System.out.println("ERROR : The sodium concentration must be strictly positive.");
@@ -31,5 +34,11 @@ public class Ahsen01SodiumCorrection extends EntropySodiumCorrection {
 		double entropy = 0.847 * (duplexLength - 1) * Math.log(Na);
 		
 		return entropy;
+	}
+
+	public ThermoResult correctMeltingResult(Environment environment) {
+		double NaEq = Helper.calculateNaEquivalent(environment);
+		
+		return super.correctMeltingResult(environment, NaEq);
 	}
 }

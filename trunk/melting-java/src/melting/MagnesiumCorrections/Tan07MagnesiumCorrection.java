@@ -1,40 +1,38 @@
-package melting.sodiumCorrections;
+package melting.MagnesiumCorrections;
 
 import melting.Environment;
-import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.EntropyCorrection;
 
-public class Tan07SodiumCorrection extends EntropyCorrection {
-	
+public class Tan07MagnesiumCorrection extends EntropyCorrection {
+
 	/* Zhi-Jie Tan and Shi-Jie Chen," RNA helix stability in Mixed Na+/Mg2+ solutions", 2007, 
 	 * Biophysical Journal, 92, 3615-3632.
 	 * */
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = Helper.calculateNaEquivalent(environment);
 		
-		if (NaEq < 0.003 && NaEq > 1){
+		if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
 			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2007)" +
-					"is reliable for sodium concentrations between 0.003M and 1M.");
+					"is reliable for magnseium concentrations between 0.1M and 0.3M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
+			System.out.println("ERROR : The magnesium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
 			"RNA duplexes.");
 			isApplicable = false;
 		}
 		return isApplicable;
 	}
 	
-	protected double correctEntropy(double Na, int duplexLength){
-		double square = Math.log(Na) * Math.log(Na);
-		double a = -0.075 * Math.log(Na) + 0.012 * square;
-		double b = 0.018 * square;
+	protected double correctEntropy(double Mg, int duplexLength){
+		double square = Math.log(Mg) * Math.log(Mg);
+		double a = -0.6 / duplexLength + 0.025 * Math.log(Mg) + 0.0068 * square;
+		double b = Math.log(Mg) + 0.38 * square;
 		
-		double g = a + b / duplexLength;
+		double g = a + b / (duplexLength * duplexLength);
 		
 		double entropy = -3.22 * (duplexLength - 1) * g;
 		
@@ -42,8 +40,6 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 	}
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		double NaEq = Helper.calculateNaEquivalent(environment);
-		
-		return super.correctMeltingResult(environment, NaEq);
+		return super.correctMeltingResult(environment, environment.getMg());
 	}
 }

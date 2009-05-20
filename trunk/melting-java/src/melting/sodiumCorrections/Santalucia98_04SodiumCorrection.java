@@ -1,8 +1,11 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
+import melting.ThermoResult;
+import melting.ionCorrections.EntropyCorrection;
 
-public class Santalucia98_04SodiumCorrection extends EntropySodiumCorrection {
+public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 
 	/* John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
 	 * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465*/
@@ -11,7 +14,7 @@ public class Santalucia98_04SodiumCorrection extends EntropySodiumCorrection {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.05 || NaEq > 1.1){
 			System.out.println("ERROR : The sodium correction of Santalucia et al. (1998 - 2004) is only reliable for " +
@@ -37,5 +40,11 @@ public class Santalucia98_04SodiumCorrection extends EntropySodiumCorrection {
 		double entropy = 0.368 * (duplexLength - 1) * Math.log(Na);
 		
 		return entropy;
+	}
+	
+	public ThermoResult correctMeltingResult(Environment environment) {
+		double NaEq = Helper.calculateNaEquivalent(environment);
+		
+		return super.correctMeltingResult(environment, NaEq);
 	}
 }

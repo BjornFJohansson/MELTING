@@ -1,6 +1,7 @@
 package melting.sodiumCorrections;
 
 import melting.Environment;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.SodiumCorrections;
 
@@ -12,7 +13,7 @@ public class SchildkrautLifson65SodiumCorrection extends SodiumCorrections {
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		double Tm = environment.getResult().getTm() + 16.6 * Math.log10(NaEq);
 		environment.setResult(Tm);
@@ -22,7 +23,7 @@ public class SchildkrautLifson65SodiumCorrection extends SodiumCorrections {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.07 || NaEq > 0.12){
 			System.out.println("ERROR : The sodium correction of Schildkraut Lifson (1965) is applicable for " +

@@ -5,7 +5,7 @@ import melting.Helper;
 import melting.ThermoResult;
 import melting.ionCorrections.SodiumCorrections;
 
-public class Owczarzy04SodiumCorrection19 extends SodiumCorrections {
+public class Owczarzy04SodiumCorrection20 extends SodiumCorrections {
 
 	/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
 	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
@@ -16,8 +16,8 @@ public class Owczarzy04SodiumCorrection19 extends SodiumCorrections {
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC() / 100;
 		
-		double Tm = environment.getResult().getTm() + (-3.22 * Fgc - 6.39) * Math.log(NaEq);
-		environment.setResult(Tm);
+		double TmInverse = 1 / environment.getResult().getTm() + (3.85 * Fgc - 6.18) * 1 / 100000 * Math.log(NaEq);
+		environment.setResult(1 / TmInverse);
 		
 		return environment.getResult();
 	}
@@ -32,12 +32,11 @@ public class Owczarzy04SodiumCorrection19 extends SodiumCorrections {
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("ERROR : The sodium correction of Owczarzy et al. (2004) 19 is originally established for " +
+			System.out.println("ERROR : The sodium correction of Owczarzy et al. (2004) 20 is originally established for " +
 			"DNA duplexes.");
 			isApplicable = false;
 		}
 		
 		return isApplicable;
 	}
-
 }

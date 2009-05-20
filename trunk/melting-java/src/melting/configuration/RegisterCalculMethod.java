@@ -48,7 +48,8 @@ import melting.singleMismatchMethods.Turner06mm;
 import melting.singleMismatchMethods.Znosco07mm;
 import melting.singleMismatchMethods.Znosco08mm;
 import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
-import melting.sodiumEquivalence.Owczarzy08_NaEquivalent;
+import melting.sodiumEquivalence.Mitsuhashi96NaEquivalent;
+import melting.sodiumEquivalence.Peyret00_NaEquivalent;
 import melting.tandemMismatchMethod.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.tandemMismatchMethod.Turner99_06tanmm;
 import melting.woddleNNMethod.Santalucia05Inosine;
@@ -104,7 +105,8 @@ public class RegisterCalculMethod {
 	
 	private void initializeNaEqMethods(){
 		NaEqMethod.put("Ahsen_2001", Ahsen01_NaEquivalent.class);
-		NaEqMethod.put("Owczarzy_2008", Owczarzy08_NaEquivalent.class);
+		NaEqMethod.put("Peyret_2000", Peyret00_NaEquivalent.class);
+		NaEqMethod.put("Mitsuhashi_1996", Mitsuhashi96NaEquivalent.class);
 	}
 	
 	private void initializeCompletCalculMethods(){
