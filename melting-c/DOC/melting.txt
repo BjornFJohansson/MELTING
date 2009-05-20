@@ -78,7 +78,7 @@ OPTIONS
 	      ynamic  stability  of nucleic  acid duplexes is co-
 	      mplex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for divalent Mg2+ ions of  Owczarzy  (2008)
+	      formula for divalent Mg2+ ions of  Owczarzy et al (2008)
 	      can take in account the competitive binding of mono-
 	      valent and divalent ions on DNA. However this formula
 	      is only for DNA duplexes.
@@ -147,7 +147,7 @@ OPTIONS
 	      ynamic  stability  of nucleic  acid duplexes is co-
 	      mplex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for sodium ions of Owczarzy (2004)is there-
+	      formula for sodium ions of Owczarzy et al. (2008)is there-
 	      fore also applicable to buffers containing Tris or
 	      KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA
 	      duplexes with similar potency, and their effects on
@@ -229,7 +229,7 @@ OPTIONS
 	      rmodynamic  stability  of nucleic  acid duplexes is
 	      complex, and the correct­ing functions are  at  best
 	      rough  approximations.The published  Tm  correction
-	      formula for sodium ions of Owczarzy (2004)is there-
+	      formula for sodium ions of Owczarzy et al. (2008)is there-
 	      fore also applicable to buffers containing Tris or
 	      KCl. Monovalent K+, Na+, Tris+ ions  stabilize  DNA
 	      duplexes with similar potency, and their effects on
@@ -349,9 +349,9 @@ ALGORITHM
 
 
    Correction for the concentration of salt
-       Currently,  the  only  available  correction is for sodium
-       (i.e. monovalent cations).
-       the correction can be chosen between wet91a, presented  in
+       If there are only sodium ions in the solution, we can use the following
+       corrections:
+       The correction can be chosen between wet91a, presented  in
        Wetmur 1991 i.e.
        16.6 x log([Na+] / (1 + 0.7 x [Na+])) + 3.85
 
@@ -615,24 +615,6 @@ COPYRIGHT
 
 
 Debian GNU/Linux          2009 April 08                         8
-
-
-
-
-
-MELTING(1)              Melting user-guide             MELTING(1)
-
-
-       This  program  is  distributed in the hope that it will be
-       useful, but WITHOUT ANY WARRANTY; without even the implied
-       warranty  of  MERCHANTABILITY  or FITNESS FOR A PARTICULAR
-       PURPOSE.  See the GNU  General  Public  License  for  more
-       details.
-
-       You  should have received a copy of the GNU General Public
-       License along with this program; if not, write to the Free
-       Software  Foundation,  Inc.,  59  Temple Place, Suite 330,
-       Boston, MA  02111-1307 USA
 
 
 ACKNOWLEDGEMENTS
