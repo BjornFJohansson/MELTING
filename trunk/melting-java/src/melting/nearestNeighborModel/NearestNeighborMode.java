@@ -7,6 +7,7 @@ import melting.Helper;
 import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -79,8 +80,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		}
 		
 		double Tm = calculateMeltingTemperature(this.environment);
-		
 		this.environment.setResult(Tm);
+		
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		IonCorrectionMethod saltCorrection = register.getIonCorrectionMethod(this.environment);
+
+		this.environment.setResult(saltCorrection.correctMeltingResult(this.environment));
 		return this.environment.getResult();
 	}
 

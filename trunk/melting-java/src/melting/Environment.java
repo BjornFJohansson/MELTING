@@ -6,6 +6,7 @@ import melting.configuration.OptionManagement;
 
 public class Environment {
 
+	private HashMap<String, Double> concentrations = new HashMap<String, Double>();
 	private double Na;
 	private double Mg;
 	private double Tris;
@@ -21,12 +22,7 @@ public class Environment {
 	
 	public Environment(HashMap<String, String> options){
 		this.options = options;
-		
-		this.Na = Double.parseDouble(options.get(OptionManagement.Na));
-		this.Mg = Double.parseDouble(options.get(OptionManagement.Mg));
-		this.Tris = Double.parseDouble(options.get(OptionManagement.Tris));
-		this.K = Double.parseDouble(options.get(OptionManagement.K));
-		this.dNTP = Double.parseDouble(options.get(OptionManagement.dNTP));
+		initializeConcentrations();
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization);
 		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
@@ -102,6 +98,15 @@ public class Environment {
 
 	public double getDNTP() {
 		return dNTP;
+	}
+	
+	private void initializeConcentrations(){
+		String [] solution = this.options.get(OptionManagement.solutioncomposition).split(":");
+		
+		for (int i = 0; i < solution.length; i++){
+			String [] couple = solution[i].split("=");
+			this.concentrations.put(couple[0], Double.parseDouble(couple[1]));
+		}
 	}
 	
 }

@@ -7,8 +7,8 @@ import melting.nearestNeighborModel.NearestNeighborMode;
 
 public abstract class EntropyCorrection implements IonCorrectionMethod{
 
-	public ThermoResult correctMeltingResult(Environment environment, double ion) {
-		double entropy = correctEntropy(ion, environment.getSequences().getDuplexLength());
+	public ThermoResult correctMeltingResult(Environment environment) {
+		double entropy = correctEntropy(environment);
 		
 		environment.setResult(0, entropy);
 		
@@ -22,7 +22,7 @@ public abstract class EntropyCorrection implements IonCorrectionMethod{
 		return true;
 	}
 	
-	protected double correctEntropy(double ion, int duplexLength){
+	protected double correctEntropy(Environment environment){
 		return 0;
 	}
 

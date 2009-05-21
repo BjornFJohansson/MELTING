@@ -36,15 +36,17 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
-	protected double correctEntropy(double Na, int duplexLength){
-		double entropy = 0.368 * (duplexLength - 1) * Math.log(Na);
+	protected double correctEntropy(Environment environment){
+		double Na = environment.getNa();
+		double entropy = 0.368 * (environment.getSequences().getDuplexLength() - 1) * Math.log(Na);
 		
 		return entropy;
 	}
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double NaEq = Helper.calculateNaEquivalent(environment);
+		environment.setNa(NaEq);
 		
-		return super.correctMeltingResult(environment, NaEq);
+		return super.correctMeltingResult(environment);
 	}
 }

@@ -3,10 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class MarmurSchildkrautDoty98_62SodiumCorrection extends
-		SodiumCorrections {
+public class MarmurSchildkrautDoty98_62SodiumCorrection implements IonCorrectionMethod{
 
 	/*Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
 	 * Nucleic Acids Res. 26, 3323-3332 and corrigendum.
@@ -28,7 +27,7 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection extends
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
+		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.069 || NaEq > 1.02){

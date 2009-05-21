@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class Wetmur91SodiumCarrection extends SodiumCorrections{
+public class Wetmur91SodiumCarrection implements IonCorrectionMethod{
 
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
@@ -21,7 +21,7 @@ public class Wetmur91SodiumCarrection extends SodiumCorrections{
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
+		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq == 0){

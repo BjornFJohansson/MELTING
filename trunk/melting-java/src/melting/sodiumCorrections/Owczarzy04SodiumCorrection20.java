@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class Owczarzy04SodiumCorrection20 extends SodiumCorrections {
+public class Owczarzy04SodiumCorrection20 implements IonCorrectionMethod {
 
 	/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
 	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
@@ -23,7 +23,7 @@ public class Owczarzy04SodiumCorrection20 extends SodiumCorrections {
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
+		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq == 0){
