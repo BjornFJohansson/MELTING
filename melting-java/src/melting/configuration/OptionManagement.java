@@ -7,11 +7,7 @@ public class OptionManagement {
 	
 	public static final String sequence = "-seq";
 	public static final String complementarySequence = "-seq2";
-	public static final String Na = "-Na";
-	public static final String Mg = "-Mg";
-	public static final String K = "-K";
-	public static final String Tris = "-Tris";
-	public static final String dNTP = "-dNTP";
+	public static final String solutioncomposition = "-sol";
 	public static final String nucleotides = "-probe";
 	public static final String completMethod = "-method";
 	public static final String hybridization = "-Hybrid";
@@ -48,7 +44,7 @@ public class OptionManagement {
 	public static final String factor = "-F";
 	
 	private static final String version = "1";
-	private static final int totalOptionsRequired = 3;
+	private static final int totalOptionsRequired = 4;
 	private static String dataPathwayValue = "../../../Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
@@ -250,6 +246,11 @@ public class OptionManagement {
 					}
 				}
 			}
+			else if (option.equals(solutioncomposition)){
+				if (checkConcentrations(value)) {
+					numberRequiredOptions ++;
+				}
+			}
 			else if (option.equals(complementarySequence)){
 				if (isAValue(value)) {
 					hasComplementarySequence = true;
@@ -271,6 +272,40 @@ public class OptionManagement {
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean checkConcentrations(String solutionComposition){
+		String [] solution = solutionComposition.split(":");
+		
+		if (solution == null){
+			System.err.println("ERROR : There is an syntax error for the value of the option " + solutioncomposition + ".");
+			return false;
+		}
+		else {
+			for (int i = 0; i < solution.length; i++){
+				String [] couple = solution[i].split("=");
+				if (couple == null){
+					System.err.println("ERROR : There is an synthax error for the value of the option " + solutioncomposition + ".");
+					return false;
+				}
+				else {
+					String concentration = solution[i].split("=")[1];
+					
+					double val = Double.parseDouble(concentration);
+					try {
+						if (val < 0){
+							System.err.println("All the concentrations must be positive.");
+							return false;
+						}
+					} catch (NumberFormatException e) {
+						System.err.println("All the concentrations must be a numeric value.");
+						return false;
+					}
+				}
+			}
+				
+		}
+		return true;
 	}
 	
 	private HashMap<String, String> initializeDefaultOptions(String [] args){
@@ -299,11 +334,7 @@ public class OptionManagement {
 				optionSet.putAll(mRNADefaultOptions);
 			}
 		}
-		optionSet.put("Na", "0");
-		optionSet.put("Mg", "0");
-		optionSet.put("K", "0");
-		optionSet.put("Tris", "0");
-		optionSet.put("dNTP", "0");
+		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0");
 		optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
@@ -347,33 +378,12 @@ public class OptionManagement {
 				String value = args[i+1];
 				
 				if (isAValue(option) == false){
-					if (option.equals(Na) || option.equals(K) || option.equals(Tris) || option.equals(Mg) || option.equals(dNTP)){
+					if (option.equals(hybridization) == false) {
 						if (isAValue(value)){
-							double val = Double.parseDouble(value);
-							try {
-								if (val >= 0){
-									optionSet.put(option, value);
-								}
-								else {
-									System.err.println("The "+ option.substring(1) +" concentration must be positive.");
-								}
-							} catch (NumberFormatException e) {
-								System.err.println("The "+ option.substring(1) +" concentration must be a numeric value.");
-							}
+							optionSet.put(option, value);
 						}
-						else {
+						else{
 							System.err.println("I don't understand the option " + option + value + ".");
-							break;
-						}
-					}
-					else {
-						if (option.equals(hybridization) == false) {
-							if (isAValue(value)){
-								optionSet.put(option, value);
-							}
-							else{
-								System.err.println("I don't understand the option " + option + value + ".");
-							}
 						}
 					}
 				}

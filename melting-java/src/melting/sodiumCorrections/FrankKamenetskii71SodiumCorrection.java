@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class FrankKamenetskii71SodiumCorrection extends SodiumCorrections {
+public class FrankKamenetskii71SodiumCorrection implements IonCorrectionMethod {
 
 	/* Frank-Kamenetskii, M. D. (1971) Simplification of the empirical
 	 * relationship between melting temperature of DNA, its GC content
@@ -25,7 +25,7 @@ public class FrankKamenetskii71SodiumCorrection extends SodiumCorrections {
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
+		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.069 || NaEq > 1.02){

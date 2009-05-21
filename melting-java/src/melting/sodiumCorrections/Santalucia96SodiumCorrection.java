@@ -3,15 +3,14 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class Santalucia96SodiumCorrection extends SodiumCorrections {
+public class Santalucia96SodiumCorrection implements IonCorrectionMethod {
 
 	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/
 	
-	@Override
 	public ThermoResult correctMeltingResult(Environment environment) {
-		double NaEq = calculateNaEqEquivalent(environment);
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		double Tm = environment.getResult().getTm() + 12.5 * Math.log10(NaEq);
 		environment.setResult(Tm);
@@ -20,8 +19,8 @@ public class Santalucia96SodiumCorrection extends SodiumCorrections {
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = calculateNaEqEquivalent(environment);
+		boolean isApplicable = true;
+		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.1){
 			System.out.println("ERROR : The sodium correction of Santalucia et al. (1996) is not reliable for " +
@@ -35,18 +34,5 @@ public class Santalucia96SodiumCorrection extends SodiumCorrections {
 			isApplicable = false;
 		}
 		return isApplicable;
-	}
-	
-	protected double calculateNaEqEquivalent(Environment environment){
-		double NaEq = 0;
-		
-		if (environment.getK() > 0 && environment.getNa() == 0 && environment.getMg() == 0 && environment.getTris() == 0){
-			NaEq = environment.getK();
-		}
-		
-		if (NaEq == 0){
-			NaEq = Helper.calculateNaEquivalent(environment);
-		}
-		return NaEq;
 	}
 }

@@ -2,11 +2,17 @@ package melting.configuration;
 
 import java.util.HashMap;
 
+import melting.Environment;
 import melting.Helper;
 import melting.CNGRepeatsMethods.Broda05CNGRepeats;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
 import melting.InternalLoopMethod.Znosco071x2Loop;
+import melting.MagnesiumCorrections.Owczarzy08MagnesiumCorrection;
+import melting.MagnesiumCorrections.Tan06MagnesiumCorrection;
+import melting.MagnesiumCorrections.Tan07MagnesiumCorrection;
+import melting.MixedNaMgCorrections.Owczarzy08MixedNaMgCorrection;
+import melting.MixedNaMgCorrections.Tan07MixedNaMgCorrection;
 import melting.approximativeMethods.Ahsen01;
 import melting.approximativeMethods.ApproximativeMode;
 import melting.approximativeMethods.MarmurChester62_93;
@@ -15,6 +21,7 @@ import melting.approximativeMethods.Owen69;
 import melting.approximativeMethods.Santalucia98;
 import melting.approximativeMethods.Wetmur91;
 import melting.calculMethodInterfaces.CompletCalculMethod;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.cricksNNMethods.AllawiSantalucia97;
@@ -47,6 +54,19 @@ import melting.singleMismatchMethods.AllawiSantaluciaPeyret97_98_99mm;
 import melting.singleMismatchMethods.Turner06mm;
 import melting.singleMismatchMethods.Znosco07mm;
 import melting.singleMismatchMethods.Znosco08mm;
+import melting.sodiumCorrections.Ahsen01SodiumCorrection;
+import melting.sodiumCorrections.FrankKamenetskii71SodiumCorrection;
+import melting.sodiumCorrections.MarmurSchildkrautDoty98_62SodiumCorrection;
+import melting.sodiumCorrections.Owczarzy04SodiumCorrection19;
+import melting.sodiumCorrections.Owczarzy04SodiumCorrection20;
+import melting.sodiumCorrections.Owczarzy04SodiumCorrection21;
+import melting.sodiumCorrections.Owczarzy04SodiumCorrection22;
+import melting.sodiumCorrections.Santalucia96SodiumCorrection;
+import melting.sodiumCorrections.Santalucia98_04SodiumCorrection;
+import melting.sodiumCorrections.SchildkrautLifson65SodiumCorrection;
+import melting.sodiumCorrections.Tan06SodiumCorrection;
+import melting.sodiumCorrections.Tan07SodiumCorrection;
+import melting.sodiumCorrections.Wetmur91SodiumCarrection;
 import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
 import melting.sodiumEquivalence.Mitsuhashi96NaEquivalent;
 import melting.sodiumEquivalence.Peyret00_NaEquivalent;
@@ -78,7 +98,8 @@ public class RegisterCalculMethod {
 	private static HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, Class<? extends PartialCalculMethod>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>>();
-	
+	private static HashMap<String, Class<? extends IonCorrectionMethod>> IonCorrection = new HashMap<String, Class<? extends IonCorrectionMethod>>();
+
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
 		initializeCompletCalculMethods();
@@ -101,6 +122,8 @@ public class RegisterCalculMethod {
 		initializeLockedAcidMethods();
 		
 		initializePartialCalculMethods();
+		
+		initializeIonCorrectionMethod();
 	}
 	
 	private void initializeNaEqMethods(){
@@ -212,6 +235,28 @@ public class RegisterCalculMethod {
 		deoxyadenosineMethod.put("Sugimoto_2005", Sugimoto05Deoxyadenosine.class);
 	}
 	
+	private void initializeIonCorrectionMethod(){
+		IonCorrection.put("Ahsen_2001_Na", Ahsen01SodiumCorrection.class);
+		IonCorrection.put("Kamenetskii_1971_Na", FrankKamenetskii71SodiumCorrection.class);
+		IonCorrection.put("Marmur_Schildkraut_Doty_1962_1998_Na", MarmurSchildkrautDoty98_62SodiumCorrection.class);
+		IonCorrection.put("Owczarzy_19_2004_Na", Owczarzy04SodiumCorrection19.class);
+		IonCorrection.put("Owczarzy_20_2004_Na", Owczarzy04SodiumCorrection20.class);
+		IonCorrection.put("Owczarzy_21_2004_Na", Owczarzy04SodiumCorrection21.class);
+		IonCorrection.put("Owczarzy_22_2004_Na", Owczarzy04SodiumCorrection22.class);
+		IonCorrection.put("Santalucia_1996_Na", Santalucia96SodiumCorrection.class);
+		IonCorrection.put("Santalucia_1998_2004_Na", Santalucia98_04SodiumCorrection.class);
+		IonCorrection.put("Schildkraut_Lifson_1965_Na", SchildkrautLifson65SodiumCorrection.class);
+		IonCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
+		IonCorrection.put("Tan_2007_Na", Tan07SodiumCorrection.class);
+		IonCorrection.put("Wetmur_1991_Na", Wetmur91SodiumCarrection.class);
+		IonCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
+		IonCorrection.put("Owczarzy_2008_Mg", Owczarzy08MagnesiumCorrection.class);
+		IonCorrection.put("Tan_2006_Mg", Tan06MagnesiumCorrection.class);
+		IonCorrection.put("Tan_2007_Mg", Tan07MagnesiumCorrection.class);
+		IonCorrection.put("Owczarzy_2008_mixed", Owczarzy08MixedNaMgCorrection.class);
+		IonCorrection.put("Tan_2007_Mixed", Tan07MixedNaMgCorrection.class);
+	}
+	
 	private void initializePartialCalculMethods(){
 		PartialCalculMethods.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
 		PartialCalculMethods.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
@@ -275,6 +320,72 @@ public class RegisterCalculMethod {
 			e.printStackTrace();
 		}
 		return null;	
+	}
+	
+	public IonCorrectionMethod getIonCorrectionMethod (Environment environment){
+		if (environment.getOptions().containsKey(OptionManagement.correctionIon)){
+			String methodName = environment.getOptions().get(OptionManagement.correctionIon);
+			
+			if (methodName == null){
+				return null;
+			}
+			IonCorrectionMethod method;
+			try {
+				method = IonCorrection.get(methodName).newInstance();
+				if (method.isApplicable(environment)) {
+					return method;
+				}
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		else{
+			double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
+			
+			if (monovalent == 0){
+				if (environment.getHybridization().equals("dnadna")){
+					return new Owczarzy08MagnesiumCorrection();
+				}
+				else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+					return new Tan07MagnesiumCorrection();
+				}
+			}
+			else {
+				double Mg = environment.getMg() - environment.getDNTP();
+				double ratio = Math.sqrt(Mg) / monovalent;
+				
+				if (ratio < 0.22){
+					if (environment.getHybridization().equals("dnadna")){
+						return new Owczarzy04SodiumCorrection22();
+					}
+					else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+						return new Tan07SodiumCorrection();
+					}
+				}
+				else{
+					if (ratio < 6.0){
+						if (environment.getHybridization().equals("dnadna")){
+							return new Owczarzy08MixedNaMgCorrection();
+						}
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+							return new Tan07MixedNaMgCorrection();
+						}
+					}
+					else {
+						if (environment.getHybridization().equals("dnadna")){
+							return new Owczarzy08MagnesiumCorrection();
+						}
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+							return new Tan07MagnesiumCorrection();
+						}
+					}
+				}
+			}
+			return null;
+		}
 	}
 	
 	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){

@@ -1,7 +1,6 @@
 package melting.MagnesiumCorrections;
 
 import melting.Environment;
-import melting.ThermoResult;
 import melting.ionCorrections.EntropyCorrection;
 
 public class Tan07MagnesiumCorrection extends EntropyCorrection {
@@ -27,19 +26,22 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
-	protected double correctEntropy(double Mg, int duplexLength){
-		double square = Math.log(Mg) * Math.log(Mg);
-		double a = -0.6 / duplexLength + 0.025 * Math.log(Mg) + 0.0068 * square;
-		double b = Math.log(Mg) + 0.38 * square;
+	protected double correctEntropy(Environment environment){
 		
-		double g = a + b / (duplexLength * duplexLength);
-		
-		double entropy = -3.22 * (duplexLength - 1) * g;
+		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
 		
 		return entropy;
 	}
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
-		return super.correctMeltingResult(environment, environment.getMg());
+	public static double calculateFreeEnergyPerBaseStack(Environment environment){
+		double Mg = environment.getMg() - environment.getDNTP();
+		int duplexLength = environment.getSequences().getDuplexLength();
+		
+		double square = Math.log(Mg) * Math.log(Mg);
+		double a = -0.6 / duplexLength + 0.025 * Math.log(Mg) + 0.0068 * square;
+		double b = Math.log(Mg) + 0.38 * square;
+		double g = a + b / (duplexLength * duplexLength);
+		
+		return g;
 	}
 }

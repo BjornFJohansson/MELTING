@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.SodiumCorrections;
+import melting.calculMethodInterfaces.IonCorrectionMethod;
 
-public class SchildkrautLifson65SodiumCorrection extends SodiumCorrections {
+public class SchildkrautLifson65SodiumCorrection implements IonCorrectionMethod{
 
 	/* Schildkraut, C., and Lifson, S. (1965) Dependence of the melting
 	 *  temperature of DNA on salt concentration, Biopolymers 3, 195-208.
@@ -22,7 +22,7 @@ public class SchildkrautLifson65SodiumCorrection extends SodiumCorrections {
 	}
 
 	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = super.isApplicable(environment);
+		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.07 || NaEq > 0.12){

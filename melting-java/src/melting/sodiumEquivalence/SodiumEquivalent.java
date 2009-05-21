@@ -10,7 +10,7 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP, double b) {
 		
-		double NaEq = Na + K + Tris + b * Math.sqrt(Mg - dNTP);
+		double NaEq = Na + K + Tris / 2 + b * Math.sqrt(Mg - dNTP);
 		
 		return NaEq;
 	}

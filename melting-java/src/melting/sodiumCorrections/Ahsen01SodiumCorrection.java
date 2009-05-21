@@ -2,7 +2,6 @@ package melting.sodiumCorrections;
 
 import melting.Environment;
 import melting.Helper;
-import melting.ThermoResult;
 import melting.ionCorrections.EntropyCorrection;
 
 public class Ahsen01SodiumCorrection extends EntropyCorrection {
@@ -30,15 +29,9 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
-	protected double correctEntropy(double Na, int duplexLength){
-		double entropy = 0.847 * (duplexLength - 1) * Math.log(Na);
+	protected double correctEntropy(Environment environment){
+		double entropy = 0.847 * (environment.getSequences().getDuplexLength() - 1) * Math.log(environment.getNa());
 		
 		return entropy;
-	}
-
-	public ThermoResult correctMeltingResult(Environment environment) {
-		double NaEq = Helper.calculateNaEquivalent(environment);
-		
-		return super.correctMeltingResult(environment, NaEq);
 	}
 }

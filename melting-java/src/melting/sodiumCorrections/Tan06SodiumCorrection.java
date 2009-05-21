@@ -29,21 +29,28 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
-	protected double correctEntropy(double Na, int duplexLength){
-		double square = Math.log(Na) * Math.log(Na);
-		double a = -0.07 * Math.log(Na) + 0.012 * square;
-		double b = 0.013 * square;
+	protected double correctEntropy(Environment environment){
 		
-		double g = a + b / duplexLength;
-		
-		double entropy = -3.22 * (duplexLength - 1) * g;
+		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
 		
 		return entropy;
 	}
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double NaEq = Helper.calculateNaEquivalent(environment);
+		environment.setNa(NaEq);
 		
-		return super.correctMeltingResult(environment, NaEq);
+		return super.correctMeltingResult(environment);
+	}
+	
+	public static double calculateFreeEnergyPerBaseStack(Environment environment){
+		double Na = environment.getNa();
+		double square = Math.log(Na) * Math.log(Na);
+		double a = -0.07 * Math.log(Na) + 0.012 * square;
+		double b = 0.013 * square;
+		
+		double g = a + b / environment.getSequences().getDuplexLength();
+		
+		return g;
 	}
 }
