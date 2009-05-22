@@ -1,4 +1,4 @@
-package melting.woddleNNMethod;
+package melting.wobbleNNMethod;
 
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
