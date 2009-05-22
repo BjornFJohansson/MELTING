@@ -78,9 +78,9 @@ import melting.sodiumEquivalence.Mitsuhashi96NaEquivalent;
 import melting.sodiumEquivalence.Peyret00_NaEquivalent;
 import melting.tandemMismatchMethod.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.tandemMismatchMethod.Turner99_06tanmm;
-import melting.woddleNNMethod.Santalucia05Inosine;
-import melting.woddleNNMethod.Turner99Wobble;
-import melting.woddleNNMethod.Znosco07Inosine;
+import melting.wobbleNNMethod.Santalucia05Inosine;
+import melting.wobbleNNMethod.Turner99Wobble;
+import melting.wobbleNNMethod.Znosco07Inosine;
 
 public class RegisterCalculMethod {
 	

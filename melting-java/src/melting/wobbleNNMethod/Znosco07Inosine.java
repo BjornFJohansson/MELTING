@@ -1,4 +1,4 @@
-package melting.woddleNNMethod;
+package melting.wobbleNNMethod;
 
 
 import melting.Environment;
