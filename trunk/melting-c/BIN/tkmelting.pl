@@ -21,7 +21,7 @@ eval '(exit $?0)' && eval 'exec perl -S $0 ${1+ "$@"}' && eval 'exec perl -S $0 
 #     along with this program; if not, write to the Free Software
 #     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA#
 #
-#     Nicolas Le Novère and Marine Dumousseau
+#     Nicolas Le Novere and Marine Dumousseau
 #     Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
 #     Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk  
 
