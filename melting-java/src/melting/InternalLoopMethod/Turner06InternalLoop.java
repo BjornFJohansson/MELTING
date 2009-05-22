@@ -25,6 +25,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 	
+		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		boolean needFirstMismatchEnergy = true;
@@ -43,11 +44,22 @@ public class Turner06InternalLoop extends PartialCalcul{
 		
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))) != null){
 			enthalpy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEnthalpy();
-			entropy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			}
+			else {
+				entropy += this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			}
 		}
 		else {
 			enthalpy += this.collector.getInitiationLoopValue(">6").getEnthalpy();
-			entropy += this.collector.getInitiationLoopValue(">6").getEntropy() - 1.08 * Math.log(sequences.calculateLoopLength(pos1, pos2) / 6);
+
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += this.collector.getInitiationLoopValue(">6").getEntropy() - 1.08 * Math.log(sequences.calculateLoopLength(pos1, pos2) / 6);
+			}
+			else {
+				entropy += this.collector.getInitiationLoopValue(">6").getEntropy() - 1.08 * Math.log(sequences.calculateLoopLength(pos1, pos2) / 6);
+			}
 		}
 		
 		
@@ -67,7 +79,13 @@ public class Turner06InternalLoop extends PartialCalcul{
 		if (sequences.isAsymetricLoop(pos1, pos2)){
 				
 			enthalpy += this.collector.getAsymetry().getEnthalpy();
-			entropy += this.collector.getAsymetry().getEntropy();
+			
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += this.collector.getAsymetry().getEntropy();
+			}
+			else {
+				entropy += this.collector.getAsymetry().getEntropy();
+			}
 		}
 		
 		if (needFirstMismatchEnergy == true){
@@ -85,6 +103,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
+		result.setSaltIndependentEntropy(saltIndependentEntropy);
 		
 		return result;
 	}

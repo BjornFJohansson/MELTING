@@ -13,6 +13,7 @@ public class Santalucia98 extends ApproximativeMode{
 		double Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528 / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
+		
 		return this.environment.getResult();
 	}
 

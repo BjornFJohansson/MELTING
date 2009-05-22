@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class Owczarzy04SodiumCorrection21 implements IonCorrectionMethod {
+public class Owczarzy04SodiumCorrection21 implements CorrectionMethod {
 
 	/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
 	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",

@@ -1,9 +1,9 @@
 package melting.MixedNaMgCorrections;
 
 import melting.Environment;
+import melting.CorrectionMethods.EntropyCorrection;
 import melting.MagnesiumCorrections.Tan06MagnesiumCorrection;
 import melting.MagnesiumCorrections.Tan07MagnesiumCorrection;
-import melting.ionCorrections.EntropyCorrection;
 import melting.sodiumCorrections.Tan06SodiumCorrection;
 import melting.sodiumCorrections.Tan07SodiumCorrection;
 

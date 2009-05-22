@@ -24,23 +24,40 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
+		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEnthalpy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos2 - 1), sequences.getComplementaryNNPair(pos2 - 1)).getEnthalpy();
 		double entropy = result.getEntropy()  + collector.getMismatchvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEntropy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos2 - 1), sequences.getComplementaryNNPair(pos2 - 1)).getEntropy();
 				
 		if (collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))) != null){
-			entropy += collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			}
+			else {
+				entropy += collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+			}
 		}
 		else {
-			entropy += collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(30 / (Math.abs(pos2 - pos1) + 1));
-		}
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += collector.getInternalLoopValue("30").getEntropy();
+			}
+			else {
+				entropy += collector.getInternalLoopValue("30").getEntropy();
+			}		}
 		
 		if (sequences.isAsymetricLoop(pos1, pos2)){
 			enthalpy += collector.getAsymetry().getEnthalpy();
-			entropy += collector.getAsymetry().getEntropy();
+
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){
+				saltIndependentEntropy += collector.getAsymetry().getEntropy();
+			}
+			else {
+				entropy += collector.getAsymetry().getEntropy();
+			}	
 		}
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
+		result.setSaltIndependentEntropy(saltIndependentEntropy);
 		
 		return result;
 	}

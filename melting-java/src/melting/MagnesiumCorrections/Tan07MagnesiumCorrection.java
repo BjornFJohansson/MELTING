@@ -1,7 +1,7 @@
 package melting.MagnesiumCorrections;
 
 import melting.Environment;
-import melting.ionCorrections.EntropyCorrection;
+import melting.CorrectionMethods.EntropyCorrection;
 
 public class Tan07MagnesiumCorrection extends EntropyCorrection {
 

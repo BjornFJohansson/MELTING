@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class MarmurSchildkrautDoty98_62SodiumCorrection implements IonCorrectionMethod{
+public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
 
 	/*Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
 	 * Nucleic Acids Res. 26, 3323-3332 and corrigendum.

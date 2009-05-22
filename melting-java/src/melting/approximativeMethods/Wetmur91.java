@@ -34,8 +34,8 @@ public class Wetmur91 extends ApproximativeMode{
 		else if (this.environment.getHybridization().equals("dnarna") ||this.environment.getHybridization().equals("rnadna")){
 			Tm = 67 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 *this.environment.getNa())) + 0.8 * percentGC - 500 / duplexLength - percentMismatching;
 		}
-		
 		this.environment.setResult(Tm);
+		
 		return this.environment.getResult();
 	}
 }

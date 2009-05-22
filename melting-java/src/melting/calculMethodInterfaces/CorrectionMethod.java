@@ -4,7 +4,7 @@ package melting.calculMethodInterfaces;
 import melting.Environment;
 import melting.ThermoResult;
 
-public interface IonCorrectionMethod {
+public interface CorrectionMethod {
 
 	public boolean isApplicable(Environment environment);
 	

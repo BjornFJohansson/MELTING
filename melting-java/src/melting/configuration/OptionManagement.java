@@ -12,7 +12,9 @@ public class OptionManagement {
 	public static final String completMethod = "-method";
 	public static final String hybridization = "-Hybrid";
 	public static final String approximativeMode = "-AMode";
-	public static final String correctionIon = "-corr";
+	public static final String ionCorrection = "-ionCorr";
+	public static final String DMSOCorrection = "-DMSOCorr";
+	public static final String formamideCorrection = "-formCorr";
 	public static final String NNMethod = "-NN";
 	public static final String singleMismatchMethod = "-singleMM";
 	public static final String wobbleBaseMethod = "-woddle";
@@ -76,7 +78,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(approximativeMode, "Wetmur_1981");
-		this.DNADefaultOptions.put(correctionIon, "Owczarzy_2008");
+		this.DNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
 		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
 		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
@@ -100,7 +102,6 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(hairpinLoopMethod, "Serra_1997_1998_2000_2006");
 		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
 		this.RNADefaultOptions.put(approximativeMode, "Wetmur_1981");
-		this.RNADefaultOptions.put(correctionIon, "Tan_2007");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
 	}
 	
@@ -111,7 +112,6 @@ public class OptionManagement {
 	private void setHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
 		this.hybridDefaultOptions.put(approximativeMode, "Wetmur_1981");
-		this.hybridDefaultOptions.put(correctionIon, "Wetmur_1981");
 	}
 	
 	public HashMap<String, String> getMRNADefaultOptions() {
@@ -275,7 +275,7 @@ public class OptionManagement {
 	}
 	
 	private boolean checkConcentrations(String solutionComposition){
-		String [] solution = solutionComposition.split(":");
+		String [] solution = solutionComposition.split(":"); 
 		
 		if (solution == null){
 			System.err.println("ERROR : There is an syntax error for the value of the option " + solutioncomposition + ".");

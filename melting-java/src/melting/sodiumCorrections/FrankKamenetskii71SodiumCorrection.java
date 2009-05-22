@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class FrankKamenetskii71SodiumCorrection implements IonCorrectionMethod {
+public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 
 	/* Frank-Kamenetskii, M. D. (1971) Simplification of the empirical
 	 * relationship between melting temperature of DNA, its GC content

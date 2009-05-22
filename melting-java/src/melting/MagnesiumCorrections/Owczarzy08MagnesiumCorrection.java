@@ -2,9 +2,9 @@ package melting.MagnesiumCorrections;
 
 import melting.Environment;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class Owczarzy08MagnesiumCorrection implements IonCorrectionMethod{
+public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 
 	/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
 	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions

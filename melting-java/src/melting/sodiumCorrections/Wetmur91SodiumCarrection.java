@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class Wetmur91SodiumCarrection implements IonCorrectionMethod{
+public class Wetmur91SodiumCarrection implements CorrectionMethod{
 
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/

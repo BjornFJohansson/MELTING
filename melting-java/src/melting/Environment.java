@@ -7,11 +7,6 @@ import melting.configuration.OptionManagement;
 public class Environment {
 
 	private HashMap<String, Double> concentrations = new HashMap<String, Double>();
-	private double Na;
-	private double Mg;
-	private double Tris;
-	private double K;
-	private double dNTP;
 	private double nucleotides;
 	private int factor;
 	private boolean IsSelfComplementarity = false;
@@ -23,6 +18,9 @@ public class Environment {
 	public Environment(HashMap<String, String> options){
 		this.options = options;
 		initializeConcentrations();
+		if (isRequiredConcentrations() == false){
+			System.err.println("ERROR : you must enter at lest one of these concentrations : Na, Mg, K or Tris.");
+		}
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization);
 		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
@@ -34,7 +32,7 @@ public class Environment {
 		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence), options.get(OptionManagement.complementarySequence));
 		this.result = new ThermoResult(0,0,0);
 	}
-	
+
 	public int getFactor() {
 		return factor;
 	}
@@ -64,23 +62,49 @@ public class Environment {
 	}
 	
 	public double getNa() {
-		return Na;
+		if (concentrations.containsKey("Na")){
+			return concentrations.get("Na");
+		}
+		return 0;
 	}
 	
 	public double getMg() {
-		return Mg;
+		if (concentrations.containsKey("Mg")){
+			return concentrations.get("Mg");
+		}
+		return 0;
 	}
 	
 	public double getTris() {
-		return Tris;
+		if (concentrations.containsKey("Tris")){
+			return concentrations.get("Tris");
+		}
+		return 0;
 	}
 	
 	public double getK() {
-		return K;
+		if (concentrations.containsKey("K")){
+			return concentrations.get("K");
+		}
+		return 0;
+	}
+	
+	public double getDMSO() {
+		if (concentrations.containsKey("DMSO")){
+			return concentrations.get("DMSO");
+		}
+		return 0;
+	}
+	
+	public double getFormamide() {
+		if (concentrations.containsKey("formamide")){
+			return concentrations.get("formamide");
+		}
+		return 0;
 	}
 	
 	public void setNa(double na) {
-		Na = na;
+		concentrations.put("Na", na);
 	}
 	
 	public void setResult(double enthalpy, double entropy){
@@ -97,7 +121,10 @@ public class Environment {
 	}
 
 	public double getDNTP() {
-		return dNTP;
+		if (concentrations.containsKey("dNTP")){
+			return concentrations.get("dNTP");
+		}
+		return 0;
 	}
 	
 	private void initializeConcentrations(){
@@ -107,6 +134,15 @@ public class Environment {
 			String [] couple = solution[i].split("=");
 			this.concentrations.put(couple[0], Double.parseDouble(couple[1]));
 		}
+	}
+	
+	private boolean isRequiredConcentrations(){
+		if (concentrations.containsKey("Na") || concentrations.containsKey("K") || concentrations.containsKey("Mg") || concentrations.containsKey("Tris")){
+			if (concentrations.get("Na") != 0 || concentrations.get("K") != 0 || concentrations.get("Mg") != 0 || concentrations.get("Tris") != 0){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
