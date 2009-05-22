@@ -3,9 +3,9 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 
-public class Santalucia96SodiumCorrection implements IonCorrectionMethod {
+public class Santalucia96SodiumCorrection implements CorrectionMethod {
 
 	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/
 	

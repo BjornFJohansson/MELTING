@@ -2,7 +2,7 @@ package melting.sodiumCorrections;
 
 import melting.Environment;
 import melting.Helper;
-import melting.ionCorrections.EntropyCorrection;
+import melting.CorrectionMethods.EntropyCorrection;
 
 public class Ahsen01SodiumCorrection extends EntropyCorrection {
 

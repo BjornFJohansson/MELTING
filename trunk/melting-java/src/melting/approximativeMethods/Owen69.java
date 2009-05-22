@@ -25,6 +25,7 @@ public class Owen69 extends ApproximativeMode{
 		double Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
 		
 		this.environment.setResult(Tm);
+		
 		return this.environment.getResult();
 	}
 

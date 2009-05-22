@@ -3,7 +3,7 @@ package melting.sodiumCorrections;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.ionCorrections.EntropyCorrection;
+import melting.CorrectionMethods.EntropyCorrection;
 
 public class Tan07SodiumCorrection extends EntropyCorrection {
 	

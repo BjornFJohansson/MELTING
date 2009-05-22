@@ -22,6 +22,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		double Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - this.parameter / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
+	
 		return this.environment.getResult();
 	}
 

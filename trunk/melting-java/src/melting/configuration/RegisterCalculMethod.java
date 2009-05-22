@@ -5,6 +5,10 @@ import java.util.HashMap;
 import melting.Environment;
 import melting.Helper;
 import melting.CNGRepeatsMethods.Broda05CNGRepeats;
+import melting.DMSOCorrections.Ahsen01DMSOCorrection;
+import melting.DMSOCorrections.Cullen76DMSOCorrection;
+import melting.DMSOCorrections.Escara80DMSOCorrection;
+import melting.DMSOCorrections.Musielski81DMSOCorrection;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
 import melting.InternalLoopMethod.Znosco071x2Loop;
@@ -21,7 +25,7 @@ import melting.approximativeMethods.Owen69;
 import melting.approximativeMethods.Santalucia98;
 import melting.approximativeMethods.Wetmur91;
 import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.cricksNNMethods.AllawiSantalucia97;
@@ -33,6 +37,8 @@ import melting.cricksNNMethods.Sugimoto95;
 import melting.cricksNNMethods.Tanaka04;
 import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
+import melting.formamideCorrections.Blake96FormamideCorrection;
+import melting.formamideCorrections.FormamideLinearMethod;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 import melting.longDanglingEndMethod.Sugimoto02DNADanglingEnd;
@@ -98,7 +104,10 @@ public class RegisterCalculMethod {
 	private static HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, Class<? extends PartialCalculMethod>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>>();
-	private static HashMap<String, Class<? extends IonCorrectionMethod>> IonCorrection = new HashMap<String, Class<? extends IonCorrectionMethod>>();
+	private static HashMap<String, Class<? extends CorrectionMethod>> ionCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	private static HashMap<String, Class<? extends CorrectionMethod>> DMSOCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	private static HashMap<String, Class<? extends CorrectionMethod>> formamideCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	private static HashMap<String, HashMap<String, Class<? extends CorrectionMethod>>> otherCorrection = new HashMap<String, HashMap<String, Class<? extends CorrectionMethod>>>();
 
 	public RegisterCalculMethod(){
 		initializeApproximativeMethods();
@@ -124,6 +133,9 @@ public class RegisterCalculMethod {
 		initializePartialCalculMethods();
 		
 		initializeIonCorrectionMethod();
+		initializeDMSOCorrectionMethod();
+		initializeFormamideCorrectionMethod();
+		initializeOtherCorrectionMethod();
 	}
 	
 	private void initializeNaEqMethods(){
@@ -236,25 +248,42 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeIonCorrectionMethod(){
-		IonCorrection.put("Ahsen_2001_Na", Ahsen01SodiumCorrection.class);
-		IonCorrection.put("Kamenetskii_1971_Na", FrankKamenetskii71SodiumCorrection.class);
-		IonCorrection.put("Marmur_Schildkraut_Doty_1962_1998_Na", MarmurSchildkrautDoty98_62SodiumCorrection.class);
-		IonCorrection.put("Owczarzy_19_2004_Na", Owczarzy04SodiumCorrection19.class);
-		IonCorrection.put("Owczarzy_20_2004_Na", Owczarzy04SodiumCorrection20.class);
-		IonCorrection.put("Owczarzy_21_2004_Na", Owczarzy04SodiumCorrection21.class);
-		IonCorrection.put("Owczarzy_22_2004_Na", Owczarzy04SodiumCorrection22.class);
-		IonCorrection.put("Santalucia_1996_Na", Santalucia96SodiumCorrection.class);
-		IonCorrection.put("Santalucia_1998_2004_Na", Santalucia98_04SodiumCorrection.class);
-		IonCorrection.put("Schildkraut_Lifson_1965_Na", SchildkrautLifson65SodiumCorrection.class);
-		IonCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
-		IonCorrection.put("Tan_2007_Na", Tan07SodiumCorrection.class);
-		IonCorrection.put("Wetmur_1991_Na", Wetmur91SodiumCarrection.class);
-		IonCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
-		IonCorrection.put("Owczarzy_2008_Mg", Owczarzy08MagnesiumCorrection.class);
-		IonCorrection.put("Tan_2006_Mg", Tan06MagnesiumCorrection.class);
-		IonCorrection.put("Tan_2007_Mg", Tan07MagnesiumCorrection.class);
-		IonCorrection.put("Owczarzy_2008_mixed", Owczarzy08MixedNaMgCorrection.class);
-		IonCorrection.put("Tan_2007_Mixed", Tan07MixedNaMgCorrection.class);
+		ionCorrection.put("Ahsen_2001_Na", Ahsen01SodiumCorrection.class);
+		ionCorrection.put("Kamenetskii_1971_Na", FrankKamenetskii71SodiumCorrection.class);
+		ionCorrection.put("Marmur_Schildkraut_Doty_1962_1998_Na", MarmurSchildkrautDoty98_62SodiumCorrection.class);
+		ionCorrection.put("Owczarzy_19_2004_Na", Owczarzy04SodiumCorrection19.class);
+		ionCorrection.put("Owczarzy_20_2004_Na", Owczarzy04SodiumCorrection20.class);
+		ionCorrection.put("Owczarzy_21_2004_Na", Owczarzy04SodiumCorrection21.class);
+		ionCorrection.put("Owczarzy_22_2004_Na", Owczarzy04SodiumCorrection22.class);
+		ionCorrection.put("Santalucia_1996_Na", Santalucia96SodiumCorrection.class);
+		ionCorrection.put("Santalucia_1998_2004_Na", Santalucia98_04SodiumCorrection.class);
+		ionCorrection.put("Schildkraut_Lifson_1965_Na", SchildkrautLifson65SodiumCorrection.class);
+		ionCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
+		ionCorrection.put("Tan_2007_Na", Tan07SodiumCorrection.class);
+		ionCorrection.put("Wetmur_1991_Na", Wetmur91SodiumCarrection.class);
+		ionCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
+		ionCorrection.put("Owczarzy_2008_Mg", Owczarzy08MagnesiumCorrection.class);
+		ionCorrection.put("Tan_2006_Mg", Tan06MagnesiumCorrection.class);
+		ionCorrection.put("Tan_2007_Mg", Tan07MagnesiumCorrection.class);
+		ionCorrection.put("Owczarzy_2008_mixed", Owczarzy08MixedNaMgCorrection.class);
+		ionCorrection.put("Tan_2007_Mixed", Tan07MixedNaMgCorrection.class);
+	}
+	
+	private void initializeDMSOCorrectionMethod(){
+		DMSOCorrection.put("Ahsen_2001", Ahsen01DMSOCorrection.class);
+		DMSOCorrection.put("Cullen_1976", Cullen76DMSOCorrection.class);
+		DMSOCorrection.put("Escara_1980", Escara80DMSOCorrection.class);
+		DMSOCorrection.put("Musielski_1981", Musielski81DMSOCorrection.class);
+	}
+	
+	private void initializeFormamideCorrectionMethod(){
+		DMSOCorrection.put("linear_correction", FormamideLinearMethod.class);
+		DMSOCorrection.put("Blake_1996", Blake96FormamideCorrection.class);
+	}
+	
+	private void initializeOtherCorrectionMethod(){
+		otherCorrection.put(OptionManagement.DMSOCorrection, DMSOCorrection);
+		otherCorrection.put(OptionManagement.formamideCorrection, formamideCorrection);
 	}
 	
 	private void initializePartialCalculMethods(){
@@ -322,16 +351,16 @@ public class RegisterCalculMethod {
 		return null;	
 	}
 	
-	public IonCorrectionMethod getIonCorrectionMethod (Environment environment){
-		if (environment.getOptions().containsKey(OptionManagement.correctionIon)){
-			String methodName = environment.getOptions().get(OptionManagement.correctionIon);
+	public CorrectionMethod getIonCorrectionMethod (Environment environment){
+		if (environment.getOptions().containsKey(OptionManagement.ionCorrection)){
+			String methodName = environment.getOptions().get(OptionManagement.ionCorrection);
 			
 			if (methodName == null){
 				return null;
 			}
-			IonCorrectionMethod method;
+			CorrectionMethod method;
 			try {
-				method = IonCorrection.get(methodName).newInstance();
+				method = ionCorrection.get(methodName).newInstance();
 				if (method.isApplicable(environment)) {
 					return method;
 				}
@@ -345,6 +374,9 @@ public class RegisterCalculMethod {
 		else{
 			double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
 			
+			if (environment.getHybridization().equals("dnarna") || environment.getHybridization().equals("rnadna")){
+				return new Wetmur91SodiumCarrection();
+			}
 			if (monovalent == 0){
 				if (environment.getHybridization().equals("dnadna")){
 					return new Owczarzy08MagnesiumCorrection();
@@ -432,5 +464,22 @@ public class RegisterCalculMethod {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
+		
+		if (methodName == null){
+			return null;
+		}
+		CorrectionMethod method;
+		try {
+			method = otherCorrection.get(optionName).get(methodName).newInstance();
+			return method;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;	
 	}
 }

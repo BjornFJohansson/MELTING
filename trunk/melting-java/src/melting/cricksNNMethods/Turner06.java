@@ -28,6 +28,8 @@ public class Turner06 extends CricksNNMethod {
 			entropy += this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
 		}
 		
+		entropy = getEntropy1MNa(entropy, pos1, pos2);
+		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		
@@ -66,6 +68,13 @@ public class Turner06 extends CricksNNMethod {
 		environment.setResult(enthalpy, entropy);
 		
 		return environment.getResult();
+	}
+	
+	private double getEntropy1MNa(double entropy0_1MNa, int pos1, int pos2){
+		//sodium correction of Santalucia 1998_2004.
+		double entropy1MNa = entropy0_1MNa - 0.368 * (Math.abs(pos2 - pos1)) * Math.log(0.1);
+		
+		return entropy1MNa;
 	}
 
 }

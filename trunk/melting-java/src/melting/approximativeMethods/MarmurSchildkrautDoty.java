@@ -34,6 +34,7 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		double Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
 
 		this.environment.setResult(Tm);
+		
 		return this.environment.getResult();
 	}
 

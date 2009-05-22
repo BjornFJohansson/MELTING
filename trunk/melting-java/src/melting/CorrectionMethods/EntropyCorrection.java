@@ -1,11 +1,11 @@
-package melting.ionCorrections;
+package melting.CorrectionMethods;
 
 import melting.Environment;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
 
-public abstract class EntropyCorrection implements IonCorrectionMethod{
+public abstract class EntropyCorrection implements CorrectionMethod{
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double entropy = correctEntropy(environment);

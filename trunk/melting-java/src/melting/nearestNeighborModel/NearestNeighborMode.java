@@ -7,7 +7,7 @@ import melting.Helper;
 import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.IonCorrectionMethod;
+import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -16,6 +16,7 @@ import melting.cricksNNMethods.CricksNNMethod;
 public class NearestNeighborMode implements CompletCalculMethod{
 
 	private Environment environment;
+	private RegisterCalculMethod register = new RegisterCalculMethod();
 	private PartialCalculMethod azobenzeneMethod;
 	private PartialCalculMethod CNGRepeatsMethod;
 	private PartialCalculMethod deoxyadenineMethod;
@@ -61,7 +62,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	public ThermoResult CalculateThermodynamics() {
 		
-		this.analyzeSequence();
+		analyzeSequence();
 	
 		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
 		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
@@ -82,10 +83,14 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		double Tm = calculateMeltingTemperature(this.environment);
 		this.environment.setResult(Tm);
 		
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		IonCorrectionMethod saltCorrection = register.getIonCorrectionMethod(this.environment);
-
+		CorrectionMethod saltCorrection = register.getIonCorrectionMethod(this.environment);
 		this.environment.setResult(saltCorrection.correctMeltingResult(this.environment));
+		
+		if (environment.getResult().getSaltIndependentEntropy() > 0){
+			double TmInverse = 1 / this.environment.getResult().getTm() + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
+			this.environment.setResult(1 / TmInverse);
+		}
+		
 		return this.environment.getResult();
 	}
 
@@ -261,7 +266,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	private void initializeNecessaryMethods(){
 		int pos1 = 0;
-		RegisterCalculMethod register = new RegisterCalculMethod();
 		
 		while (pos1 <= environment.getSequences().getDuplexLength() - 1){
 			int [] positions = getPositionsMotif(pos1);
@@ -277,6 +281,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				if (necessaryMethod != null){
 					necessaryMethod.initializeFileName(methodName);
 					necessaryMethod.loadData(environment.getOptions());
+				
+				}
+				else {
+					System.err.println("one or more method(s) is(are) missing to compute the melting" +
+							"temperature at the positions " + pos1 + "-" + pos2);
 				}
 			}
 			
@@ -315,8 +324,22 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	public static double calculateMeltingTemperature(Environment environment){
-		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() ) - 273.15);
+		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
 		
 		return Tm;
+	}
+
+	public ThermoResult correctThermodynamics() {
+		
+		if (this.environment.getDMSO() > 0){
+			CorrectionMethod DMSOCorrection = register.getCorrectionMethod(OptionManagement.DMSOCorrection, this.environment.getOptions().get(OptionManagement.DMSOCorrection));
+			this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
+		}
+		if (this.environment.getFormamide() > 0){
+			CorrectionMethod formamideCorrection = register.getCorrectionMethod(OptionManagement.formamideCorrection, this.environment.getOptions().get(OptionManagement.formamideCorrection));
+			this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
+		}
+		
+		return this.environment.getResult();
 	}
 }
