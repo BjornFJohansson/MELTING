@@ -1,6 +1,8 @@
 package melting.configuration;
 
 import java.util.HashMap;
+
+import melting.Environment;
 import melting.NucleotidSequences;
 
 public class OptionManagement {
@@ -394,6 +396,16 @@ public class OptionManagement {
 			return optionSet;
 		}
 		return null;
+	}
+	
+	public Environment createEnvironment(String [] args){
+		HashMap<String, String> optionDictionnary = collectOptions(args);
+		
+		return new Environment(optionDictionnary);
+	}
+
+	public static String getVersion() {
+		return version;
 	}
 	
 }

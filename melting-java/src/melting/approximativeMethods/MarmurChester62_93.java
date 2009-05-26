@@ -16,10 +16,11 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	 * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
 	 */
 	
-	private double parameter;
+	private static double parameter;
+	private static String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - " + parameter + " / duplexLength.";
 	
 	public ThermoResult CalculateThermodynamics() {
-		double Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - this.parameter / this.environment.getSequences().getDuplexLength();
+		double Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 	
@@ -51,11 +52,15 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		super.setUpVariable(options);
 		
 		if (method.equals("MarmurChester62_93_corr")){
-			this.parameter = 535;
+			parameter = 535;
 		}
 		else if (method.equals("MarmurChester62_93")){
-			this.parameter = 650;
+			parameter = 650;
 		}
+	}
+	
+	public String getEquationMeltingTemperature() {
+		return temperatureEquation;
 	}
 
 }

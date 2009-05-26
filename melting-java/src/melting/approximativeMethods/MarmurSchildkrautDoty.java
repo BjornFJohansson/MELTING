@@ -30,6 +30,8 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
      *  non-repetitive DNA. J Mol Evol 1980;16:95–110.
 	 */
 	
+	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na) + 0.41 * percentGC - 675 / duplexLength.";
+	
 	public ThermoResult CalculateThermodynamics() {
 		double Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
 
@@ -48,6 +50,10 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		}
 		
 		return isApplicable;
+	}
+	
+	public String getEquationMeltingTemperature() {
+		return temperatureEquation;
 	}
 	
 }
