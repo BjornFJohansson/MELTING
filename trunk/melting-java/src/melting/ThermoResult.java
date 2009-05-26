@@ -25,5 +25,8 @@ public class ThermoResult extends Thermodynamics{
 		this.saltIndependentEntropy = saltIndependentEntropy;
 	}
 
+	public double getEnergyValueInJ(double energyValue){
+		return energyValue * 4.18;
+	}
 
 }

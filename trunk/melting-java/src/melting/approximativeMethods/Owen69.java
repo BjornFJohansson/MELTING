@@ -20,6 +20,8 @@ public class Owen69 extends ApproximativeMode{
 	 * Res 1998;26:3323–32.
 */
 	
+	private static String temperatureEquation = "Tm = 87.16 + 0.345 * percentGC + log10(Na) * (20.17 - 0.066 * percentGC)";
+	
 	public ThermoResult CalculateThermodynamics() {
 		int percentGC = this.environment.getSequences().calculatePercentGC();
 		double Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
@@ -39,5 +41,9 @@ public class Owen69 extends ApproximativeMode{
 		}
 		
 		return isApplicable;
+	}
+	
+	public String getEquationMeltingTemperature() {
+		return temperatureEquation;
 	}
 }

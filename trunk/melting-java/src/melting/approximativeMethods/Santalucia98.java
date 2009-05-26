@@ -8,6 +8,8 @@ public class Santalucia98 extends ApproximativeMode{
 	 * oligonucleotide DNA nearest-neighbor thermodynamics", Proc
 	 * Nacl Acad Sci USA 1998, 95, 1460-1465.
 	 * */
+	
+	private static String temperatureEquation = "Tm = 77.1 + 11.7 * log10(Na) + 0.41 * PercentGC - 528 / duplexLength.";
 
 	public ThermoResult CalculateThermodynamics() {
 		double Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528 / this.environment.getSequences().getDuplexLength();
@@ -27,5 +29,9 @@ public class Santalucia98 extends ApproximativeMode{
 		}
 		
 		return isApplicable;
+	}
+	
+	public String getEquationMeltingTemperature() {
+		return temperatureEquation;
 	}
 }

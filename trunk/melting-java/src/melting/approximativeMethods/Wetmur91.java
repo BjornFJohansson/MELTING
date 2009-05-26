@@ -7,6 +7,8 @@ public class Wetmur91 extends ApproximativeMode{
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
 	
+	private static String temperatureEquation = "";
+	
 	public boolean isApplicable() {
 
 		boolean isApplicable = super.isApplicable();
@@ -37,5 +39,9 @@ public class Wetmur91 extends ApproximativeMode{
 		this.environment.setResult(Tm);
 		
 		return this.environment.getResult();
+	}
+	
+	public String getEquationMeltingTemperature() {
+		return temperatureEquation;
 	}
 }

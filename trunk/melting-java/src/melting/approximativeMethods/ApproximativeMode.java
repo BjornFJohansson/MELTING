@@ -70,4 +70,8 @@ public class ApproximativeMode implements CompletCalculMethod{
 		
 		return this.environment.getResult();
 	}
+
+	public String getEquationMeltingTemperature() {
+		return null;
+	}
 }
