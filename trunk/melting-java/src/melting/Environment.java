@@ -3,6 +3,7 @@ package melting;
 import java.util.HashMap;
 
 import melting.configuration.OptionManagement;
+import melting.exceptions.OptionSynthaxError;
 
 public class Environment {
 
@@ -18,18 +19,25 @@ public class Environment {
 	public Environment(HashMap<String, String> options){
 		this.options = options;
 		initializeConcentrations();
+		
 		if (isRequiredConcentrations() == false){
-			System.err.println("ERROR : you must enter at lest one of these concentrations : Na, Mg, K or Tris.");
+			throw new OptionSynthaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
 		}
+		
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
-		this.Hybridization = options.get(OptionManagement.hybridization);
+		this.Hybridization = options.get(OptionManagement.hybridization).toLowerCase();
+		
+		if (this.Hybridization.equals("rnamrna")){
+			this.Hybridization = "mrnarna";
+		}
+		
 		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
 		
 		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
 		}
 		
-		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence), options.get(OptionManagement.complementarySequence));
+		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
 		this.result = new ThermoResult(0,0,0);
 	}
 

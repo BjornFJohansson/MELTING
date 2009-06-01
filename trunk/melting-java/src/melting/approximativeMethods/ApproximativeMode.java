@@ -1,6 +1,7 @@
 package melting.approximativeMethods;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -16,6 +17,8 @@ public class ApproximativeMode implements CompletCalculMethod{
 	protected RegisterCalculMethod register = new RegisterCalculMethod();
 	
 	public ThermoResult CalculateThermodynamics() {
+		OptionManagement.meltingLogger.log(Level.INFO, "Approximative method : ");
+		
 		return environment.getResult();
 	}
 
@@ -23,10 +26,9 @@ public class ApproximativeMode implements CompletCalculMethod{
 		boolean isApplicable = true;
 		
 		if (environment.getSequences().getPercentMismatching() != 0){
-			System.out.println("WARNING : The approximative mode formulas" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The approximative mode formulas" +
 					"cannot properly account for the presence of mismatches" +
 					" and unpaired nucleotides.");
-			isApplicable = false;
 		}
 		
 		if (Integer.getInteger(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
@@ -69,9 +71,5 @@ public class ApproximativeMode implements CompletCalculMethod{
 		}
 		
 		return this.environment.getResult();
-	}
-
-	public String getEquationMeltingTemperature() {
-		return null;
 	}
 }

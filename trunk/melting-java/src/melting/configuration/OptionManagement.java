@@ -1,9 +1,12 @@
 package melting.configuration;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import melting.Environment;
 import melting.NucleotidSequences;
+import melting.exceptions.OptionSynthaxError;
 
 public class OptionManagement {
 	
@@ -46,9 +49,9 @@ public class OptionManagement {
 	public static final String versionNumber = "-Version";
 	public static final String selfComplementarity = "-self";
 	public static final String factor = "-F";
+	public static final Logger meltingLogger = Logger.getLogger("melting");
 	
-	private static final String version = "1";
-	private static final int totalOptionsRequired = 4;
+	private static final String version = "5";
 	private static String dataPathwayValue = "../../../Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
@@ -131,7 +134,7 @@ public class OptionManagement {
 		return false;
 	}
 	
-	private void initializeOptionValues(String [] args){
+	private void setOptionValues(String [] args){
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
 			String value = args[i+1];
@@ -141,8 +144,7 @@ public class OptionManagement {
 						dataPathwayValue = value;
 					}
 					else {
-						System.err.println("I don't understand the option "+ option + value+".");
-						break;
+						throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
 					}
 				}	
 			}
@@ -152,34 +154,29 @@ public class OptionManagement {
 						thresholdValue = Integer.getInteger(value);
 					}
 					else {
-						System.err.println("The threshold must be a positive numeric value.");
-						break;
+						throw new OptionSynthaxError("The threshold must be a strictly positive numeric value.");
 					}
 				}
 				else {
-					System.err.println("I don't understand the option " + option + value + ".");
-					break;
+					throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
 				}
 			}
 			else if (option.equals(factor)){
 				if (isAValue(value)){
-					if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+					if (Integer.getInteger(value) != null && (Integer.getInteger(value) == 1 || Integer.getInteger(value) == 4)) {
 						factorValue = Integer.getInteger(value);
 					}
 					else {
-						System.err.println("The correction factor must be a positive numeric value.");
-						break;
+						throw new OptionSynthaxError("The correction factor must be 1 or 4.");
 					}
 				}
 				else {
-					System.err.println("I don't understand the option " + option + value + ".");
-					break;
-				}
+					throw new OptionSynthaxError("I don't understand the option " + option + value + ".");				}
 			}
 		}
 	}
 	
-	private boolean isMeltingInformationOption(String [] args){
+	public boolean isMeltingInformationOption(String [] args){
 		
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
@@ -201,142 +198,138 @@ public class OptionManagement {
 		return false;
 	}
 	
-	private boolean hasRequiredOptions(String [] args, HashMap<String, String> optionSet){
-		int numberRequiredOptions = 0;
-		boolean hasComplementarySequence = false;
-		boolean needComplementaryInput = false;
+	private void readMeltingHelp(){
 		
+	}
+	
+	private void readLegalInformation(){
+		
+	}
+	
+	public void readOptions(String [] args){
+		setOptionValues(args);
+			
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
-			String value = args[i+1];
-			if (option.equals(hybridization)){
-				if (isAValue(value)) {
-					numberRequiredOptions ++;
-					value = value.toLowerCase();
-					optionSet.put(option, value);
+				
+			if (isAValue(option) == false){
+				if (option.equals(meltingHelp)){
+					readMeltingHelp();
+					break;
 				}
-			}
-			else if (option.equals(nucleotides)){
-				if (isAValue(value)) {
-					double val = Double.parseDouble(value);
-					try {
-						if (val > 0){
-							numberRequiredOptions ++;
-						}
-						else {
-							System.err.println("The nucleotide concentration must be positive.");
-						}
-					} catch (NumberFormatException e) {
-						System.err.println("The nucleotide concentration must be a numeric value.");
-					}
+				else if (option.equals(legalInformation)){
+					readLegalInformation();
+					break;
 				}
-			}
-			else if (option.equals(sequence)){
-				if (isAValue(value)) {
-					value = value.toUpperCase();
-					if (NucleotidSequences.checkSequence(value)){
-						if (value.contains("I") == false && value.contains("A*") == false && (value.contains("X") == false || value.contains("_X"))){
-							numberRequiredOptions ++;
-							value = value.toUpperCase();
-						}
-						else {
-							needComplementaryInput = true;
-						}
-					}
-					else {
-						System.err.println("ERROR : the sequence contains some characters we cannot understand.");
-					}
+				else if (option.equals(dataPathway)){
+					System.out.println("The current data files are in "+ dataPathwayValue + ".");
+					break;
 				}
-			}
-			else if (option.equals(solutioncomposition)){
-				if (checkConcentrations(value)) {
-					numberRequiredOptions ++;
-				}
-			}
-			else if (option.equals(complementarySequence)){
-				if (isAValue(value)) {
-					hasComplementarySequence = true;
-					value = value.toUpperCase();
+				else if (option.equals(versionNumber)){
+					System.out.println("This MELTING program is the java version "+ version + ".");
+					break;
 				}
 			}
 		}
+	}
+	
+	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
+		boolean needComplementaryInput = false;
 		
-		if (needComplementaryInput && hasComplementarySequence == true){
-			numberRequiredOptions ++;
+		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false || optionSet.containsKey(sequence) == false){
+			return false;
+		}
+
+		double val = Double.parseDouble(optionSet.get(sequence));
+		try {
+			if (val <= 0){
+				throw new OptionSynthaxError("The nucleotide concentration must be strictly positive.");
+			}
+			
+		} catch (NumberFormatException e) {
+			throw new OptionSynthaxError("The nucleotide concentration must be a numeric value.");
+		}
+
+		String value = optionSet.get(sequence).toUpperCase();
+		if (NucleotidSequences.checkSequence(value)){
+			if (value.contains("I") || value.contains("A*") || (value.contains("X") && value.contains("_X") == false)){
+				needComplementaryInput = true;
+			}
+		}
+		else {
+			throw new OptionSynthaxError("The sequence contains some characters we can't understand.");
+		}
+
+		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
+			throw new OptionSynthaxError("There is one synthax mistake in the concentrations. Check the option" + solutioncomposition + ".");
 		}
 		
-		if (hasComplementarySequence == false && needComplementaryInput == false){
+		if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
+			return false;
+		}
+		
+		if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
 			String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 			optionSet.put(complementarySequence, seq2);
 		}
 		
-		if (numberRequiredOptions == totalOptionsRequired){
-			return true;
-		}
-		return false;
+		return true;
 	}
 	
 	private boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
 		
 		if (solution == null){
-			System.err.println("ERROR : There is an syntax error for the value of the option " + solutioncomposition + ".");
-			return false;
+			throw new OptionSynthaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
 		}
-		else {
-			for (int i = 0; i < solution.length; i++){
-				String [] couple = solution[i].split("=");
-				if (couple == null){
-					System.err.println("ERROR : There is an synthax error for the value of the option " + solutioncomposition + ".");
-					return false;
-				}
-				else {
-					String concentration = solution[i].split("=")[1];
-					
-					double val = Double.parseDouble(concentration);
-					try {
-						if (val < 0){
-							System.err.println("All the concentrations must be positive.");
-							return false;
-						}
-					} catch (NumberFormatException e) {
-						System.err.println("All the concentrations must be a numeric value.");
-						return false;
-					}
-				}
+
+		for (int i = 0; i < solution.length; i++){
+			String [] couple = solution[i].split("=");
+			if (couple == null){
+				throw new OptionSynthaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
 			}
-				
-		}
+
+			String concentration = solution[i].split("=")[1];
+			double val = Double.parseDouble(concentration);
+			try {
+				if (val < 0){
+					throw new OptionSynthaxError("All the concentrations must be positive.");
+				}
+			} catch (NumberFormatException e) {
+				throw new OptionSynthaxError("All the concentrations must be a numeric value.");
+			}
+		}		
 		return true;
 	}
 	
 	private HashMap<String, String> initializeDefaultOptions(String [] args){
 		HashMap<String, String> optionSet = new HashMap<String, String> ();
+		String hybrid = "";
 		
-		if (hasRequiredOptions(args, optionSet) == false){
-			System.err.println("To compute, MELTING need at less the hybridization type " +
-					"(option " + hybridization + "), the nucleic acid concentration (option " 
-					+ nucleotides + ") and the sequence (option " + sequence + "). If there " +
-					"are inosine bases in the sequence, a complementary sequence is required (option"
-					+ complementarySequence + ").");
+		for (int i = 0; i < args.length; i++){
+			if (args[i].equals(hybrid)){
+				hybrid = args[i];
+				break;
+			}
+		}
+
+		if (hybrid.equals("dnadna")) {
+			optionSet.putAll(DNADefaultOptions);
+		}
+		else if (hybrid.equals("rnarna")) {
+			optionSet.putAll(RNADefaultOptions);
+		}
+		else if (hybrid.equals("rnadna") || hybrid.equals("dnarna")) {
+			optionSet.putAll(hybridDefaultOptions);
+		}
+		else if (hybrid.equals("mrnarna") || hybrid.equals("rnamrna")) {
+			optionSet.putAll(mRNADefaultOptions);
 		}
 		else {
-			String hybrid = optionSet.get("hybridization");
-			if (hybrid.equals("dnadna")) {
-				optionSet.putAll(DNADefaultOptions);
-			}
-			else if (hybrid.equals("rnarna")) {
-				optionSet.putAll(RNADefaultOptions);
-			}
-			else if (hybrid.equals("rnadna") || hybrid.equals("dnarna")) {
-				optionSet.putAll(hybridDefaultOptions);
-			}
-			else if (hybrid.equals("mrnarna") || hybrid.equals("rnamrna")) {
-				optionSet.put(hybridization, "mrnarna");
-				optionSet.putAll(mRNADefaultOptions);
-			}
+			throw new OptionSynthaxError("The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
 		}
-		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0");
+		
+		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0:formamide=0");
 		optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
@@ -346,56 +339,54 @@ public class OptionManagement {
 	
 	public HashMap<String, String> collectOptions(String [] args){
 		
-		initializeOptionValues(args);
-		
-		if (isMeltingInformationOption(args)){
-			for (int i = 0;i < args.length; i++){
-				String option = args[i];
-				
-				if (isAValue(option) == false){
-					if (option.equals(meltingHelp)){
-						break;
-					}
-					else if (option.equals(legalInformation)){
-						break;
-					}
-					else if (option.equals(dataPathway)){
-						System.out.println("The current data files are in "+ dataPathwayValue + ".");
-						break;
-					}
-					else if (option.equals(versionNumber)){
-						System.out.println("This MELTING program is the java version "+ version + ".");
-						break;
-					}
-				}
-			}
-		}
-		else {
-			HashMap<String, String> optionSet = new HashMap<String, String>();
+		setOptionValues(args);
+
+		HashMap<String, String> optionSet = new HashMap<String, String>();
 			
-			optionSet = initializeDefaultOptions(args);
+		optionSet = initializeDefaultOptions(args);
 			
-			for (int i = 0;i < args.length; i++){
-				String option = args[i];
-				String value = args[i+1];
+		for (int i = 0;i < args.length; i++){
+			String option = args[i];
+			String value = args[i+1];
 				
-				if (isAValue(option) == false){
-					if (option.equals(hybridization) == false) {
-						if (isAValue(value)){
-							optionSet.put(option, value);
-						}
-						else{
-							System.err.println("I don't understand the option " + option + value + ".");
-						}
-					}
+			if (isAValue(option) == false){
+				if (option.equals(OptionManagement.verboseMode)){
+					meltingLogger.setLevel(Level.INFO);
+					
+					StringBuffer verboseValue = new StringBuffer();
+					verboseValue.append("******************************************************************************\n");
+					verboseValue.append(versionNumber + "\n");
+					verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
+					verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
+					verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
+					verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
+					verboseValue.append("******************************************************************************\n");
+					
+					meltingLogger.log(Level.INFO, verboseValue.toString());
 				}
 				else {
-					System.err.println("I don't understand the option " + option);
+					if (isAValue(value)){
+						optionSet.put(option, value);
+					}
+					else{
+						throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
+					}
 				}
 			}
-			return optionSet;
+			else {
+				throw new OptionSynthaxError("I don't understand the option " + option + ".");
+			}
 		}
-		return null;
+		
+		if (hasRequiredOptions(optionSet) == false){
+			throw new OptionSynthaxError("To compute, MELTING need at less the hybridization type " +
+					"(option " + hybridization + "), the nucleic acid concentration (option " 
+					+ nucleotides + ") and the sequence (option " + sequence + "). If there " +
+					"are inosine bases in the sequence, a complementary sequence is required (option"
+					+ complementarySequence + ").");
+		}
+		
+		return optionSet;
 	}
 	
 	public Environment createEnvironment(String [] args){
@@ -404,8 +395,4 @@ public class OptionManagement {
 		return new Environment(optionDictionnary);
 	}
 
-	public static String getVersion() {
-		return version;
-	}
-	
 }

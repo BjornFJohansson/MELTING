@@ -1,6 +1,10 @@
 package melting.approximativeMethods;
 
+import java.util.HashMap;
+import java.util.logging.Level;
+
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Wetmur91 extends ApproximativeMode{
 	
@@ -38,10 +42,22 @@ public class Wetmur91 extends ApproximativeMode{
 		}
 		this.environment.setResult(Tm);
 		
+		OptionManagement.meltingLogger.log(Level.INFO, " from Wetmur (1991) \n");
+		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		
 		return this.environment.getResult();
 	}
 	
-	public String getEquationMeltingTemperature() {
-		return temperatureEquation;
+	public void setUpVariable(HashMap<String, String> options) {
+		super.setUpVariable(options);
+		if (options.get(OptionManagement.hybridization).equals("dnadna")){
+			temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.41 * percentGC - 500 / duplexLength - percentMismatching;";
+		}
+		else if (options.get(OptionManagement.hybridization).equals("rnarna")){
+			temperatureEquation = "Tm = 78 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.7 * percentGC - 500 / duplexLength - percentMismatching;";
+		}
+		else if (options.get(OptionManagement.hybridization).equals("dnarna") || options.get(OptionManagement.hybridization).equals("rnadna")){
+			temperatureEquation = "Tm = 67 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.8 * percentGC - 500 / duplexLength - percentMismatching;";
+		}
 	}
 }

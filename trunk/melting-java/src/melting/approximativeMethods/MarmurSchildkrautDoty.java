@@ -1,7 +1,10 @@
 package melting.approximativeMethods;
 
 
+import java.util.logging.Level;
+
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class MarmurSchildkrautDoty extends ApproximativeMode{
 
@@ -37,11 +40,18 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 
 		this.environment.setResult(Tm);
 		
+		OptionManagement.meltingLogger.log(Level.INFO, " from Marmur, Schildkraut and Doty (1965 - 1993) \n");
+		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		
 		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
+		
+		if (environment.getSequences().getPercentMismatching() != 0){
+			isApplicable = false;
+		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
@@ -50,10 +60,6 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		}
 		
 		return isApplicable;
-	}
-	
-	public String getEquationMeltingTemperature() {
-		return temperatureEquation;
 	}
 	
 }
