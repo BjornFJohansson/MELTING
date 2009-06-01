@@ -1,7 +1,7 @@
 [INSTALLATION]
 
 Unbundle the distribution in the proper place (e.g. /usr/local/ or c:\Program
-Files)
+Files) and the file melting-gui.desktop in /usr/share/applications. 
 
 Some pre-compiled binaries are located in the directory BIN.  If no binary
 suitable for your OS is provided, or if you want to compile the programme
