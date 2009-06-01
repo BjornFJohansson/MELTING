@@ -1,6 +1,9 @@
 package melting.approximativeMethods;
 
+import java.util.logging.Level;
+
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Santalucia98 extends ApproximativeMode{
 	
@@ -16,11 +19,18 @@ public class Santalucia98 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
+		OptionManagement.meltingLogger.log(Level.INFO, " from Santalucia et al. (1998) \n");
+		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		
 		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
+		
+		if (environment.getSequences().getPercentMismatching() != 0){
+			isApplicable = false;
+		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
@@ -29,9 +39,5 @@ public class Santalucia98 extends ApproximativeMode{
 		}
 		
 		return isApplicable;
-	}
-	
-	public String getEquationMeltingTemperature() {
-		return temperatureEquation;
 	}
 }

@@ -1,6 +1,9 @@
 package melting.approximativeMethods;
 
+import java.util.logging.Level;
+
 import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Owen69 extends ApproximativeMode{
 
@@ -28,11 +31,18 @@ public class Owen69 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
+		OptionManagement.meltingLogger.log(Level.INFO, " from Owen et al. (1969) \n");
+		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		
 		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
+		
+		if (environment.getSequences().getPercentMismatching() != 0){
+			isApplicable = false;
+		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
@@ -43,7 +53,4 @@ public class Owen69 extends ApproximativeMode{
 		return isApplicable;
 	}
 	
-	public String getEquationMeltingTemperature() {
-		return temperatureEquation;
-	}
 }

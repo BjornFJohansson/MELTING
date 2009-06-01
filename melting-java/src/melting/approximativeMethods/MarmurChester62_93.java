@@ -1,6 +1,7 @@
 package melting.approximativeMethods;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
@@ -23,12 +24,19 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		double Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
+		
+		OptionManagement.meltingLogger.log(Level.INFO, " from Marmur et al. (1962) and Chester et al (1993) \n");
+		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
 	
 		return this.environment.getResult();
 	}
 
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
+		
+		if (environment.getSequences().getPercentMismatching() != 0){
+			isApplicable = false;
+		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
 			isApplicable = false;
@@ -57,10 +65,6 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		else if (method.equals("MarmurChester62_93")){
 			parameter = 650;
 		}
-	}
-	
-	public String getEquationMeltingTemperature() {
-		return temperatureEquation;
 	}
 
 }

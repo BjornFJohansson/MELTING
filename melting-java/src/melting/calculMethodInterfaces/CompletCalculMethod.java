@@ -10,5 +10,4 @@ public interface CompletCalculMethod {
 	public boolean isApplicable();
 	public void setUpVariable(HashMap<String, String> options);
 	public ThermoResult correctThermodynamics();
-	public String getEquationMeltingTemperature();
 }
