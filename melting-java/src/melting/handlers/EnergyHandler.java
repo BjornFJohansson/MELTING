@@ -1,6 +1,8 @@
 package melting.handlers;
 
 
+import melting.exceptions.ThermodynamicParameterError;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -25,8 +27,12 @@ public class EnergyHandler extends NodeHandler{
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		String e = new String(ch,start,length);
-		energy = Double.parseDouble(e);
-		hasEnergy = true;
+		try {
+			energy = Double.parseDouble(e);
+			hasEnergy = true;
+		} catch (NumberFormatException e2) {
+			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.");
+		}
 	}
 	
 	@Override
@@ -36,7 +42,7 @@ public class EnergyHandler extends NodeHandler{
 			completedNode();
 		}
 		else {
-			throw new SAXException("a enthalpy or entropy value is missing, the node is incomplete");
+			throw new ThermodynamicParameterError("one enthalpy or entropy value is missing, the xml node is incomplete");
 		}
 	}
 }

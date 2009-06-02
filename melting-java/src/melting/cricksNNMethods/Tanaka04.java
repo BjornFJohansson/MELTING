@@ -1,6 +1,11 @@
 package melting.cricksNNMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
+import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Tanaka04 extends DecomposedInitiationNNMethod {
 
@@ -26,5 +31,15 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 					"are established for DNA sequences ");
 		}
 		return isApplicable;
+	}
+	
+	@Override
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Tanaka (2004).");
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 }

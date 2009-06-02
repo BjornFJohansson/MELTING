@@ -33,8 +33,7 @@ public class Santalucia98 extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : the polymer Santalucia equation" +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The Santalucia equation for polymers" +
 					"was originally established for DNA duplexes.");
 		}
 		

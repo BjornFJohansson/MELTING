@@ -1,8 +1,13 @@
 package melting.cricksNNMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
+import melting.exceptions.SequenceException;
 
 public class Xia98 extends CricksNNMethod {
 
@@ -20,24 +25,22 @@ public class Xia98 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			if (environment.getHybridization().equals("mrnarna") == false){
-				isApplicable = false;
-			}
-			System.out.println("WARNING : It is possible to use the thermodynamic parameters of Xia et al. (1998)" +
-					"for 2_O methyl RNA dulexes but these parameters are originally established for RNA/RNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Xia et al. (1998)" +
+			"are established for RNA/RNA sequences.");
 		}
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		environment.setResult(calculateInitiationHybridation(environment));
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
+		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
+
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		
 		if (withoutTerminalUnpairedNucleotides == null){
-			return null;
+			throw new SequenceException("The two sequences can't be hybridized.");
 		}
 		
 		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
@@ -45,8 +48,12 @@ public class Xia98 extends CricksNNMethod {
 		double entropy = 0;
 		
 		if (numberTerminalAU != 0) {
-			enthalpy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEnthalpy();
-			entropy += numberTerminalAU * this.collector.getTerminal("per_A/U").getEntropy();
+			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			
+			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
+			entropy += numberTerminalAU * terminalAU.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);
@@ -54,4 +61,13 @@ public class Xia98 extends CricksNNMethod {
 		return environment.getResult();
 	}
 
+	@Override
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Xia (1998).");
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+	}
 }

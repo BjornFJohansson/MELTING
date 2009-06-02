@@ -1,8 +1,14 @@
 package melting.cricksNNMethods;
 
+
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
+import melting.exceptions.MethodNotApplicableException;
 
 public class Sugimoto95 extends CricksNNMethod {
 	
@@ -21,12 +27,19 @@ public class Sugimoto95 extends CricksNNMethod {
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1995).");
+		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		 
+		
+		Thermodynamics NNValue;
 		for (int i = pos1; i <= pos2 - 1; i++){
-			enthalpy += this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i)).getEntropy();
+			NNValue = this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i));
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "d"+ sequences.getSequenceNNPair(i) + "/" + "r" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+
+			enthalpy += NNValue.getEnthalpy();
+			entropy += NNValue.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -36,17 +49,16 @@ public class Sugimoto95 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnarna") == false || environment.getHybridization().equals("rnadna") == false){
 			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Sugimoto et al. (1995)" +
-					"are established for hybrid DNA/RNA sequences ");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Sugimoto et al. (1995)" +
+					"are established for hybrid DNA/RNA sequences.");
 		}
 		
 		if (environment.isSelfComplementarity()){
-			isApplicable = false;
-			System.out.println("ERROR : The thermodynamic parameters of Sugimoto et al. (1995)" +
+			throw new MethodNotApplicableException ( "The thermodynamic parameters of Sugimoto et al. (1995)" +
 					"are established for hybrid DNA/RNA sequences and they can't be self complementary sequence.");
 		}
 		return isApplicable;

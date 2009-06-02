@@ -1,6 +1,11 @@
 package melting.cricksNNMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
+import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 
@@ -18,14 +23,21 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Allawi and Santalucia (1997)" +
-					"are established for DNA sequences ");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Allawi and Santalucia (1997)" +
+					"are established for DNA sequences.");			
 		}
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
+	}
+	
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Allawi and Santalucia (1997).");
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
 }

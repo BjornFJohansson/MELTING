@@ -45,9 +45,9 @@ public class Owen69 extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : the Owen et al. equation" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the Owen et al. equation" +
 					"was originally established for DNA duplexes.");
+			
 		}
 		
 		return isApplicable;

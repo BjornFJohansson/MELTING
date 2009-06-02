@@ -1,10 +1,14 @@
 package melting.CNGRepeatsMethods;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Broda05CNGRepeats extends PartialCalcul {
 
@@ -26,27 +30,30 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		int repeats = sequences.getDuplexLength() / 3;
-		double enthalpy = result.getEnthalpy() + this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1, pos1 + 2), sequences.getComplementary(pos1, pos1 + 2)).getEnthalpy();
-		double entropy = result.getEntropy() + this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1, pos1 + 2), sequences.getComplementary(pos1, pos1 + 2)).getEntropy();			
+		OptionManagement.meltingLogger.log(Level.INFO, "CNG motifs method : from Broda et al. (2005). \n");
+		
+		int repeats = (pos2 - pos1 + 1) / 3;
+		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1, pos1 + 2,"rna"), sequences.getComplementary(pos1, pos1 + 2, "rna"));
+		double enthalpy = result.getEnthalpy() + CNGValue.getEnthalpy();
+		double entropy = result.getEntropy() + CNGValue.getEntropy();			
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "motif (" + sequences.getSequence(pos1, pos1 + 2) + ")" + repeats + " : " + "enthalpy = " + CNGValue.getEnthalpy() + "  entropy = " + CNGValue.getEntropy());
 		
 		return result;
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : the thermodynamic parameters for CNG repeats of Broda et al." +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
 					"(2005) is only established for RNA sequences.");
 		}
 
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,

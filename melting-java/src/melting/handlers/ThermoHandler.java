@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import melting.Thermodynamics;
+import melting.exceptions.ThermodynamicParameterError;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -75,6 +76,9 @@ public class ThermoHandler extends NodeHandler{
 					attribut.put(attributes.getQName(i), attributes.getValue(i));
 				}
 			}
+			else {
+				throw new ThermodynamicParameterError("The node " + name + " in the xml file is not known.");
+			}
 		}
 		else {
 			subHandler.startElement(uri, localName, name, attributes);
@@ -102,6 +106,9 @@ public class ThermoHandler extends NodeHandler{
 				else if (name.equals("entropy")) {
 					this.entropy = handler.getEnergy();
 				}
+				else {
+					throw new ThermodynamicParameterError("The node " + name + " in the xml file is not known.");
+				}
 				subHandler = null;
 			}
 		} 
@@ -110,13 +117,13 @@ public class ThermoHandler extends NodeHandler{
 				thermo = new Thermodynamics(enthalpy, entropy);
 			}	
 			if (hasEnthalpy == false && hasEntropy == false) {
-				throw new SAXException("No energy value is entered for this node");
+				throw new ThermodynamicParameterError("No energy value is entered for this xml node");
 			}
 			else if (hasEnthalpy == false && (this.name.equals("mismatch") == false  && this.name.equals("hairpin") == false && this.name.equals("bulge") == false)) {
-				throw new SAXException("No enthalpy value is entered for this node");
+				throw new ThermodynamicParameterError("No enthalpy value is entered for this xml node");
 			}
 			else if (hasEnthalpy == false && (this.name.equals("mismatch") == true || this.name.equals("bulge") == true || this.name.equals("hairpin") == true) && ((this.attribut.containsKey("size") && this.attribut.get("type") == "initiation") || this.attribut.containsKey("size") == false)) {
-				throw new SAXException("No enthalpy value is entered for this node");
+				throw new ThermodynamicParameterError("No enthalpy value is entered for this xml node");
 			}
 			else {
 				if (thermo != null){

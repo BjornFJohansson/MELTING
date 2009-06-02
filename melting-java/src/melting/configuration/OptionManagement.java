@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import melting.Environment;
 import melting.NucleotidSequences;
-import melting.exceptions.OptionSynthaxError;
+import melting.exceptions.OptionSyntaxError;
 
 public class OptionManagement {
 	
@@ -82,7 +82,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(singleBulgeLoopMethod, "Tanaka_2004");
 		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
-		this.DNADefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.DNADefaultOptions.put(approximativeMode, "Wetmurdna_1991");
 		this.DNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
 		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
@@ -106,7 +106,7 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(longBulgeLoopMethod, "Turner_1999_2006");
 		this.RNADefaultOptions.put(hairpinLoopMethod, "Serra_1997_1998_2000_2006");
 		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
-		this.RNADefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.RNADefaultOptions.put(approximativeMode, "Wetmurrna_1991");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
 	}
 	
@@ -116,7 +116,7 @@ public class OptionManagement {
 	
 	private void setHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
-		this.hybridDefaultOptions.put(approximativeMode, "Wetmur_1981");
+		this.hybridDefaultOptions.put(approximativeMode, "Wetmurdnarna_1991");
 	}
 	
 	public HashMap<String, String> getMRNADefaultOptions() {
@@ -144,7 +144,7 @@ public class OptionManagement {
 						dataPathwayValue = value;
 					}
 					else {
-						throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
+						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 					}
 				}	
 			}
@@ -154,11 +154,11 @@ public class OptionManagement {
 						thresholdValue = Integer.getInteger(value);
 					}
 					else {
-						throw new OptionSynthaxError("The threshold must be a strictly positive numeric value.");
+						throw new OptionSyntaxError("The threshold must be a strictly positive numeric value.");
 					}
 				}
 				else {
-					throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
+					throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 				}
 			}
 			else if (option.equals(factor)){
@@ -167,11 +167,11 @@ public class OptionManagement {
 						factorValue = Integer.getInteger(value);
 					}
 					else {
-						throw new OptionSynthaxError("The correction factor must be 1 or 4.");
+						throw new OptionSyntaxError("The correction factor must be 1 or 4.");
 					}
 				}
 				else {
-					throw new OptionSynthaxError("I don't understand the option " + option + value + ".");				}
+					throw new OptionSyntaxError("I don't understand the option " + option + value + ".");				}
 			}
 		}
 	}
@@ -243,11 +243,11 @@ public class OptionManagement {
 		double val = Double.parseDouble(optionSet.get(sequence));
 		try {
 			if (val <= 0){
-				throw new OptionSynthaxError("The nucleotide concentration must be strictly positive.");
+				throw new OptionSyntaxError("The nucleotide concentration must be strictly positive.");
 			}
 			
 		} catch (NumberFormatException e) {
-			throw new OptionSynthaxError("The nucleotide concentration must be a numeric value.");
+			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.");
 		}
 
 		String value = optionSet.get(sequence).toUpperCase();
@@ -257,11 +257,11 @@ public class OptionManagement {
 			}
 		}
 		else {
-			throw new OptionSynthaxError("The sequence contains some characters we can't understand.");
+			throw new OptionSyntaxError("The sequence contains some characters we can't understand.");
 		}
 
 		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
-			throw new OptionSynthaxError("There is one synthax mistake in the concentrations. Check the option" + solutioncomposition + ".");
+			throw new OptionSyntaxError("There is one syntax mistake in the concentrations. Check the option" + solutioncomposition + ".");
 		}
 		
 		if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
@@ -280,23 +280,23 @@ public class OptionManagement {
 		String [] solution = solutionComposition.split(":"); 
 		
 		if (solution == null){
-			throw new OptionSynthaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
+			throw new OptionSyntaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
 		}
 
 		for (int i = 0; i < solution.length; i++){
 			String [] couple = solution[i].split("=");
 			if (couple == null){
-				throw new OptionSynthaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
+				throw new OptionSyntaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
 			}
 
 			String concentration = solution[i].split("=")[1];
 			double val = Double.parseDouble(concentration);
 			try {
 				if (val < 0){
-					throw new OptionSynthaxError("All the concentrations must be positive.");
+					throw new OptionSyntaxError("All the concentrations must be positive.");
 				}
 			} catch (NumberFormatException e) {
-				throw new OptionSynthaxError("All the concentrations must be a numeric value.");
+				throw new OptionSyntaxError("All the concentrations must be a numeric value.");
 			}
 		}		
 		return true;
@@ -326,7 +326,7 @@ public class OptionManagement {
 			optionSet.putAll(mRNADefaultOptions);
 		}
 		else {
-			throw new OptionSynthaxError("The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
+			throw new OptionSyntaxError("The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
 		}
 		
 		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0:formamide=0");
@@ -369,17 +369,17 @@ public class OptionManagement {
 						optionSet.put(option, value);
 					}
 					else{
-						throw new OptionSynthaxError("I don't understand the option " + option + value + ".");
+						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 					}
 				}
 			}
 			else {
-				throw new OptionSynthaxError("I don't understand the option " + option + ".");
+				throw new OptionSyntaxError("I don't understand the option " + option + ".");
 			}
 		}
 		
 		if (hasRequiredOptions(optionSet) == false){
-			throw new OptionSynthaxError("To compute, MELTING need at less the hybridization type " +
+			throw new OptionSyntaxError("To compute, MELTING need at less the hybridization type " +
 					"(option " + hybridization + "), the nucleic acid concentration (option " 
 					+ nucleotides + ") and the sequence (option " + sequence + "). If there " +
 					"are inosine bases in the sequence, a complementary sequence is required (option"
