@@ -1,6 +1,8 @@
 package melting.cricksNNMethods;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
@@ -14,10 +16,15 @@ public abstract class CricksNNMethod extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
+		
+		Thermodynamics NNValue;
 		 
 		for (int i = pos1; i <= pos2 - 1; i++){
-			enthalpy += this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
+			NNValue = this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
+			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			
+			enthalpy += NNValue.getEnthalpy();
+			entropy += NNValue.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -33,13 +40,19 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		Thermodynamics initiation = this.collector.getInitiation();
 		
 		if (initiation != null) {
+			OptionManagement.meltingLogger.log(Level.INFO, "Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
+			
 			enthalpy += initiation.getEnthalpy();
 			entropy += initiation.getEntropy();
 		}
 		
 		if (environment.getOptions().containsKey(OptionManagement.selfComplementarity)){
-			enthalpy += this.collector.getSymetry().getEnthalpy();
-			entropy += this.collector.getSymetry().getEntropy();
+			Thermodynamics symetry = this.collector.getSymetry();
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "Self complementarity : enthalpy = " + symetry.getEnthalpy() + "  entropy = " + symetry.getEntropy());
+			
+			enthalpy += symetry.getEnthalpy();
+			entropy += symetry.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);

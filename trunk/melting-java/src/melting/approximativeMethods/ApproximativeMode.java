@@ -10,6 +10,8 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
+import melting.exceptions.MethodNotApplicableException;
+import melting.exceptions.NoExistingMethodException;
 
 public class ApproximativeMode implements CompletCalculMethod{
 	
@@ -36,9 +38,9 @@ public class ApproximativeMode implements CompletCalculMethod{
 			if (environment.getOptions().get(OptionManagement.completMethod).equals("default") == false){
 				isApplicable = false;
 			}
-			System.out.println("WARNING : the approximative equations " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the approximative equations " +
 			"were originally established for long DNA duplexes. (length superior to " +
-			 environment.getOptions().get(OptionManagement.threshold) +")");
+			 environment.getOptions().get(OptionManagement.threshold) +").");
 		}
 		return isApplicable;
 	}
@@ -47,14 +49,13 @@ public class ApproximativeMode implements CompletCalculMethod{
 		this.environment = new Environment(options);
 		
 		if (environment.getMg() > 0 || environment.getK() > 0 || environment.getTris() > 0){
-			RegisterCalculMethod setNaEqMethod = new RegisterCalculMethod();
 			
-			SodiumEquivalentMethod method = setNaEqMethod.getNaEqMethod(options);
+			SodiumEquivalentMethod method = this.register.getNaEqMethod(options);
 			if (method != null){
 				environment.setNa(method.getSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
 			}
 			else{
-				System.err.println("ERROR : There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
+				throw new NoExistingMethodException("There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
 			}
 		}
 	}
@@ -63,11 +64,23 @@ public class ApproximativeMode implements CompletCalculMethod{
 		
 		if (this.environment.getDMSO() > 0){
 			CorrectionMethod DMSOCorrection = register.getCorrectionMethod(OptionManagement.DMSOCorrection, this.environment.getOptions().get(OptionManagement.DMSOCorrection));
-			this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
+			
+			if (DMSOCorrection.isApplicable(this.environment)){
+				this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
+			}
+			else {
+				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
+			}
 		}
 		if (this.environment.getFormamide() > 0){
 			CorrectionMethod formamideCorrection = register.getCorrectionMethod(OptionManagement.formamideCorrection, this.environment.getOptions().get(OptionManagement.formamideCorrection));
-			this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
+			
+			if (formamideCorrection.isApplicable(this.environment)){
+				this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
+			}
+			else {
+				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
+			}
 		}
 		
 		return this.environment.getResult();

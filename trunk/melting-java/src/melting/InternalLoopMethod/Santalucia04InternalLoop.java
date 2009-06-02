@@ -1,10 +1,14 @@
 package melting.InternalLoopMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Santalucia04InternalLoop extends PartialCalcul{
 
@@ -12,6 +16,9 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	
 	public static String defaultFileName = "Santalucia2004longmm.xml";
 	
+	private static String formulaEnthalpy = "delat H = H(right terminal mismath) + H(left terminal mismatch) + H(asymmetric loop)";
+	private static String formulaEntropy = "delat S = S(right terminal mismath) + S(left terminal mismatch) + S(asymmetric loop) + S(loop)";
+
 	@Override
 	public void initializeFileName(String methodName){
 		super.initializeFileName(methodName);
@@ -24,34 +31,55 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "The internal loop formulas fron Santalucia (2004) : " + formulaEnthalpy + "and" + formulaEntropy);
+
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
-		double enthalpy = result.getEnthalpy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEnthalpy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos2 - 1), sequences.getComplementaryNNPair(pos2 - 1)).getEnthalpy();
-		double entropy = result.getEntropy()  + collector.getMismatchvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEntropy() + collector.getMismatchvalue(sequences.getSequenceNNPair(pos2 - 1), sequences.getComplementaryNNPair(pos2 - 1)).getEntropy();
-				
-		if (collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))) != null){
+		Thermodynamics rightMismatch =  collector.getMismatchvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1));
+		Thermodynamics leftMismatch =  collector.getMismatchvalue(sequences.getSequenceNNPair(pos2 - 1), sequences.getComplementaryNNPair(pos2 - 1));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "Right terminal mismatch : " + sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
+		OptionManagement.meltingLogger.log(Level.INFO, "Left terminal mismatch : " + sequences.getSequenceNNPair(pos2 - 1) + "/" + sequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
+
+		double enthalpy = result.getEnthalpy() + rightMismatch.getEnthalpy() + leftMismatch.getEnthalpy();
+		double entropy = result.getEntropy()  + rightMismatch.getEntropy() + leftMismatch.getEntropy();
+		
+		Thermodynamics internalLoop = collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2)));
+		if (internalLoop != null){
+			OptionManagement.meltingLogger.log(Level.INFO, "Internal loop of" + sequences.calculateLoopLength(pos1, pos2) + " :  enthalpy = " + internalLoop.getEnthalpy() + "  entropy = " + internalLoop.getEntropy());
+			
 			if (sequences.calculateLoopLength(pos1, pos2) > 4){
-				saltIndependentEntropy += collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+				saltIndependentEntropy += internalLoop.getEntropy();
 			}
 			else {
-				entropy += collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1, pos2))).getEntropy();
+				entropy += internalLoop.getEntropy();
 			}
 		}
 		else {
-			if (sequences.calculateLoopLength(pos1, pos2) > 4){
-				saltIndependentEntropy += collector.getInternalLoopValue("30").getEntropy();
+			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(sequences.calculateLoopLength(pos1, pos2)/30);
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "Internal loop of" + sequences.calculateLoopLength(pos1, pos2) + " :  enthalpy = 0" + "  entropy = " + value);
+
+			if (sequences.calculateLoopLength(pos1, pos2) > 4){				
+				saltIndependentEntropy += value;
+				
 			}
 			else {
-				entropy += collector.getInternalLoopValue("30").getEntropy();
-			}		}
+				entropy += value;
+			}		
+		}
 		
-		if (sequences.isAsymetricLoop(pos1, pos2)){
-			enthalpy += collector.getAsymetry().getEnthalpy();
+		if (sequences.isAsymmetricLoop(pos1, pos2)){
+			Thermodynamics asymmetry = collector.getAsymmetry();
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "asymetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+				
+			enthalpy += asymmetry.getEnthalpy();
 
 			if (sequences.calculateLoopLength(pos1, pos2) > 4){
-				saltIndependentEntropy += collector.getAsymetry().getEntropy();
+				saltIndependentEntropy += asymmetry.getEntropy();
 			}
 			else {
-				entropy += collector.getAsymetry().getEntropy();
+				entropy += asymmetry.getEntropy();
 			}	
 		}
 		
@@ -86,8 +114,8 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			int pos2) { 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		
-		if (sequences.isAsymetricLoop(pos1, pos2)){
-			if (collector.getAsymetry() == null) {
+		if (sequences.isAsymmetricLoop(pos1, pos2)){
+			if (collector.getAsymmetry() == null) {
 				isMissingParameters = true;
 			}
 		}

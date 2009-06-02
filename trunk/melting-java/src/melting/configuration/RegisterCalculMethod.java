@@ -23,7 +23,9 @@ import melting.approximativeMethods.MarmurChester62_93;
 import melting.approximativeMethods.MarmurSchildkrautDoty;
 import melting.approximativeMethods.Owen69;
 import melting.approximativeMethods.Santalucia98;
-import melting.approximativeMethods.Wetmur91;
+import melting.approximativeMethods.WetmurDNA91;
+import melting.approximativeMethods.WetmurDNARNA91;
+import melting.approximativeMethods.WetmurRNA91;
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.calculMethodInterfaces.PartialCalculMethod;
@@ -37,6 +39,8 @@ import melting.cricksNNMethods.Sugimoto95;
 import melting.cricksNNMethods.Tanaka04;
 import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
+import melting.exceptions.MethodNotApplicableException;
+import melting.exceptions.NoExistingMethodException;
 import melting.formamideCorrections.Blake96FormamideCorrection;
 import melting.formamideCorrections.FormamideLinearMethod;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
@@ -157,7 +161,9 @@ public class RegisterCalculMethod {
 		approximativeMethod.put("Marmur_Schildkraut_Doty", MarmurSchildkrautDoty.class);
 		approximativeMethod.put("Owen_1969", Owen69.class);
 		approximativeMethod.put("Santalucia_1998", Santalucia98.class);
-		approximativeMethod.put("Wetmur_1991", Wetmur91.class);
+		approximativeMethod.put("Wetmurdna_1991", WetmurDNA91.class);
+		approximativeMethod.put("Wetmurrna_1991", WetmurRNA91.class);
+		approximativeMethod.put("Wetmurdnarna_1991", WetmurDNARNA91.class);
 	}
 	
 	private void initializeCricksMethods(){
@@ -307,7 +313,9 @@ public class RegisterCalculMethod {
 	}
 	
 	private HashMap<String , Class<? extends PartialCalculMethod>> getPartialCalculMethodHashMap(String optionName){
-		
+		if (PartialCalculMethods.get(optionName) == null){
+			throw new NoExistingMethodException("No method is implemented for the option " + optionName + ".");
+		}
 		return PartialCalculMethods.get(optionName);
 	}
 	
@@ -335,13 +343,16 @@ public class RegisterCalculMethod {
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
 		
 		if (methodName == null){
-			return null;
+		throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.NaEquivalentMethod + ".");
 		}
 		SodiumEquivalentMethod method;
 		try {
 			method = NaEqMethod.get(methodName).newInstance();
 			if (method.isApplicable(optionSet)) {
 				return method;
+			}
+			else {
+				throw new MethodNotApplicableException("The sodium equivalent method (option " + OptionManagement.NaEquivalentMethod + ") is not applicable with this environment.");
 			}
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -356,13 +367,16 @@ public class RegisterCalculMethod {
 			String methodName = environment.getOptions().get(OptionManagement.ionCorrection);
 			
 			if (methodName == null){
-				return null;
+				throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.ionCorrection + ".");
 			}
 			CorrectionMethod method;
 			try {
 				method = ionCorrection.get(methodName).newInstance();
 				if (method.isApplicable(environment)) {
 					return method;
+				}
+				else {
+					throw new MethodNotApplicableException("The ion correction method (option " + OptionManagement.ionCorrection + ") is not applicable with this environment.");
 				}
 			} catch (InstantiationException e) {
 				e.printStackTrace();
@@ -377,11 +391,15 @@ public class RegisterCalculMethod {
 			if (environment.getHybridization().equals("dnarna") || environment.getHybridization().equals("rnadna")){
 				return new Wetmur91SodiumCarrection();
 			}
+			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false){
+				throw new NoExistingMethodException("There is no existing ion correction method (option " + OptionManagement.ionCorrection + ") for this type of hybridization.");
+			}
+			
 			if (monovalent == 0){
 				if (environment.getHybridization().equals("dnadna")){
 					return new Owczarzy08MagnesiumCorrection();
 				}
-				else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+				else if (environment.getHybridization().equals("rnarna")){
 					return new Tan07MagnesiumCorrection();
 				}
 			}
@@ -393,7 +411,7 @@ public class RegisterCalculMethod {
 					if (environment.getHybridization().equals("dnadna")){
 						return new Owczarzy04SodiumCorrection22();
 					}
-					else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+					else if (environment.getHybridization().equals("rnarna")){
 						return new Tan07SodiumCorrection();
 					}
 				}
@@ -424,6 +442,10 @@ public class RegisterCalculMethod {
 		
 		String methodName = optionSet.get(OptionManagement.completMethod);
 		
+		if (methodName == null){
+			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.completMethod + ".");
+		}
+	
 		CompletCalculMethod method;
 		try {
 			method = completCalculMethod.get(methodName).newInstance();
@@ -457,6 +479,9 @@ public class RegisterCalculMethod {
 			if (method.isApplicable() && method != null) {
 				return method;
 			}
+			else {
+				throw new MethodNotApplicableException("The melting temperature calcul method (option " + OptionManagement.completMethod + ") is not applicable with this environment.");
+			}
 			
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -469,12 +494,13 @@ public class RegisterCalculMethod {
 	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
 		
 		if (methodName == null){
-			return null;
+			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.DMSOCorrection + "or" + OptionManagement.formamideCorrection + ".");
 		}
 		CorrectionMethod method;
 		try {
 			method = otherCorrection.get(optionName).get(methodName).newInstance();
 			return method;
+			
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

@@ -3,7 +3,7 @@ package melting;
 import java.util.HashMap;
 
 import melting.configuration.OptionManagement;
-import melting.exceptions.OptionSynthaxError;
+import melting.exceptions.OptionSyntaxError;
 
 public class Environment {
 
@@ -21,7 +21,7 @@ public class Environment {
 		initializeConcentrations();
 		
 		if (isRequiredConcentrations() == false){
-			throw new OptionSynthaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
+			throw new OptionSyntaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
 		}
 		
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));

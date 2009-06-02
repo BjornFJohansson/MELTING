@@ -54,8 +54,7 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : the Marmur-Schildkraut-Doty equation" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the Marmur-Schildkraut-Doty equation" +
 					"was originally established for DNA duplexes.");
 		}
 		

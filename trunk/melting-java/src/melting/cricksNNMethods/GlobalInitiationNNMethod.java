@@ -1,7 +1,11 @@
 package melting.cricksNNMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 	
@@ -12,18 +16,28 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		double entropy = environment.getResult().getEntropy();
 		
 		if (environment.getSequences().isOneGCBasePair()){
-			enthalpy += this.collector.getInitiation("one_GC_pair").getEnthalpy();
-			entropy += this.collector.getInitiation("one_GC_pair").getEntropy();
+			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_pair");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
+
+			enthalpy += initiationOneGC.getEnthalpy();
+			entropy += initiationOneGC.getEntropy();
 		}
 		
 		else {
-			enthalpy += this.collector.getInitiation("all_AT_pair").getEnthalpy();
-			entropy += this.collector.getInitiation("all_AT_pair").getEntropy();
+			Thermodynamics initiationAllAT = this.collector.getInitiation("all_AT_pair");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
+			enthalpy += initiationAllAT.getEnthalpy();
+			entropy += initiationAllAT.getEntropy();
 		}
 		
 		if (environment.isSelfComplementarity()){
-			enthalpy += this.collector.getSymetry().getEnthalpy();
-			entropy += this.collector.getSymetry().getEntropy();
+			Thermodynamics symetry = this.collector.getSymetry();
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity : enthalpy = " + symetry.getEnthalpy() + "  entropy = " + symetry.getEntropy());
+			enthalpy += symetry.getEnthalpy();
+			entropy += symetry.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);

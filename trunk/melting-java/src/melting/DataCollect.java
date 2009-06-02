@@ -185,7 +185,7 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getAsymetry(){
+	public Thermodynamics getAsymmetry(){
 		Thermodynamics s = data.get("symetry");
 		return s;
 	}

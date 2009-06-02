@@ -1,8 +1,11 @@
 package melting.formamideCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
+import melting.configuration.OptionManagement;
 
 public class FormamideLinearMethod implements CorrectionMethod{
 
@@ -16,9 +19,13 @@ public class FormamideLinearMethod implements CorrectionMethod{
 	 * Hutton Jr, 1977, Nucleic acids research, 4, 3537-3555.
 	 * */
 	
+	private static String temperatureCorrection = "Tm (x % formamide) = Tm(0 % formamide) - 0.65 * x % formamide";
+	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double Tm = environment.getResult().getTm() - 0.65 * environment.getFormamide();
 		environment.setResult(Tm);
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "The linear formamide correction : " + temperatureCorrection);
 		
 		return environment.getResult();
 	}
@@ -26,6 +33,8 @@ public class FormamideLinearMethod implements CorrectionMethod{
 	public boolean isApplicable(Environment environment) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The implemented formamide correction methods are established for DNA duplexes..");
+
 			System.out.println("WARNING : the implemented formamide correction methods are established for DNA duplexes.");
 			return false;
 		}

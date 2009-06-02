@@ -34,8 +34,7 @@ public class Ahsen01 extends ApproximativeMode{
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : the Ahsen et al. equation" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the Ahsen et al. equation" +
 					"was originally established for DNA duplexes.");
 		}
 		return isApplicable;

@@ -1,8 +1,12 @@
 package melting.CorrectionMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
+import melting.configuration.OptionManagement;
+
 
 public abstract class DMSOCorrections implements CorrectionMethod{
 	
@@ -16,10 +20,9 @@ public abstract class DMSOCorrections implements CorrectionMethod{
 	public boolean isApplicable(Environment environment) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("WARNING : The current DMSO corrections are established for DNA duplexes.");
-			return false;
+			OptionManagement.meltingLogger.log(Level.WARNING, "The current DMSO corrections are established for DNA duplexes.");
 		}
-		return false;
+		return true;
 	}
 
 }

@@ -1,8 +1,13 @@
 package melting.cricksNNMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
+import melting.exceptions.SequenceException;
 
 public class Santalucia04 extends CricksNNMethod {
 
@@ -20,37 +25,51 @@ public class Santalucia04 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Santalucia (2004)" +
-					"are established for DNA sequences ");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Santalucia (2004)" +
+			"are established for DNA sequences.");
 		}
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
+		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
+
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		
 		if (withoutTerminalUnpairedNucleotides == null){
-			return null;
+			throw new SequenceException("The two sequences can't be hybridized.");
 		}
 		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
 		double enthalpy = 0;
 		double entropy = 0;
 		
 		if (numberTerminalAT != 0){
-			enthalpy += numberTerminalAT * this.collector.getTerminal("per_A/T").getEnthalpy();
-			entropy += numberTerminalAT * this.collector.getTerminal("per_A/T").getEntropy();
+			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, terminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
+			
+			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
+			entropy += numberTerminalAT * terminalAT.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);
 		
 		return environment.getResult();
 		
+	}
+	
+	@Override
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (2004).");
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 
 }

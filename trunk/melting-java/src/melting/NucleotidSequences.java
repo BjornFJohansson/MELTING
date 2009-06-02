@@ -255,6 +255,33 @@ public class NucleotidSequences {
 		return this.sequence.substring(pos1, pos2 + 1);
 	}
 	
+	private String convertSequence(String sequence, String hybridizationType){
+		char acidToRemplace;
+		char remplacingAcid;
+		
+		if (hybridizationType.equals("dna")){
+			remplacingAcid = 'T';
+			acidToRemplace = 'U';
+		}
+		else {
+			remplacingAcid = 'U';
+			acidToRemplace = 'T';
+		}
+		
+		String newSequence = sequence.replace(acidToRemplace, remplacingAcid);
+
+		return newSequence;
+	}
+	
+	public String getSequence(int pos1, int pos2, String hybridizationType){
+		
+		return convertSequence(getSequence(pos1, pos2), hybridizationType);
+	}
+	
+	public String getComplementary(int pos1, int pos2, String hybridizationType){
+		return convertSequence(getComplementary(pos1, pos2), hybridizationType);
+	}
+	
 	public String getComplementary(int pos1, int pos2){
 		return this.complementary.substring(pos1, pos2 + 1);
 	}
@@ -275,7 +302,7 @@ public class NucleotidSequences {
 		return loop;
 	}
 
-	public boolean isAsymetricLoop(int pos1, int pos2){
+	public boolean isAsymmetricLoop(int pos1, int pos2){
 		String seq1 = getSequence(pos1, pos2);
 		String seq2 = getComplementary(pos1, pos2);
 		
@@ -314,7 +341,7 @@ public class NucleotidSequences {
 	}
 	
 	public String getLoopType(int pos1, int pos2){
-		if (isAsymetricLoop(pos1, pos2)){
+		if (isAsymmetricLoop(pos1, pos2)){
 			int internalLoopSize1 = 0;
 			int internalLoopSize2 = 0;
 			
@@ -554,6 +581,7 @@ public class NucleotidSequences {
 	
 	public boolean isCNGMotif(int pos1, int pos2){
 		int index = pos1;
+		char mismatch = sequence.charAt(pos1 + 1);
 		
 		if (pos2 > getDuplexLength() - 1 || pos2 - pos1 + 1 < 3 || pos1 < 0){
 			return false;
@@ -564,7 +592,7 @@ public class NucleotidSequences {
 				return false;
 			}
 			else {
-				if(isBasePair('G', 'C', index + 2) && isBasePair('C', 'G', index)){
+				if(isBasePair('G', 'C', index + 2) && isBasePair('C', 'G', index) && isBasePair(mismatch, mismatch, index + 1)){
 					index += 3;
 				}
 				return false;

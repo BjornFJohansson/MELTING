@@ -76,15 +76,15 @@ public class Turner06InternalLoop extends PartialCalcul{
 			entropy += numberGU * this.collector.getClosureValue("G", "U").getEntropy();
 		}
 		
-		if (sequences.isAsymetricLoop(pos1, pos2)){
+		if (sequences.isAsymmetricLoop(pos1, pos2)){
 				
-			enthalpy += this.collector.getAsymetry().getEnthalpy();
+			enthalpy += this.collector.getAsymmetry().getEnthalpy();
 			
 			if (sequences.calculateLoopLength(pos1, pos2) > 4){
-				saltIndependentEntropy += this.collector.getAsymetry().getEntropy();
+				saltIndependentEntropy += this.collector.getAsymmetry().getEntropy();
 			}
 			else {
-				entropy += this.collector.getAsymetry().getEntropy();
+				entropy += this.collector.getAsymmetry().getEntropy();
 			}
 		}
 		
@@ -155,8 +155,8 @@ public class Turner06InternalLoop extends PartialCalcul{
 			}
 		}
 		
-		if (sequences.isAsymetricLoop(pos1, pos2)){
-			if (this.collector.getAsymetry() == null){
+		if (sequences.isAsymmetricLoop(pos1, pos2)){
+			if (this.collector.getAsymmetry() == null){
 				return true;
 			}
 		}
