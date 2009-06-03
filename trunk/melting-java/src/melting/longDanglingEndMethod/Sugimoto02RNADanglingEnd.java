@@ -1,6 +1,11 @@
 package melting.longDanglingEndMethod;
 
+import java.util.logging.Level;
+
 import melting.Environment;
+import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 
@@ -19,14 +24,20 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna")){
-			isApplicable = false;
-			System.out.println("WARNING : the used thermodynamic parameters for long dangling end of Sugimoto et al." +
-					"(2002) are established for RNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The following thermodynamic parameters for long dangling end of Sugimoto et al." +
+			"(2002) are established for RNA sequences.");
 		}
 		
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
+	}
+	
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 }

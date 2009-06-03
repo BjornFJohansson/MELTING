@@ -35,7 +35,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 		
 		if (Integer.getInteger(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
 			
-			if (environment.getOptions().get(OptionManagement.completMethod).equals("default") == false){
+			if (environment.getOptions().get(OptionManagement.completMethod).equals("default")){
 				isApplicable = false;
 			}
 			OptionManagement.meltingLogger.log(Level.WARNING, "the approximative equations " +
@@ -65,7 +65,10 @@ public class ApproximativeMode implements CompletCalculMethod{
 		if (this.environment.getDMSO() > 0){
 			CorrectionMethod DMSOCorrection = register.getCorrectionMethod(OptionManagement.DMSOCorrection, this.environment.getOptions().get(OptionManagement.DMSOCorrection));
 			
-			if (DMSOCorrection.isApplicable(this.environment)){
+			if (DMSOCorrection == null){
+				throw new NoExistingMethodException("There is no implemented DMSO correction.");
+			}
+			else if (DMSOCorrection.isApplicable(this.environment)){
 				this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
 			}
 			else {
@@ -75,7 +78,10 @@ public class ApproximativeMode implements CompletCalculMethod{
 		if (this.environment.getFormamide() > 0){
 			CorrectionMethod formamideCorrection = register.getCorrectionMethod(OptionManagement.formamideCorrection, this.environment.getOptions().get(OptionManagement.formamideCorrection));
 			
-			if (formamideCorrection.isApplicable(this.environment)){
+			if (formamideCorrection == null){
+				throw new NoExistingMethodException("There is no implemented formamide correction.");
+			}
+			else if (formamideCorrection.isApplicable(this.environment)){
 				this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
 			}
 			else {

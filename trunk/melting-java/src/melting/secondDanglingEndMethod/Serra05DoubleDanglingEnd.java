@@ -1,15 +1,19 @@
 package melting.secondDanglingEndMethod;
 
+import java.util.logging.Level;
+
 import melting.Helper;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 
 	/*REF: Martin J Serra et al. (2005). RNA 11: 512-516*/ 
 	
 	public static String defaultFileName = "Serra2005doublede.xml";
-	
+
 	@Override
 	public void initializeFileName(String methodName){
 		super.initializeFileName(methodName);
@@ -22,8 +26,11 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for double dangling end are from Serra et al. (2005) :");
 		
-		result = calculateThermodynamicsWithoutSecondDanglingEnd(sequences, pos1, pos2, result);
+		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -31,14 +38,20 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
 		
+		Thermodynamics doubleDanglingValue;
 		if (Helper.isPyrimidine(complementary.charAt(1))){
-			enthalpy += this.collector.getDanglingValue("Y","").getEnthalpy();
-			entropy += this.collector.getDanglingValue("Y","").getEntropy();
+			doubleDanglingValue = this.collector.getDanglingValue("Y","");			
 		}
 		else {
-			enthalpy += this.collector.getDanglingValue(sequence.substring(1),"").getEnthalpy();
-			entropy += this.collector.getDanglingValue(sequence.substring(1),"").getEntropy();
+			doubleDanglingValue = this.collector.getDanglingValue(sequence.substring(1),"");
+			enthalpy += doubleDanglingValue.getEnthalpy();
+			entropy += doubleDanglingValue.getEntropy();
 			}
+		
+		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
+
+		enthalpy += doubleDanglingValue.getEnthalpy();
+		entropy += doubleDanglingValue.getEntropy();
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

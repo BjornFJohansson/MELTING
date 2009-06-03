@@ -1,10 +1,14 @@
 package melting.longBulgeMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
@@ -12,6 +16,9 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 	public static String defaultFileName = "Turner1999_2006longbulge.xml";
+	
+	protected static String formulaEnthalpy = "delat H = H(bulge of n initiation) + number AU closing x H(AU closing) + number GU closing x H(GU closing)";
+	protected static String formulaEntropy = "delat S = S(bulge of n initiation) + S(bulge loop of n) + number AU closing x S(AU closing) + number GU closing x S(GU closing)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -24,32 +31,48 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "The long bulge loop formulas from Turner et al. (1999, 2006) : " + formulaEnthalpy + " and " + formulaEntropy);
+		
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
 		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 		
-		if (this.collector.getInitiationBulgevalue(bulgeSize) == null){
-			enthalpy += this.collector.getInitiationBulgevalue(">6").getEnthalpy();
-			entropy += this.collector.getInitiationBulgevalue("6").getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6));
+		Thermodynamics initiationBulge = this.collector.getInitiationBulgevalue(bulgeSize);
+		if (initiationBulge == null){
+			initiationBulge = this.collector.getInitiationBulgevalue(">6");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
+
+			enthalpy += initiationBulge.getEnthalpy();
+			entropy += initiationBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6));
 		}
 		else{
-			enthalpy += this.collector.getInitiationBulgevalue(bulgeSize).getEnthalpy();
-			entropy += this.collector.getInitiationBulgevalue(bulgeSize).getEntropy();
+			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());
+
+			enthalpy += initiationBulge.getEnthalpy();
+			entropy += initiationBulge.getEntropy();
 		}
 		
 		if (numberAU > 0){
+			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 			
-			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
-			entropy += numberAU * this.collector.getClosureValue("A", "U").getEntropy();
+			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+
+			enthalpy += numberAU * closingAU.getEnthalpy();
+			entropy += numberAU * closingAU.getEntropy();
 		}
 		
 		if (numberGU > 0){
+			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 			
-			enthalpy += numberGU * this.collector.getClosureValue("G", "U").getEnthalpy();
-			entropy += numberGU * this.collector.getClosureValue("G", "U").getEntropy();
+			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+			
+			enthalpy += numberGU * closingGU.getEnthalpy();
+			entropy += numberGU * closingGU.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -59,17 +82,14 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			System.out.println("WARNING : the single bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
-			
-			isApplicable = false;
 		}
 		
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
