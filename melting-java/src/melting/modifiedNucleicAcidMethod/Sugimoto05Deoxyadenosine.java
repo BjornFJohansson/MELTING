@@ -2,11 +2,13 @@ package melting.modifiedNucleicAcidMethod;
 
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -29,12 +31,20 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		result = calculateThermodynamicsNoModifiedAcid(sequences, pos1, pos2, result);
-		double enthalpy = result.getEnthalpy() + this.collector.getModifiedvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
-		double entropy = result.getEntropy() + this.collector.getModifiedvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
+
+		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		
+		Thermodynamics deoxyadenineValue = this.collector.getModifiedvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		double enthalpy = result.getEnthalpy() + deoxyadenineValue.getEnthalpy();
+		double entropy = result.getEntropy() + deoxyadenineValue.getEntropy();
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
+		
+		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + deoxyadenineValue.getEnthalpy() + "  incremented entropy = " + deoxyadenineValue.getEntropy());
 		
 		return result;
 	}
@@ -45,13 +55,12 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			System.err.println("WARNING : The thermodynamic parameters for L-deoxyadenosine of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for L-deoxyadenosine of" +
 					"Sugimoto et al. (2005) are established for DNA sequences.");
-			isApplicable = false;
 		}
 		
 		if (modified.calculateNumberOfTerminal("_A"," T") > 0 || modified.calculateNumberOfTerminal("_X"," A") > 0){
-			System.err.println("WARNING : The thermodynamics parameters for L-deoxyadenosine of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for L-deoxyadenosine of " +
 					"Santaluciae (2005) are not established for terminal L-deoxyadenosine.");
 			isApplicable = false;
 		}
@@ -84,9 +93,15 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
+		Thermodynamics NNValue;
 		for (int i = 0; i < noModified.getDuplexLength(); i++){
-			enthalpy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)).getEntropy();
+			
+			NNValue = this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i));
+			enthalpy += NNValue.getEnthalpy();
+			entropy += NNValue.getEntropy();
+			
+			OptionManagement.meltingLogger.log(Level.INFO, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+
 		} 
 		
 		result.setEnthalpy(enthalpy);

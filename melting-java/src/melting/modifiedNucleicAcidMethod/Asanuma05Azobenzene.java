@@ -1,10 +1,14 @@
 package melting.modifiedNucleicAcidMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Asanuma05Azobenzene extends PartialCalcul{
 
@@ -24,8 +28,13 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		double enthalpy = result.getEnthalpy() + this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
-		double entropy = result.getEnthalpy() + this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
+		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
+
+		double enthalpy = result.getEnthalpy() + azobenzeneValue.getEnthalpy();
+		double entropy = result.getEnthalpy() + azobenzeneValue.getEntropy();
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -40,13 +49,12 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			System.err.println("WARNING : The thermodynamic parameters for azobenzene of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
-			isApplicable = false;
 		}
 		
 		if (modified.calculateNumberOfTerminal('X', '-') > 0){
-			System.err.println("WARNING : The thermodynamics parameters for azobenzene of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
 			isApplicable = false;
 		}

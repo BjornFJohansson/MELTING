@@ -3,6 +3,8 @@ package melting;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import melting.exceptions.SequenceException;
+
 public class NucleotidSequences {
 
 	private String sequence;
@@ -263,9 +265,12 @@ public class NucleotidSequences {
 			remplacingAcid = 'T';
 			acidToRemplace = 'U';
 		}
-		else {
+		else if (hybridizationType.equals("rna")) {
 			remplacingAcid = 'U';
 			acidToRemplace = 'T';
+		}
+		else {
+			throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
 		}
 		
 		String newSequence = sequence.replace(acidToRemplace, remplacingAcid);
@@ -326,6 +331,9 @@ public class NucleotidSequences {
 				newSeq.append('R');
 				break;
 			case 'U':
+				newSeq.append('Y');
+				break;
+			case 'T':
 				newSeq.append('Y');
 				break;
 			case 'C':

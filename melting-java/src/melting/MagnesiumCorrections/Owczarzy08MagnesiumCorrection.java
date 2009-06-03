@@ -1,8 +1,11 @@
 package melting.MagnesiumCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
+import melting.configuration.OptionManagement;
 
 public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 
@@ -19,8 +22,12 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	protected double f = 5.25 / 10000;
 	protected double g = 8.31 / 100000;
 	
+	protected static String temperatureCorrection = "1 / Tm(Mg) = 1 / Tm(Na = 1M) + a +b x ln(Mg) + Fgc x (c + d x ln(Mg)) + 1 / (2 x (duplexLength - 1)) x (e + f x ln(Mg) + g x (ln(mg)))^2"; 
+	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "The magnesium correction from Owkzarzy et al. (2008) : " + temperatureCorrection);
+
 		double Tm = correctTemperature(environment);
 		environment.setResult(Tm);
 		
@@ -28,28 +35,41 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	}
 
 	public boolean isApplicable(Environment environment) {
+		boolean isApplicable = true;
 		
 		if (environment.getMg() < 0.0005 || environment.getMg() > 0.6){
-			System.out.println("WARNING : The magnesium correction of Owczarzy et al. " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Owczarzy et al. " +
 			"(2008) is accurate in the magnesium concentration range of 0.5mM to 600mM.");
-			return false;
+			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("WARNING : The magnesium correction of Owczarzy et al. " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Owczarzy et al. " +
 					"(2008) is originally established for DNA duplexes.");
-			return false;
 		}
-		return true;
+		return isApplicable;
 	}
 	
 	protected double correctTemperature(Environment environment) {
+		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
+		OptionManagement.meltingLogger.log(Level.INFO, "b = " + this.b);
+		OptionManagement.meltingLogger.log(Level.INFO, "c = " + this.c);
+		OptionManagement.meltingLogger.log(Level.INFO, "e = " + this.e);
+		OptionManagement.meltingLogger.log(Level.INFO, "f = " + this.f);
+		displayVariable();
+
 		double Mg = environment.getMg() - environment.getDNTP();
 		double square = Math.log(Mg) * Math.log(Mg);
 		int Fgc = environment.getSequences().calculatePercentGC() / 100;
 		
-		double TmInverse = 1 / environment.getResult().getTm() + this.a +this. b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1 / (2 * (environment.getSequences().getDuplexLength() - 1)) * (this.e + this.f * Math.log(Mg) + this.g * square);
+		double TmInverse = 1 / environment.getResult().getTm() + this.a +this.b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1 / (2 * (environment.getSequences().getDuplexLength() - 1)) * (this.e + this.f * Math.log(Mg) + this.g * square);
 		return 1 / TmInverse;
+	}
+	
+	protected void displayVariable(){
+		OptionManagement.meltingLogger.log(Level.INFO, "a = " + this.a);
+		OptionManagement.meltingLogger.log(Level.INFO, "d = " + this.d);
+		OptionManagement.meltingLogger.log(Level.INFO, "g = " + this.g);
 	}
 
 }

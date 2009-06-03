@@ -1,9 +1,11 @@
 package melting.singleBulgeMethod;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -13,12 +15,31 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
+	private static StringBuffer formulaH = new StringBuffer();
+	private static StringBuffer formulaS = new StringBuffer();
+	
+	public Santalucia04SingleBulgeLoop(){
+
+		formulaH.append(formulaEnthalpy);
+		formulaS.append(formulaEntropy);
+
+		formulaH.append(" + H(intervening NN)");
+		formulaS.append(" + S(intervening NN)");
+	}
+	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The formula and thermodynamic parameters for single bulge loop are from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
 		
-		result = super.calculateThermodynamics(sequences, pos1, pos2, result);
-		double enthalpy = result.getEnthalpy() + this.collector.getNNvalue(sequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)), sequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2))).getEnthalpy();
-		double entropy = result.getEntropy() + this.collector.getNNvalue(sequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)), sequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2))).getEntropy();
+		result = super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		
+		Thermodynamics NNValue = this.collector.getNNvalue(sequences.getSingleBulgeNeighbors(newSequences.getSequence()), sequences.getSingleBulgeNeighbors(newSequences.getComplementary()));
+		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
+		double entropy = result.getEntropy() + NNValue.getEntropy();
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "NN intervening"+ sequences.getSingleBulgeNeighbors(newSequences.getSequence()) + "/" + sequences.getSingleBulgeNeighbors(newSequences.getComplementary()) +" :  enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

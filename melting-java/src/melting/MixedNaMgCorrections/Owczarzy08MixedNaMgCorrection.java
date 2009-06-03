@@ -1,8 +1,11 @@
 package melting.MixedNaMgCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.ThermoResult;
 import melting.MagnesiumCorrections.Owczarzy08MagnesiumCorrection;
+import melting.configuration.OptionManagement;
 
 public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection{
 
@@ -10,6 +13,11 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
 	 * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
 	 * */
+	
+	private static String aFormula = "a = -0.6 / duplexLength + 0.025 x ln(Mg) + 0.0068 x ln(Mg)^2";
+	private static String dFormula = "d = ln(Mg) + 0.38 x ln(Mg)^2";
+	private static String gFormula = "g = a + b / (duplexLength^2)";
+
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
@@ -26,4 +34,10 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 		return environment.getResult();
 	}
 
+	@Override
+	protected void displayVariable(){
+		OptionManagement.meltingLogger.log(Level.INFO, aFormula);
+		OptionManagement.meltingLogger.log(Level.INFO, dFormula);
+		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
+	}
 }

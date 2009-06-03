@@ -1,9 +1,12 @@
 package melting.MixedNaMgCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.CorrectionMethods.EntropyCorrection;
 import melting.MagnesiumCorrections.Tan06MagnesiumCorrection;
 import melting.MagnesiumCorrections.Tan07MagnesiumCorrection;
+import melting.configuration.OptionManagement;
 import melting.sodiumCorrections.Tan06SodiumCorrection;
 import melting.sodiumCorrections.Tan07SodiumCorrection;
 
@@ -13,30 +16,37 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	 * Biophysical Journal, 92, 3615-3632.
 	 * */
 	
+	protected static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x ((duplexLength - 1) x (x1 x g1 + x2 x g2) + g12)"; 
+	protected static String x1Formula = "x1 = Na / (Na + (8.1 - 32.4 / duplexLength) x (5.2 - ln(Na)) x Mg)";
+	protected static String x2Formula = "x2 = 1 - x1";
+	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) *x Na) / duplexLength";
+	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		
 		if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
-			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2007)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The mixed Na/Mg correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for magnesium concentrations between 0.1M and 0.3M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getNa() < 0 && environment.getNa() > 1){
-			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2007)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The mixed Na/Mg correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for sodium concentrations between 0M and 1M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false || environment.getHybridization().equals("dnadna") == false){
-			System.out.println("ERROR : The magnesium correction of Zhi-Jie Tan et al. (2007)is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium correction of Zhi-Jie Tan et al. (2007)is originally established for " +
 			"RNA or DNA duplexes.");
-			isApplicable = false;
 		}
 		return isApplicable;
 	}
 	
 	protected double correctEntropy(Environment environment){
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "The magnesium correction from Zhi-Jie Tan et al. (2007) : " + entropyCorrection);
+
 		double Na = environment.getNa();
 		double Mg = environment.getMg() - environment.getDNTP();
 		int duplexLength = environment.getSequences().getDuplexLength();
@@ -57,6 +67,11 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 		}
 				
 		double entropy = -3.22 * ((duplexLength - 1) * (x1 * g1 + x2 * g2) + g12);
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
+		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
+		OptionManagement.meltingLogger.log(Level.INFO, x1Formula);
+		OptionManagement.meltingLogger.log(Level.INFO, x2Formula);
 		
 		return entropy;
 	}

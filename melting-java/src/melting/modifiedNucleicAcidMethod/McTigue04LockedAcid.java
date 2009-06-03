@@ -2,11 +2,13 @@ package melting.modifiedNucleicAcidMethod;
 
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -28,14 +30,23 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		
-		result = calculateThermodynamicsNoModifiedAcid(sequences, pos1, pos2, result);
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The locked acid nuceic thermodynamic parameters are from McTigue et al. (2004) (delta delta H and delta delta S): ");
+
+		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
+		Thermodynamics lockedAcidValue;
+		
 		for (int i = pos1; i <= pos2; i++){
-			enthalpy += this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEnthalpy();
-			entropy += this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)).getEntropy();
+			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequence(), newSequences.getComplementary());
+			
+			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
+
+			enthalpy += lockedAcidValue.getEnthalpy();
+			entropy += lockedAcidValue.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -50,13 +61,12 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			System.err.println("WARNING : The thermodynamic parameters for locked acid nucleiques of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for locked acid nucleiques of" +
 					"McTigue et al. (2004) are established for DNA sequences.");
-			isApplicable = false;
 		}
 		
 		if ((pos1 == 0 || pos2 == environment.getSequences().getDuplexLength() - 1) && environment.getSequences().calculateNumberOfTerminal('L', '-') > 0){
-			System.err.println("WARNING : The thermodynamics parameters for locked acid nucleiques of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for locked acid nucleiques of " +
 					"McTigue (2004) are not established for terminal locked acid nucleiques.");
 			isApplicable = false;
 		}
@@ -83,9 +93,14 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
 		
-		double enthalpy = result.getEnthalpy() + collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEnthalpy() + collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3)).getEnthalpy();
-		double entropy = result.getEntropy() + collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)).getEntropy()  + collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3)).getEntropy();
+		Thermodynamics firstNNValue = collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1));
+		Thermodynamics secondNNValue = collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3));
+		double enthalpy = result.getEnthalpy() + firstNNValue.getEnthalpy() + secondNNValue.getEnthalpy();
+		double entropy = result.getEntropy() + firstNNValue.getEntropy()  + secondNNValue.getEntropy();
 		
+		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + firstNNValue.getEnthalpy() + "  entropy = " + firstNNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3) + " : enthalpy = " + secondNNValue.getEnthalpy() + "  entropy = " + secondNNValue.getEntropy());
+
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		
