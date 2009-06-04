@@ -1,7 +1,11 @@
 package melting.singleMismatchMethods;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Znosco08mm extends ZnoscoMethod {
 
@@ -24,11 +28,20 @@ public class Znosco08mm extends ZnoscoMethod {
 		NucleotidSequences mismatch = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (mismatch.calculateNumberOfTerminal('G', 'U') == 0){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Znosco (2008)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Znosco (2008)" +
 			"are originally established for single mismatches with GU nearest neighbors.");
+			isApplicable = false;
 		}
 	
 		return isApplicable;
+	}
+	
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for single mismatches are from Znosco et al. (2008) : " + formulaEnthalpy + " and " + formulaEntropy);
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 }

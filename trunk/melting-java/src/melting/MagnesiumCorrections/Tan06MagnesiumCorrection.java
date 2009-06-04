@@ -13,9 +13,9 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	 * */
 	
 	protected static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x (duplexLength - 1) x g"; 
-	protected static String aFormula = "a1 = 0.02 x ln(Mg) + 0.0068 x ln(Mg)^2";
-	protected static String bFormula = "b1 = 1.18 x ln(Mg) + 0.344 * ln(Mg)^2";
-	protected static String gFormula = "g1 = a1 + b1 / (duplexLength^2)";
+	protected static String aFormula = "a2 = 0.02 x ln(Mg) + 0.0068 x ln(Mg)^2";
+	protected static String bFormula = "b2 = 1.18 x ln(Mg) + 0.344 * ln(Mg)^2";
+	protected static String gFormula = "g2 = a2 + b2 / (duplexLength^2)";
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);

@@ -1,9 +1,12 @@
 package melting.sodiumCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.CorrectionMethods.EntropyCorrection;
+import melting.configuration.OptionManagement;
 
 public class Tan06SodiumCorrection extends EntropyCorrection {
 
@@ -11,20 +14,24 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
 	 * */
 	
+	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x (duplexLength - 1) x g"; 
+	private static String aFormula = "a1 = -0.07 x ln(Na) + 0.012 x ln(Mg)^2";
+	private static String bFormula = "b1 = 0.013 x ln(Mg)^2";
+	private static String gFormula = "g1 = a1 + b1 / duplexLength";
+	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.001 && NaEq > 1){
-			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2006)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Zhi-Jie Tan et al. (2006)" +
 					"is reliable for sodium concentrations between 0.001M and 1M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("ERROR : The sodium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
 			"DNA duplexes.");
-			isApplicable = false;
 		}
 		return isApplicable;
 	}
@@ -37,6 +44,9 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	}
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction from Zhi-Jie Tan et al. (2006) : " + entropyCorrection);
+
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		environment.setNa(NaEq);
 		
@@ -44,6 +54,11 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	}
 	
 	public static double calculateFreeEnergyPerBaseStack(Environment environment){
+		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
+		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
+		OptionManagement.meltingLogger.log(Level.INFO, aFormula);
+		OptionManagement.meltingLogger.log(Level.INFO, bFormula);
+		
 		double Na = environment.getNa();
 		double square = Math.log(Na) * Math.log(Na);
 		double a = -0.07 * Math.log(Na) + 0.012 * square;

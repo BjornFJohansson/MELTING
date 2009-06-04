@@ -18,7 +18,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	public static String defaultFileName = "Turner1999_2006longbulge.xml";
 	
 	protected static String formulaEnthalpy = "delat H = H(bulge of n initiation) + number AU closing x H(AU closing) + number GU closing x H(GU closing)";
-	protected static String formulaEntropy = "delat S = S(bulge of n initiation) + S(bulge loop of n) + number AU closing x S(AU closing) + number GU closing x S(GU closing)";
+	protected static String formulaEntropy = "delat S = S(bulge of n initiation) + number AU closing x S(AU closing) + number GU closing x S(GU closing)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -27,6 +27,10 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		if (this.fileName == null){
 			this.fileName = defaultFileName;
 		}
+	}
+	
+	protected boolean isClosingPenaltyNecessary(){
+		return true;
 	}
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -38,8 +42,6 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
-		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 		
 		Thermodynamics initiationBulge = this.collector.getInitiationBulgevalue(bulgeSize);
 		if (initiationBulge == null){
@@ -57,22 +59,26 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			entropy += initiationBulge.getEntropy();
 		}
 		
-		if (numberAU > 0){
-			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
-			
-			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+		if (isClosingPenaltyNecessary()){
+			int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
+			int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+			if (numberAU > 0){
+				Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
+				
+				OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
 
-			enthalpy += numberAU * closingAU.getEnthalpy();
-			entropy += numberAU * closingAU.getEntropy();
-		}
-		
-		if (numberGU > 0){
-			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
+				enthalpy += numberAU * closingAU.getEnthalpy();
+				entropy += numberAU * closingAU.getEntropy();
+			}
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
-			
-			enthalpy += numberGU * closingGU.getEnthalpy();
-			entropy += numberGU * closingGU.getEntropy();
+			if (numberGU > 0){
+				Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
+				
+				OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+				
+				enthalpy += numberGU * closingGU.getEnthalpy();
+				entropy += numberGU * closingGU.getEntropy();
+			}
 		}
 		
 		result.setEnthalpy(enthalpy);

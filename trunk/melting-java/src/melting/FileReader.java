@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+import melting.exceptions.FileException;
 import melting.handlers.DataHandler;
 
 import org.xml.sax.SAXException;
@@ -24,9 +25,8 @@ public class FileReader {
 			saxParser.parse(file, dataHandler);
 			return dataHandler.getMap();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new FileException("One of the file containing the thermodynamic parameters can't be parsed.");
 		}
-		return null;
 	}
 	
 }

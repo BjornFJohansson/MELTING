@@ -2,11 +2,13 @@ package melting.tandemMismatchMethod;
 
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
@@ -32,12 +34,20 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.INFO, "The tandem mismatch parameters are from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
+
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		for (int i = pos1; i <= pos2; i++){
-		
-			enthalpy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
+		Thermodynamics mismatchValue;
+		for (int i = 0; i < newSequences.getDuplexLength(); i++){
+			mismatchValue = this.collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
+			
+			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(pos1 + i) + "/" + sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
+
+			enthalpy += mismatchValue.getEnthalpy();
+			entropy += mismatchValue.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -47,17 +57,13 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+				
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("WARNING : the tandem mismatch parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The tandem mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
-			
-			isApplicable = false;
 		}
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,

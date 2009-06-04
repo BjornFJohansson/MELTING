@@ -3,6 +3,7 @@ package melting;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import melting.exceptions.NucleicAcidNotKnownException;
 import melting.exceptions.SequenceException;
 
 public class NucleotidSequences {
@@ -93,9 +94,7 @@ public class NucleotidSequences {
 				}
 				else if (i == position + modifiedAcid.length()){
 					if (modifiedNucleotides.contains(modifiedAcid) == false){
-						System.err.println("ERROR : There is no implemented method for computing the" +
-								"melting temperature of a sequence containing " + modifiedAcid + ".");
-						return false;
+						throw new NucleicAcidNotKnownException("the acid nucleic " + modifiedAcid + "is not known.");
 					}
 				}
 			}
@@ -120,7 +119,7 @@ public class NucleotidSequences {
 	}
 	
 	public int getDuplexLength(){
-		return Math.min(this.sequence.length(), this.complementary.length());
+		return Math.max(this.sequence.length(), this.complementary.length());
 	}
 	
 	public int calculateNumberOfTerminal(char base1, char base2){
@@ -171,8 +170,7 @@ public class NucleotidSequences {
 		}
 		
 		if (indexStart == getDuplexLength() - 1){
-			System.out.println("error : the sequences can be hybridezed.");
-			return null;
+			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
 		}
 		
 		int indexEnd = 0;
@@ -182,8 +180,7 @@ public class NucleotidSequences {
 		}
 		
 		if (indexEnd == 0){
-			System.out.println("error : the sequences can be hybridezed.");
-			return null;
+			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
 		}
 		
 		NucleotidSequences newSequences = new NucleotidSequences(seq.toString(), comp.toString());
@@ -341,8 +338,7 @@ public class NucleotidSequences {
 				break;
 
 			default:
-				System.err.println("There are non watson crick bases in the sequence.");
-				break;
+				throw new SequenceException("There are non watson crick bases in the sequence.");
 			}
 		}
 		return newSeq.toString();
@@ -525,7 +521,7 @@ public class NucleotidSequences {
 			return getSequence(pos1, pos2);
 		}
 		else{
-			return null;
+			throw new SequenceException("There is no complementary sequence.");
 		}
 	}
 	

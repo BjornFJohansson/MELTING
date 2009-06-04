@@ -1,18 +1,24 @@
 package melting.sodiumCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
+import melting.configuration.OptionManagement;
 
 public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 
 	/* Schildkraut, C., and Lifson, S. (1965) Dependence of the melting
 	 *  temperature of DNA on salt concentration, Biopolymers 3, 195-208.
 	 */
+	private static String temperatureCorrection = "	Tm(Na) = Tm(Na = 1M) + 16.6 x log10(NaEquivalent)";
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction is from Schildkraut Lifson. (1965) : " + temperatureCorrection);
+
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		double Tm = environment.getResult().getTm() + 16.6 * Math.log10(NaEq);
@@ -26,15 +32,14 @@ public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.07 || NaEq > 0.12){
-			System.out.println("ERROR : The sodium correction of Schildkraut Lifson (1965) is applicable for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Schildkraut Lifson (1965) is applicable for " +
 					"sodium concentrations between 0.01 and 0.2 M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("ERROR : The sodium correction of Schildkraut Lifson (1965) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Schildkraut Lifson (1965) is originally established for " +
 			"DNA duplexes in Escherichia Coli.");
-			isApplicable = false;
 		}
 		
 		return isApplicable;

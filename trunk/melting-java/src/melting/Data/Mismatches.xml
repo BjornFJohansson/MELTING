@@ -748,10 +748,10 @@
  				<enthalpy>2400.0</enthalpy>
  			</penalty>
  			
- 			<asymetry>
+ 			<asymmetry>
  				<enthalpy>3200.0<enthalpy>
  				<entropy>8.38</entropy>
- 			</asymetry>
+ 			</asymmetry>
  			
  			<mismatch sequence="RA/YG" loop="1x2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>

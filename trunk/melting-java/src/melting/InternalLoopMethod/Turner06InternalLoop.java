@@ -105,7 +105,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 			
 			Thermodynamics asymmetry = this.collector.getAsymmetry();
 			int asymetricValue = Math.abs(Integer.getInteger(loopType.substring(0, 1)) - Integer.getInteger(loopType.substring(2, 3)));
-			OptionManagement.meltingLogger.log(Level.INFO, asymetricValue + " x asymetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.INFO, asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 			
 			enthalpy += asymetricValue * asymmetry.getEnthalpy();
 			
