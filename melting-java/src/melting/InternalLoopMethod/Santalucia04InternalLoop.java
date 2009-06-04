@@ -74,7 +74,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		if (sequences.isAsymmetricLoop(pos1, pos2)){
 			Thermodynamics asymmetry = collector.getAsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "asymetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.INFO, "asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 				
 			enthalpy += asymmetry.getEnthalpy();
 

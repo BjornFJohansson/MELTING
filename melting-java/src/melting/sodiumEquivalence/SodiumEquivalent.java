@@ -1,6 +1,7 @@
 package melting.sodiumEquivalence;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
@@ -19,9 +20,8 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		if (hybridization.equals("dnadna") == false){
-			System.out.println("WARNING : The current equations to have the sodium equivalent" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The current equations to have the sodium equivalent" +
 					"concentration are established for DNA duplexes.");
-			return false;
 		}
 		return true;
 	}

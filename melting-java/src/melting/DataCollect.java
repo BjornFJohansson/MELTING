@@ -48,8 +48,8 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getSymetry(){
-		Thermodynamics s = data.get("symetry");
+	public Thermodynamics getsymmetry(){
+		Thermodynamics s = data.get("symmetry");
 		return s;
 	}
 	
@@ -186,7 +186,7 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getAsymmetry(){
-		Thermodynamics s = data.get("symetry");
+		Thermodynamics s = data.get("symmetry");
 		return s;
 	}
 	

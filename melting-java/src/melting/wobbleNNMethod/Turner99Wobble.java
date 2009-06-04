@@ -1,9 +1,13 @@
 package melting.wobbleNNMethod;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Turner99Wobble extends PartialCalcul{
 	
@@ -22,12 +26,21 @@ public class Turner99Wobble extends PartialCalcul{
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequence = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for GU base pairs are from Turner et al. (1999) : ");
+		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		for (int i = pos1; i <= pos2; i++){
-			enthalpy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy(); 
+		Thermodynamics mismatchValue;
+		for (int i = 0; i < newSequence.getDuplexLength(); i++){
+			mismatchValue = this.collector.getMismatchvalue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
+			
+			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(pos1 + i), sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			
+			enthalpy += mismatchValue.getEnthalpy();
+			entropy += mismatchValue.getEntropy(); 
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -40,10 +53,9 @@ public class Turner99Wobble extends PartialCalcul{
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			System.out.println("WARNING : the woddle base parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the woddle base parameters of " +
 					"Turner (1999) are originally established " +
 					"for RNA sequences.");
-			isApplicable = false;
 		}
 		return isApplicable;
 	}

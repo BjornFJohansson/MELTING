@@ -77,10 +77,10 @@
             <entropy>-9.0</entropy>
         </initiation> 
 
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.3</entropy>
-        </symetry>     
+        </symmetry>     
     </origine>
     
     <origine article="Santalucia_1996">
@@ -143,10 +143,10 @@
             <entropy>0.0</entropy>
         </terminal> 
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>  
+        </symmetry>  
     </origine>
     
     <origine article="Sugimoto_1996">
@@ -201,10 +201,10 @@
             <entropy>-9.0</entropy>
         </initiation>  
         
-		<symetry>
+		<symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>  
+        </symmetry>  
     </origine>
     
     <origine article="Allawi_Santalucia_1997">
@@ -266,10 +266,10 @@
             <entropy>-2.8</entropy>
         </initiation>  
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>
+        </symmetry>
     </origine>
     
     <origine article="Santalucia_2004">
@@ -328,10 +328,10 @@
             <entropy>6.9</entropy>
         </terminal>
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>    
+        </symmetry>    
     </origine>
     
     <origine article="Tanaka_2004">
@@ -390,10 +390,10 @@
             <entropy>2.4</entropy>
         </initiation>
 
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>    
+        </symmetry>    
     </origine>
   </nearest_neighbor>
 </hybridization>
@@ -533,10 +533,10 @@
             <entropy>-10.8</entropy>
         </initiation>
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>  
+        </symmetry>  
     </origine>
     
     <origine article="Xia_1998">
@@ -595,10 +595,10 @@
             <entropy>10.5</entropy>
         </terminal> 
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry> 	  
+        </symmetry> 	  
     </origine>
   </nearest_neighbor>
 </hybridization>
@@ -685,10 +685,10 @@
             <entropy>9.1</entropy>
         </terminal> 
         
-        <symetry>
+        <symmetry>
             <enthalpy>0.0</enthalpy>
             <entropy>-1.4</entropy>
-        </symetry>  
+        </symmetry>  
     </origine>
   </nearest_neighbor>
 </hybridization>

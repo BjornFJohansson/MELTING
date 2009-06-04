@@ -1,8 +1,12 @@
 package melting.wobbleNNMethod;
 
+import java.util.logging.Level;
+
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public abstract class InosineNNMethod extends PartialCalcul{
 	
@@ -13,9 +17,14 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
+		Thermodynamics modifiedValue; 
 		for (int i = pos1; i <= pos2; i++){
-			enthalpy += collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEnthalpy();
-			entropy += collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)).getEntropy();
+			modifiedValue = this.collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
+			
+			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
+
+			enthalpy += modifiedValue.getEnthalpy();
+			entropy += modifiedValue.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);

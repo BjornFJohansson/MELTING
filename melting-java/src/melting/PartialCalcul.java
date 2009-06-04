@@ -8,6 +8,8 @@ import org.xml.sax.SAXException;
 
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
+import melting.exceptions.FileException;
+import melting.exceptions.ThermodynamicParameterError;
 
 public abstract class PartialCalcul implements PartialCalculMethod{
 
@@ -26,9 +28,8 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		NucleotidSequences sequences = new NucleotidSequences(environment.getOptions().get(OptionManagement.sequence),environment.getOptions().get(OptionManagement.complementarySequence));
 		
 		if (isMissingParameters(sequences, pos1, pos2)) {
-			System.err.println("Some thermodynamic parameters are missing to compute" +
+			throw new ThermodynamicParameterError("Some thermodynamic parameters are missing to compute" +
 					"melting temperature.");
-			return false;
 		}
 		return true;
 	}
@@ -48,9 +49,9 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 		try {
 			collector.setData(reader.readFile(dataFile, collector.getData()));
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.");
 		} catch (SAXException e) {
-			e.printStackTrace();
+			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.");
 		}
 	}
 	

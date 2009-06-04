@@ -1,7 +1,12 @@
 package melting.singleDanglingEndMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
+import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 
@@ -20,13 +25,20 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (environment.getHybridization().equals("dnadna") == false) {
-			System.err.println("The thermodynamic parameters for dangling ends" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for dangling ends" +
 					"of Bommarito (2000) are established for DNA sequences.");
-			isApplicable = false;
-		}
-		return isApplicable;
+					}
+		return super.isApplicable(environment, pos1, pos2);
+	}
+	
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for single dangling end are from Bommarito et al. (2000) : ");
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
 }

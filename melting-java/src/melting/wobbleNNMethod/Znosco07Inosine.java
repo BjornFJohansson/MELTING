@@ -1,9 +1,13 @@
 package melting.wobbleNNMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public class Znosco07Inosine extends InosineNNMethod {
 
@@ -22,16 +26,22 @@ public class Znosco07Inosine extends InosineNNMethod {
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for inosine are from Znosco et al. (2007) : ");
 		
-		result = super.calculateThermodynamics(sequences, pos1, pos2, result);
+		result = super.calculateThermodynamics(inosine, 0, inosine.getDuplexLength() - 1, result);
+		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberIU = inosine.calculateNumberOfTerminal('I', 'U');
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0) {
-			enthalpy += numberIU * this.collector.getTerminal("per_I/U").getEnthalpy();
-			entropy += numberIU * this.collector.getTerminal("per_I/U").getEntropy();
+			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
+			OptionManagement.meltingLogger.log(Level.INFO, numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
+
+			enthalpy += numberIU * terminaIU.getEnthalpy();
+			entropy += numberIU * terminaIU.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -45,16 +55,14 @@ public class Znosco07Inosine extends InosineNNMethod {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false) {
-			System.err.println("WARNING : The thermodynamic parameters for inosine base of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
 					"Znosco (2007) are established for RNA sequences.");
-			isApplicable = false;
 		}
 		
 		for (int i = pos1; i < pos2; i++){
 			if (environment.getSequences().isBasePairEqualsTo('I', 'U', i) == false){
 				isApplicable = false;
-				
-				System.out.println("WARNING : The thermodynamic parameters of Znosco" +
+				OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco" +
 						"(2007) are only established for IU base pairs.");
 				break;
 			}

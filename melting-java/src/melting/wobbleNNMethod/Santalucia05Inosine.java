@@ -1,7 +1,12 @@
 package melting.wobbleNNMethod;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
+import melting.NucleotidSequences;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
 
 public class Santalucia05Inosine extends InosineNNMethod{
 
@@ -24,12 +29,20 @@ public class Santalucia05Inosine extends InosineNNMethod{
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			System.err.println("WARNING : The thermodynamic parameters for inosine base of" +
-					"Santalucia (2005) are established for DNA sequences.");
-			isApplicable = false;
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for dangling ends" +
+			"of Bommarito (2000) are established for DNA sequences.");
 		}
 		
 		return isApplicable;
+	}
+	
+	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for inosine are from Santalucia et al. (2005) : ");
+		
+		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
 }

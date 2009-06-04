@@ -47,12 +47,12 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		}
 		
 		if (environment.getOptions().containsKey(OptionManagement.selfComplementarity)){
-			Thermodynamics symetry = this.collector.getSymetry();
+			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "Self complementarity : enthalpy = " + symetry.getEnthalpy() + "  entropy = " + symetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.INFO, "Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
 			
-			enthalpy += symetry.getEnthalpy();
-			entropy += symetry.getEntropy();
+			enthalpy += symmetry.getEnthalpy();
+			entropy += symmetry.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);

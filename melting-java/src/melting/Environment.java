@@ -1,6 +1,7 @@
 package melting;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
@@ -18,6 +19,9 @@ public class Environment {
 	
 	public Environment(HashMap<String, String> options){
 		this.options = options;
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "Environment : ");
+		
 		initializeConcentrations();
 		
 		if (isRequiredConcentrations() == false){
@@ -26,18 +30,31 @@ public class Environment {
 		
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization).toLowerCase();
-		
+
 		if (this.Hybridization.equals("rnamrna")){
 			this.Hybridization = "mrnarna";
 		}
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "hybridization type : " + this.Hybridization);
+		OptionManagement.meltingLogger.log(Level.INFO, "probe concentration : " + this.nucleotides + "mol/L");
+		
 		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "correction factor F : " + this.factor);
+
 		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
+			
+			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity ");
+
 		}
+		OptionManagement.meltingLogger.log(Level.INFO, "no self complementarity ");
 		
 		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "sequence : " + options.get(OptionManagement.sequence));
+		OptionManagement.meltingLogger.log(Level.INFO, "complementary sequence : " + options.get(OptionManagement.complementarySequence));
+
 		this.result = new ThermoResult(0,0,0);
 	}
 
@@ -141,6 +158,9 @@ public class Environment {
 		for (int i = 0; i < solution.length; i++){
 			String [] couple = solution[i].split("=");
 			this.concentrations.put(couple[0], Double.parseDouble(couple[1]));
+			
+			OptionManagement.meltingLogger.log(Level.INFO, couple[0] + " = " + couple[1]);
+
 		}
 	}
 	

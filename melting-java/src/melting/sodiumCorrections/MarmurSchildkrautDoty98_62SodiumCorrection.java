@@ -1,9 +1,12 @@
 package melting.sodiumCorrections;
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
+import melting.configuration.OptionManagement;
 
 public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
 
@@ -15,8 +18,12 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 	 *  temperature, J. Mol. Biol. 5, 109-118.
 	 * */
 	
+	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(NaEquivalent)";
+
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
+		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : " + temperatureCorrection);
+
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();
 		
@@ -31,15 +38,14 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
 		if (NaEq < 0.069 || NaEq > 1.02){
-			System.out.println("ERROR : The sodium correction of Marmur Schildkraut and Doty (1962, 1998)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium correction of Marmur Schildkraut and Doty (1962, 1998)" +
 					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("ERROR : The sodium correction of Marmur Schildkraut and Doty (1962, 1998) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium correction of Marmur Schildkraut and Doty (1962, 1998) is originally established for " +
 			"DNA duplexes.");
-			isApplicable = false;
 		}
 		
 		return isApplicable;

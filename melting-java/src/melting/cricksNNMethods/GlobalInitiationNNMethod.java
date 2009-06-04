@@ -33,11 +33,11 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		}
 		
 		if (environment.isSelfComplementarity()){
-			Thermodynamics symetry = this.collector.getSymetry();
+			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity : enthalpy = " + symetry.getEnthalpy() + "  entropy = " + symetry.getEntropy());
-			enthalpy += symetry.getEnthalpy();
-			entropy += symetry.getEntropy();
+			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
+			enthalpy += symmetry.getEnthalpy();
+			entropy += symmetry.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);

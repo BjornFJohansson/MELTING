@@ -1,31 +1,51 @@
 package melting.singleMismatchMethods;
 
 
+import java.util.logging.Level;
+
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
+import melting.Thermodynamics;
+import melting.configuration.OptionManagement;
 
 public abstract class ZnoscoMethod extends PartialCalcul{
 	
+	protected static String formulaEnthalpy = "delat H = H(single mismatch N/N) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(NNN intervening)";
+	protected static String formulaEntropy = "delat S = S(single mismatch N/N) + number AU closing x S(closing AU) + number GU closing x S(closing GU) + S(NNN intervening)";
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		double enthalpy = result.getEnthalpy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
-		double entropy = result.getEntropy() + this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)).getEnthalpy() + collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2)).getEnthalpy();
+		Thermodynamics mismatchValue = this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2));
+		Thermodynamics NNNeighboringValue = this.collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2));
+		
+		OptionManagement.meltingLogger.log(Level.INFO, "N/N mismatch " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.INFO, "NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
+		
+		double enthalpy = result.getEnthalpy() + mismatchValue.getEnthalpy() + NNNeighboringValue.getEnthalpy();
+		double entropy = result.getEntropy() + mismatchValue.getEntropy() + NNNeighboringValue.getEntropy();
 		
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
 		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
 		
 		if (numberAU > 0){
-			enthalpy += numberAU * this.collector.getClosureValue("A", "U").getEnthalpy();
-			entropy += numberAU * this.collector.getClosureValue("A", "U").getEntropy();
+			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
+			
+			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+
+			enthalpy += numberAU * closingAU.getEnthalpy();
+			entropy += numberAU * closingAU.getEntropy();
 		}
 		if (numberGU > 0){
-			enthalpy += numberAU * this.collector.getClosureValue("G", "U").getEnthalpy();
-			entropy += numberAU * this.collector.getClosureValue("G", "U").getEntropy();
+			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
+
+			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+
+			enthalpy += numberAU * closingGU.getEnthalpy();
+			entropy += numberAU * closingGU.getEntropy();
 		}
 		
 		result.setEnthalpy(enthalpy);
@@ -35,17 +55,15 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			System.out.println("WARNING : the single mismatches parameter of " +
+
+			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
 					"Znosco et al. are originally established " +
 					"for RNA duplexes.");
-			
-			isApplicable = false;
 		}
 		
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
