@@ -29,6 +29,8 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		if (environment.getHybridization().equals("dnadna")){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The following thermodynamic parameters for long dangling end of Sugimoto et al." +
 					"(2002) are established for DNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);

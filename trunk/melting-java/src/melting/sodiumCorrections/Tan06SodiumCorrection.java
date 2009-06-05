@@ -45,7 +45,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction from Zhi-Jie Tan et al. (2006) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction from Zhi-Jie Tan et al. (2006) : " + entropyCorrection);
 
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		environment.setNa(NaEq);
@@ -54,10 +54,10 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	}
 	
 	public static double calculateFreeEnergyPerBaseStack(Environment environment){
-		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
-		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
-		OptionManagement.meltingLogger.log(Level.INFO, aFormula);
-		OptionManagement.meltingLogger.log(Level.INFO, bFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
+		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, aFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, bFormula);
 		
 		double Na = environment.getNa();
 		double square = Math.log(Na) * Math.log(Na);

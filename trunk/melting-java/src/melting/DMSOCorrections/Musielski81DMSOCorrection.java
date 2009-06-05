@@ -18,7 +18,7 @@ public class Musielski81DMSOCorrection extends DMSOCorrections {
 	 * */
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The DMSO correction from Musielski et al.(1981) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The DMSO correction from Musielski et al.(1981) : " + temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}

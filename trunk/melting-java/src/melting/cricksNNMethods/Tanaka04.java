@@ -26,9 +26,11 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 		boolean isApplicable = isApplicable(environment, pos1, pos2);		
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			isApplicable = false;
-			System.out.println("WARNING : The thermodynamic parameters of Tanaka (2004)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Tanaka (2004)" +
 					"are established for DNA sequences ");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
 		return isApplicable;
 	}
@@ -36,7 +38,7 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Tanaka (2004).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Tanaka (2004).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

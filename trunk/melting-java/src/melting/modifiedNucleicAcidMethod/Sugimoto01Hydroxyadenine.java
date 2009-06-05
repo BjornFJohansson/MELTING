@@ -33,7 +33,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The hydroxyadenine thermodynamic parameters are from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The hydroxyadenine thermodynamic parameters are from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
@@ -41,7 +41,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		double enthalpy = result.getEnthalpy() + hydroxyAdenineValue.getEnthalpy();
 		double entropy = result.getEntropy() + hydroxyAdenineValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -52,13 +52,16 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for 2-hydroxyadenine base of" +
 					"Sugimoto (2001) are established for DNA sequences.");
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (pos1 != 0 && pos2 != pos1 + modified.getDuplexLength() - 1){
 			StringBuffer seq = new StringBuffer(modified.getDuplexLength());
@@ -132,7 +135,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 				enthalpy += NNValue.getEnthalpy();
 				entropy += NNValue.getEntropy();
 				
-				OptionManagement.meltingLogger.log(Level.INFO, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 			}
 		

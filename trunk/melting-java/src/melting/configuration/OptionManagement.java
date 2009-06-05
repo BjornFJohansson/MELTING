@@ -1,58 +1,60 @@
 package melting.configuration;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import melting.Environment;
 import melting.NucleotidSequences;
+import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
 
 public class OptionManagement {
 	
-	public static final String sequence = "-seq";
-	public static final String complementarySequence = "-seq2";
-	public static final String solutioncomposition = "-sol";
-	public static final String nucleotides = "-probe";
-	public static final String completMethod = "-method";
-	public static final String hybridization = "-Hybrid";
+	public static final String sequence = "-S";
+	public static final String complementarySequence = "-C";
+	public static final String solutioncomposition = "-E";
+	public static final String nucleotides = "-P";
+	public static final String completMethod = "-mode";
+	public static final String hybridization = "-H";
 	public static final String approximativeMode = "-AMode";
 	public static final String ionCorrection = "-ionCorr";
 	public static final String DMSOCorrection = "-DMSOCorr";
 	public static final String formamideCorrection = "-formCorr";
 	public static final String NNMethod = "-NN";
-	public static final String singleMismatchMethod = "-singleMM";
+	public static final String singleMismatchMethod = "-sinMM";
 	public static final String wobbleBaseMethod = "-woddle";
-	public static final String tandemMismatchMethod = "-tandemMM";
-	public static final String internalLoopMethod = "-internalLoop";
-	public static final String singleDanglingEndMethod = "-singleDE";
-	public static final String doubleDanglingEndMethod = "-doubleDE";
-	public static final String longDanglingEndMethod = "-longDE";
+	public static final String tandemMismatchMethod = "-tanMM";
+	public static final String internalLoopMethod = "-intLoop";
+	public static final String singleDanglingEndMethod = "-sinDE";
+	public static final String doubleDanglingEndMethod = "-douDE";
+	public static final String longDanglingEndMethod = "-lonDE";
 	public static final String hairpinLoopMethod = "-hairpin";
-	public static final String singleBulgeLoopMethod = "-singleBulge";
-	public static final String longBulgeLoopMethod = "-longBulge";
+	public static final String singleBulgeLoopMethod = "-sinBulge";
+	public static final String longBulgeLoopMethod = "-lonBulge";
 	public static final String CNGMethod = "-CNG";
-	public static final String inosineMethod = "-inosine";
+	public static final String inosineMethod = "-ino";
 	public static final String hydroxyadenineMethod = "-HydroxyA";
-	public static final String azobenzeneMethod = "-azobenzene";
+	public static final String azobenzeneMethod = "-azoB";
 	public static final String lockedAcidMethod = "-locked";
 	public static final String deoxyadenineMethod = "-deoxyA";
 	public static final String NaEquivalentMethod = "-Naeq";
-	public static final String meltingHelp = "-help";
+	public static final String meltingHelp = "-h";
 	public static final String legalInformation = "-L";
-	public static final String dataPathway = "-p";
-	public static final String verboseMode = "-verbose";
-	public static final String threshold = "-thres";
+	public static final String dataPathway = "-data";
+	public static final String verboseMode = "-v";
+	public static final String threshold = "-T";
 	public static final String NN_Path = "-NNPath";
-	public static final String outPutFile = "-output";
-	public static final String inPutFile = "-input";
-	public static final String versionNumber = "-Version";
+	public static final String outPutFile = "-out";
+	public static final String versionNumber = "-V";
 	public static final String selfComplementarity = "-self";
 	public static final String factor = "-F";
 	public static final Logger meltingLogger = Logger.getLogger("melting");
 	
 	private static final String version = "5";
-	private static String dataPathwayValue = "../../../Data";
+	private static String dataPathwayValue = "melting/Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	
@@ -203,12 +205,34 @@ public class OptionManagement {
 	}
 	
 	private void readLegalInformation(){
+		StringBuffer legalInformation = new StringBuffer();
+		legalInformation.append("   Melting 5 is copyright (C) 2009 by Nicolas Le Novère and Marine Dumousseau\n\n");
+		legalInformation.append("   This  program  is  free  software; you can redistribute it\n");
+		legalInformation.append("   and/or modify it under the terms of the GNU General Public\n");
+		legalInformation.append("   License  as  published  by  the  Free Software Foundation;\n");
+		legalInformation.append("   either version 2 of the License, or (at your  option)  any\n");
+		legalInformation.append("   later version.\n");
+		legalInformation.append("   This  program  is  distributed in the hope that it will be\n");
+		legalInformation.append("   useful, but WITHOUT ANY WARRANTY; without even the implied\n");
+		legalInformation.append("   warranty  of  MERCHANTABILITY  or FITNESS FOR A PARTICULAR\n");
+		legalInformation.append("  PURPOSE.  See the GNU  General  Public  License  for  more\n");
+		legalInformation.append("  details.\n\n");
+		legalInformation.append("  You  should have received a copy of the GNU General Public\n");
+		legalInformation.append("  License along with this program; if not, write to the Free\n");
+		legalInformation.append("  Software  Foundation,  Inc.,  59  Temple Place, Suite 330,\n");
+		legalInformation.append("  Boston, MA  02111-1307 USA\n\n");
+		legalInformation.append("  Nicolas Le Novère and Marine Dumousseau, Computational Biology, EMBL-EBI\n");
+		legalInformation.append("  Hinxton CB10 1SD United-Kingdom\n");
+		legalInformation.append("  lenov@ebi.ac.uk\n");
 		
+		meltingLogger.log(Level.INFO, OptionManagement.legalInformation.toString());
 	}
 	
 	public void readOptions(String [] args){
 		setOptionValues(args);
-			
+		
+		meltingLogger.setLevel(Level.INFO);
+		
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
 				
@@ -222,11 +246,11 @@ public class OptionManagement {
 					break;
 				}
 				else if (option.equals(dataPathway)){
-					System.out.println("The current data files are in "+ dataPathwayValue + ".");
+					meltingLogger.log(Level.INFO, "The current data files are in "+ dataPathwayValue + ".");
 					break;
 				}
 				else if (option.equals(versionNumber)){
-					System.out.println("This MELTING program is the java version "+ version + ".");
+					meltingLogger.log(Level.INFO, "This MELTING program is the java version "+ version + ".");
 					break;
 				}
 			}
@@ -340,6 +364,7 @@ public class OptionManagement {
 	public HashMap<String, String> collectOptions(String [] args){
 		
 		setOptionValues(args);
+		meltingLogger.setLevel(Level.INFO);
 
 		HashMap<String, String> optionSet = new HashMap<String, String>();
 			
@@ -351,7 +376,7 @@ public class OptionManagement {
 				
 			if (isAValue(option) == false){
 				if (option.equals(OptionManagement.verboseMode)){
-					meltingLogger.setLevel(Level.INFO);
+					meltingLogger.setLevel(Level.FINE);
 					
 					StringBuffer verboseValue = new StringBuffer();
 					verboseValue.append("******************************************************************************\n");
@@ -362,7 +387,24 @@ public class OptionManagement {
 					verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
 					verboseValue.append("******************************************************************************\n");
 					
-					meltingLogger.log(Level.INFO, verboseValue.toString());
+					meltingLogger.log(Level.FINE, verboseValue.toString());
+				}
+				else if (option.equals(OptionManagement.outPutFile)){
+					if (isAValue(value)){
+						try {
+							meltingLogger.addHandler(new FileHandler(value));
+							
+							meltingLogger.setUseParentHandlers(false);
+							
+						} catch (SecurityException e) {
+							throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+						} catch (IOException e) {
+							throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+						}
+					}
+					else{
+						throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
+					}
 				}
 				else {
 					if (isAValue(value)){

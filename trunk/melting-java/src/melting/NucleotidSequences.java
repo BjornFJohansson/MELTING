@@ -380,7 +380,7 @@ public class NucleotidSequences {
 		return mismatch;
 	}
 	
-	public String getSingleBulgeNeighbors(String bulge){
+	public static String getSingleBulgeNeighbors(String bulge){
 		String NNPair = bulge.substring(0, 1) + bulge.substring(2, 3);
 		return NNPair;
 	}
@@ -394,7 +394,7 @@ public class NucleotidSequences {
 		return false;
 	}
 	
-	public String buildSymetricSequence(String seq1, String seq2){
+	public static String buildSymetricSequence(String seq1, String seq2){
 		StringBuffer symetricSequence = new StringBuffer(seq1.length());
 		
 		symetricSequence.append(seq1.substring(0, 2));
@@ -404,7 +404,7 @@ public class NucleotidSequences {
 		return symetricSequence.toString();
 	}
 	
-	public String buildSymetricComplementary(String seq1, String seq2){
+	public static String buildSymetricComplementary(String seq1, String seq2){
 		StringBuffer symetricComplementary = new StringBuffer(seq1.length());
 		
 		symetricComplementary.append(seq2.substring(0, 2));

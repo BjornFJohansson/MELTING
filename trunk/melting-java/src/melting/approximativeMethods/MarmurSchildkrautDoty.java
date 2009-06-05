@@ -40,8 +40,8 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Marmur, Schildkraut and Doty (1965 - 1993) \n");
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur, Schildkraut and Doty (1965 - 1993) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();
 	}

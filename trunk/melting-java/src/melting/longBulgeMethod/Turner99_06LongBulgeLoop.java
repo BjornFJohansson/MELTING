@@ -18,7 +18,6 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 	public static String defaultFileName = "Turner1999_2006longbulge.xml";
 	
 	protected static String formulaEnthalpy = "delat H = H(bulge of n initiation) + number AU closing x H(AU closing) + number GU closing x H(GU closing)";
-	protected static String formulaEntropy = "delat S = S(bulge of n initiation) + number AU closing x S(AU closing) + number GU closing x S(GU closing)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -37,7 +36,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The long bulge loop formulas from Turner et al. (1999, 2006) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The long bulge loop formulas from Turner et al. (1999, 2006) : " + formulaEnthalpy + " (entropy formula is similar)");
 		
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		double enthalpy = result.getEnthalpy();
@@ -47,13 +46,13 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		if (initiationBulge == null){
 			initiationBulge = this.collector.getInitiationBulgevalue(">6");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
+			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
 
 			enthalpy += initiationBulge.getEnthalpy();
 			entropy += initiationBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.getInteger(bulgeSize) / 6));
 		}
 		else{
-			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());
 
 			enthalpy += initiationBulge.getEnthalpy();
 			entropy += initiationBulge.getEntropy();
@@ -65,7 +64,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			if (numberAU > 0){
 				Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 				
-				OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
 
 				enthalpy += numberAU * closingAU.getEnthalpy();
 				entropy += numberAU * closingAU.getEntropy();
@@ -74,7 +73,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			if (numberGU > 0){
 				Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 				
-				OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
 				
 				enthalpy += numberGU * closingGU.getEnthalpy();
 				entropy += numberGU * closingGU.getEntropy();
@@ -93,6 +92,8 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);

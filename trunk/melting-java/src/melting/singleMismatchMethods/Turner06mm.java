@@ -16,7 +16,6 @@ public class Turner06mm extends PartialCalcul{
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
 	private static String formulaEnthalpy = "delat H = H(loop initiation n=2) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(bonus if GG mismatch) + H(bonus if 5'RU/3'YU)";
-	private static String formulaEntropy = "delat S = S(loop initiation n=2) + number AU closing x S(closing AU) + number GU closing x S(closing GU) + S(bonus if GG mismatch) + S(bonus if 5'RU/3'YU)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -30,7 +29,7 @@ public class Turner06mm extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The formulas and thermodynamic parameters for single mismatches are from Turner et al. (2006) : " + formulaEnthalpy + "and" + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The formulas and thermodynamic parameters for single mismatches are from Turner et al. (2006) : " + formulaEnthalpy + " (entropy formula is similar)");
 		
 		Thermodynamics initiationValue = this.collector.getInitiationLoopValue("2");
 		double enthalpy = result.getEnthalpy() + initiationValue.getEnthalpy();
@@ -40,13 +39,13 @@ public class Turner06mm extends PartialCalcul{
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "initiation loop of 2 : enthalpy = " + initiationValue.getEnthalpy() + "entropy = " + initiationValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "initiation loop of 2 : enthalpy = " + initiationValue.getEnthalpy() + "entropy = " + initiationValue.getEntropy());
 		
 		if (numberAU > 0){
 			
 			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x closing AU : enthalpy = " + closingAU.getEnthalpy() + "entropy = " + closingAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x closing AU : enthalpy = " + closingAU.getEnthalpy() + "entropy = " + closingAU.getEntropy());
 
 			enthalpy += numberAU * closingAU.getEnthalpy();
 			entropy += numberAU * closingAU.getEntropy();
@@ -56,7 +55,7 @@ public class Turner06mm extends PartialCalcul{
 			
 			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x closing GU : enthalpy = " + closingGU.getEnthalpy() + "entropy = " + closingGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x closing GU : enthalpy = " + closingGU.getEnthalpy() + "entropy = " + closingGU.getEntropy());
 
 			enthalpy += numberGU * closingGU.getEnthalpy();
 			entropy += numberGU * closingGU.getEntropy();
@@ -65,7 +64,7 @@ public class Turner06mm extends PartialCalcul{
 		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
 			Thermodynamics GGMismatch = this.collector.getFirstMismatch("G", "G", "1x1");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, " GG mismatch bonus : enthalpy = " + GGMismatch.getEnthalpy() + "entropy = " + GGMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, " GG mismatch bonus : enthalpy = " + GGMismatch.getEnthalpy() + "entropy = " + GGMismatch.getEntropy());
 
 			enthalpy += GGMismatch.getEnthalpy();
 			entropy += GGMismatch.getEntropy();
@@ -74,7 +73,7 @@ public class Turner06mm extends PartialCalcul{
 		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
 			Thermodynamics RUMismatch = this.collector.getFirstMismatch("RU", "YU", "1x1");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, " RU mismatch bonus : enthalpy = " + RUMismatch.getEnthalpy() + "entropy = " + RUMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, " RU mismatch bonus : enthalpy = " + RUMismatch.getEnthalpy() + "entropy = " + RUMismatch.getEntropy());
 			
 			enthalpy += RUMismatch.getEnthalpy();
 			entropy += RUMismatch.getEntropy();
@@ -93,6 +92,9 @@ public class Turner06mm extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);

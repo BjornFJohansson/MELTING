@@ -16,11 +16,11 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 	 * 2623-2624.
 	 * */
 	
-	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (7.95 - 3.06 x Fgc) x ln(NaEquivalent)";
+	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (7.95 - 3.06 x Fgc) x ln(Na)";
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction is from Frank Kamenetskii et al. (1971) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Frank Kamenetskii et al. (1971) : " + temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();

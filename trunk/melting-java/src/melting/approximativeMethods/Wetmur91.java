@@ -12,7 +12,7 @@ public abstract class Wetmur91 extends ApproximativeMode{
 	
 	public ThermoResult CalculateThermodynamics() {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Wetmur (1991) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, " from Wetmur (1991) \n");
 		
 		return this.environment.getResult();
 	}

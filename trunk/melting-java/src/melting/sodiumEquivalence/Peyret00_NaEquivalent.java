@@ -16,7 +16,7 @@ public class Peyret00_NaEquivalent extends SodiumEquivalent{
 	public double getSodiumEquivalent(double Na, double Mg, double K,
 			double Tris, double dNTP) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "If we use a sodium correction and there is another cations than Na+, we can use a sodium equivalence : from Peyret. (2000) : " + NaCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "If we use a sodium correction and there is another cations than Na+, we can use a sodium equivalence : from Peyret. (2000) : " + NaCorrection);
 
 		return super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
 	}

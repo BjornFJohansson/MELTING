@@ -19,9 +19,13 @@ public class ApproximativeMode implements CompletCalculMethod{
 	protected RegisterCalculMethod register = new RegisterCalculMethod();
 	
 	public ThermoResult CalculateThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.INFO, "Approximative method : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "Approximative method : ");
 		
 		return environment.getResult();
+	}
+	
+	public RegisterCalculMethod getRegister() {
+		return register;
 	}
 
 	public boolean isApplicable() {

@@ -18,7 +18,7 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		if (environment.getSequences().isOneGCBasePair()){
 			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_pair");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
 
 			enthalpy += initiationOneGC.getEnthalpy();
 			entropy += initiationOneGC.getEntropy();
@@ -27,7 +27,7 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		else {
 			Thermodynamics initiationAllAT = this.collector.getInitiation("all_AT_pair");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
 			enthalpy += initiationAllAT.getEnthalpy();
 			entropy += initiationAllAT.getEntropy();
 		}
@@ -35,7 +35,7 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		if (environment.isSelfComplementarity()){
 			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
 			enthalpy += symmetry.getEnthalpy();
 			entropy += symmetry.getEntropy();
 		}

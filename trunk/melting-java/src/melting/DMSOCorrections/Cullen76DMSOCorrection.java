@@ -18,7 +18,7 @@ public class Cullen76DMSOCorrection extends DMSOCorrections {
 	 * */
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The DMSO correction from Cullen et al.(1976) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The DMSO correction from Cullen et al.(1976) : " + temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}

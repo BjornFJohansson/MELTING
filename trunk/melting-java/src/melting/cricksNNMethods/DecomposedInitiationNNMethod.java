@@ -32,7 +32,7 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		if (numberTerminalAT != 0){
 			Thermodynamics initiationAT = this.collector.getInitiation("per_A/T");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberTerminalAT + " x Initiation per A/T : enthalpy = " + initiationAT.getEnthalpy() + "  entropy = " + initiationAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAT + " x Initiation per A/T : enthalpy = " + initiationAT.getEnthalpy() + "  entropy = " + initiationAT.getEntropy());
 			
 			enthalpy += numberTerminalAT * initiationAT.getEnthalpy();
 			entropy += numberTerminalAT * initiationAT.getEntropy();
@@ -41,7 +41,7 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		else if (numberTerminalAU != 0){
 			Thermodynamics initiationAU = this.collector.getInitiation("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberTerminalAU + " x Initiation per A/U : enthalpy = " + initiationAU.getEnthalpy() + "  entropy = " + initiationAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAU + " x Initiation per A/U : enthalpy = " + initiationAU.getEnthalpy() + "  entropy = " + initiationAU.getEntropy());
 
 			enthalpy += numberTerminalAU * this.collector.getInitiation("per_A/U").getEnthalpy();
 			entropy += numberTerminalAU * this.collector.getInitiation("per_A/U").getEntropy();
@@ -50,7 +50,7 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		if (numberTerminalGC != 0){
 			Thermodynamics initiationGC = this.collector.getInitiation("per_G/C");
 
-			OptionManagement.meltingLogger.log(Level.INFO, numberTerminalGC + " x Initiation per G/C : enthalpy = " + initiationGC.getEnthalpy() + "  entropy = " + initiationGC.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalGC + " x Initiation per G/C : enthalpy = " + initiationGC.getEnthalpy() + "  entropy = " + initiationGC.getEntropy());
 			
 			enthalpy += numberTerminalGC * initiationGC.getEnthalpy();
 			entropy += numberTerminalGC * initiationGC.getEntropy();

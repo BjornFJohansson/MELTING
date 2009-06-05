@@ -14,11 +14,11 @@ public class Owczarzy04SodiumCorrection20 implements CorrectionMethod {
 	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
 	 * Biochemistry, 2004, 43, 3537-3554.*/
 	
-	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (3.85 x Fgc - 6.18) x 1 / 100000 x ln(NaEquivalent)";
+	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (3.85 x Fgc - 6.18) x 1 / 100000 x ln(Na)";
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction (20) is from Owczarzy et al. (2004) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction (20) is from Owczarzy et al. (2004) : " + temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC() / 100;

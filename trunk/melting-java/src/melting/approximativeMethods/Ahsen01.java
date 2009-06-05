@@ -20,8 +20,8 @@ public class Ahsen01 extends ApproximativeMode{
 		double Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550 / this.environment.getSequences().getDuplexLength();
 		environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Ahsen et al. (2001) \n");
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, " from Ahsen et al. (2001) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return environment.getResult();
 	}

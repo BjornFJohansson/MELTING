@@ -28,7 +28,7 @@ public class Znosco07Inosine extends InosineNNMethod {
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for inosine are from Znosco et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for inosine are from Znosco et al. (2007) : ");
 		
 		result = super.calculateThermodynamics(inosine, 0, inosine.getDuplexLength() - 1, result);
 		
@@ -38,7 +38,7 @@ public class Znosco07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
-			OptionManagement.meltingLogger.log(Level.INFO, numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
 
 			enthalpy += numberIU * terminaIU.getEnthalpy();
 			entropy += numberIU * terminaIU.getEntropy();
@@ -52,12 +52,15 @@ public class Znosco07Inosine extends InosineNNMethod {
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
 					"Znosco (2007) are established for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		for (int i = pos1; i < pos2; i++){
 			if (environment.getSequences().isBasePairEqualsTo('I', 'U', i) == false){

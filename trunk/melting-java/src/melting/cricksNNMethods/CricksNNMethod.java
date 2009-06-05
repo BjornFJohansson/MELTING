@@ -21,7 +21,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			NNValue = this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
-			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 			
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
@@ -40,7 +40,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		Thermodynamics initiation = this.collector.getInitiation();
 		
 		if (initiation != null) {
-			OptionManagement.meltingLogger.log(Level.INFO, "Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
 			
 			enthalpy += initiation.getEnthalpy();
 			entropy += initiation.getEntropy();
@@ -49,7 +49,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		if (environment.getOptions().containsKey(OptionManagement.selfComplementarity)){
 			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
 			
 			enthalpy += symmetry.getEnthalpy();
 			entropy += symmetry.getEntropy();

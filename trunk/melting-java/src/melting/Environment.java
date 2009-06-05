@@ -19,8 +19,11 @@ public class Environment {
 	
 	public Environment(HashMap<String, String> options){
 		this.options = options;
+		if (options == null){
+			throw new OptionSyntaxError("Some required options are missing. Read the manual for further informations or see the option " + OptionManagement.meltingHelp);
+		}
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "Environment : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "Environment : ");
 		
 		initializeConcentrations();
 		
@@ -35,25 +38,25 @@ public class Environment {
 			this.Hybridization = "mrnarna";
 		}
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "hybridization type : " + this.Hybridization);
-		OptionManagement.meltingLogger.log(Level.INFO, "probe concentration : " + this.nucleotides + "mol/L");
+		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + this.Hybridization);
+		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + this.nucleotides + "mol/L");
 		
 		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "correction factor F : " + this.factor);
+		OptionManagement.meltingLogger.log(Level.FINE, "correction factor F : " + this.factor);
 
 		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "self complementarity ");
+			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity ");
 
 		}
-		OptionManagement.meltingLogger.log(Level.INFO, "no self complementarity ");
+		OptionManagement.meltingLogger.log(Level.FINE, "no self complementarity ");
 		
 		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "sequence : " + options.get(OptionManagement.sequence));
-		OptionManagement.meltingLogger.log(Level.INFO, "complementary sequence : " + options.get(OptionManagement.complementarySequence));
+		OptionManagement.meltingLogger.log(Level.FINE, "sequence : " + options.get(OptionManagement.sequence));
+		OptionManagement.meltingLogger.log(Level.FINE, "complementary sequence : " + options.get(OptionManagement.complementarySequence));
 
 		this.result = new ThermoResult(0,0,0);
 	}
@@ -159,7 +162,7 @@ public class Environment {
 			String [] couple = solution[i].split("=");
 			this.concentrations.put(couple[0], Double.parseDouble(couple[1]));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, couple[0] + " = " + couple[1]);
+			OptionManagement.meltingLogger.log(Level.FINE, couple[0] + " = " + couple[1]);
 
 		}
 	}
@@ -171,6 +174,10 @@ public class Environment {
 			}
 		}
 		return false;
+	}
+	
+	public void modifieSequences(String sequence, String complementary){
+		this.sequences = new NucleotidSequences(sequence, complementary);
 	}
 	
 }

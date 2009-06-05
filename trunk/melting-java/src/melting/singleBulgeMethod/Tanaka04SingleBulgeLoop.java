@@ -24,22 +24,24 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	}
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
 					"Tanaka (2004) are originally established " +
 					"for DNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
 	
-		return isApplicable;
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for single bulge loop are from Tanaka et al. (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single bulge loop are from Tanaka et al. (2004) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}

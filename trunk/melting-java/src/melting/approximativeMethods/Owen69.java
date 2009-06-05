@@ -31,8 +31,8 @@ public class Owen69 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Owen et al. (1969) \n");
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, " from Owen et al. (1969) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();
 	}

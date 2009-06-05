@@ -15,7 +15,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	
 	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 
-	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(NaEquivalent)";
+	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(Na)";
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
@@ -42,7 +42,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction is from Santalucia et al. (1998) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Santalucia et al. (1998) : " + entropyCorrection);
 
 		double Na = environment.getNa();
 		double entropy = 0.368 * (environment.getSequences().getDuplexLength() - 1) * Math.log(Na);

@@ -25,7 +25,7 @@ public class FormamideLinearMethod implements CorrectionMethod{
 		double Tm = environment.getResult().getTm() - 0.65 * environment.getFormamide();
 		environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The linear formamide correction : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The linear formamide correction : " + temperatureCorrection);
 		
 		return environment.getResult();
 	}
