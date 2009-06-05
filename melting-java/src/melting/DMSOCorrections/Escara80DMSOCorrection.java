@@ -19,7 +19,7 @@ public class Escara80DMSOCorrection extends DMSOCorrections {
 	 * */
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The DMSO correction from Escara et al.(1980) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The DMSO correction from Escara et al.(1980) : " + temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}

@@ -21,7 +21,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		for (int i = pos1; i <= pos2; i++){
 			modifiedValue = this.collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
 
 			enthalpy += modifiedValue.getEnthalpy();
 			entropy += modifiedValue.getEntropy();

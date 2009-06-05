@@ -26,7 +26,10 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Breslauer et al (1986)" +
-					"are established for DNA sequences.");				
+					"are established for DNA sequences.");		
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -34,7 +37,7 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Breslauer et al (1986).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Breslauer et al (1986).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

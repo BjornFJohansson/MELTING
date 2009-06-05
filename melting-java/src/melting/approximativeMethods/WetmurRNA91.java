@@ -22,7 +22,7 @@ public class WetmurRNA91 extends Wetmur91 {
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();
 	}

@@ -28,7 +28,7 @@ public class Turner99Wobble extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequence = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for GU base pairs are from Turner et al. (1999) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for GU base pairs are from Turner et al. (1999) : ");
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -37,7 +37,7 @@ public class Turner99Wobble extends PartialCalcul{
 		for (int i = 0; i < newSequence.getDuplexLength(); i++){
 			mismatchValue = this.collector.getMismatchvalue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(pos1 + i), sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(pos1 + i), sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy(); 
@@ -56,6 +56,9 @@ public class Turner99Wobble extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "the woddle base parameters of " +
 					"Turner (1999) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
 		return isApplicable;
 	}

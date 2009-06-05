@@ -18,11 +18,11 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 	 *  temperature, J. Mol. Biol. 5, 109-118.
 	 * */
 	
-	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(NaEquivalent)";
+	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(Na)";
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : " + temperatureCorrection);
 
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();

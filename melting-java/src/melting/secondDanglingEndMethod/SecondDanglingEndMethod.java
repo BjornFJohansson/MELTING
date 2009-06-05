@@ -20,12 +20,15 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for second dangling end of Serra et al." +
 					"(2005 and 2006) is established for RNA sequences.");
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (NucleotidSequences.getSens(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2)).equals("5")){
 			isApplicable = false;
@@ -43,7 +46,7 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
 		double entropy = result.getEntropy() + danglingValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

@@ -33,7 +33,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The long bulge loop formulas from Santalucia. (2004) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The long bulge loop formulas from Santalucia. (2004) : " + formulaEnthalpy + " and " + formulaEntropy);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -44,12 +44,12 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		if (bulgeLoopValue == null){
 			bulgeLoopValue = this.collector.getBulgeLoopvalue("30");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " + 2.44 x 1.99 x 310.15 x ln(bulgeSize / 30)");
+			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " + 2.44 x 1.99 x 310.15 x ln(bulgeSize / 30)");
 
 			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.getInteger(bulgeSize) / 30);
 		}
 		else {
-			OptionManagement.meltingLogger.log(Level.INFO, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
 
 			entropy += bulgeLoopValue.getEntropy();
 		}
@@ -57,7 +57,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		if (numberAT> 0){
 			Thermodynamics closingAT = this.collector.getClosureValue("A", "T");
 
-			OptionManagement.meltingLogger.log(Level.INFO, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
 
 			enthalpy += numberAT * closingAT.getEnthalpy();
 			enthalpy += numberAT * closingAT.getEntropy();
@@ -77,6 +77,9 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);

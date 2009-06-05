@@ -18,7 +18,7 @@ public abstract class SingleDanglingEndMethod extends PartialCalcul {
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
 		double entropy = result.getEnthalpy() + danglingValue.getEntropy();		
 			
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

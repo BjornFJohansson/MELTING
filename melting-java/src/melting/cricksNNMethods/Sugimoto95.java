@@ -27,7 +27,7 @@ public class Sugimoto95 extends CricksNNMethod {
 	
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1995).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1995).");
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -36,7 +36,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		for (int i = pos1; i <= pos2 - 1; i++){
 			NNValue = this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "d"+ sequences.getSequenceNNPair(i) + "/" + "r" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "d"+ sequences.getSequenceNNPair(i) + "/" + "r" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();

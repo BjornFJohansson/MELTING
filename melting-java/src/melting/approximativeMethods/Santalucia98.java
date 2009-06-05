@@ -19,8 +19,8 @@ public class Santalucia98 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Santalucia et al. (1998) \n");
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, " from Santalucia et al. (1998) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();
 	}

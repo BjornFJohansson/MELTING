@@ -29,6 +29,9 @@ public class Xia98 extends CricksNNMethod {
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Xia et al. (1998)" +
 			"are established for RNA/RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -50,7 +53,7 @@ public class Xia98 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();
@@ -64,7 +67,7 @@ public class Xia98 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Xia (1998).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Xia (1998).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		

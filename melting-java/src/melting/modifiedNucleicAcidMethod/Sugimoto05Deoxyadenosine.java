@@ -33,7 +33,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
@@ -44,20 +44,23 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + deoxyadenineValue.getEnthalpy() + "  incremented entropy = " + deoxyadenineValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + deoxyadenineValue.getEnthalpy() + "  incremented entropy = " + deoxyadenineValue.getEntropy());
 		
 		return result;
 	}
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for L-deoxyadenosine of" +
 					"Sugimoto et al. (2005) are established for DNA sequences.");
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (modified.calculateNumberOfTerminal("_A"," T") > 0 || modified.calculateNumberOfTerminal("_X"," A") > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for L-deoxyadenosine of " +
@@ -100,7 +103,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
 			
-			OptionManagement.meltingLogger.log(Level.INFO, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		} 
 		

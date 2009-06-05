@@ -16,7 +16,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	 * Biophysical Journal, 92, 3615-3632.
 	 * */
 	
-	protected static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x ((duplexLength - 1) x (x1 x g1 + x2 x g2) + g12)"; 
+	protected static String entropyCorrection = "delta S(Na, Mg) = delta S(Na = 1M) - 3.22 x ((duplexLength - 1) x (x1 x g1 + x2 x g2) + g12)"; 
 	protected static String x1Formula = "x1 = Na / (Na + (8.1 - 32.4 / duplexLength) x (5.2 - ln(Na)) x Mg)";
 	protected static String x2Formula = "x2 = 1 - x1";
 	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) *x Na) / duplexLength";
@@ -45,7 +45,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The magnesium correction from Zhi-Jie Tan et al. (2007) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction from Zhi-Jie Tan et al. (2007) : " + entropyCorrection);
 
 		double Na = environment.getNa();
 		double Mg = environment.getMg() - environment.getDNTP();
@@ -68,10 +68,10 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 				
 		double entropy = -3.22 * ((duplexLength - 1) * (x1 * g1 + x2 * g2) + g12);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
-		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
-		OptionManagement.meltingLogger.log(Level.INFO, x1Formula);
-		OptionManagement.meltingLogger.log(Level.INFO, x2Formula);
+		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
+		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, x1Formula);
+		OptionManagement.meltingLogger.log(Level.FINE, x2Formula);
 		
 		return entropy;
 	}

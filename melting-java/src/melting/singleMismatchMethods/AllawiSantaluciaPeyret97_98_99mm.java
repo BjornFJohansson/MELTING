@@ -35,7 +35,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for single mismatches are from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single mismatches are from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -44,7 +44,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		for (int i = 0; i < newSequences.getDuplexLength(); i++){
 			mismatchValue =  collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEnthalpy();
@@ -63,6 +63,9 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
 		
 		return isApplicable;

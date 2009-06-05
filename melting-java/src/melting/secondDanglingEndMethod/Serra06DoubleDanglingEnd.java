@@ -29,7 +29,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for double dangling end are from Serra et al. (2006) :");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for double dangling end are from Serra et al. (2006) :");
 		
 		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
@@ -46,7 +46,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		else {
 			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
 			}
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
 		
 		enthalpy += doubleDanglingValue.getEnthalpy();
 		entropy += doubleDanglingValue.getEntropy();

@@ -26,8 +26,8 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.INFO, " from Marmur et al. (1962) and Chester et al (1993) \n");
-		OptionManagement.meltingLogger.log(Level.INFO, temperatureEquation);
+		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur et al. (1962) and Chester et al (1993) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 	
 		return this.environment.getResult();
 	}

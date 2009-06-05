@@ -16,7 +16,7 @@ public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 		double enthalpy = result.getEnthalpy() + singleBulge.getEnthalpy();
 		double entropy = result.getEntropy() + singleBulge.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + singleBulge.getEnthalpy() + "  entropy = " + singleBulge.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + singleBulge.getEnthalpy() + "  entropy = " + singleBulge.getEntropy());
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

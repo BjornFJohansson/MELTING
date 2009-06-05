@@ -27,6 +27,9 @@ public class Freier86 extends CricksNNMethod {
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Freier et al. (1986)" +
 			"are established for RNA sequences.");	
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -34,7 +37,7 @@ public class Freier86 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for the watson crick base pairs are from Freier et al. (1986).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Freier et al. (1986).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		

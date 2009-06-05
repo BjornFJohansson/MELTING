@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import melting.Environment;
 import melting.Helper;
+import melting.ThermoResult;
 import melting.CNGRepeatsMethods.Broda05CNGRepeats;
 import melting.DMSOCorrections.Ahsen01DMSOCorrection;
 import melting.DMSOCorrections.Cullen76DMSOCorrection;
@@ -507,5 +508,36 @@ public class RegisterCalculMethod {
 			e.printStackTrace();
 		}
 		return null;	
+	}
+	
+	public ThermoResult computeOtherMeltingCorrections(Environment environment){
+		if (environment.getDMSO() > 0){
+			CorrectionMethod DMSOCorrection = getCorrectionMethod(OptionManagement.DMSOCorrection, environment.getOptions().get(OptionManagement.DMSOCorrection));
+			
+			if (DMSOCorrection == null){
+				throw new NoExistingMethodException("There is no implemented DMSO correction.");
+			}
+			else if (DMSOCorrection.isApplicable(environment)){
+				environment.setResult(DMSOCorrection.correctMeltingResult(environment));
+			}
+			else {
+				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
+			}
+		}
+		if (environment.getFormamide() > 0){
+			CorrectionMethod formamideCorrection = getCorrectionMethod(OptionManagement.formamideCorrection, environment.getOptions().get(OptionManagement.formamideCorrection));
+			
+			if (formamideCorrection == null){
+				throw new NoExistingMethodException("There is no implemented formamide correction.");
+			}
+			else if (formamideCorrection.isApplicable(environment)){
+				environment.setResult(formamideCorrection.correctMeltingResult(environment));
+			}
+			else {
+				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
+			}
+		}
+		
+		return environment.getResult();
 	}
 }

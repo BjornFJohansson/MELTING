@@ -25,7 +25,7 @@ public class Znosco07mm extends ZnoscoMethod {
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The thermodynamic parameters for single mismatches are from Znosco et al. (2007) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single mismatches are from Znosco et al. (2007) : " + formulaEnthalpy + " (entropy formula is similar)");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}

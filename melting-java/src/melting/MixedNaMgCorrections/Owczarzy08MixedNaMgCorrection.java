@@ -36,8 +36,8 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 
 	@Override
 	protected void displayVariable(){
-		OptionManagement.meltingLogger.log(Level.INFO, aFormula);
-		OptionManagement.meltingLogger.log(Level.INFO, dFormula);
-		OptionManagement.meltingLogger.log(Level.INFO, gFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, aFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, dFormula);
+		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
 	}
 }

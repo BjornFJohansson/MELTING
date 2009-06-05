@@ -33,7 +33,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.INFO, "The tandem mismatch parameters for symmetric sequences are from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : " + enthalpyFormula + "(entropy formula is similar.)");
+		OptionManagement.meltingLogger.log(Level.FINE, "The tandem mismatch parameters for symmetric sequences are from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : " + enthalpyFormula + "(entropy formula is similar.)");
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -46,21 +46,21 @@ public class Turner99_06tanmm extends PartialCalcul{
 			
 			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(), newSequences.getComplementary(), closing.toString());
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();
 		}
 		else {
-			String symetricSequence1 = sequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricSequence2 = sequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricComplementary1 = sequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
-			String symetricComplementary2 = sequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
+			String symetricSequence1 = NucleotidSequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
+			String symetricSequence2 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
+			String symetricComplementary1 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
+			String symetricComplementary2 = NucleotidSequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
 			
 			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
 			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
 
-			OptionManagement.meltingLogger.log(Level.INFO, "asymmetric tandem mismatches (other formula used): ");
+			OptionManagement.meltingLogger.log(Level.FINE, "asymmetric tandem mismatches (other formula used): ");
 
 			ThermoResult result1 = new ThermoResult(0,0,0);
 			ThermoResult result2 = new ThermoResult(0,0,0);
@@ -68,8 +68,8 @@ public class Turner99_06tanmm extends PartialCalcul{
 			result1 = calculateThermodynamics(sequences1, 0, 3, result1);
 			result2 = calculateThermodynamics(sequences2, 0, 3, result2);
 			
-			OptionManagement.meltingLogger.log(Level.INFO, symetricSequence1 + "/" + symetricComplementary1 + " : enthalpy = " + result1.getEnthalpy() + "  entropy = " + result1.getEntropy());
-			OptionManagement.meltingLogger.log(Level.INFO, symetricSequence2 + "/" + symetricComplementary2 + " : enthalpy = " + result2.getEnthalpy() + "  entropy = " + result2.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, symetricSequence1 + "/" + symetricComplementary1 + " : enthalpy = " + result1.getEnthalpy() + "  entropy = " + result1.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, symetricSequence2 + "/" + symetricComplementary2 + " : enthalpy = " + result2.getEnthalpy() + "  entropy = " + result2.getEntropy());
 
 			enthalpy += (result1.getEnthalpy() + result2.getEnthalpy()) / 2;
 			entropy += (result1.getEntropy() + result2.getEntropy()) / 2;
@@ -93,7 +93,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 				}
 				
 				if (isPenaltyNecessary){
-					OptionManagement.meltingLogger.log(Level.INFO, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
+					OptionManagement.meltingLogger.log(Level.FINE, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
 					isPenaltyNecessary = false;
 				}
 			}
@@ -121,7 +121,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			if (isPenaltyNecessary){
 				Thermodynamics penalty = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
 
-				OptionManagement.meltingLogger.log(Level.INFO, "penalty2 : enthalpy = " + penalty.getEnthalpy() + "  entropy = " + penalty.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "penalty2 : enthalpy = " + penalty.getEnthalpy() + "  entropy = " + penalty.getEntropy());
 				isPenaltyNecessary = false;
 			}
 		}
@@ -140,6 +140,9 @@ public class Turner99_06tanmm extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.WARNING, "the tandem mismatch parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);

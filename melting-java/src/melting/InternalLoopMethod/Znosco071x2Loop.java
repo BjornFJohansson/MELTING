@@ -15,7 +15,6 @@ public class Znosco071x2Loop extends PartialCalcul {
 	
 	public static String defaultFileName = "Znosco20071x2loop.xml";
 	private static String formulaEnthalpy = "delat H = H(first mismath) + H(initiation 1x2 loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
-	private static String formulaEntropy = "delat S = S(first mismath) + S(initiation 1x2 loop) + number AU closing x S(closing AU) + number GU closing x S(closing GU)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -31,7 +30,7 @@ public class Znosco071x2Loop extends PartialCalcul {
 		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The 1 x 2 internal loop formulas from Znosco et al. (2007) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The 1 x 2 internal loop formulas from Znosco et al. (2007) : " + formulaEnthalpy + " (entropy formula is similar)");
 		
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
@@ -40,7 +39,7 @@ public class Znosco071x2Loop extends PartialCalcul {
 		
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue();
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "1x2 Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "1x2 Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + initiationLoop.getEnthalpy();
 		double entropy = result.getEntropy() + initiationLoop.getEntropy();
@@ -49,12 +48,12 @@ public class Znosco071x2Loop extends PartialCalcul {
 		if (sequences.isBasePairEqualsTo('G', 'A', pos1 + 1)){
 			firstMismatch = this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2");
 
-			OptionManagement.meltingLogger.log(Level.INFO, "First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		else {
 			firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "First mismatch " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		enthalpy += firstMismatch.getEnthalpy();
 		entropy += firstMismatch.getEntropy();
@@ -62,7 +61,7 @@ public class Znosco071x2Loop extends PartialCalcul {
 		if (numberAU > 0){
 			Thermodynamics closureAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
 
 			enthalpy += numberAU * closureAU.getEnthalpy();
 			entropy += numberAU * closureAU.getEntropy();
@@ -72,7 +71,7 @@ public class Znosco071x2Loop extends PartialCalcul {
 		if (numberGU > 0){
 			Thermodynamics closureGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
 
 			enthalpy += numberGU * closureGU.getEnthalpy();
 			entropy += numberGU * closureGU.getEntropy();
@@ -87,14 +86,18 @@ public class Znosco071x2Loop extends PartialCalcul {
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
 					"Znosco et al. (2007) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (loopType.equals("1x2") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +

@@ -26,7 +26,7 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The magnesium correction from Owkzarzy et al. (2008) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction from Owkzarzy et al. (2008) : " + temperatureCorrection);
 
 		double Tm = correctTemperature(environment);
 		environment.setResult(Tm);
@@ -51,11 +51,11 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	}
 	
 	protected double correctTemperature(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.INFO, "where : ");
-		OptionManagement.meltingLogger.log(Level.INFO, "b = " + this.b);
-		OptionManagement.meltingLogger.log(Level.INFO, "c = " + this.c);
-		OptionManagement.meltingLogger.log(Level.INFO, "e = " + this.e);
-		OptionManagement.meltingLogger.log(Level.INFO, "f = " + this.f);
+		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "b = " + this.b);
+		OptionManagement.meltingLogger.log(Level.FINE, "c = " + this.c);
+		OptionManagement.meltingLogger.log(Level.FINE, "e = " + this.e);
+		OptionManagement.meltingLogger.log(Level.FINE, "f = " + this.f);
 		displayVariable();
 
 		double Mg = environment.getMg() - environment.getDNTP();
@@ -67,9 +67,9 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	}
 	
 	protected void displayVariable(){
-		OptionManagement.meltingLogger.log(Level.INFO, "a = " + this.a);
-		OptionManagement.meltingLogger.log(Level.INFO, "d = " + this.d);
-		OptionManagement.meltingLogger.log(Level.INFO, "g = " + this.g);
+		OptionManagement.meltingLogger.log(Level.FINE, "a = " + this.a);
+		OptionManagement.meltingLogger.log(Level.FINE, "d = " + this.d);
+		OptionManagement.meltingLogger.log(Level.FINE, "g = " + this.g);
 	}
 
 }

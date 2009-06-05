@@ -30,8 +30,8 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		
 		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
-		OptionManagement.meltingLogger.log(Level.INFO, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + azobenzeneValue.getEnthalpy();
 		double entropy = result.getEnthalpy() + azobenzeneValue.getEntropy();
@@ -45,13 +45,17 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (modified.calculateNumberOfTerminal('X', '-') > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +

@@ -17,7 +17,6 @@ public class Turner06InternalLoop extends PartialCalcul{
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
 	private static String formulaEnthalpy = "delat H = [H(first mismath) if loop length of 1 x n, n <= 2 or 2 x n, n != 2] + H(initiation loop of n) + (n1 - n2) x H(asymmetric loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
-	private static String formulaEntropy = "delat S = [S(first mismath) if loop length of 1 x n, n <= 2 or 2 x n, n != 2] + S(initiation loop of n) + (n1 - n2) x S(asymmetric loop) + number AU closing x S(closing AU) + number GU closing x S(closing GU)";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -33,7 +32,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 	
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The internal loop formulas from Turner et al. (2006) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "The internal loop formulas from Turner et al. (2006) : " + formulaEnthalpy + " (entropy formula is similar)");
 
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy();
@@ -55,7 +54,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		int loopLength = sequences.calculateLoopLength(pos1, pos2);
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue(Integer.toString(loopLength));
 		if (initiationLoop != null){
-			OptionManagement.meltingLogger.log(Level.INFO, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
 
 			enthalpy += initiationLoop.getEnthalpy();
 			if (loopLength > 4){
@@ -67,7 +66,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		}
 		else {
 			initiationLoop = this.collector.getInitiationLoopValue(">6");
-			OptionManagement.meltingLogger.log(Level.INFO, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - 1.08 x ln(loopLength / 6)");
+			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - 1.08 x ln(loopLength / 6)");
 
 			enthalpy += initiationLoop.getEnthalpy();
 
@@ -84,7 +83,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 
 			Thermodynamics closureAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
 
 			enthalpy += numberAU * closureAU.getEnthalpy();
 			entropy += numberAU * closureAU.getEntropy();
@@ -95,7 +94,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 			
 			Thermodynamics closureGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
 
 			enthalpy += numberGU *  closureGU.getEnthalpy();
 			entropy += numberGU * closureGU.getEntropy();
@@ -105,7 +104,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 			
 			Thermodynamics asymmetry = this.collector.getAsymmetry();
 			int asymetricValue = Math.abs(Integer.getInteger(loopType.substring(0, 1)) - Integer.getInteger(loopType.substring(2, 3)));
-			OptionManagement.meltingLogger.log(Level.INFO, asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 			
 			enthalpy += asymetricValue * asymmetry.getEnthalpy();
 			
@@ -123,12 +122,12 @@ public class Turner06InternalLoop extends PartialCalcul{
 			if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){	
 				firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
 
-				OptionManagement.meltingLogger.log(Level.INFO, "First mismatch : " + mismatch1.substring(1, 2) + "/" + mismatch2.substring(1, 2) + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch1.substring(1, 2) + "/" + mismatch2.substring(1, 2) + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
 			else {
 				firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
 
-				OptionManagement.meltingLogger.log(Level.INFO, "First mismatch : " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
 			enthalpy += firstMismatch.getEnthalpy();
 			entropy += firstMismatch.getEntropy();
@@ -144,14 +143,18 @@ public class Turner06InternalLoop extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
 		
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The internal loop parameters of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
+			
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
+
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && environment.getSequences().isBasePairEqualsTo('A', 'G', pos1 + 2)){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Turner (2006) excluded" +

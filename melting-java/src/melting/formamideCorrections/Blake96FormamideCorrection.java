@@ -15,7 +15,7 @@ public class Blake96FormamideCorrection implements CorrectionMethod{
 		double Fgc = environment.getSequences().calculatePercentGC() / 100;
 		double Tm = environment.getResult().getTm() + (0.453 * Fgc - 2.88) * environment.getFormamide();
 		
-		OptionManagement.meltingLogger.log(Level.INFO, "The formamide correction from Blake et al.(1996) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "The formamide correction from Blake et al.(1996) : " + temperatureCorrection);
 		
 		environment.setResult(Tm);
 		return environment.getResult();

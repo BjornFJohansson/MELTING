@@ -65,7 +65,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	public ThermoResult CalculateThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.INFO, "Nearest-Neighbor method :");
+		OptionManagement.meltingLogger.log(Level.FINE, "Nearest-Neighbor method :");
 
 		analyzeSequence();
 	
@@ -103,8 +103,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			double TmInverse = 1 / this.environment.getResult().getTm() + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
 			this.environment.setResult(1 / TmInverse);
 		}
-		
+				
 		return this.environment.getResult();
+	}
+
+	public RegisterCalculMethod getRegister() {
+		return register;
 	}
 
 	public boolean isApplicable() {

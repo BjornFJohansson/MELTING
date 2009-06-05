@@ -35,7 +35,7 @@ public class Turner06 extends CricksNNMethod {
 			
 			NNValue = this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.INFO, "m"+ sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "m"+ sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 			
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
@@ -81,7 +81,7 @@ public class Turner06 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.INFO, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();
