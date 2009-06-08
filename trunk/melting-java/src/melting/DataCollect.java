@@ -22,7 +22,7 @@ public class DataCollect {
 		
 		String newSeq1 = NucleotidSequences.getInversedSequence(seq1);
 		String newSeq2 = NucleotidSequences.getInversedSequence(seq2);
-		return newSeq1+"/"+newSeq2;
+		return newSeq2+"/"+ newSeq1;
 	}
 	
 	public Thermodynamics getTerminal(String type){
@@ -37,6 +37,7 @@ public class DataCollect {
 		}
 		return s;
 	}
+	
 	
 	public Thermodynamics getInitiation(){
 		Thermodynamics s = data.get("initiation");

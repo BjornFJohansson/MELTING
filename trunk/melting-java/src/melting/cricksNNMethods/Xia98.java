@@ -37,8 +37,11 @@ public class Xia98 extends CricksNNMethod {
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
-		environment.setResult(calculateInitiationHybridation(environment));
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
+
+		environment.modifieSequences(newSequences.getSequence(), newSequences.getComplementary());
+
+		environment.setResult(super.calculateInitiationHybridation(environment));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		

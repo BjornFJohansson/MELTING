@@ -18,7 +18,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		double entropy = result.getEntropy();
 		
 		Thermodynamics modifiedValue; 
-		for (int i = pos1; i <= pos2; i++){
+		for (int i = pos1; i <= pos2 - 1; i++){
 			modifiedValue = this.collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			
 			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
@@ -35,7 +35,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
-		for (int i = pos1; i <= pos2; i++){
+		for (int i = pos1; i <= pos2 - 1; i++){
 	
 			if (collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
 				return true;

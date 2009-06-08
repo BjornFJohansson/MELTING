@@ -37,6 +37,7 @@ import melting.cricksNNMethods.Freier86;
 import melting.cricksNNMethods.Santalucia04;
 import melting.cricksNNMethods.Santalucia96;
 import melting.cricksNNMethods.Sugimoto95;
+import melting.cricksNNMethods.Sugimoto96;
 import melting.cricksNNMethods.Tanaka04;
 import melting.cricksNNMethods.Turner06;
 import melting.cricksNNMethods.Xia98;
@@ -169,11 +170,12 @@ public class RegisterCalculMethod {
 	
 	private void initializeCricksMethods(){
 		cricksMethod.put("Allawi_Santalucia_1997", AllawiSantalucia97.class);
-		cricksMethod.put("Beslauer_1986", Breslauer86.class);
+		cricksMethod.put("Breslauer_1986", Breslauer86.class);
 		cricksMethod.put("Freier_1986", Freier86.class);
 		cricksMethod.put("Santalucia_2004", Santalucia04.class);
 		cricksMethod.put("Santalucia_1996", Santalucia96.class);
 		cricksMethod.put("Sugimoto_1995", Sugimoto95.class);
+		cricksMethod.put("Sugimoto_1996", Sugimoto96.class);
 		cricksMethod.put("Tanaka_2004", Tanaka04.class);
 		cricksMethod.put("Turner_2006", Turner06.class);
 		cricksMethod.put("Xia_1998", Xia98.class);
@@ -328,6 +330,9 @@ public class RegisterCalculMethod {
 				if (Helper.useOtherDataFile(methodName)){
 					methodName = Helper.getOptionFileName(methodName);
 				}
+				if (getPartialCalculMethodHashMap(optionName).get(methodName) == null){
+					throw new NoExistingMethodException("We don't know the method " + methodName);
+				}
 				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
 				
 				return method;
@@ -348,6 +353,9 @@ public class RegisterCalculMethod {
 		}
 		SodiumEquivalentMethod method;
 		try {
+			if (NaEqMethod.get(methodName) == null){
+				throw new NoExistingMethodException("We don't know the method " + methodName);
+			}
 			method = NaEqMethod.get(methodName).newInstance();
 			if (method.isApplicable(optionSet)) {
 				return method;
@@ -371,6 +379,9 @@ public class RegisterCalculMethod {
 			}
 			CorrectionMethod method;
 			try {
+				if (ionCorrection.get(methodName) == null){
+					throw new NoExistingMethodException("We don't know the method " + methodName);
+				}
 				method = ionCorrection.get(methodName).newInstance();
 				if (method.isApplicable(environment)) {
 					return method;
@@ -390,7 +401,7 @@ public class RegisterCalculMethod {
 			if (environment.getHybridization().equals("dnarna") || environment.getHybridization().equals("rnadna")){
 				return new Wetmur91SodiumCarrection();
 			}
-			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false){
+			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false && environment.getHybridization().equals("mrnarna") == false){
 				throw new NoExistingMethodException("There is no existing ion correction method (option " + OptionManagement.ionCorrection + ") for this type of hybridization.");
 			}
 			
@@ -398,7 +409,7 @@ public class RegisterCalculMethod {
 				if (environment.getHybridization().equals("dnadna")){
 					return new Owczarzy08MagnesiumCorrection();
 				}
-				else if (environment.getHybridization().equals("rnarna")){
+				else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
 					return new Tan07MagnesiumCorrection();
 				}
 			}
@@ -410,7 +421,7 @@ public class RegisterCalculMethod {
 					if (environment.getHybridization().equals("dnadna")){
 						return new Owczarzy04SodiumCorrection22();
 					}
-					else if (environment.getHybridization().equals("rnarna")){
+					else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
 						return new Tan07SodiumCorrection();
 					}
 				}
@@ -419,7 +430,7 @@ public class RegisterCalculMethod {
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MixedNaMgCorrection();
 						}
-						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
 							return new Tan07MixedNaMgCorrection();
 						}
 					}
@@ -427,7 +438,7 @@ public class RegisterCalculMethod {
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MagnesiumCorrection();
 						}
-						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("rnadna") || environment.getHybridization().equals("dnarna")){
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
 							return new Tan07MagnesiumCorrection();
 						}
 					}
@@ -453,8 +464,11 @@ public class RegisterCalculMethod {
 				int duplexLength = Math.min(seq.length(),seq2.length());
 
 				if (duplexLength > thres){
-
 					methodName = optionSet.get(OptionManagement.approximativeMode);
+
+					if (methodName == null){
+						throw new NoExistingMethodException("We don't know the method " + methodName);
+					}
 
 					try {
 						method = approximativeMethod.get(methodName).newInstance();
@@ -474,6 +488,9 @@ public class RegisterCalculMethod {
 			}
 			else if (methodName.equals("approximate")){
 				methodName = optionSet.get(OptionManagement.approximativeMode);
+				if (methodName == null){
+					throw new NoExistingMethodException("We don't know the method " + methodName);
+				}
 				try {
 					method = approximativeMethod.get(methodName).newInstance();
 					method.setUpVariable(optionSet);
@@ -504,6 +521,9 @@ public class RegisterCalculMethod {
 		}
 		CorrectionMethod method;
 		try {
+			if (otherCorrection.get(optionName).get(methodName) == null){
+			throw new NoExistingMethodException("We don't know the method " + methodName);
+		}
 			method = otherCorrection.get(optionName).get(methodName).newInstance();
 			return method;
 			

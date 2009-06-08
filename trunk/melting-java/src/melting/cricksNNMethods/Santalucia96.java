@@ -13,7 +13,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 
 	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
 	
-	public static String defaultFileName = "Santalucia1998nn.xml";
+	public static String defaultFileName = "Santalucia1996nn.xml";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -37,9 +37,11 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
+		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
+
+		environment.modifieSequences(newSequences.getSequence(), newSequences.getComplementary());
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
-		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 				

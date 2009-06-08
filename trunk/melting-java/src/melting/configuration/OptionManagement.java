@@ -54,7 +54,7 @@ public class OptionManagement {
 	public static final Logger meltingLogger = Logger.getLogger("melting");
 	
 	private static final String version = "5";
-	public static String dataPathwayValue = "melting/Data";
+	public static String dataPathwayValue = "src/melting/Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	

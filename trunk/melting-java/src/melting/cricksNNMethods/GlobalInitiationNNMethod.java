@@ -12,12 +12,13 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));
+
 		double enthalpy = environment.getResult().getEnthalpy();
 		double entropy = environment.getResult().getEntropy();
-		
+
 		if (environment.getSequences().isOneGCBasePair()){
-			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_pair");
-			
+			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_Pair");
+
 			OptionManagement.meltingLogger.log(Level.FINE, "The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
 
 			enthalpy += initiationOneGC.getEnthalpy();

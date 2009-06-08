@@ -18,7 +18,6 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		double entropy = result.getEntropy();
 		
 		Thermodynamics NNValue;
-		 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			NNValue = this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
@@ -29,15 +28,16 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
-		
+				
 		return result;
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		double enthalpy = 0;
 		double entropy = 0;
-		
+
 		Thermodynamics initiation = this.collector.getInitiation();
+
 		
 		if (initiation != null) {
 			OptionManagement.meltingLogger.log(Level.FINE, "Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
@@ -61,9 +61,9 @@ public abstract class CricksNNMethod extends PartialCalcul{
 	}
 	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
-		
-		for (int i = pos1; i < pos2; i++){
-			
+
+		for (int i = pos1; i <= pos2 - 1; i++){
+
 			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
 				return true;
 			}

@@ -41,7 +41,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		double entropy = result.getEntropy();
 		
 		Thermodynamics mismatchValue;
-		for (int i = 0; i < newSequences.getDuplexLength(); i++){
+		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
 			mismatchValue =  collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
 			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
@@ -74,7 +74,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 			
-		for (int i = pos1; i <= pos2; i++){
+		for (int i = pos1; i <= pos2 - 1; i++){
 			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}
