@@ -49,18 +49,31 @@ public class Sugimoto95 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
-		if (environment.getHybridization().equals("dnarna") == false || environment.getHybridization().equals("rnadna") == false){
+		boolean isApplicable = true;
+		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
 			isApplicable = false;
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Sugimoto et al. (1995)" +
 					"are established for hybrid DNA/RNA sequences.");
 		}
+		
+		isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.isSelfComplementarity()){
 			throw new MethodNotApplicableException ( "The thermodynamic parameters of Sugimoto et al. (1995)" +
 					"are established for hybrid DNA/RNA sequences and they can't be self complementary sequence.");
 		}
 		return isApplicable;
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		boolean isMissing = false;
+		for (int i = pos1; i <= pos2 - 1; i++){
+
+			if (this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i)) == null){
+				isMissing = true;
+			}
+		}
+		return isMissing;
 	}
 }

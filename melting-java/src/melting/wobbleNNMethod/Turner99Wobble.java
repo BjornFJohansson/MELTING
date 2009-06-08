@@ -34,7 +34,7 @@ public class Turner99Wobble extends PartialCalcul{
 		double entropy = result.getEntropy();
 		
 		Thermodynamics mismatchValue;
-		for (int i = 0; i < newSequence.getDuplexLength(); i++){
+		for (int i = 0; i < newSequence.getDuplexLength() - 1; i++){
 			mismatchValue = this.collector.getMismatchvalue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
 			
 			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(pos1 + i), sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
@@ -66,7 +66,7 @@ public class Turner99Wobble extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
  
-		for (int i = pos1; i <= pos2; i++){
+		for (int i = pos1; i <= pos2 - 1; i++){
 			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}

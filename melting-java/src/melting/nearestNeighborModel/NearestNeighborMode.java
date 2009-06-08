@@ -43,24 +43,30 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 		analyzeSequence();
 
+		this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
+		
 		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
+
 		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
+
 		this.environment.setResult(resultinitiation);
 		
 		int pos1 = 0; 
+		int pos2 = 0;
 		
-		while (pos1 <= this.environment.getSequences().getDuplexLength() - 1){
+		while (pos2 < this.environment.getSequences().getDuplexLength() - 1){
 			int [] positions = getPositionsMotif(pos1);
-			int pos2 = positions[1];
-			
+			pos2 = positions[1];
+
 			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
-			
 			this.environment.setResult(newResult);
+
+			pos1 = pos2;
 		}
 		
 		double Tm = calculateMeltingTemperature(this.environment);
@@ -77,8 +83,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			double TmInverse = 1 / this.environment.getResult().getTm() + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
 			this.environment.setResult(1 / TmInverse);
 		}
-				
-		return this.environment.getResult();
+			return this.environment.getResult();
 	}
 
 	public RegisterCalculMethod getRegister() {
@@ -114,7 +119,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		int position = pos1;
 
 		if(environment.getSequences().isCNGMotif(pos1, pos1 + 5)){
-			while (environment.getSequences().isCNGMotif(position + 3, position + 5)){
+			while (environment.getSequences().isCNGMotif(position + 3, position + 5) && position + 5 <= environment.getSequences().getDuplexLength() - 1){
 				position += 3;
 			}
 			int [] positions = {pos1, position};
@@ -123,7 +128,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		else {
 			if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
 
-				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) && position + 1 < environment.getSequences().getDuplexLength() - 1){
+				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) && position < environment.getSequences().getDuplexLength() - 1){
 					position ++;
 				}
 
@@ -134,7 +139,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			
 			else {
 				if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
-					while (environment.getSequences().isBasePairEqualsTo('G', 'U', position + 1)){
+					while (environment.getSequences().isBasePairEqualsTo('G', 'U', position) && position < environment.getSequences().getDuplexLength() - 1){
 						position ++;
 					}
 					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
@@ -153,7 +158,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					}
 				}
 				else {
-					while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false && position + 1 <= environment.getSequences().getDuplexLength() - 1){
+					while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) == false && position < environment.getSequences().getDuplexLength() - 1){
 						position ++;
 					}
 					if (environment.getSequences().isBasePairEqualsTo('G', 'U', position)){
@@ -268,20 +273,19 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				}
 			}
 		}
-		
+
 		methodName = this.environment.getOptions().get(optionName);
-		
+
 		if (method == null){
-			initializeMethod(optionName, methodName);
+			method = initializeMethod(optionName, methodName);
 		}
-		
+
 		return method;
 	}
 	
-	private void initializeMethod(String optionName, String methodName){
-			
+	private PartialCalculMethod initializeMethod(String optionName, String methodName){
+
 		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
-			
 		if (necessaryMethod != null){
 			necessaryMethod.initializeFileName(methodName);
 			necessaryMethod.loadData(environment.getOptions());
@@ -290,17 +294,21 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			throw new NoExistingMethodException("one or more method(s) is(are) missing to compute the melting" +
 					"temperature.");
 		}
+		return necessaryMethod;
 	}
 	
 	private boolean checkIfMethodsAreApplicable(){
 		int pos1 = 0;
+		int pos2 = 0;
 		boolean isApplicableMethod = true;
 
-		while (pos1 <= environment.getSequences().getDuplexLength() - 1){
+		while (pos2 < environment.getSequences().getDuplexLength() - 1){
+
 			int [] positions = getPositionsMotif(pos1);
-			int pos2 = positions[1];
+			pos2 = positions[1];
+
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
-			
+
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
@@ -311,7 +319,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private void analyzeSequence(){
-		
+
 		if (checkIfMethodsAreApplicable() == false){
 			throw new MethodNotApplicableException("we cannot compute the melting because one method is not applicable. Check the sequences.");
 		}

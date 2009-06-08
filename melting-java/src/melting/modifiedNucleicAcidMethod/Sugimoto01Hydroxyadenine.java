@@ -105,7 +105,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			
 		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
 		if (pos1 != 0 && pos2 != pos1 + sequences.getDuplexLength() - 1){
-			for (int i = 0; i < noModified.getDuplexLength(); i++){
+			for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 				if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
 					return true;
 				}

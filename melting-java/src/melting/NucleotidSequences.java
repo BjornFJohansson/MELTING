@@ -168,17 +168,15 @@ public class NucleotidSequences {
 			seq.deleteCharAt(indexStart);
 			comp.deleteCharAt(indexStart);
 		}
-		
 		if (indexStart == getDuplexLength() - 1){
 			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
 		}
 		
-		int indexEnd = 0;
+		int indexEnd = getDuplexLength() - 1;
 		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false && indexEnd >= 0){
 			seq.deleteCharAt(indexEnd);
 			comp.deleteCharAt(indexEnd);
 		}
-		
 		if (indexEnd == 0){
 			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
 		}
@@ -416,8 +414,10 @@ public class NucleotidSequences {
 	
 	public static String getInversedSequence(String sequence){
 		StringBuffer newSequence = new StringBuffer(sequence.length());
+
 		for (int i = 0; i < sequence.length(); i++){
-			newSequence.append(sequence.charAt(sequence.length() - i)); 
+
+			newSequence.append(sequence.charAt(sequence.length() - i - 1)); 
 		}
 		return newSequence.toString();
 	}

@@ -23,7 +23,6 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 	}
 
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);		
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Tanaka (2004)" +
@@ -32,7 +31,8 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
 
 		}
-		return isApplicable;
+
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	@Override

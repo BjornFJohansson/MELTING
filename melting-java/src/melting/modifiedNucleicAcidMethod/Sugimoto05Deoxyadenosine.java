@@ -76,7 +76,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		NucleotidSequences noModified = sequences.removeDeoxyadenine(pos1, pos2);
 
-		for (int i = 0; i < noModified.getDuplexLength(); i++){
+		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
 				return true;
 			}
@@ -97,7 +97,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		double entropy = result.getEntropy();
 		
 		Thermodynamics NNValue;
-		for (int i = 0; i < noModified.getDuplexLength(); i++){
+		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 			
 			NNValue = this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i));
 			enthalpy += NNValue.getEnthalpy();

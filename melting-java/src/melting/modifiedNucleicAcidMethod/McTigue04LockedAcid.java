@@ -40,10 +40,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		
 		Thermodynamics lockedAcidValue;
 		
-		for (int i = pos1; i <= pos2; i++){
-			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequence(), newSequences.getComplementary());
+		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
 
 			enthalpy += lockedAcidValue.getEnthalpy();
 			entropy += lockedAcidValue.getEntropy();
@@ -84,7 +84,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		}
 		
 		for (int i = pos1; i <= pos2; i++){
-			if (this.collector.getLockedAcidValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
+			if (this.collector.getLockedAcidValue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}
 		}

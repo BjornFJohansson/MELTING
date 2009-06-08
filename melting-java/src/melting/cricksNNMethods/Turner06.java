@@ -50,8 +50,8 @@ public class Turner06 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = isApplicable(environment, pos1, pos2);
-		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
 		if (environment.getHybridization().equals("mrnarna") == false){
 			isApplicable = false;
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Turner et al. (2006)" +
@@ -62,14 +62,16 @@ public class Turner06 extends CricksNNMethod {
 			throw new MethodNotApplicableException ( "The thermodynamic parameters of Turner et al. (2006)" +
 					"are established for hybrid mRNA/RNA sequences.");
 		}
-		
 		return isApplicable;
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
+		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
+
+		environment.modifieSequences(withoutTerminalUnpairedNucleotides.getSequence(), withoutTerminalUnpairedNucleotides.getComplementary());
+
 		environment.setResult(super.calculateInitiationHybridation(environment));
 
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
 		
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
@@ -97,6 +99,18 @@ public class Turner06 extends CricksNNMethod {
 		double entropy1MNa = entropy0_1MNa - 0.368 * (Math.abs(pos2 - pos1)) * Math.log(0.1);
 		
 		return entropy1MNa;
+	}
+
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+
+		boolean isMissing = false;
+		for (int i = pos1; i <= pos2 - 1; i++){
+			if (this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+				isMissing = true;
+			}
+		}
+		return isMissing;
 	}
 
 }

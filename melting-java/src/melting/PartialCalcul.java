@@ -25,10 +25,9 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		NucleotidSequences sequences = new NucleotidSequences(environment.getOptions().get(OptionManagement.sequence),environment.getOptions().get(OptionManagement.complementarySequence));
-		
+		NucleotidSequences sequences = environment.getSequences();
 		if (isMissingParameters(sequences, pos1, pos2)) {
-			throw new ThermodynamicParameterError("Some thermodynamic parameters are missing to compute" +
+			throw new ThermodynamicParameterError("Some thermodynamic parameters are missing to compute " +
 					"melting temperature.");
 		}
 		return true;
