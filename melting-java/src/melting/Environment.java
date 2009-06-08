@@ -19,6 +19,7 @@ public class Environment {
 	
 	public Environment(HashMap<String, String> options){
 		this.options = options;
+
 		if (options == null){
 			throw new OptionSyntaxError("Some required options are missing. Read the manual for further informations or see the option " + OptionManagement.meltingHelp);
 		}
@@ -41,8 +42,8 @@ public class Environment {
 		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + this.Hybridization);
 		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + this.nucleotides + "mol/L");
 		
-		this.factor = Integer.getInteger(options.get(OptionManagement.factor));
-		
+		this.factor = Integer.parseInt(options.get(OptionManagement.factor));
+
 		OptionManagement.meltingLogger.log(Level.FINE, "correction factor F : " + this.factor);
 
 		if (options.containsKey(OptionManagement.selfComplementarity)){
@@ -51,14 +52,16 @@ public class Environment {
 			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity ");
 
 		}
+
 		OptionManagement.meltingLogger.log(Level.FINE, "no self complementarity ");
-		
+
 		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "sequence : " + options.get(OptionManagement.sequence));
 		OptionManagement.meltingLogger.log(Level.FINE, "complementary sequence : " + options.get(OptionManagement.complementarySequence));
 
 		this.result = new ThermoResult(0,0,0);
+		
 	}
 
 	public int getFactor() {

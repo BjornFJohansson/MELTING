@@ -6,11 +6,9 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
-import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 
 public class ApproximativeMode implements CompletCalculMethod{
@@ -37,7 +35,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 					" and unpaired nucleotides.");
 		}
 		
-		if (Integer.getInteger(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
+		if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
 			
 			if (environment.getOptions().get(OptionManagement.completMethod).equals("default")){
 				isApplicable = false;
@@ -64,35 +62,4 @@ public class ApproximativeMode implements CompletCalculMethod{
 		}
 	}
 
-	public ThermoResult correctThermodynamics() {
-		
-		if (this.environment.getDMSO() > 0){
-			CorrectionMethod DMSOCorrection = register.getCorrectionMethod(OptionManagement.DMSOCorrection, this.environment.getOptions().get(OptionManagement.DMSOCorrection));
-			
-			if (DMSOCorrection == null){
-				throw new NoExistingMethodException("There is no implemented DMSO correction.");
-			}
-			else if (DMSOCorrection.isApplicable(this.environment)){
-				this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
-			}
-			else {
-				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
-			}
-		}
-		if (this.environment.getFormamide() > 0){
-			CorrectionMethod formamideCorrection = register.getCorrectionMethod(OptionManagement.formamideCorrection, this.environment.getOptions().get(OptionManagement.formamideCorrection));
-			
-			if (formamideCorrection == null){
-				throw new NoExistingMethodException("There is no implemented formamide correction.");
-			}
-			else if (formamideCorrection.isApplicable(this.environment)){
-				this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
-			}
-			else {
-				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
-			}
-		}
-		
-		return this.environment.getResult();
-	}
 }

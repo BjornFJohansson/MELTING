@@ -332,9 +332,9 @@ public class RegisterCalculMethod {
 				
 				return method;
 			} catch (InstantiationException e) {
-				e.printStackTrace();
+				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName);
 			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName);
 			}
 		}
 		return null;
@@ -356,11 +356,10 @@ public class RegisterCalculMethod {
 				throw new MethodNotApplicableException("The sodium equivalent method (option " + OptionManagement.NaEquivalentMethod + ") is not applicable with this environment.");
 			}
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod);
 		}
-		return null;	
 	}
 	
 	public CorrectionMethod getIonCorrectionMethod (Environment environment){
@@ -380,11 +379,10 @@ public class RegisterCalculMethod {
 					throw new MethodNotApplicableException("The ion correction method (option " + OptionManagement.ionCorrection + ") is not applicable with this environment.");
 				}
 			} catch (InstantiationException e) {
-				e.printStackTrace();
+				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
 			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
 			}
-			return null;
 		}
 		else{
 			double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
@@ -442,54 +440,61 @@ public class RegisterCalculMethod {
 	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
 		
 		String methodName = optionSet.get(OptionManagement.completMethod);
-		
 		if (methodName == null){
 			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.completMethod + ".");
 		}
 	
-		CompletCalculMethod method;
-		try {
-			method = completCalculMethod.get(methodName).newInstance();
-			
-			if (method == null){
-				int thres = Integer.getInteger(optionSet.get(OptionManagement.threshold));
+		CompletCalculMethod method = null;
+
+			if (completCalculMethod.get(methodName) == null){
+				int thres = Integer.parseInt(optionSet.get(OptionManagement.threshold));
 				String seq = optionSet.get(OptionManagement.sequence);
 				String seq2 = optionSet.get(OptionManagement.complementarySequence);
 				int duplexLength = Math.min(seq.length(),seq2.length());
-				
+
 				if (duplexLength > thres){
-					initializeApproximativeMethods();
-					
+
 					methodName = optionSet.get(OptionManagement.approximativeMode);
+
 					try {
 						method = approximativeMethod.get(methodName).newInstance();
 						method.setUpVariable(optionSet);
 					} catch (InstantiationException e) {
-						e.printStackTrace();
+						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
 					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
 					}
 				}
 				else {
+
 					method = new NearestNeighborMode();
 					
 					method.setUpVariable(optionSet);
 				}
 			}
-			
+			else if (methodName.equals("approximate")){
+				methodName = optionSet.get(OptionManagement.approximativeMode);
+				try {
+					method = approximativeMethod.get(methodName).newInstance();
+					method.setUpVariable(optionSet);
+				} catch (InstantiationException e) {
+					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+				} catch (IllegalAccessException e) {
+					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+				}
+			}
+			else {
+				method = new NearestNeighborMode();
+				
+				method.setUpVariable(optionSet);
+			}
 			if (method.isApplicable() && method != null) {
+
 				return method;
 			}
 			else {
 				throw new MethodNotApplicableException("The melting temperature calcul method (option " + OptionManagement.completMethod + ") is not applicable with this environment.");
 			}
-			
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
@@ -503,11 +508,10 @@ public class RegisterCalculMethod {
 			return method;
 			
 		} catch (InstantiationException e) {
-			e.printStackTrace();
+			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
 		}
-		return null;	
 	}
 	
 	public ThermoResult computeOtherMeltingCorrections(Environment environment){

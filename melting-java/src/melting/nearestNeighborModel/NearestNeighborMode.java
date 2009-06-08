@@ -38,37 +38,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private PartialCalculMethod tandemMismatchMethod;
 	private PartialCalculMethod wobbleMethod;
 	
-	private HashMap<PartialCalculMethod, String> matchingOptionNames = new HashMap<PartialCalculMethod, String>();
-	
-	public NearestNeighborMode(){
-		initializeMatchingOptionNames();
-	}
-	
-	private void initializeMatchingOptionNames(){
-		
-		matchingOptionNames.put(lockedAcidMethod, OptionManagement.lockedAcidMethod);
-		matchingOptionNames.put(azobenzeneMethod, OptionManagement.azobenzeneMethod);
-		matchingOptionNames.put(CNGRepeatsMethod, OptionManagement.CNGMethod);
-		matchingOptionNames.put(deoxyadenineMethod, OptionManagement.deoxyadenineMethod);
-		matchingOptionNames.put(doubleDangingEndMethod, OptionManagement.doubleDanglingEndMethod);
-		matchingOptionNames.put(hydroxyadenosineMethod, OptionManagement.hydroxyadenineMethod);
-		matchingOptionNames.put(inosineMethod, OptionManagement.inosineMethod);
-		matchingOptionNames.put(internalLoopMethod, OptionManagement.internalLoopMethod);
-		matchingOptionNames.put(longBulgeLoopMethod, OptionManagement.longBulgeLoopMethod);
-		matchingOptionNames.put(longDangingEndMethod, OptionManagement.longDanglingEndMethod);
-		matchingOptionNames.put(cricksMethod, OptionManagement.NNMethod);
-		matchingOptionNames.put(singleBulgeLoopMethod, OptionManagement.singleBulgeLoopMethod);
-		matchingOptionNames.put(singleDangingEndMethod, OptionManagement.singleDanglingEndMethod);
-		matchingOptionNames.put(singleMismatchMethod, OptionManagement.singleMismatchMethod);
-		matchingOptionNames.put(tandemMismatchMethod, OptionManagement.tandemMismatchMethod);
-		matchingOptionNames.put(wobbleMethod, OptionManagement.wobbleBaseMethod);
-	}
-	
 	public ThermoResult CalculateThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "Nearest-Neighbor method :");
 
 		analyzeSequence();
-	
+
 		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
 		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
 		this.environment.setResult(resultinitiation);
@@ -113,8 +87,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 	public boolean isApplicable() {
 		boolean isApplicable = true;
-		
-		if (Integer.getInteger(this.environment.getOptions().get(OptionManagement.threshold)) >= this.environment.getSequences().getDuplexLength()){
+		if (Integer.parseInt(this.environment.getOptions().get(OptionManagement.threshold)) <= this.environment.getSequences().getDuplexLength()){
 			OptionManagement.meltingLogger.log(Level.WARNING, "the Nearest Neighbor model is accurate for " +
 			"shorter sequences. (length superior to 6 and inferior to" +
 			 this.environment.getOptions().get(OptionManagement.threshold) +")");
@@ -149,12 +122,13 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		}
 		else {
 			if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
-				
-				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1))){
+
+				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) && position + 1 < environment.getSequences().getDuplexLength() - 1){
 					position ++;
 				}
 
 				int [] positions = {pos1, position};
+
 				return positions;
 			}
 			
@@ -207,56 +181,67 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
+		PartialCalculMethod method = null;
+		String optionName = "";
+		String methodName = "";
+		
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
 			if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
 				if (positions[1] - positions[0] + 1 == 2){
-					return this.singleDangingEndMethod;
+					optionName = OptionManagement.singleDanglingEndMethod;
+					method = this.singleDangingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 == 3){
-					return this.doubleDangingEndMethod;
+					optionName = OptionManagement.doubleDanglingEndMethod;
+					method = this.doubleDangingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 > 3){
-					return this.longDangingEndMethod;
+					optionName = OptionManagement.longDanglingEndMethod;
+					method = this.longDangingEndMethod;
 				}
 				else {
 					throw new SequenceException("we don't recognize the motif " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
 				}
 			}
-			
-			if ((environment.getSequences().isMismatch(positions[0], positions[1]))){
+			else if ((environment.getSequences().isMismatch(positions[0], positions[1]))){
 				throw new NoExistingMethodException("No method for terminal mismatches have been implemented yet.");
 			}
 		}
 		
 		if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
-			return this.cricksMethod;
+			optionName = OptionManagement.NNMethod;
+			method = this.cricksMethod;
 		}
 		else if (environment.getSequences().isCNGMotif(positions[0], positions[1])){
-			return this.CNGRepeatsMethod;
+			optionName = OptionManagement.CNGMethod;
+			method = this.CNGRepeatsMethod;
 		}
 		else if (environment.getSequences().isGUSequences(positions[0], positions[1])){
-			return this.wobbleMethod;
+			optionName = OptionManagement.wobbleBaseMethod;
+			method = this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
-			if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
-				System.out.println("ERROR : No method for terminal mismatches have been implemented yet.");
-			}
 			if (positions[1] - positions[0] + 1 == 3){
-				return this.singleMismatchMethod;
+				optionName = OptionManagement.singleMismatchMethod;
+				method = this.singleMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 == 4){
-				return this.tandemMismatchMethod;
+				optionName = OptionManagement.tandemMismatchMethod;
+				method = this.tandemMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 > 4){
-				return this.internalLoopMethod;
+				optionName = OptionManagement.internalLoopMethod;
+				method = this.internalLoopMethod;
 			}
 		}
 		else if (environment.getSequences().isBulgeLoop(positions[0], positions[1])){
 			if (positions[1] - positions[0] + 1 == 3){
-				return this.singleBulgeLoopMethod;
+				optionName = OptionManagement.singleBulgeLoopMethod;
+				method = this.singleBulgeLoopMethod;
 			}
 			else if (positions[1] - positions[0] + 1 >= 4){
-				return this.longBulgeLoopMethod;
+				optionName = OptionManagement.longBulgeLoopMethod;
+				method = this.longBulgeLoopMethod;
 			}
 		}
 		else if (environment.getSequences().isListedModifiedAcid(positions[0], positions[1])){
@@ -264,50 +249,46 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			if (environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1])) != null){
 				switch (acidName) {
 				case inosine:
-					return this.inosineMethod;
+					optionName = OptionManagement.inosineMethod;
+					method = this.inosineMethod;
 				case azobenzene:
-					return this.azobenzeneMethod;
+					optionName = OptionManagement.azobenzeneMethod;
+					method = this.azobenzeneMethod;
 				case hydroxyadenine:
-					return this.hydroxyadenosineMethod;
+					optionName = OptionManagement.hydroxyadenineMethod;
+					method = this.hydroxyadenosineMethod;
 				case L_deoxyadenine:
-					return this.deoxyadenineMethod;
+					optionName = OptionManagement.deoxyadenineMethod;
+					method = this.deoxyadenineMethod;
 				case lockedAcidNucleic:
-					return this.lockedAcidMethod;
+					optionName = OptionManagement.lockedAcidMethod;
+					method = this.lockedAcidMethod;
 				default:
-					System.err.println("ERROR : There is a unknown modified acid nucleic in the sequences.");
-					break;
+					throw new SequenceException("There is a unknown modified acid nucleic in the sequences.");
 				}
 			}
 		}
-		return null;
+		
+		methodName = this.environment.getOptions().get(optionName);
+		
+		if (method == null){
+			initializeMethod(optionName, methodName);
+		}
+		
+		return method;
 	}
 	
-	private void initializeNecessaryMethods(){
-		int pos1 = 0;
-		
-		while (pos1 <= environment.getSequences().getDuplexLength() - 1){
-			int [] positions = getPositionsMotif(pos1);
-			int pos2 = positions[1];
-			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+	private void initializeMethod(String optionName, String methodName){
 			
-			if (necessaryMethod == null){
-				String optionName = this.matchingOptionNames.get(necessaryMethod);
-				String methodName = environment.getOptions().get(optionName);
-				
-				necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
-				
-				if (necessaryMethod != null){
-					necessaryMethod.initializeFileName(methodName);
-					necessaryMethod.loadData(environment.getOptions());
-				
-				}
-				else {
-					throw new NoExistingMethodException("one or more method(s) is(are) missing to compute the melting" +
-							"temperature at the positions " + pos1 + "-" + pos2);
-				}
-			}
+		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
 			
-			pos1 = pos2;
+		if (necessaryMethod != null){
+			necessaryMethod.initializeFileName(methodName);
+			necessaryMethod.loadData(environment.getOptions());
+		}
+		else {
+			throw new NoExistingMethodException("one or more method(s) is(are) missing to compute the melting" +
+					"temperature.");
 		}
 	}
 	
@@ -320,11 +301,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			int pos2 = positions[1];
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
 			
-			if (necessaryMethod == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "We cannot comput the melting temperature, there is an option we don't understand.");
-				isApplicableMethod = false;
-			}
-			
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
@@ -335,7 +311,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private void analyzeSequence(){
-		initializeNecessaryMethods();
 		
 		if (checkIfMethodsAreApplicable() == false){
 			throw new MethodNotApplicableException("we cannot compute the melting because one method is not applicable. Check the sequences.");
@@ -348,35 +323,4 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		return Tm;
 	}
 
-	public ThermoResult correctThermodynamics() {
-		
-		if (this.environment.getDMSO() > 0){
-			CorrectionMethod DMSOCorrection = register.getCorrectionMethod(OptionManagement.DMSOCorrection, this.environment.getOptions().get(OptionManagement.DMSOCorrection));
-			
-			if (DMSOCorrection == null){
-				throw new NoExistingMethodException("There is no implemented DMSO correction.");
-			}
-			else if (DMSOCorrection.isApplicable(this.environment)){
-				this.environment.setResult(DMSOCorrection.correctMeltingResult(this.environment));
-			}
-			else {
-				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
-			}
-		}
-		if (this.environment.getFormamide() > 0){
-			CorrectionMethod formamideCorrection = register.getCorrectionMethod(OptionManagement.formamideCorrection, this.environment.getOptions().get(OptionManagement.formamideCorrection));
-			
-			if (formamideCorrection == null){
-				throw new NoExistingMethodException("There is no implemented formamide correction.");
-			}
-			else if (formamideCorrection.isApplicable(this.environment)){
-				this.environment.setResult(formamideCorrection.correctMeltingResult(this.environment));
-			}
-			else {
-				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
-			}
-		}
-		
-		return this.environment.getResult();
-	}
 }

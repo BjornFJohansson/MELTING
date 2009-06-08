@@ -17,11 +17,11 @@ public class NucleotidSequences {
 	public NucleotidSequences(String sequence, String complementary){
 		initializeModifiedAcidArrayList();
 		initializeModifiedAcidHashmap();
-		
+
 		this.sequence = sequence;
 		this.complementary = complementary;
-		encodeSequences();
-		
+		encodeSequence();
+		encodeComplementary();		
 	}
 	
 	private void initializeModifiedAcidArrayList(){
@@ -422,41 +422,77 @@ public class NucleotidSequences {
 		return newSequence.toString();
 	}
 	
-	private void encodeSequences(){
-		StringBuffer seq = new StringBuffer(Math.max(this.sequence.length(), this.complementary.length()));
-		StringBuffer comp = new StringBuffer(Math.max(this.sequence.length(), this.complementary.length()));
-		
-		seq.append(this.sequence);
+	private void encodeSequence(){
+		StringBuffer comp = new StringBuffer(getDuplexLength());
+		boolean is_XAcid = false;
 		comp.append(this.complementary);
 		
-		for (int i = 0; i < Math.max(this.sequence.length(), this.complementary.length());i++){
+		for (int i = 0; i < getDuplexLength();i++){
 			
-			if (this.sequence.charAt(i) == '_' && (this.sequence.charAt(i + 1) == 'A' || this.sequence.charAt(i + 1) == 'X')){
+			if (i < getDuplexLength() - 1){
+				if (sequence.substring(i, i+2).equals("_X")){
+					is_XAcid = true;
+				}
+				if (this.sequence.substring(i, i+2).equals("_A") || this.sequence.substring(i, i+2).equals("_X")){
+					comp.insert(i," ");
+				}
+				else if (this.sequence.substring(i, i+2).equals("_T") || this.sequence.substring(i, i+2).equals("_C")){
+					comp.insert(i," ");
+					comp.insert(i + 1, " ");
+				}
+			}
+			
+			if (sequence.charAt(i) == 'X' && is_XAcid){
+				is_XAcid = false;
+			}
+			else {
+				if (sequence.charAt(i) == 'X'){
+					comp.deleteCharAt(i);
+				}
+			}
+			
+			if (this.sequence.charAt(i) == 'L'){
 				comp.insert(i," ");
-			}
-			else if (this.complementary.charAt(i) == '_' && (this.complementary.charAt(i + 1) == 'A' || this.complementary.charAt(i + 1) == 'X')){
-				seq.insert(i," ");
-			}
-			else if (this.sequence.charAt(i - 1) == '_' && (this.sequence.charAt(i) == 'T' || this.sequence.charAt(i) == 'C')){
-				comp.insert(i," ");
-			}
-			else if (this.complementary.charAt(i - 1) == '_' && (this.complementary.charAt(i) == 'T' || this.complementary.charAt(i) == 'C')){
-				seq.insert(i," ");
-			}
-			else if (this.sequence.charAt(i) == 'X' && this.sequence.charAt(i - 1) != '_'){
-				comp.insert(i," ");
-			}
-			else if (this.complementary.charAt(i) == 'X' && this.complementary.charAt(i - 1) != '_'){
-				seq.insert(i," ");
-			}
-			else if (this.sequence.charAt(i) == 'L'){
-				comp.insert(i," ");
-			}
-			else if (this.complementary.charAt(i) == 'L'){
-				seq.insert(i," ");
 			}
 			else if (this.sequence.charAt(i) == '*'){
 				comp.insert(i," ");
+			}
+		}
+		
+		this.complementary = comp.toString();
+	}
+	
+	private void encodeComplementary(){
+		StringBuffer seq = new StringBuffer(getDuplexLength());
+		boolean is_XAcid = false;
+		seq.append(this.sequence);
+		
+		for (int i = 0; i < getDuplexLength();i++){
+			
+			if (i < getDuplexLength() - 1){
+				if (complementary.substring(i, i+2).equals("_X")){
+					is_XAcid = true;
+				}
+				if (this.complementary.substring(i, i+2).equals("_A") || this.complementary.substring(i, i+2).equals("_X")){
+					seq.insert(i," ");
+				}
+				else if (this.complementary.substring(i, i+2).equals("_T") || this.complementary.substring(i, i+2).equals("_C")){
+					seq.insert(i," ");
+					seq.insert(i + 1, " ");
+				}
+			}
+			
+			if (complementary.charAt(i) == 'X' && is_XAcid){
+				is_XAcid = false;
+			}
+			else {
+				if (complementary.charAt(i) == 'X'){
+					seq.deleteCharAt(i);
+				}
+			}
+			
+			if (this.complementary.charAt(i) == 'L'){
+				seq.insert(i," ");
 			}
 			else if (this.complementary.charAt(i) == '*'){
 				seq.insert(i," ");
@@ -464,34 +500,55 @@ public class NucleotidSequences {
 		}
 		
 		this.sequence = seq.toString();
-		this.complementary = comp.toString();
 	}
 	
 	public static NucleotidSequences decodeSequences(String sequence, String complementary){
-		StringBuffer seq = new StringBuffer(Math.max(sequence.length(), complementary.length()));
-		StringBuffer comp = new StringBuffer(Math.max(sequence.length(), complementary.length()));
+		int duplexLength = Math.max(sequence.length(), complementary.length());
+
+		StringBuffer seq = new StringBuffer(duplexLength);
+		StringBuffer comp = new StringBuffer(duplexLength);
 		
 		seq.append(sequence);
 		comp.append(complementary);
 		
-		for (int i = 0; i < Math.max(sequence.length(), complementary.length());i++){
+		
+		for (int i = 0; i < duplexLength ;i++){
+			boolean is_XAcid = false;
 			
-			if (sequence.charAt(i) == '_' && (sequence.charAt(i + 1) == 'A' || sequence.charAt(i + 1) == 'X')){
-				comp.deleteCharAt(i);
+			if (i < duplexLength - 1){
+				if (sequence.substring(i, i+2).equals("_X") || complementary.substring(i, i+2).equals("_X")){
+					is_XAcid = true;
+				}
+				if (complementary.substring(i, i+2).equals("_A") || complementary.substring(i, i+2).equals("_X")){
+					seq.deleteCharAt(i);
+				}
+				else if (complementary.substring(i, i+2).equals("_T") || complementary.substring(i, i+2).equals("_C")){
+					seq.deleteCharAt(i);
+					seq.deleteCharAt(i + 1);
+					
+				}
+				else if (sequence.substring(i, i+2).equals("_A") || sequence.substring(i, i+2).equals("_X")){
+					comp.deleteCharAt(i);
+				}
+				else if (sequence.substring(i, i+2).equals("_T") || sequence.substring(i, i+2).equals("_C")){
+					comp.deleteCharAt(i);
+					comp.deleteCharAt(i + 1);
+				}
 			}
-			else if (complementary.charAt(i) == '_' && (complementary.charAt(i + 1) == 'A' || complementary.charAt(i + 1) == 'X')){
-				seq.deleteCharAt(i);
+			
+			if (sequence.charAt(i) == 'X' && is_XAcid || complementary.charAt(i) == 'X' && is_XAcid){
+				is_XAcid = false;
 			}
-			else if (sequence.charAt(i - 1) == '_' && (sequence.charAt(i) == 'T' || sequence.charAt(i) == 'C')){
-				comp.deleteCharAt(i);
+			else {
+				if (sequence.charAt(i) == 'X'){
+					comp.deleteCharAt(i);
+				}
+				else if (complementary.charAt(i) == 'X'){
+					seq.deleteCharAt(i);
+				}
 			}
-			else if (complementary.charAt(i - 1) == '_' && (complementary.charAt(i) == 'T' || complementary.charAt(i) == 'C')){
-				seq.deleteCharAt(i);
-			}
-			else if (sequence.charAt(i) == 'X' && sequence.charAt(i - 1) != '_'){
-				comp.deleteCharAt(i);
-			}
-			else if (complementary.charAt(i) == 'X' && complementary.charAt(i - 1) != '_'){
+			
+			if (complementary.charAt(i) == 'L'){
 				seq.deleteCharAt(i);
 			}
 			else if (sequence.charAt(i) == 'L'){
@@ -680,18 +737,18 @@ public class NucleotidSequences {
 		int numbergapComplementary = 0;
 		
 		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) || Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2))){
-			return true;
+			return false;
 		}
 		
 		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos1)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos1)) == false){
-			if ((this.sequence.charAt(pos1) != '-' && this.complementary.charAt(pos1) != '-') && isBasePairEqualsTo('G', 'U', pos1) == false){
-				return true;
+			if ((this.sequence.charAt(pos1) != '-' && this.complementary.charAt(pos1) != '-')){
+				return false;
 			}
 		}
 		
 		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos2)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos2)) == false){
-			if ((this.sequence.charAt(pos2) != '-' && this.complementary.charAt(pos2) != '-') && isBasePairEqualsTo('G', 'U', pos2) == false){
-				return true;
+			if ((this.sequence.charAt(pos2) != '-' && this.complementary.charAt(pos2) != '-')){
+				return false;
 			}
 		}
 		
