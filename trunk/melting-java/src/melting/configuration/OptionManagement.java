@@ -54,7 +54,7 @@ public class OptionManagement {
 	public static final Logger meltingLogger = Logger.getLogger("melting");
 	
 	private static final String version = "5";
-	private static String dataPathwayValue = "melting/Data";
+	public static String dataPathwayValue = "melting/Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	
@@ -137,43 +137,59 @@ public class OptionManagement {
 	}
 	
 	private void setOptionValues(String [] args){
-		for (int i = 0;i < args.length; i++){
+
+		boolean isNecessaryToSetOptionsValues = true;
+		
+		if (args.length == 1){
+			isNecessaryToSetOptionsValues = false;
+		}
+		if (isNecessaryToSetOptionsValues){
+
+		for (int i = 0;i < args.length ; i++){
 			String option = args[i];
-			String value = args[i+1];
-			if (isAValue(option) == false){
-				if (option.equals(NN_Path)){
+			
+			if (i == args.length - 1){
+				isNecessaryToSetOptionsValues = false;
+				break;
+			}
+			
+				String value = args[i+1];
+
+				if (isAValue(option) == false){
+					if (option.equals(NN_Path)){
+						if (isAValue(value)){
+							dataPathwayValue = value;
+						}
+						else {
+							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+						}
+					}	
+				}
+				else if (option.equals(threshold)){
 					if (isAValue(value)){
-						dataPathwayValue = value;
+						if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
+							thresholdValue = Integer.getInteger(value);
+						}
+						else {
+							throw new OptionSyntaxError("The threshold must be a strictly positive numeric value.");
+						}
 					}
 					else {
 						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 					}
-				}	
-			}
-			else if (option.equals(threshold)){
-				if (isAValue(value)){
-					if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
-						thresholdValue = Integer.getInteger(value);
+				}
+				else if (option.equals(factor)){
+					if (isAValue(value)){
+						if (Integer.getInteger(value) != null && (Integer.getInteger(value) == 1 || Integer.getInteger(value) == 4)) {
+							factorValue = Integer.getInteger(value);
+						}
+						else {
+							throw new OptionSyntaxError("The correction factor must be 1 or 4.");
+						}
 					}
 					else {
-						throw new OptionSyntaxError("The threshold must be a strictly positive numeric value.");
-					}
+						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");				}
 				}
-				else {
-					throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
-				}
-			}
-			else if (option.equals(factor)){
-				if (isAValue(value)){
-					if (Integer.getInteger(value) != null && (Integer.getInteger(value) == 1 || Integer.getInteger(value) == 4)) {
-						factorValue = Integer.getInteger(value);
-					}
-					else {
-						throw new OptionSyntaxError("The correction factor must be 1 or 4.");
-					}
-				}
-				else {
-					throw new OptionSyntaxError("I don't understand the option " + option + value + ".");				}
 			}
 		}
 	}
@@ -201,7 +217,7 @@ public class OptionManagement {
 	}
 	
 	private void readMeltingHelp(){
-		
+		System.out.println("help");
 	}
 	
 	private void readLegalInformation(){
@@ -225,10 +241,11 @@ public class OptionManagement {
 		legalInformation.append("  Hinxton CB10 1SD United-Kingdom\n");
 		legalInformation.append("  lenov@ebi.ac.uk\n");
 		
-		meltingLogger.log(Level.INFO, OptionManagement.legalInformation.toString());
+		meltingLogger.log(Level.INFO, legalInformation.toString());
 	}
 	
 	public void readOptions(String [] args){
+
 		setOptionValues(args);
 		
 		meltingLogger.setLevel(Level.INFO);
@@ -239,19 +256,15 @@ public class OptionManagement {
 			if (isAValue(option) == false){
 				if (option.equals(meltingHelp)){
 					readMeltingHelp();
-					break;
 				}
 				else if (option.equals(legalInformation)){
 					readLegalInformation();
-					break;
 				}
 				else if (option.equals(dataPathway)){
 					meltingLogger.log(Level.INFO, "The current data files are in "+ dataPathwayValue + ".");
-					break;
 				}
 				else if (option.equals(versionNumber)){
 					meltingLogger.log(Level.INFO, "This MELTING program is the java version "+ version + ".");
-					break;
 				}
 			}
 		}
@@ -259,13 +272,14 @@ public class OptionManagement {
 	
 	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
 		boolean needComplementaryInput = false;
-		
+
 		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false || optionSet.containsKey(sequence) == false){
 			return false;
 		}
 
-		double val = Double.parseDouble(optionSet.get(sequence));
 		try {
+			double val = Double.parseDouble(optionSet.get(nucleotides));
+
 			if (val <= 0){
 				throw new OptionSyntaxError("The nucleotide concentration must be strictly positive.");
 			}
@@ -273,9 +287,10 @@ public class OptionManagement {
 		} catch (NumberFormatException e) {
 			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.");
 		}
-
+				
 		String value = optionSet.get(sequence).toUpperCase();
 		if (NucleotidSequences.checkSequence(value)){
+
 			if (value.contains("I") || value.contains("A*") || (value.contains("X") && value.contains("_X") == false)){
 				needComplementaryInput = true;
 			}
@@ -285,6 +300,7 @@ public class OptionManagement {
 		}
 
 		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
+
 			throw new OptionSyntaxError("There is one syntax mistake in the concentrations. Check the option" + solutioncomposition + ".");
 		}
 		
@@ -302,7 +318,7 @@ public class OptionManagement {
 	
 	private boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
-		
+				
 		if (solution == null){
 			throw new OptionSyntaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
 		}
@@ -327,13 +343,16 @@ public class OptionManagement {
 	}
 	
 	private HashMap<String, String> initializeDefaultOptions(String [] args){
+
 		HashMap<String, String> optionSet = new HashMap<String, String> ();
 		String hybrid = "";
 		
 		for (int i = 0; i < args.length; i++){
-			if (args[i].equals(hybrid)){
-				hybrid = args[i];
-				break;
+			if (args[i].equals(OptionManagement.hybridization)){
+				if (i != args.length - 1 && isAValue(args[i + 1])){
+					hybrid = args[i + 1];
+					break;
+				}
 			}
 		}
 
@@ -357,83 +376,89 @@ public class OptionManagement {
 		optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
-		
+		optionSet.put(completMethod, "default");
+			
 		return optionSet;
 	}
 	
 	public HashMap<String, String> collectOptions(String [] args){
-		
+
+		if (args.length < 2){
+			throw new OptionSyntaxError("There is a syntax error int the options. Check the manual for further informations about melting options.");
+		}
+
 		setOptionValues(args);
 		meltingLogger.setLevel(Level.INFO);
 
 		HashMap<String, String> optionSet = new HashMap<String, String>();
 			
 		optionSet = initializeDefaultOptions(args);
-			
-		for (int i = 0;i < args.length; i++){
+
+		for (int i = 0;i < args.length - 1; i++){
 			String option = args[i];
 			String value = args[i+1];
-				
-			if (isAValue(option) == false){
-				if (option.equals(OptionManagement.verboseMode)){
-					meltingLogger.setLevel(Level.FINE);
-					
-					StringBuffer verboseValue = new StringBuffer();
-					verboseValue.append("******************************************************************************\n");
-					verboseValue.append(versionNumber + "\n");
-					verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
-					verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
-					verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
-					verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
-					verboseValue.append("******************************************************************************\n");
-					
-					meltingLogger.log(Level.FINE, verboseValue.toString());
-				}
-				else if (option.equals(OptionManagement.outPutFile)){
-					if (isAValue(value)){
-						try {
-							meltingLogger.addHandler(new FileHandler(value));
-							
-							meltingLogger.setUseParentHandlers(false);
-							
-						} catch (SecurityException e) {
-							throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
-						} catch (IOException e) {
-							throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+
+				if (isAValue(option) == false){
+
+					if (option.equals(OptionManagement.verboseMode)){
+						meltingLogger.setLevel(Level.FINE);
+						
+						StringBuffer verboseValue = new StringBuffer();
+						verboseValue.append("******************************************************************************\n");
+						verboseValue.append(versionNumber + "\n");
+						verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
+						verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
+						verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
+						verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
+						verboseValue.append("******************************************************************************\n");
+						
+						meltingLogger.log(Level.FINE, verboseValue.toString());
+					}
+					else if (option.equals(OptionManagement.outPutFile)){
+						if (isAValue(value)){
+							try {
+								meltingLogger.addHandler(new FileHandler(value));
+								
+								meltingLogger.setUseParentHandlers(false);
+								
+							} catch (SecurityException e) {
+								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+							} catch (IOException e) {
+								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+							}
+						}
+						else{
+							throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
 						}
 					}
-					else{
-						throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
-					}
-				}
-				else {
-					if (isAValue(value)){
-						optionSet.put(option, value);
-					}
-					else{
-						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+					else {
+
+						if (isAValue(value)){
+							optionSet.put(option, value);
+
+						}
+						else{
+							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+						}
 					}
 				}
 			}
-			else {
-				throw new OptionSyntaxError("I don't understand the option " + option + ".");
-			}
-		}
-		
 		if (hasRequiredOptions(optionSet) == false){
+
 			throw new OptionSyntaxError("To compute, MELTING need at less the hybridization type " +
 					"(option " + hybridization + "), the nucleic acid concentration (option " 
 					+ nucleotides + ") and the sequence (option " + sequence + "). If there " +
 					"are inosine bases in the sequence, a complementary sequence is required (option"
 					+ complementarySequence + ").");
 		}
-		
+			
 		return optionSet;
 	}
 	
 	public Environment createEnvironment(String [] args){
+
 		HashMap<String, String> optionDictionnary = collectOptions(args);
-		
+			
 		return new Environment(optionDictionnary);
 	}
 

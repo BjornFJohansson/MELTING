@@ -1,7 +1,13 @@
 package melting;
 
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.logging.Level;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.configuration.OptionManagement;
@@ -16,6 +22,7 @@ public class MainTest {
 		if (optionManager.isMeltingInformationOption(args)){
 			try {
 				optionManager.readOptions(args);
+
 			} catch (Exception e) {
 				OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
 			}
@@ -23,12 +30,11 @@ public class MainTest {
 		else {
 			try {
 				Environment environment = optionManager.createEnvironment(args);
-				
+
 				RegisterCalculMethod register = new RegisterCalculMethod();
 				CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
-			
+
 				ThermoResult results = calculMethod.CalculateThermodynamics();
-					
 				results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);
 				double enthalpy = results.getEnthalpy();
 				double entropy = results.getEntropy();
@@ -44,5 +50,17 @@ public class MainTest {
 				OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
 			}
 		}
+		
+		/*File santalucia = new File("../Data/AllawiSantalucia1997nn.xml");
+		HashMap<String, Thermodynamics> data = new HashMap<String, Thermodynamics>();
+		FileReader reader = new FileReader();
+		
+		try {
+			data = reader.readFile(santalucia, data);
+		} catch (ParserConfigurationException e) {
+			System.err.println("coucou");
+
+		} catch (SAXException e) {
+		}*/
 	}
 }
