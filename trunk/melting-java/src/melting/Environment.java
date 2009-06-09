@@ -1,7 +1,6 @@
 package melting;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
@@ -23,9 +22,7 @@ public class Environment {
 		if (options == null){
 			throw new OptionSyntaxError("Some required options are missing. Read the manual for further informations or see the option " + OptionManagement.meltingHelp);
 		}
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "Environment : ");
-		
+				
 		initializeConcentrations();
 		
 		if (isRequiredConcentrations() == false){
@@ -39,26 +36,13 @@ public class Environment {
 			this.Hybridization = "mrnarna";
 		}
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + this.Hybridization);
-		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + this.nucleotides + "mol/L");
-		
 		this.factor = Integer.parseInt(options.get(OptionManagement.factor));
-
-		OptionManagement.meltingLogger.log(Level.FINE, "correction factor F : " + this.factor);
 
 		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
-			
-			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity ");
-
 		}
 
-		OptionManagement.meltingLogger.log(Level.FINE, "no self complementarity ");
-
 		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "sequence : " + options.get(OptionManagement.sequence));
-		OptionManagement.meltingLogger.log(Level.FINE, "complementary sequence : " + options.get(OptionManagement.complementarySequence));
 
 		this.result = new ThermoResult(0,0,0);
 		
@@ -120,6 +104,10 @@ public class Environment {
 		return 0;
 	}
 	
+	public HashMap<String, Double> getConcentrations(){
+		return this.concentrations;
+	}
+	
 	public double getDMSO() {
 		if (concentrations.containsKey("DMSO")){
 			return concentrations.get("DMSO");
@@ -164,17 +152,29 @@ public class Environment {
 		for (int i = 0; i < solution.length; i++){
 			String [] couple = solution[i].split("=");
 			this.concentrations.put(couple[0], Double.parseDouble(couple[1]));
-			
-			OptionManagement.meltingLogger.log(Level.FINE, couple[0] + " = " + couple[1]);
-
 		}
 	}
 	
 	private boolean isRequiredConcentrations(){
-		if (concentrations.containsKey("Na") || concentrations.containsKey("K") || concentrations.containsKey("Mg") || concentrations.containsKey("Tris")){
-			if (concentrations.get("Na") != 0 || concentrations.get("K") != 0 || concentrations.get("Mg") != 0 || concentrations.get("Tris") != 0){
-				return true;
-			}
+		double Na = 0;
+		double Mg = 0;
+		double K = 0;
+		double Tris = 0;
+		
+		if (concentrations.containsKey("Na")){
+			Na = concentrations.get("Na");
+		}
+		if (concentrations.containsKey("Mg")){
+			Mg = concentrations.get("Mg");
+		}
+		if (concentrations.containsKey("K")){
+			K = concentrations.get("K");
+		}
+		if (concentrations.containsKey("Tris")){
+			Tris = concentrations.get("Tris");
+		}
+		if (Na > 0 || K > 0 || Mg > 0 || Tris > 0){
+			return true;
 		}
 		return false;
 	}

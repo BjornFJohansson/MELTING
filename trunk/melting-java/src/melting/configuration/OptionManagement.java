@@ -2,11 +2,16 @@ package melting.configuration;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 import melting.Environment;
+import melting.MeltingFormatter;
 import melting.NucleotidSequences;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
@@ -91,7 +96,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
 		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
 		this.DNADefaultOptions.put(deoxyadenineMethod, "Sugimoto_2005");
-		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2007");
+		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 	}
 	
 	public HashMap<String, String> getRNADefaultOptions() {
@@ -110,6 +115,7 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
 		this.RNADefaultOptions.put(approximativeMode, "Wetmurrna_1991");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
+		this.RNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 	}
 	
 	public HashMap<String, String> getHybridDefaultOptions() {
@@ -119,6 +125,8 @@ public class OptionManagement {
 	private void setHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
 		this.hybridDefaultOptions.put(approximativeMode, "Wetmurdnarna_1991");
+		this.hybridDefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
+		
 	}
 	
 	public HashMap<String, String> getMRNADefaultOptions() {
@@ -127,6 +135,7 @@ public class OptionManagement {
 	
 	private void setMRNADefaultOptions() {
 		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
+		this.mRNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 	}
 	
 	private boolean isAValue(String optionValue){
@@ -248,7 +257,7 @@ public class OptionManagement {
 
 		setOptionValues(args);
 		
-		meltingLogger.setLevel(Level.INFO);
+		initializeLogger();
 		
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
@@ -381,45 +390,67 @@ public class OptionManagement {
 		return optionSet;
 	}
 	
+	private void initializeLogger(){
+		StreamHandler handler = new StreamHandler(System.out, new MeltingFormatter());
+		meltingLogger.setUseParentHandlers(false);
+		meltingLogger.addHandler(handler);
+	}
+	
+	private String getVerbose(){
+		StringBuffer verboseValue = new StringBuffer();
+		verboseValue.append("******************************************************************************\n");
+		verboseValue.append("melting " + version + "\n");
+		verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
+		verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
+		verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
+		verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
+		verboseValue.append("******************************************************************************\n");
+		return verboseValue.toString();
+	}
+	
 	public HashMap<String, String> collectOptions(String [] args){
 
 		if (args.length < 2){
 			throw new OptionSyntaxError("There is a syntax error int the options. Check the manual for further informations about melting options.");
 		}
 
+		initializeLogger();
+		
 		setOptionValues(args);
-		meltingLogger.setLevel(Level.INFO);
 
 		HashMap<String, String> optionSet = new HashMap<String, String>();
 			
 		optionSet = initializeDefaultOptions(args);
 
-		for (int i = 0;i < args.length - 1; i++){
+		for (int i = 0;i <= args.length - 1; i++){
 			String option = args[i];
-			String value = args[i+1];
+			String value = "";
+			if (i + 1 <= args.length - 1){
+				value = args[i+1];
+			}
 
 				if (isAValue(option) == false){
 
 					if (option.equals(OptionManagement.verboseMode)){
 						meltingLogger.setLevel(Level.FINE);
-						
-						StringBuffer verboseValue = new StringBuffer();
-						verboseValue.append("******************************************************************************\n");
-						verboseValue.append(versionNumber + "\n");
-						verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
-						verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
-						verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
-						verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
-						verboseValue.append("******************************************************************************\n");
-						
-						meltingLogger.log(Level.FINE, verboseValue.toString());
+						Handler[] handlers = meltingLogger.getHandlers();
+						for ( int index = 0; index < handlers.length; index++ ) {
+						    handlers[index].setLevel( Level.FINE );
+						}
+
 					}
 					else if (option.equals(OptionManagement.outPutFile)){
 						if (isAValue(value)){
 							try {
-								meltingLogger.addHandler(new FileHandler(value));
+								Handler[] handlers = meltingLogger.getHandlers();
+								for ( int index = 0; index < handlers.length; index++ ) {
+								    handlers[index].setLevel( Level.OFF );
+								}
+								FileHandler fileHandler = new FileHandler(value);
+								fileHandler.setLevel(meltingLogger.getLevel());
+								fileHandler.setFormatter(new MeltingFormatter());
 								
-								meltingLogger.setUseParentHandlers(false);
+								meltingLogger.addHandler(fileHandler);
 								
 							} catch (SecurityException e) {
 								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
@@ -434,8 +465,8 @@ public class OptionManagement {
 					else {
 
 						if (isAValue(value)){
-							optionSet.put(option, value);
 
+							optionSet.put(option, value);
 						}
 						else{
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
@@ -443,6 +474,7 @@ public class OptionManagement {
 					}
 				}
 			}
+
 		if (hasRequiredOptions(optionSet) == false){
 
 			throw new OptionSyntaxError("To compute, MELTING need at less the hybridization type " +
@@ -451,15 +483,39 @@ public class OptionManagement {
 					"are inosine bases in the sequence, a complementary sequence is required (option"
 					+ complementarySequence + ").");
 		}
-			
+		
+		meltingLogger.log(Level.FINE, getVerbose());
+
 		return optionSet;
+		
 	}
 	
 	public Environment createEnvironment(String [] args){
 
 		HashMap<String, String> optionDictionnary = collectOptions(args);
-			
-		return new Environment(optionDictionnary);
+		Environment environment = new Environment(optionDictionnary);
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "Environment : ");
+		Iterator<Map.Entry<String, Double>> entry = environment.getConcentrations().entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<String, Double> couple = entry.next();
+			String ion = couple.getKey();
+			Double concentration = couple.getValue();
+			OptionManagement.meltingLogger.log(Level.FINE, ion + " = " + concentration);
+		}
+		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + environment.getHybridization());
+		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + environment.getNucleotides() + "mol/L");
+		OptionManagement.meltingLogger.log(Level.FINE, "correction factor F : " + environment.getFactor());
+		if (environment.isSelfComplementarity()){
+			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity ");
+		}
+		else{
+			OptionManagement.meltingLogger.log(Level.FINE, "no self complementarity ");
+		}
+		OptionManagement.meltingLogger.log(Level.FINE, "sequence : " + environment.getSequences().getSequence());
+		OptionManagement.meltingLogger.log(Level.FINE, "complementary sequence : " + environment.getSequences().getComplementary());
+		
+		return environment;
 	}
 
 }

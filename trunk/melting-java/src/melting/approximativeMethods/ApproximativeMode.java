@@ -17,7 +17,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 	protected RegisterCalculMethod register = new RegisterCalculMethod();
 	
 	public ThermoResult CalculateThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.FINE, "Approximative method : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Approximative method : ");
 		
 		return environment.getResult();
 	}
@@ -46,20 +46,25 @@ public class ApproximativeMode implements CompletCalculMethod{
 		}
 		return isApplicable;
 	}
+	
+	protected boolean isNaEqPossible(){
+		return true;
+	}
 
 	public void setUpVariable(HashMap<String, String> options) {
 		this.environment = new Environment(options);
-		
-		if (environment.getMg() > 0 || environment.getK() > 0 || environment.getTris() > 0){
-			
-			SodiumEquivalentMethod method = this.register.getNaEqMethod(options);
-			if (method != null){
-				environment.setNa(method.getSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
-			}
-			else{
-				throw new NoExistingMethodException("There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
+
+		if (isNaEqPossible()){
+			if (environment.getMg() > 0 || environment.getK() > 0 || environment.getTris() > 0){
+				
+				SodiumEquivalentMethod method = this.register.getNaEqMethod(options);
+				if (method != null){
+					environment.setNa(method.getSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
+				}
+				else{
+					throw new NoExistingMethodException("There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
+				}
 			}
 		}
 	}
-
 }

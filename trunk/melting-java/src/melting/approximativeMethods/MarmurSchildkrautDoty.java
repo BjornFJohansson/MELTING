@@ -36,11 +36,12 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na) + 0.41 * percentGC - 675 / duplexLength.";
 	
 	public ThermoResult CalculateThermodynamics() {
-		double Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
+		double Tm = super.CalculateThermodynamics().getTm();
+		Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur, Schildkraut and Doty (1965 - 1993) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur, Schildkraut and Doty (1965 - 1993)");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();

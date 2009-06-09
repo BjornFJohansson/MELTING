@@ -15,11 +15,12 @@ public class Santalucia98 extends ApproximativeMode{
 	private static String temperatureEquation = "Tm = 77.1 + 11.7 * log10(Na) + 0.41 * PercentGC - 528 / duplexLength.";
 
 	public ThermoResult CalculateThermodynamics() {
-		double Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528 / this.environment.getSequences().getDuplexLength();
+		double Tm = super.CalculateThermodynamics().getTm(); 
+		Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528 / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Santalucia et al. (1998) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, " from Santalucia et al. (1998)");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();
