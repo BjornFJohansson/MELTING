@@ -51,6 +51,7 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	}
 	
 	protected double correctTemperature(Environment environment) {
+		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction is from Owczarzy et al. (2008) : " + temperatureCorrection);
 		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "b = " + this.b);
 		OptionManagement.meltingLogger.log(Level.FINE, "c = " + this.c);

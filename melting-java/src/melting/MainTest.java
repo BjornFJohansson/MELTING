@@ -1,11 +1,13 @@
 package melting;
 
 
+import java.text.NumberFormat;
 import java.util.logging.Level;
 
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
+import melting.nearestNeighborModel.NearestNeighborMode;
 
 public class MainTest {
 
@@ -23,6 +25,9 @@ public class MainTest {
 		}
 		else {
 			try {
+				NumberFormat format = NumberFormat.getInstance(); 
+				format.setMaximumFractionDigits(2);
+				
 				Environment environment = optionManager.createEnvironment(args);
 
 				RegisterCalculMethod register = new RegisterCalculMethod();
@@ -35,11 +40,13 @@ public class MainTest {
 				double entropy = results.getEntropy();
 				
 				environment.setResult(results);
-										
-				OptionManagement.meltingLogger.log(Level.INFO, "The MELTING results are : ");
-				OptionManagement.meltingLogger.log(Level.INFO, "Enthalpy : " + enthalpy + "cal/mol ( " + results.getEnergyValueInJ(enthalpy) + "J/mol)");
-				OptionManagement.meltingLogger.log(Level.INFO, "Entropy : " + entropy + "cal/mol ( " + results.getEnergyValueInJ(entropy) + "J/mol)");
-				OptionManagement.meltingLogger.log(Level.INFO, "Melting temperature : " + results.getTm() + "degres C.");
+					
+				OptionManagement.meltingLogger.log(Level.INFO, "\n The MELTING results are : ");
+				if (calculMethod instanceof NearestNeighborMode){
+					OptionManagement.meltingLogger.log(Level.INFO, "Enthalpy : " + format.format(enthalpy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(enthalpy)) + " J /mol)");
+					OptionManagement.meltingLogger.log(Level.INFO, "Entropy : " + format.format(entropy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(entropy)) + " J /mol)");
+				}
+				OptionManagement.meltingLogger.log(Level.INFO, "Melting temperature : " + format.format(results.getTm()) + " degres C.");
 			
 			} catch (Exception e) {
 				OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());

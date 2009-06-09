@@ -27,11 +27,12 @@ public class Owen69 extends ApproximativeMode{
 	
 	public ThermoResult CalculateThermodynamics() {
 		int percentGC = this.environment.getSequences().calculatePercentGC();
-		double Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
+		double Tm = super.CalculateThermodynamics().getTm(); 
+		Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Owen et al. (1969) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, " from Owen et al. (1969)");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
 		
 		return this.environment.getResult();

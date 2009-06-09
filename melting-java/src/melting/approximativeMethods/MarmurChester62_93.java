@@ -18,17 +18,20 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	 * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
 	 */
 	
-	private static double parameter;
-	private static String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - " + parameter + " / duplexLength.";
+	private double parameter;
+	private String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - parameter / duplexLength.";
 	
 	public ThermoResult CalculateThermodynamics() {
-		double Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / this.environment.getSequences().getDuplexLength();
+		double Tm = super.CalculateThermodynamics().getTm();
+		
+		Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur et al. (1962) and Chester et al (1993) \n");
+		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur et al. (1962) and Chester et al (1993)");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
-	
+		OptionManagement.meltingLogger.log(Level.FINE, "Where parameter = " + parameter);
+
 		return this.environment.getResult();
 	}
 
@@ -43,8 +46,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 			OptionManagement.meltingLogger.log(Level.WARNING, "the formula of Marmur, Doty, Chester " +
 					"and Marshak is originally established for DNA duplexes.");
 		}
-		
-		if (this.environment.getNa() != 0 || this.environment.getMg() != 0.0015 || this.environment.getTris() != 0.01 || this.environment.getK() == 0.05){
+		if (this.environment.getNa() != 0.0 || this.environment.getMg() != 0.0015 || this.environment.getTris() != 0.01 || this.environment.getK() != 0.05){
 			isApplicable = false;
 			OptionManagement.meltingLogger.log(Level.WARNING,"the formula of Marmur, Doty, Chester " +
 			"and Marshak is originally established at a given ionic strength : " +
@@ -54,15 +56,18 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		return isApplicable;
 	}
 	
+	protected boolean isNaEqPossible(){
+		return false;
+	}
+	
 	public void setUpVariable(HashMap<String, String> options) {
 		String method = options.get(OptionManagement.approximativeMode);
 		
 		super.setUpVariable(options);
-		
-		if (method.equals("MarmurChester62_93_corr")){
+		if (method.equals("Marmur_Chester_1962_1993_corr")){
 			parameter = 535;
 		}
-		else if (method.equals("MarmurChester62_93")){
+		else if (method.equals("Marmur_Chester_1962_1993")){
 			parameter = 650;
 		}
 		else {

@@ -347,7 +347,7 @@ public class RegisterCalculMethod {
 	
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
-		
+
 		if (methodName == null){
 		throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.NaEquivalentMethod + ".");
 		}
@@ -466,11 +466,10 @@ public class RegisterCalculMethod {
 				if (duplexLength > thres){
 					methodName = optionSet.get(OptionManagement.approximativeMode);
 
-					if (methodName == null){
-						throw new NoExistingMethodException("We don't know the method " + methodName);
-					}
-
 					try {
+						if (approximativeMethod.get(methodName) == null){
+							throw new NoExistingMethodException("We don't know the method " + methodName);
+						}
 						method = approximativeMethod.get(methodName).newInstance();
 						method.setUpVariable(optionSet);
 					} catch (InstantiationException e) {
@@ -488,10 +487,11 @@ public class RegisterCalculMethod {
 			}
 			else if (methodName.equals("approximate")){
 				methodName = optionSet.get(OptionManagement.approximativeMode);
-				if (methodName == null){
-					throw new NoExistingMethodException("We don't know the method " + methodName);
-				}
+
 				try {
+					if (approximativeMethod.get(methodName) == null){
+						throw new NoExistingMethodException("We don't know the method " + methodName);
+					}
 					method = approximativeMethod.get(methodName).newInstance();
 					method.setUpVariable(optionSet);
 				} catch (InstantiationException e) {
