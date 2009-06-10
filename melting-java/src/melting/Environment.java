@@ -42,10 +42,20 @@ public class Environment {
 			this.IsSelfComplementarity = true;
 		}
 
-		this.sequences = new NucleotidSequences(options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-
+		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
+		
 		this.result = new ThermoResult(0,0,0);
 		
+	}
+	
+	public void sortSquences(String hybridization, String firstSequence, String secondSequence){
+		
+		if (hybridization.equals("rnadna")){
+			this.sequences = new NucleotidSequences(secondSequence, secondSequence);
+		}
+		else {
+			this.sequences = new NucleotidSequences(firstSequence, secondSequence);
+		}
 	}
 
 	public int getFactor() {

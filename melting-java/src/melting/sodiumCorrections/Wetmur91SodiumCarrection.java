@@ -17,7 +17,8 @@ public class Wetmur91SodiumCarrection implements CorrectionMethod{
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Wetmur. (1991) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Wetmur. (1991) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		

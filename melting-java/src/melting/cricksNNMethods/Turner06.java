@@ -30,6 +30,8 @@ public class Turner06 extends CricksNNMethod {
 		double entropy = result.getEntropy();
 		
 		Thermodynamics NNValue;
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters are from Turner et al. (2006)");
 		 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			
@@ -83,7 +85,7 @@ public class Turner06 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, terminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();

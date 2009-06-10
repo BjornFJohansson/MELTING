@@ -94,10 +94,11 @@
  			</mismatch>
  			<mismatch sequence="YA/RG" loop="2x3" type="first_non_canonical_pair">
  				<enthalpy>-5700.0</enthalpy>
- 				<entropy>-4.09.0</entropy>
+ 				<entropy>-4.09</entropy>
  			</mismatch>
  			<mismatch sequence="YA/RG" loop="others_non_2x2" type="first_non_canonical_pair">
- 				<enthalpy>-8.38</enthalpy>
+ 				<enthalpy>-3400</enthalpy>
+ 				<entropy>-8.38</entropy>
  			</mismatch>
  			<mismatch sequence="RG/YA" loop="1x2" type="first_non_canonical_pair">
  				<enthalpy>-5800.0</enthalpy>

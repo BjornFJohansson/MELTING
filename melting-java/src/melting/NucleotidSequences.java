@@ -148,7 +148,7 @@ public class NucleotidSequences {
 		return numberOfTerminal;
 	}
 	
-	public boolean isTerminal5AT(){
+	public boolean isTerminal5TA(){
 		
 		if (this.sequence.charAt(0) == 'T' && this.complementary.charAt(0) == 'A'){
 			return true;
@@ -641,14 +641,15 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isCNGMotif(int pos1, int pos2){
+
 		int index = pos1;
 		char mismatch = sequence.charAt(pos1 + 1);
 		
 		if (pos2 > getDuplexLength() - 1 || pos2 - pos1 + 1 < 3 || pos1 < 0){
 			return false;
 		}
-		
-		while (index <= pos2 - 3){
+
+		while (index <= pos2 - 2){
 			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
 				return false;
 			}
@@ -736,20 +737,11 @@ public class NucleotidSequences {
 		int numbergapSequence = 0;
 		int numbergapComplementary = 0;
 		
-		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) || Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2))){
+		if (isBasePair('G', 'U', pos1) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false){
 			return false;
 		}
-		
-		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos1)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos1)) == false){
-			if ((this.sequence.charAt(pos1) != '-' && this.complementary.charAt(pos1) != '-')){
+		else if (isBasePair('G', 'U', pos2) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false){
 				return false;
-			}
-		}
-		
-		if (Helper.isWatsonCrickBase(this.sequence.charAt(pos2)) == false || Helper.isWatsonCrickBase(this.complementary.charAt(pos2)) == false){
-			if ((this.sequence.charAt(pos2) != '-' && this.complementary.charAt(pos2) != '-')){
-				return false;
-			}
 		}
 		
 		for (int i = pos1 + 1; i <= pos2 - 1 ; i++){

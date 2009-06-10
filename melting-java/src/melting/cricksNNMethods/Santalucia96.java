@@ -30,7 +30,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Santalucia (1996)" +
 			"are established for DNA sequences.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
 
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -50,11 +50,11 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		}
 		double enthalpy = 0;
 		double entropy = 0;
-		
-		if (withoutTerminalUnpairedNucleotides.isTerminal5AT()) {
+		System.out.println(withoutTerminalUnpairedNucleotides.isTerminal5TA());
+
+		if (withoutTerminalUnpairedNucleotides.isTerminal5TA()) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
-			
-			OptionManagement.meltingLogger.log(Level.FINE, terminal5AT + " x penalty per 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
 			
 			enthalpy += terminal5AT.getEnthalpy();
 			entropy += terminal5AT.getEntropy();
@@ -67,7 +67,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (1996).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

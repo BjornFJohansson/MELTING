@@ -35,7 +35,8 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction from Zhi-Jie Tan et al. (2007) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
 		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
 		

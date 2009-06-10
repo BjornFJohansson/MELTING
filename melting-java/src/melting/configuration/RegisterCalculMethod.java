@@ -257,25 +257,24 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeIonCorrectionMethod(){
-		ionCorrection.put("Ahsen_2001_Na", Ahsen01SodiumCorrection.class);
-		ionCorrection.put("Kamenetskii_1971_Na", FrankKamenetskii71SodiumCorrection.class);
-		ionCorrection.put("Marmur_Schildkraut_Doty_1962_1998_Na", MarmurSchildkrautDoty98_62SodiumCorrection.class);
-		ionCorrection.put("Owczarzy_19_2004_Na", Owczarzy04SodiumCorrection19.class);
-		ionCorrection.put("Owczarzy_20_2004_Na", Owczarzy04SodiumCorrection20.class);
-		ionCorrection.put("Owczarzy_21_2004_Na", Owczarzy04SodiumCorrection21.class);
-		ionCorrection.put("Owczarzy_22_2004_Na", Owczarzy04SodiumCorrection22.class);
-		ionCorrection.put("Santalucia_1996_Na", Santalucia96SodiumCorrection.class);
-		ionCorrection.put("Santalucia_1998_2004_Na", Santalucia98_04SodiumCorrection.class);
-		ionCorrection.put("Schildkraut_Lifson_1965_Na", SchildkrautLifson65SodiumCorrection.class);
+		ionCorrection.put("Ahsen_2001", Ahsen01SodiumCorrection.class);
+		ionCorrection.put("Kamenetskii_1971", FrankKamenetskii71SodiumCorrection.class);
+		ionCorrection.put("Marmur_Schildkraut_Doty_1962_1998", MarmurSchildkrautDoty98_62SodiumCorrection.class);
+		ionCorrection.put("Owczarzy_19_2004", Owczarzy04SodiumCorrection19.class);
+		ionCorrection.put("Owczarzy_20_2004", Owczarzy04SodiumCorrection20.class);
+		ionCorrection.put("Owczarzy_21_2004", Owczarzy04SodiumCorrection21.class);
+		ionCorrection.put("Owczarzy_22_2004", Owczarzy04SodiumCorrection22.class);
+		ionCorrection.put("Santalucia_1996", Santalucia96SodiumCorrection.class);
+		ionCorrection.put("Santalucia_1998_2004", Santalucia98_04SodiumCorrection.class);
+		ionCorrection.put("Schildkraut_Lifson_1965", SchildkrautLifson65SodiumCorrection.class);
 		ionCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
 		ionCorrection.put("Tan_2007_Na", Tan07SodiumCorrection.class);
-		ionCorrection.put("Wetmur_1991_Na", Wetmur91SodiumCarrection.class);
-		ionCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
+		ionCorrection.put("Wetmur_1991", Wetmur91SodiumCarrection.class);
 		ionCorrection.put("Owczarzy_2008_Mg", Owczarzy08MagnesiumCorrection.class);
 		ionCorrection.put("Tan_2006_Mg", Tan06MagnesiumCorrection.class);
 		ionCorrection.put("Tan_2007_Mg", Tan07MagnesiumCorrection.class);
 		ionCorrection.put("Owczarzy_2008_mixed", Owczarzy08MixedNaMgCorrection.class);
-		ionCorrection.put("Tan_2007_Mixed", Tan07MixedNaMgCorrection.class);
+		ionCorrection.put("Tan_2007_mixed", Tan07MixedNaMgCorrection.class);
 	}
 	
 	private void initializeDMSOCorrectionMethod(){
@@ -286,8 +285,8 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeFormamideCorrectionMethod(){
-		DMSOCorrection.put("linear_correction", FormamideLinearMethod.class);
-		DMSOCorrection.put("Blake_1996", Blake96FormamideCorrection.class);
+		formamideCorrection.put("linear_correction", FormamideLinearMethod.class);
+		formamideCorrection.put("Blake_1996", Blake96FormamideCorrection.class);
 	}
 	
 	private void initializeOtherCorrectionMethod(){
@@ -347,7 +346,7 @@ public class RegisterCalculMethod {
 	
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
-
+		
 		if (methodName == null){
 		throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.NaEquivalentMethod + ".");
 		}

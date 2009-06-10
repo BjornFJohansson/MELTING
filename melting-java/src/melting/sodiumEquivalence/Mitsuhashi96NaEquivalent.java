@@ -16,8 +16,10 @@ public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
 	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP) {
 	
-		OptionManagement.meltingLogger.log(Level.FINE, "If we use a sodium correction and there is another cations than Na+, we can use a sodium equivalence : from Mitsuhashi et al. (1996) : " + NaCorrection);
+		double NaEq = super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "from Mitsuhashi et al. (1996) : " + NaCorrection);
 
-		return super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
+		return NaEq;
 	}
 }

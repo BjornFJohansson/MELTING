@@ -25,8 +25,6 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	protected static String temperatureCorrection = "1 / Tm(Mg) = 1 / Tm(Na = 1M) + a +b x ln(Mg) + Fgc x (c + d x ln(Mg)) + 1 / (2 x (duplexLength - 1)) x (e + f x ln(Mg) + g x (ln(mg)))^2"; 
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction from Owkzarzy et al. (2008) : " + temperatureCorrection);
 
 		double Tm = correctTemperature(environment);
 		environment.setResult(Tm);
@@ -51,7 +49,8 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	}
 	
 	protected double correctTemperature(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction is from Owczarzy et al. (2008) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Owkzarzy et al. (2008) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "b = " + this.b);
 		OptionManagement.meltingLogger.log(Level.FINE, "c = " + this.c);

@@ -44,6 +44,7 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 	}
 	
 	public void loadFile(String name, DataCollect collector){
+
 		File dataFile = new File(OptionManagement.dataPathwayValue + "/" + name);
 
 		FileReader reader = new FileReader();

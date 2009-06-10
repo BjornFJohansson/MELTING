@@ -46,7 +46,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " + 2.44 x 1.99 x 310.15 x ln(bulgeSize / 30)");
 
-			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.getInteger(bulgeSize) / 30);
+			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.parseInt(bulgeSize) / 30);
 		}
 		else {
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());

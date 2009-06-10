@@ -91,6 +91,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(approximativeMode, "Wetmurdna_1991");
 		this.DNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
+		this.DNADefaultOptions.put(formamideCorrection, "Blake_1996");
 		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
 		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
@@ -116,6 +117,9 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(approximativeMode, "Wetmurrna_1991");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
 		this.RNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
+		this.RNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
+		this.RNADefaultOptions.put(formamideCorrection, "Blake_1996");
+
 	}
 	
 	public HashMap<String, String> getHybridDefaultOptions() {
@@ -126,6 +130,8 @@ public class OptionManagement {
 		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
 		this.hybridDefaultOptions.put(approximativeMode, "Wetmurdnarna_1991");
 		this.hybridDefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
+		this.hybridDefaultOptions.put(DMSOCorrection, "Ahsen_2001");
+		this.hybridDefaultOptions.put(formamideCorrection, "Blake_1996");
 		
 	}
 	
@@ -136,6 +142,9 @@ public class OptionManagement {
 	private void setMRNADefaultOptions() {
 		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
 		this.mRNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
+		this.mRNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
+		this.mRNADefaultOptions.put(formamideCorrection, "Blake_1996");
+
 	}
 	
 	private boolean isAValue(String optionValue){
@@ -176,8 +185,8 @@ public class OptionManagement {
 				}
 				else if (option.equals(threshold)){
 					if (isAValue(value)){
-						if (Integer.getInteger(value) != null && Integer.getInteger(value) >= 0) {
-							thresholdValue = Integer.getInteger(value);
+						if (Integer.getInteger(value) != null && Integer.parseInt(value) >= 0) {
+							thresholdValue = Integer.parseInt(value);
 						}
 						else {
 							throw new OptionSyntaxError("The threshold must be a strictly positive numeric value.");
@@ -189,8 +198,8 @@ public class OptionManagement {
 				}
 				else if (option.equals(factor)){
 					if (isAValue(value)){
-						if (Integer.getInteger(value) != null && (Integer.getInteger(value) == 1 || Integer.getInteger(value) == 4)) {
-							factorValue = Integer.getInteger(value);
+						if (Integer.getInteger(value) != null && (Integer.parseInt(value) == 1 || Integer.parseInt(value) == 4)) {
+							factorValue = Integer.parseInt(value);
 						}
 						else {
 							throw new OptionSyntaxError("The correction factor must be 1 or 4.");

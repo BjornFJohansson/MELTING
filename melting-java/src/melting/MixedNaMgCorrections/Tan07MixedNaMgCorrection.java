@@ -45,7 +45,8 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The magnesium correction from Zhi-Jie Tan et al. (2007) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
 		double Na = environment.getNa();
 		double Mg = environment.getMg() - environment.getDNTP();
@@ -68,7 +69,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 				
 		double entropy = -3.22 * ((duplexLength - 1) * (x1 * g1 + x2 * g2) + g12);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "and where : ");
 		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
 		OptionManagement.meltingLogger.log(Level.FINE, x1Formula);
 		OptionManagement.meltingLogger.log(Level.FINE, x2Formula);
