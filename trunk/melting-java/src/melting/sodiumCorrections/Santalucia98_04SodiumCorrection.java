@@ -42,7 +42,8 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Santalucia et al. (1998) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n he sodium correction is from Santalucia et al. (1998) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
 		double Na = environment.getNa();
 		double entropy = 0.368 * (environment.getSequences().getDuplexLength() - 1) * Math.log(Na);

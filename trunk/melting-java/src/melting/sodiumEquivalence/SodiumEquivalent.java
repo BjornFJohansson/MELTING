@@ -10,6 +10,7 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 
 	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP, double b) {
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Other cations than Na+ are present in the solution, we can use a sodium equivalence : "); 
 		
 		double NaEq = Na + K + Tris / 2 + b * Math.sqrt(Mg - dNTP);
 		

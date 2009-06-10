@@ -35,10 +35,11 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Ahsen et al. (2001) : " + entropyCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Ahsen et al. (2001) : " );
+		OptionManagement.meltingLogger.log(Level.FINE, entropyCorrection);
 		
 		double entropy = 0.847 * (environment.getSequences().getDuplexLength() - 1) * Math.log(environment.getNa());
-		
+
 		return entropy;
 	}
 }

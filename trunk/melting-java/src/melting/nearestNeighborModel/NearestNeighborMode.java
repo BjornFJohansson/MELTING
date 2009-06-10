@@ -39,7 +39,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private PartialCalculMethod wobbleMethod;
 	
 	public ThermoResult CalculateThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.FINE, "Nearest-Neighbor method :");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
 
 		analyzeSequence();
 
@@ -53,11 +53,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		
 		int pos1 = 0; 
 		int pos2 = 0;
-		
+
 		while (pos2 < this.environment.getSequences().getDuplexLength() - 1){
 			int [] positions = getPositionsMotif(pos1);
+			pos1 = positions[0];
 			pos2 = positions[1];
-
 			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 
 			if (currentCalculMethod == null){
@@ -66,7 +66,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
 
-			pos1 = pos2;
+			pos1 = pos2 + 1;
 		}
 		
 		double Tm = calculateMeltingTemperature(this.environment);
@@ -102,7 +102,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 		
-		if (this.environment.getOptions().containsKey(OptionManagement.selfComplementarity) && Integer.getInteger(this.environment.getOptions().get(OptionManagement.factor)) != 1){
+		if (this.environment.getOptions().containsKey(OptionManagement.selfComplementarity) && Integer.parseInt(this.environment.getOptions().get(OptionManagement.factor)) != 1){
 			OptionManagement.meltingLogger.log(Level.WARNING, "When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
 			isApplicable = false;
 		}
@@ -115,56 +115,91 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		
 		}
 	
+	private int correctFirstPosition(int pos1){
+		if (pos1 > 0){
+			String sequence = environment.getSequences().getSequence();
+			String complementary = environment.getSequences().getComplementary();
+			if (Helper.isComplementaryBasePair(sequence.charAt(pos1 - 1), complementary.charAt(pos1 - 1))){
+				pos1 --;
+			}
+		}
+		return pos1;
+	}
+	
 	private int [] getPositionsMotif(int pos1){
 		int position = pos1;
 
 		if(environment.getSequences().isCNGMotif(pos1, pos1 + 5)){
-			while (environment.getSequences().isCNGMotif(position + 3, position + 5) && position + 5 <= environment.getSequences().getDuplexLength() - 1){
-				position += 3;
+			while (position + 2 < environment.getSequences().getDuplexLength() - 1){
+				int testPosition = position + 3;
+				if (environment.getSequences().isCNGMotif(testPosition, testPosition + 2)){
+					position += 3;
+				}
+				else {
+					break;
+				}
 			}
 			int [] positions = {pos1, position};
 			return positions;
 		}
 		else {
 			if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
+				pos1 = correctFirstPosition(pos1);
 
-				while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) && position < environment.getSequences().getDuplexLength() - 1){
-					position ++;
+				while (position < environment.getSequences().getDuplexLength() - 1){
+					int testPosition = position + 1;
+					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition))){
+						position ++;
+					}
+					else{
+						break;
+					}
 				}
 
 				int [] positions = {pos1, position};
-
 				return positions;
 			}
 			
 			else {
 				if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
-					while (environment.getSequences().isBasePairEqualsTo('G', 'U', position) && position < environment.getSequences().getDuplexLength() - 1){
-						position ++;
-					}
-					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
-						if (pos1 == 0){
-							int [] positions = {pos1, position};
-							return positions;
+					while (position < environment.getSequences().getDuplexLength() - 1){
+						int testPosition = position + 1;
+						if (environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition)){
+							position ++;
 						}
 						else{
-							int [] positions = {pos1 - 1, position};
-							return positions;
+							break;
 						}
 					}
+					if (pos1 > 0){
+						pos1--;
+					}
+					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) == false){
+						
+						int [] positions = {pos1, position};
+						return positions;
+					}
 					else{
-						int [] positions = {pos1 - 1, pos1 + 1};
+						int [] positions = {pos1, position + 1};
 						return positions;
 					}
 				}
 				else {
-					while (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) == false && position < environment.getSequences().getDuplexLength() - 1){
-						position ++;
+
+					while (position < environment.getSequences().getDuplexLength() - 1){
+						int testPosition = position + 1;
+						if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false){
+							position ++;
+						}
+						else{
+							break;
+						}
 					}
+
 					if (environment.getSequences().isBasePairEqualsTo('G', 'U', position)){
 						position --;
 					}
-					if (pos1 == 0 && position == environment.getSequences().getDuplexLength()){
+					if (pos1 == 0 && position == environment.getSequences().getDuplexLength() - 1){
 						int [] positions = {pos1, position};
 						return positions;
 					}
@@ -178,6 +213,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					}
 					else{
 						int [] positions = {pos1 - 1, position + 1};
+
 						return positions;
 					}
 				}
@@ -191,6 +227,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		String methodName = "";
 		
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
+
 			if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
 				if (positions[1] - positions[0] + 1 == 2){
 					optionName = OptionManagement.singleDanglingEndMethod;
@@ -212,7 +249,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				throw new NoExistingMethodException("No method for terminal mismatches have been implemented yet.");
 			}
 		}
-		
+
 		if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
 			optionName = OptionManagement.NNMethod;
 			method = this.cricksMethod;
@@ -279,13 +316,13 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		if (method == null){
 			method = initializeMethod(optionName, methodName);
 		}
-
 		return method;
 	}
 	
 	private PartialCalculMethod initializeMethod(String optionName, String methodName){
 
 		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
+
 		if (necessaryMethod != null){
 			necessaryMethod.initializeFileName(methodName);
 			necessaryMethod.loadData(environment.getOptions());
@@ -301,10 +338,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		int pos1 = 0;
 		int pos2 = 0;
 		boolean isApplicableMethod = true;
-
-		while (pos2 < environment.getSequences().getDuplexLength() - 1){
-
+		while (pos2 + 1 <= environment.getSequences().getDuplexLength() - 1){
 			int [] positions = getPositionsMotif(pos1);
+			pos1 = positions[0];
 			pos2 = positions[1];
 
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
@@ -312,8 +348,10 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
+
 			}
-			pos1 = pos2;
+
+			pos1 = pos2 + 1;
 		}
 		return isApplicableMethod;
 	}
@@ -327,7 +365,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	public static double calculateMeltingTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
-		
 		return Tm;
 	}
 

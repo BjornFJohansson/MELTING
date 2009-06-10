@@ -22,7 +22,8 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC();

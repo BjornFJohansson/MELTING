@@ -28,7 +28,7 @@ public class Sugimoto96 extends CricksNNMethod {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Sugimoto et al (1996)" +
 					"are established for DNA sequences.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
 
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -37,7 +37,7 @@ public class Sugimoto96 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1996).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

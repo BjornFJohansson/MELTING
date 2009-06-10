@@ -20,7 +20,8 @@ public class Ahsen01DMSOCorrection extends DMSOCorrections {
 	 * */
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The DMSO correction from Ahsen et al. (2001) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Ahsen et al. (2001) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}

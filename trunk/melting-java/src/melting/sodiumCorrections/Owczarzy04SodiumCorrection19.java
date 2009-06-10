@@ -18,7 +18,8 @@ public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction (19) is from Owczarzy et al. (2008) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (19) is from Owczarzy et al. (2008) : "); 
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		int Fgc = environment.getSequences().calculatePercentGC() / 100;

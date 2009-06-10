@@ -59,7 +59,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		isApplicable = super.isApplicable(environment, pos1, pos2);
 		
 		if (environment.isSelfComplementarity()){
-			throw new MethodNotApplicableException ( "The thermodynamic parameters of Sugimoto et al. (1995)" +
+			throw new MethodNotApplicableException ( "\n The thermodynamic parameters of Sugimoto et al. (1995)" +
 					"are established for hybrid DNA/RNA sequences and they can't be self complementary sequence.");
 		}
 		return isApplicable;

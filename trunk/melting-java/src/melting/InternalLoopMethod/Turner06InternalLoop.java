@@ -46,7 +46,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
 		
 		
-		if (loopType.charAt(0) == '1' && Integer.getInteger(loopType.substring(2, 3)) > 2){
+		if (loopType.charAt(0) == '1' && Integer.parseInt(loopType.substring(2, 3)) > 2){
 			
 			needFirstMismatchEnergy = false;
 		}
@@ -103,7 +103,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		if (sequences.isAsymmetricLoop(pos1, pos2)){
 			
 			Thermodynamics asymmetry = this.collector.getAsymmetry();
-			int asymetricValue = Math.abs(Integer.getInteger(loopType.substring(0, 1)) - Integer.getInteger(loopType.substring(2, 3)));
+			int asymetricValue = Math.abs(Integer.parseInt(loopType.substring(0, 1)) - Integer.parseInt(loopType.substring(2, 3)));
 			OptionManagement.meltingLogger.log(Level.FINE, asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 			
 			enthalpy += asymetricValue * asymmetry.getEnthalpy();

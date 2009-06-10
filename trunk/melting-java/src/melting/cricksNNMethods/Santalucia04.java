@@ -30,7 +30,7 @@ public class Santalucia04 extends CricksNNMethod {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Santalucia (2004)" +
 			"are established for DNA sequences.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
 
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -44,7 +44,6 @@ public class Santalucia04 extends CricksNNMethod {
 		environment.setResult(super.calculateInitiationHybridation(environment));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
-		
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
@@ -55,7 +54,7 @@ public class Santalucia04 extends CricksNNMethod {
 		if (numberTerminalAT != 0){
 			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, terminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
 			
 			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
 			entropy += numberTerminalAT * terminalAT.getEntropy();
@@ -70,7 +69,7 @@ public class Santalucia04 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (2004).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (2004).");
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

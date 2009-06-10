@@ -742,10 +742,12 @@
  			
  			<penalty type="G/G_adjacent_AA_or_nonCanonicalPyrimidine">
  				<enthalpy>12500.0</enthalpy>
+ 				<entropy>0.0</entropy>
  			</penalty>
  			
  			<penalty type="AG_GA_UU_adjacent_UU_CU_CC_AA">
  				<enthalpy>2400.0</enthalpy>
+ 				<entropy>0.0</entropy>
  			</penalty>
  			
  			<asymmetry>
@@ -783,7 +785,8 @@
  				<entropy>-4.09.0</entropy>
  			</mismatch>
  			<mismatch sequence="YA/RG loop="others_non_2x2" type="first_non_canonical_pair">
- 				<enthalpy>-8.38</enthalpy>
+ 				<enthalpy>-3400</enthalpy>
+ 				<entropy>-8.38</entropy>
  			</mismatch>
  			<mismatch sequence="RG/YA" loop="1x2" type="first_non_canonical_pair">
  				<enthalpy>-5800.0</enthalpy>

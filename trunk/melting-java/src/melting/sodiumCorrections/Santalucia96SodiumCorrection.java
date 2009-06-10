@@ -16,7 +16,8 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The sodium correction is from Santalucia et al. (1996) : " + temperatureCorrection);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Santalucia et al. (1996) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
 
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		
