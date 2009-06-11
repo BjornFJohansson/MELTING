@@ -87,17 +87,19 @@ public class Znosco071x2Loop extends PartialCalcul {
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
-		
+		Environment newEnvironment = environment;
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
 					"Znosco et al. (2007) are originally established " +
 					"for RNA sequences.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
-
+			newEnvironment = Environment.modifieSequences(newEnvironment,environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
+			pos1 = 0;
+			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		boolean isApplicable = super.isApplicable(newEnvironment, pos1, pos2);
 		
 		if (loopType.equals("1x2") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +
@@ -111,9 +113,10 @@ public class Znosco071x2Loop extends PartialCalcul {
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(sequences.getSequence(pos1, pos2));
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(sequences.getComplementary(pos1, pos2));
-		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2,"rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		
 		if (this.collector.getInitiationLoopValue() == null){

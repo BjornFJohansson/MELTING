@@ -57,12 +57,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-				
+		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for locked acid nucleiques of" +
 					"McTigue et al. (2004) are established for DNA sequences.");
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
 		}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -78,25 +76,28 @@ public class McTigue04LockedAcid extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
-		if (this.collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1)) == null || this.collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3)) == null){
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		if (this.collector.getNNvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0)) == null || this.collector.getNNvalue(newSequences.getSequence(1,1) + newSequences.getSequence(3, 3), newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3)) == null){
 			return true;
 		}
 		
-		for (int i = pos1; i <= pos2; i++){
-			if (this.collector.getLockedAcidValue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+			if (this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}
 		}
 		
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
 	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
-		
-		Thermodynamics firstNNValue = collector.getNNvalue(sequences.getSequenceNNPair(pos1), sequences.getComplementaryNNPair(pos1));
-		Thermodynamics secondNNValue = collector.getNNvalue(sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3), sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3));
+
+			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		Thermodynamics firstNNValue = collector.getNNvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
+		Thermodynamics secondNNValue = collector.getNNvalue(newSequences.getSequence(1,1) + newSequences.getSequence(3, 3), newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3));
 		double enthalpy = result.getEnthalpy() + firstNNValue.getEnthalpy() + secondNNValue.getEnthalpy();
 		double entropy = result.getEntropy() + firstNNValue.getEntropy()  + secondNNValue.getEntropy();
 		

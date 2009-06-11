@@ -57,27 +57,25 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-				
+		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The tandem mismatch parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		for (int i = pos1; i <= pos2 - 1; i++){
-			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+			if (this.collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
 	@Override
@@ -87,8 +85,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		String singleMismatchName = options.get(OptionManagement.singleMismatchMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
 		PartialCalculMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
+		singleMismatch.initializeFileName(singleMismatchName);
 		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);
-		
 		
 		loadFile(fileSingleMismatch, this.collector);
 	}

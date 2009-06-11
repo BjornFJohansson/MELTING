@@ -47,12 +47,10 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
 					"(2005) is only established for RNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
 		}
 
 		return super.isApplicable(environment, pos1, pos2);
@@ -61,11 +59,12 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int repeats = sequences.getDuplexLength() / 3;
-		
-		if (this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1, pos1 + 2), sequences.getComplementary(pos1, pos1 + 2)) == null){
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		if (this.collector.getCNGvalue(Integer.toString(repeats), newSequences.getSequence(), newSequences.getComplementary()) == null){
 			return true;			
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
 }

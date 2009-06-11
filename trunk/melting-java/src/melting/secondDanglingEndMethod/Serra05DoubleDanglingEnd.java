@@ -61,6 +61,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
@@ -75,6 +76,6 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 				return true;			
 				}
 			}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 }

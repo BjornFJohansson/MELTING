@@ -44,6 +44,14 @@ public class NucleotidSequences {
 		modifiedAcidNames.put("_X", ModifiedAcidNucleic.L_deoxyadenine);
 	}
 	
+	public void setSequence(String sequence){
+		this.sequence = sequence;
+	}
+	
+	public void setComplementary(String sequence){
+		this.complementary = sequence;
+	}
+	
 	public static String getComplementarySequence(String sequence, String hybridization){
 		StringBuffer complementary = new StringBuffer(sequence.length());
 		for (int i = 0; i < sequence.length(); i++){
@@ -373,7 +381,7 @@ public class NucleotidSequences {
 	}
 
 	public static String getLoopFistMismatch(String loop){
-		String mismatch = convertToPyr_Pur(loop.substring(1,2)) + loop.substring(3, 4);
+		String mismatch = convertToPyr_Pur(loop.substring(0,1)) + loop.substring(1, 2);
 		
 		return mismatch;
 	}
@@ -861,7 +869,7 @@ public class NucleotidSequences {
 				break;
 			}
 		}
-		
+
 		if (modifiedAcid1 != null){
 			name = modifiedAcidNames.get(modifiedAcid1);
 			if (name != null){
@@ -871,6 +879,7 @@ public class NucleotidSequences {
 		
 		if (modifiedAcid2 != null){
 			name = modifiedAcidNames.get(modifiedAcid2);
+
 			if (name != null){
 				return name;
 			}

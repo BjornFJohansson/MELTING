@@ -45,7 +45,7 @@
    			</mismatch>
   			<mismatch sequence="RYY/YYR">
 	        	<enthalpy>-5500.0</enthalpy>
-                <entropy>-16.2S</entropy>
+                <entropy>-16.25</entropy>
    			</mismatch>
   			<mismatch sequence="YYR/RYY">
 	        	<enthalpy>2200.0</enthalpy>

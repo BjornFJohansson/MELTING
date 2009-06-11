@@ -102,10 +102,10 @@ public class DataCollect {
 		String complementary = seq2;
 		
 		if ((sequence.contains("-A") || sequence.contains("-X")) && (complementary.contains("-A") == false && complementary.contains("-X") == false)){
-			complementary.replace("-", "");
+			complementary = complementary.replace("-", "");
 		}
 		if ((complementary.contains("-A") || complementary.contains("-X")) && (sequence.contains("-A") == false && sequence.contains("-X") == false)){
-			sequence.replace("-", "");
+			sequence = sequence.replace("-", "");
 		}
 		
 		Thermodynamics s = getModifiedvalue(sequence, complementary);
@@ -128,8 +128,8 @@ public class DataCollect {
 	
 	public Thermodynamics getDanglingValue(String seq1, String seq2){
 		String sens = NucleotidSequences.getSens(seq1, seq2);
-		seq1.replaceAll("-", "");
-		seq2.replaceAll("-", "");
+		seq1 = seq1.replaceAll("-", "");
+		seq2 = seq2.replaceAll("-", "");
 		Thermodynamics s = data.get("dangling"+seq1+"/"+seq2+"sens"+sens);
 		if (s == null){
 			s = data.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);

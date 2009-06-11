@@ -50,11 +50,10 @@ public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
+
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;			
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
-
 }

@@ -52,14 +52,12 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
-		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
-		
+		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
+
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for 2-hydroxyadenine base of" +
 					"Sugimoto (2001) are established for DNA sequences.");
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
-		}
+					}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		
@@ -67,8 +65,8 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			StringBuffer seq = new StringBuffer(modified.getDuplexLength());
 			StringBuffer comp = new StringBuffer(modified.getDuplexLength());
 			
-			seq.append(environment.getSequences().getSequenceContainig("A*", pos1, pos2));
-			comp.append(environment.getSequences().getComplementaryTo(seq.toString(), pos1, pos2));
+			seq.append(modified.getSequenceContainig("A*", 0, modified.getDuplexLength() - 1));
+			comp.append(modified.getComplementaryTo(seq.toString(),  0, modified.getDuplexLength() - 1));
 			
 			if (seq.toString().equals("CTA*A")== false && seq.toString().equals("TGA*C") == false){
 				isApplicable = false;
@@ -102,8 +100,10 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
-			
-		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
+		
+			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		NucleotidSequences noModified = newSequences.removeHydroxyadenine(0, newSequences.getDuplexLength() - 1);
 		if (pos1 != 0 && pos2 != pos1 + sequences.getDuplexLength() - 1){
 			for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 				if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
@@ -115,10 +115,10 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			return true;
 		}
 		
-		if (this.collector.getHydroxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
+		if (this.collector.getHydroxyadenosineValue(newSequences.getSequence(), newSequences.getComplementary()) == null){
 			return true;
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);	
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);	
 	}
 	
 	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,

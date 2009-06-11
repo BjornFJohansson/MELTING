@@ -46,17 +46,14 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 			int pos2) {
 		
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
-		
+
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
 		}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+
 		if (modified.calculateNumberOfTerminal('X', '-') > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
@@ -67,11 +64,12 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
-		if (this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2),sequences.getComplementary(pos1, pos2)) == null){
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		if (this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2, "dna"),sequences.getComplementary(pos1, pos2, "dna")) == null){
 			return true;
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
 }

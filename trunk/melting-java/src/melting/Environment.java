@@ -189,8 +189,11 @@ public class Environment {
 		return false;
 	}
 	
-	public void modifieSequences(String sequence, String complementary){
-		this.sequences = new NucleotidSequences(sequence, complementary);
+	public static Environment modifieSequences(Environment environment, String sequence, String complementary){
+		environment.getSequences().setSequence(sequence);
+		environment.getSequences().setComplementary(complementary);
+		
+		return environment;
 	}
 	
 }

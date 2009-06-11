@@ -54,30 +54,33 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	}
 
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+		Environment newEnvironment = environment;
+
 		if (environment.getHybridization().equals("dnadna") == false){
 				
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
+			newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
+			pos1 = 0;
+			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		return isApplicable;
+		return super.isApplicable(newEnvironment, pos1, pos2);
 	}
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-			
-		for (int i = pos1; i <= pos2 - 1; i++){
-			if (this.collector.getMismatchvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+		
+			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+			if (this.collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
 				return true;
 			}
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
 }

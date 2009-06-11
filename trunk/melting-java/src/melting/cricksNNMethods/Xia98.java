@@ -25,23 +25,22 @@ public class Xia98 extends CricksNNMethod {
 	}
 	
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Xia et al. (1998)" +
 			"are established for RNA/RNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
-
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
+		Environment newEnvironment = environment;
+
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
 
-		environment.modifieSequences(newSequences.getSequence(), newSequences.getComplementary());
+		newEnvironment = Environment.modifieSequences(newEnvironment, newSequences.getSequence(), newSequences.getComplementary());
 
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		environment.setResult(super.calculateInitiationHybridation(newEnvironment));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		
@@ -75,5 +74,11 @@ public class Xia98 extends CricksNNMethod {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 }

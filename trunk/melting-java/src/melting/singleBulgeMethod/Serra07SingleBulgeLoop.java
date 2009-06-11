@@ -25,12 +25,11 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
 					"Serra et al. (2007) are originally established " +
 					"for RNA sequences.");
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
 		}
 	
 		return super.isApplicable(environment, pos1, pos2);
@@ -43,5 +42,11 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single bulge loop are from Serra et al. (2007) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 }

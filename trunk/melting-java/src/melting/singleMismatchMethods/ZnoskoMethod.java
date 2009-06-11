@@ -10,7 +10,7 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public abstract class ZnoscoMethod extends PartialCalcul{
+public abstract class ZnoskoMethod extends PartialCalcul{
 	
 	protected static String formulaEnthalpy = "delat H = H(single mismatch N/N) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(NNN intervening)";
 	
@@ -18,9 +18,14 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		
 		Thermodynamics mismatchValue = this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2));
+		if (mismatchValue == null){
+			mismatchValue = new Thermodynamics(0,0);
+		}
 		Thermodynamics NNNeighboringValue = this.collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2));
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "N/N mismatch " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+		if (NNNeighboringValue == null){
+			NNNeighboringValue = new Thermodynamics(0,0);
+		}
+		OptionManagement.meltingLogger.log(Level.FINE, "N/N mismatch " + sequences.getSequence(pos1 + 1, pos1 + 1) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 		OptionManagement.meltingLogger.log(Level.FINE, "NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
 		
 		double enthalpy = result.getEnthalpy() + mismatchValue.getEnthalpy() + NNNeighboringValue.getEnthalpy();
@@ -54,15 +59,11 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
 		if (environment.getHybridization().equals("rnarna") == false){
 
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
 					"Znosco et al. are originally established " +
 					"for RNA duplexes.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
-
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);
@@ -70,15 +71,7 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		
-			if (this.collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), NucleotidSequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2))) == null){
-				return true;
-			}
-			
-			if (this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2)) == null){
-				return true;
-			}
+			NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 			
 			if (mismatch.calculateNumberOfTerminal('A', 'U') > 0){
 				if (this.collector.getClosureValue("A", "U") == null){
@@ -91,8 +84,7 @@ public abstract class ZnoscoMethod extends PartialCalcul{
 					return true;
 				}
 			}
-			
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(mismatch, 0, mismatch.getDuplexLength() - 1);
 	}
 
 }

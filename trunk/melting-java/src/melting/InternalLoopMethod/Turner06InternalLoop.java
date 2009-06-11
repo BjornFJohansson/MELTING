@@ -144,14 +144,11 @@ public class Turner06InternalLoop extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The internal loop parameters of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
-
 		}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -170,7 +167,10 @@ public class Turner06InternalLoop extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
+		
+			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("6") == null){
@@ -178,13 +178,13 @@ public class Turner06InternalLoop extends PartialCalcul{
 			}
 		}
 		
-		if (sequences.calculateNumberOfTerminal('A', 'U') > 0){
+		if (newSequences.calculateNumberOfTerminal('A', 'U') > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
 				return true;
 			}
 		}
 		
-		if (sequences.calculateNumberOfTerminal('G', 'U') > 0){
+		if (newSequences.calculateNumberOfTerminal('G', 'U') > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
@@ -196,9 +196,8 @@ public class Turner06InternalLoop extends PartialCalcul{
 			}
 		}
 		
-		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(), sequences.getComplementary());
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
+		String mismatch1 = NucleotidSequences.getLoopFistMismatch(newSequences.getSequence());
+		String mismatch2 = NucleotidSequences.getLoopFistMismatch(newSequences.getComplementary());
 		String loopType = sequences.getLoopType(pos1, pos2);
 		
 		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
