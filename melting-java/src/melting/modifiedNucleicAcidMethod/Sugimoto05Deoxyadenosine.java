@@ -51,13 +51,11 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
-		
+		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
+
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for L-deoxyadenosine of" +
 					"Sugimoto et al. (2005) are established for DNA sequences.");
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
 		}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -73,8 +71,9 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
-		NucleotidSequences noModified = sequences.removeDeoxyadenine(pos1, pos2);
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		NucleotidSequences noModified = newSequences.removeDeoxyadenine(0, newSequences.getDuplexLength() - 1);
 
 		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
@@ -82,11 +81,11 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 			}
 		} 
 		
-		if (this.collector.getDeoxyadenosineValue(sequences.getSequence(pos1, pos2),sequences.getComplementary(pos1, pos2)) == null){
+		if (this.collector.getDeoxyadenosineValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
 			return true;
 		}
 		
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
 	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,

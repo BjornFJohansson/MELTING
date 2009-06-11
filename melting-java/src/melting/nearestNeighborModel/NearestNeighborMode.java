@@ -42,7 +42,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
 
 		analyzeSequence();
-
 		this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
 		
 		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
@@ -58,8 +57,8 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
-			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 
+			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
@@ -174,8 +173,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					if (pos1 > 0){
 						pos1--;
 					}
-					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position), environment.getSequences().getComplementary().charAt(position)) == false){
-						
+					if (position + 1 >= this.environment.getSequences().getDuplexLength() - 1){
+						int [] positions = {pos1, position};
+						return positions;
+					}
+					else if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
+
 						int [] positions = {pos1, position};
 						return positions;
 					}
@@ -222,24 +225,26 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
-		PartialCalculMethod method = null;
-		String optionName = "";
-		String methodName = "";
-		
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
 
 			if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
 				if (positions[1] - positions[0] + 1 == 2){
-					optionName = OptionManagement.singleDanglingEndMethod;
-					method = this.singleDangingEndMethod;
+					if (this.singleDangingEndMethod == null){
+						initializeSingleDangingEndMethod();
+					}
+					return this.singleDangingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 == 3){
-					optionName = OptionManagement.doubleDanglingEndMethod;
-					method = this.doubleDangingEndMethod;
+					if (this.doubleDangingEndMethod == null){
+						initializeDoubleDangingEndMethod();
+					}
+					return this.doubleDangingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 > 3){
-					optionName = OptionManagement.longDanglingEndMethod;
-					method = this.longDangingEndMethod;
+					if (this.longDangingEndMethod == null){
+						initializeLongDangingEndMethod();
+					}
+					return this.longDangingEndMethod;
 				}
 				else {
 					throw new SequenceException("we don't recognize the motif " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
@@ -251,80 +256,198 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		}
 
 		if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
-			optionName = OptionManagement.NNMethod;
-			method = this.cricksMethod;
+			if (this.cricksMethod == null){
+				initializeCrickMethod();
+			}
+			return this.cricksMethod;
 		}
 		else if (environment.getSequences().isCNGMotif(positions[0], positions[1])){
-			optionName = OptionManagement.CNGMethod;
-			method = this.CNGRepeatsMethod;
+			if (this.CNGRepeatsMethod == null){
+				initializeCNGRepeatsMethod();
+			}
+			return this.CNGRepeatsMethod;
 		}
 		else if (environment.getSequences().isGUSequences(positions[0], positions[1])){
-			optionName = OptionManagement.wobbleBaseMethod;
-			method = this.wobbleMethod;
+			if (this.wobbleMethod == null){
+				initializeWobbleMethod();
+			}
+			return this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
+
 			if (positions[1] - positions[0] + 1 == 3){
-				optionName = OptionManagement.singleMismatchMethod;
-				method = this.singleMismatchMethod;
+				if (this.singleMismatchMethod == null){
+					initializeSingleMismatchMethod();
+				}
+				return this.singleMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 == 4){
-				optionName = OptionManagement.tandemMismatchMethod;
-				method = this.tandemMismatchMethod;
+				if (this.tandemMismatchMethod == null){
+					initializeTandemMismatchMethod();
+				}
+				return this.tandemMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 > 4){
-				optionName = OptionManagement.internalLoopMethod;
-				method = this.internalLoopMethod;
+				if (this.internalLoopMethod == null){
+					initializeInternalLoopMethod();
+				}
+				return this.internalLoopMethod;
 			}
 		}
 		else if (environment.getSequences().isBulgeLoop(positions[0], positions[1])){
 			if (positions[1] - positions[0] + 1 == 3){
-				optionName = OptionManagement.singleBulgeLoopMethod;
-				method = this.singleBulgeLoopMethod;
+				if (this.singleBulgeLoopMethod == null){
+					initializeSingleBulgeLoopMethod();
+				}
+				return this.singleBulgeLoopMethod;
 			}
 			else if (positions[1] - positions[0] + 1 >= 4){
-				optionName = OptionManagement.longBulgeLoopMethod;
-				method = this.longBulgeLoopMethod;
+				if (this.longBulgeLoopMethod == null){
+					initializeLongBulgeLoopMethod();
+				}
+				return this.longBulgeLoopMethod;
 			}
 		}
 		else if (environment.getSequences().isListedModifiedAcid(positions[0], positions[1])){
 			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1]));
-			if (environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1])) != null){
+
+			if (acidName != null){
+
 				switch (acidName) {
 				case inosine:
-					optionName = OptionManagement.inosineMethod;
-					method = this.inosineMethod;
+					if (this.inosineMethod == null){
+						initializeInosineMethod();
+					}
+					return this.inosineMethod;
 				case azobenzene:
-					optionName = OptionManagement.azobenzeneMethod;
-					method = this.azobenzeneMethod;
+					if (this.azobenzeneMethod == null){
+						initializeAzobenzeneMethod();
+					}
+					return this.azobenzeneMethod;
 				case hydroxyadenine:
-					optionName = OptionManagement.hydroxyadenineMethod;
-					method = this.hydroxyadenosineMethod;
+					if (this.hydroxyadenosineMethod == null){
+						initializeHydroxyadenosineMethod();
+					}
+					return this.hydroxyadenosineMethod;
 				case L_deoxyadenine:
-					optionName = OptionManagement.deoxyadenineMethod;
-					method = this.deoxyadenineMethod;
+					if (this.deoxyadenineMethod == null){
+						initializeDeoxyadenineMethod();
+					}
+					return this.deoxyadenineMethod;
 				case lockedAcidNucleic:
-					optionName = OptionManagement.lockedAcidMethod;
-					method = this.lockedAcidMethod;
+					if (this.lockedAcidMethod == null){
+						initializeLockedAcidMethod();
+					}
+					return this.lockedAcidMethod;
 				default:
 					throw new SequenceException("There is a unknown modified acid nucleic in the sequences.");
 				}
 			}
 		}
-
-		methodName = this.environment.getOptions().get(optionName);
-
-		if (method == null){
-			method = initializeMethod(optionName, methodName);
-		}
-		return method;
+		return null;
 	}
 	
+	private void initializeCrickMethod(){
+		String optionName = OptionManagement.NNMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.cricksMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeAzobenzeneMethod(){
+		String optionName = OptionManagement.azobenzeneMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.azobenzeneMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeCNGRepeatsMethod(){
+		String optionName = OptionManagement.CNGMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.CNGRepeatsMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeDeoxyadenineMethod(){
+		String optionName = OptionManagement.deoxyadenineMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.deoxyadenineMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeDoubleDangingEndMethod(){
+		String optionName = OptionManagement.doubleDanglingEndMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.doubleDangingEndMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeHydroxyadenosineMethod(){
+		String optionName = OptionManagement.hydroxyadenineMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.hydroxyadenosineMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeInosineMethod(){
+		String optionName = OptionManagement.inosineMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.inosineMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeInternalLoopMethod(){
+		String optionName = OptionManagement.internalLoopMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.internalLoopMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeLockedAcidMethod(){
+		String optionName = OptionManagement.lockedAcidMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.lockedAcidMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeLongBulgeLoopMethod(){
+		String optionName = OptionManagement.longBulgeLoopMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.longBulgeLoopMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeLongDangingEndMethod(){
+		String optionName = OptionManagement.longDanglingEndMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.longDangingEndMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeSingleBulgeLoopMethod(){
+		String optionName = OptionManagement.singleBulgeLoopMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.singleBulgeLoopMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeSingleDangingEndMethod(){
+		String optionName = OptionManagement.singleDanglingEndMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.singleDangingEndMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeSingleMismatchMethod(){
+		String optionName = OptionManagement.singleMismatchMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.singleMismatchMethod = initializeMethod(optionName, methodName);
+	}
+	
+	private void initializeTandemMismatchMethod(){
+		String optionName = OptionManagement.tandemMismatchMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.tandemMismatchMethod = initializeMethod(optionName, methodName);
+	}
+	private void initializeWobbleMethod(){
+		String optionName = OptionManagement.wobbleBaseMethod;
+		String methodName = this.environment.getOptions().get(optionName);
+		this.wobbleMethod = initializeMethod(optionName, methodName);
+	}
 	private PartialCalculMethod initializeMethod(String optionName, String methodName){
 
 		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
 
 		if (necessaryMethod != null){
 			necessaryMethod.initializeFileName(methodName);
+
 			necessaryMethod.loadData(environment.getOptions());
 		}
 		else {
@@ -338,7 +461,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		int pos1 = 0;
 		int pos2 = 0;
 		boolean isApplicableMethod = true;
+
 		while (pos2 + 1 <= environment.getSequences().getDuplexLength() - 1){
+
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
@@ -348,16 +473,14 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
-
 			}
-
 			pos1 = pos2 + 1;
 		}
+
 		return isApplicableMethod;
 	}
 	
 	private void analyzeSequence(){
-
 		if (checkIfMethodsAreApplicable() == false){
 			throw new MethodNotApplicableException("we cannot compute the melting because one method is not applicable. Check the sequences.");
 		}

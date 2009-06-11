@@ -82,6 +82,7 @@ public class DataHandler extends NodeHandler {
 							key += "parameter" + handler.getAttribut().get("parameter");
 						}
 						map.put(key, handler.getThermo());
+						System.out.println(key);
 						handler.initializeAttributes();	
 					subHandler = null;
 				}

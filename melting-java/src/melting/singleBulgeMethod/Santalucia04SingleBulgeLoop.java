@@ -49,12 +49,13 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
-		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)), NucleotidSequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2))) == null){
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
 			return true;
 		}
 		
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
 	@Override
@@ -64,6 +65,8 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		String singleBulgeName = options.get(OptionManagement.singleBulgeLoopMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
 		PartialCalculMethod singleBulge = register.getPartialCalculMethod(OptionManagement.singleBulgeLoopMethod, singleBulgeName);
+		singleBulge.initializeFileName(singleBulgeName);
+
 		String fileSingleBulge = singleBulge.getDataFileName(singleBulgeName);
 		
 		

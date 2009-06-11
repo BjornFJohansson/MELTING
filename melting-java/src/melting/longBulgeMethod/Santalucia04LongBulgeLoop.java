@@ -72,14 +72,11 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
-
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);
@@ -88,7 +85,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
-		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		

@@ -26,13 +26,14 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		NucleotidSequences sequences = environment.getSequences();
+
 		if (isMissingParameters(sequences, pos1, pos2)) {
 			throw new ThermodynamicParameterError("Some thermodynamic parameters are missing to compute " +
 					"melting temperature.");
 		}
 		return true;
 	}
-
+	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		return false;
@@ -46,7 +47,6 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 	public void loadFile(String name, DataCollect collector){
 
 		File dataFile = new File(OptionManagement.dataPathwayValue + "/" + name);
-
 		FileReader reader = new FileReader();
 		try {
 			collector.setData(reader.readFile(dataFile, collector.getData()));

@@ -87,13 +87,11 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);
@@ -101,7 +99,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
 		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);

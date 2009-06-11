@@ -68,9 +68,10 @@ public class Turner06 extends CricksNNMethod {
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
+		Environment newEnvironment = environment;
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
 
-		environment.modifieSequences(withoutTerminalUnpairedNucleotides.getSequence(), withoutTerminalUnpairedNucleotides.getComplementary());
+		newEnvironment = Environment.modifieSequences(newEnvironment, withoutTerminalUnpairedNucleotides.getSequence(), withoutTerminalUnpairedNucleotides.getComplementary());
 
 		environment.setResult(super.calculateInitiationHybridation(environment));
 

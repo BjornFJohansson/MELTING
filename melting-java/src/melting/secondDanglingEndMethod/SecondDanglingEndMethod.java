@@ -20,12 +20,10 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for second dangling end of Serra et al." +
 					"(2005 and 2006) is established for RNA sequences.");
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
-
 		}
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -61,10 +59,18 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		String doubleDanglingName = options.get(OptionManagement.doubleDanglingEndMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
 		PartialCalculMethod secondDangling = register.getPartialCalculMethod(OptionManagement.doubleDanglingEndMethod, doubleDanglingName);
+		secondDangling.initializeFileName(doubleDanglingName);
+
 		String fileDoubleDangling = secondDangling.getDataFileName(doubleDanglingName);
 		
 		
 		loadFile(fileDoubleDangling, this.collector);
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
 }

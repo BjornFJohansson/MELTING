@@ -28,8 +28,6 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Allawi and Santalucia (1997)" +
 					"are established for DNA sequences.");	
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
-
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -41,6 +39,12 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+	}
+	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
 }

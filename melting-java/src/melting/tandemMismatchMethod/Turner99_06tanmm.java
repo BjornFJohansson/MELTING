@@ -134,15 +134,12 @@ public class Turner99_06tanmm extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+
 		if (environment.getHybridization().equals("rnarna") == false){
 			
 			OptionManagement.meltingLogger.log(Level.WARNING, "the tandem mismatch parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
-			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getSequence(pos1, pos2, "rna"));
-
 		}
 		
 		return super.isApplicable(environment, pos1, pos2);
@@ -150,14 +147,15 @@ public class Turner99_06tanmm extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
 		StringBuffer closing = new StringBuffer();
 		
-		closing.append(sequences.getSequence(pos1, pos2).charAt(0));
+		closing.append(newSequences.getSequence().charAt(0));
 		closing.append("/");
-		closing.append(sequences.getComplementary(pos1, pos2).charAt(0));
+		closing.append(newSequences.getComplementary().charAt(0));
 		
-		if (this.collector.getMismatchValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2), closing.toString()) == null){
+		if (this.collector.getMismatchValue(newSequences.getSequence(), newSequences.getComplementary(), closing.toString()) == null){
 			return true;
 		}
 		if (sequences.isSymetric(pos1, pos2) == false){
@@ -174,14 +172,14 @@ public class Turner99_06tanmm extends PartialCalcul{
 			}
 			
 			else if (sequences.isBasePairEqualsTo('A', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('A', 'G', pos1 + 2)){
-				if (sequences.isBasePairEqualsTo('C', 'U', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'U', pos1 + 2)){
+				if (newSequences.isBasePairEqualsTo('C', 'U', 1) || newSequences.isBasePairEqualsTo('C', 'U', 2)){
 					needPenaltyAG = true;
 				}
 				else if (sequences.isBasePairEqualsTo('C', 'C', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'C', pos1 + 2)){
 					needPenaltyAG = true;
 				}
 			}
-			else if ((sequences.isBasePairEqualsTo('U', 'U', pos1 + 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (sequences.isBasePairEqualsTo('U', 'U', pos1 + 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
+			else if ((newSequences.isBasePairEqualsTo('U', 'U', 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (newSequences.isBasePairEqualsTo('U', 'U', 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
 				needPenaltyAG = true;
 			}
 				
@@ -193,6 +191,6 @@ public class Turner99_06tanmm extends PartialCalcul{
 			}
 		}
 		
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 }

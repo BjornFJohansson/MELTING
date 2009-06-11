@@ -64,8 +64,8 @@ import melting.singleDanglingEndMethod.Bommarito00SingleDanglingEnd;
 import melting.singleDanglingEndMethod.Serra06_08SingleDanglingEnd;
 import melting.singleMismatchMethods.AllawiSantaluciaPeyret97_98_99mm;
 import melting.singleMismatchMethods.Turner06mm;
-import melting.singleMismatchMethods.Znosco07mm;
-import melting.singleMismatchMethods.Znosco08mm;
+import melting.singleMismatchMethods.Znosko07mm;
+import melting.singleMismatchMethods.Znosko08mm;
 import melting.sodiumCorrections.Ahsen01SodiumCorrection;
 import melting.sodiumCorrections.FrankKamenetskii71SodiumCorrection;
 import melting.sodiumCorrections.MarmurSchildkrautDoty98_62SodiumCorrection;
@@ -86,7 +86,7 @@ import melting.tandemMismatchMethod.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.tandemMismatchMethod.Turner99_06tanmm;
 import melting.wobbleNNMethod.Santalucia05Inosine;
 import melting.wobbleNNMethod.Turner99Wobble;
-import melting.wobbleNNMethod.Znosco07Inosine;
+import melting.wobbleNNMethod.Znosko07Inosine;
 
 public class RegisterCalculMethod {
 	
@@ -183,8 +183,8 @@ public class RegisterCalculMethod {
 	
 	private void initializeSingleMismatchMethods(){
 		singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
-		singleMismatchMethod.put("Znosco_2007", Znosco07mm.class);
-		singleMismatchMethod.put("Znosco_2008", Znosco08mm.class);
+		singleMismatchMethod.put("Znosko_2007", Znosko07mm.class);
+		singleMismatchMethod.put("Znosko_2008", Znosko08mm.class);
 		singleMismatchMethod.put("Turner_2006", Turner06mm.class);
 	}
 	
@@ -237,7 +237,7 @@ public class RegisterCalculMethod {
 	
 	private void initializeInosineMethods(){
 		inosineMethod.put("Santalucia_2005", Santalucia05Inosine.class);
-		inosineMethod.put("Znosco_2007", Znosco07Inosine.class);
+		inosineMethod.put("Znosko_2007", Znosko07Inosine.class);
 	}
 	
 	private void initializeAzobenzeneMethods(){

@@ -1,6 +1,7 @@
 package melting.InternalLoopMethod;
 
 
+import java.util.HashMap;
 import java.util.logging.Level;
 
 import melting.Environment;
@@ -8,7 +9,9 @@ import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
+import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
+import melting.configuration.RegisterCalculMethod;
 
 public class Santalucia04InternalLoop extends PartialCalcul{
 
@@ -95,16 +98,19 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		
+		Environment newEnvironment = environment;
+
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " the internal loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
 			
-			environment.modifieSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getSequence(pos1, pos2, "dna"));
+			newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
+			pos1 = 0;
+			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		boolean isApplicable = super.isApplicable(newEnvironment, pos1, pos2);
 
 		if (environment.getSequences().calculateLoopLength(pos1, pos2) == 2){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
@@ -116,7 +122,9 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
-		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
+			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+
+		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
 		if (sequences.isAsymmetricLoop(pos1, pos2)){
 			if (collector.getAsymmetry() == null) {
@@ -124,6 +132,19 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			}
 		}
 		return isMissingParameters;
+	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		String singleMismatchName = options.get(OptionManagement.singleMismatchMethod);
+		RegisterCalculMethod register = new RegisterCalculMethod();
+		PartialCalculMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
+		singleMismatch.initializeFileName(singleMismatchName);
+		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);
+		
+		loadFile(fileSingleMismatch, this.collector);
 	}
 	
 	private double calculateGibbs (String seq1, String seq2){
