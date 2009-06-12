@@ -60,10 +60,10 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 
 		double Mg = environment.getMg() - environment.getDNTP();
 		double square = Math.log(Mg) * Math.log(Mg);
-		int Fgc = environment.getSequences().calculatePercentGC() / 100;
+		double Fgc = environment.getSequences().calculatePercentGC() / 100;
 		
-		double TmInverse = 1 / environment.getResult().getTm() + this.a +this.b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1 / (2 * (environment.getSequences().getDuplexLength() - 1)) * (this.e + this.f * Math.log(Mg) + this.g * square);
-		return 1 / TmInverse;
+		double TmInverse = 1.0 / environment.getResult().getTm() + this.a +this.b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1.0 / (2.0 * (environment.getSequences().getDuplexLength() - 1.0)) * (this.e + this.f * Math.log(Mg) + this.g * square);
+		return 1.0 / TmInverse;
 	}
 	
 	protected void displayVariable(){

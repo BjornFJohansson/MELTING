@@ -26,7 +26,7 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 
 		double NaEq = Helper.calculateNaEquivalent(environment);
-		int Fgc = environment.getSequences().calculatePercentGC();
+		double Fgc = environment.getSequences().calculatePercentGC();
 		
 		double Tm = environment.getResult().getTm() + (8.75 - 2.83 * Fgc) * Math.log(NaEq);
 		environment.setResult(Tm);

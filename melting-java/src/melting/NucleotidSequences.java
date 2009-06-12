@@ -225,7 +225,7 @@ public class NucleotidSequences {
 		return null;
 	}
 	
-	public int calculatePercentGC(){
+	public double calculatePercentGC(){
 		int numberGC = 0;
 		for (int i = 0; i < getDuplexLength();i++){
 			if (this.sequence.charAt(i) == 'G' || this.sequence.charAt(i) == 'C'){
@@ -237,8 +237,8 @@ public class NucleotidSequences {
 		return numberGC / getDuplexLength() * 100;
 	}
 	
-	public int getPercentMismatching(){
-		int numberMismatching = 0;
+	public double getPercentMismatching(){
+		double numberMismatching = 0.0;
 		for (int i = 0; i < getDuplexLength(); i++){
 			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i)) == false){
 				numberMismatching++;
@@ -657,7 +657,7 @@ public class NucleotidSequences {
 			return false;
 		}
 
-		while (index <= pos2 - 2){
+		while (index < pos2 - 2){
 			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
 				return false;
 			}
@@ -665,7 +665,9 @@ public class NucleotidSequences {
 				if(isBasePair('G', 'C', index + 2) && isBasePair('C', 'G', index) && isBasePair(mismatch, mismatch, index + 1)){
 					index += 3;
 				}
-				return false;
+				else{
+					return false;
+				}
 			}
 		}
 		return true;

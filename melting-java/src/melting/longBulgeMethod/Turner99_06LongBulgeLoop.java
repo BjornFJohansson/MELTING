@@ -49,7 +49,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
 
 			enthalpy += initiationBulge.getEnthalpy();
-			entropy += initiationBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Integer.parseInt(bulgeSize) / 6));
+			entropy += initiationBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Double.parseDouble(bulgeSize) / 6.0));
 		}
 		else{
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());

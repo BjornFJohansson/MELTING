@@ -17,7 +17,7 @@ public class Ahsen01 extends ApproximativeMode{
 	
 	public ThermoResult CalculateThermodynamics() {
 		double Tm = super.CalculateThermodynamics().getTm();
-		int percentGC = this.environment.getSequences().calculatePercentGC();
+		double percentGC = this.environment.getSequences().calculatePercentGC();
 		Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550 / this.environment.getSequences().getDuplexLength();
 		environment.setResult(Tm);
 		

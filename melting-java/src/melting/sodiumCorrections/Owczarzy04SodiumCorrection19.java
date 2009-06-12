@@ -22,7 +22,7 @@ public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
-		int Fgc = environment.getSequences().calculatePercentGC() / 100;
+		double Fgc = environment.getSequences().calculatePercentGC() / 100;
 		
 		double Tm = environment.getResult().getTm() + (-3.22 * Fgc - 6.39) * Math.log(NaEq);
 		environment.setResult(Tm);
