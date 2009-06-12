@@ -426,10 +426,8 @@ public class OptionManagement {
 		initializeLogger();
 		
 		setOptionValues(args);
-
-		HashMap<String, String> optionSet = new HashMap<String, String>();
 			
-		optionSet = initializeDefaultOptions(args);
+		HashMap<String, String> optionSet = initializeDefaultOptions(args);
 
 		for (int i = 0;i <= args.length - 1; i++){
 			String option = args[i];

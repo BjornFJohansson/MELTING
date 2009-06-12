@@ -24,7 +24,7 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
-		int Fgc = environment.getSequences().calculatePercentGC();
+		double Fgc = environment.getSequences().calculatePercentGC();
 		
 		double Tm = environment.getResult().getTm() + (7.95 - 3.06 * Fgc) * Math.log(NaEq);
 		environment.setResult(Tm);

@@ -71,10 +71,10 @@ public class Turner06InternalLoop extends PartialCalcul{
 			enthalpy += initiationLoop.getEnthalpy();
 
 			if (loopLength > 4){
-				saltIndependentEntropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6);
+				saltIndependentEntropy += initiationLoop.getEntropy() - 1.08 * Math.log((double)loopLength / 6.0);
 			}
 			else {
-				entropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6);
+				entropy += initiationLoop.getEntropy() - 1.08 * Math.log((double)loopLength / 6.0);
 			}
 		}
 		

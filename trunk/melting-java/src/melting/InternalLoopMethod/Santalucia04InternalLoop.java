@@ -61,7 +61,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			}
 		}
 		else {
-			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(loopLength/30);
+			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(loopLength/30.0);
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "Internal loop of" + loopLength + " :  enthalpy = 0" + "  entropy = " + value);
 
