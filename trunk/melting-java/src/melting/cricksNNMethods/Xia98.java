@@ -24,6 +24,7 @@ public class Xia98 extends CricksNNMethod {
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
@@ -33,14 +34,12 @@ public class Xia98 extends CricksNNMethod {
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
-		Environment newEnvironment = environment;
 
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
 
-		newEnvironment = Environment.modifieSequences(newEnvironment, newSequences.getSequence(), newSequences.getComplementary());
-
-		environment.setResult(super.calculateInitiationHybridation(newEnvironment));
+		environment.setResult(super.calculateInitiationHybridation(environment));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		
@@ -76,6 +75,7 @@ public class Xia98 extends CricksNNMethod {
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

@@ -173,17 +173,20 @@ public class NucleotidSequences {
 		
 		int indexStart = 0;
 		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexStart), this.complementary.charAt(indexStart)) == false && indexStart <= getDuplexLength() - 1){
-			seq.deleteCharAt(indexStart);
-			comp.deleteCharAt(indexStart);
+			seq.deleteCharAt(0);
+			comp.deleteCharAt(0);
+			indexStart ++;
 		}
+
 		if (indexStart == getDuplexLength() - 1){
 			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
 		}
 		
 		int indexEnd = getDuplexLength() - 1;
 		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false && indexEnd >= 0){
-			seq.deleteCharAt(indexEnd);
-			comp.deleteCharAt(indexEnd);
+			seq.deleteCharAt(getDuplexLength() - 1);
+			comp.deleteCharAt(getDuplexLength() - 1);
+			indexEnd --;
 		}
 		if (indexEnd == 0){
 			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
@@ -210,7 +213,13 @@ public class NucleotidSequences {
 	}
 	
 	public static String getSens(String seq1, String seq2){
-		if (seq2.charAt(0) == '-'){
+		if (seq1.length() == 0){
+			return "5";
+		}
+		else if (seq2.length() == 0){
+			return "3";
+		}
+		else if (seq2.charAt(0) == '-'){
 			return "5";
 		}
 		else if (seq1.charAt(0) == '-'){
@@ -222,7 +231,19 @@ public class NucleotidSequences {
 		else if (seq1.charAt(seq1.length() - 1) == '-'){
 			return "5";
 		}
-		return null;
+		throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
+	}
+	
+	public String getSequenceSens(String sequence){
+		if (sequence.equals(this.sequence)){
+			return "5'3'";
+		}
+		else if (sequence.equals(this.complementary)){
+			return "3'5'";
+		}
+		else {
+			throw new SequenceException("We don't recognize the sequence " + sequence);
+		}
 	}
 	
 	public double calculatePercentGC(){
@@ -310,7 +331,7 @@ public class NucleotidSequences {
 		return loop;
 	}
 
-	public boolean isAsymmetricLoop(int pos1, int pos2){
+	public boolean isAsymetricLoop(int pos1, int pos2){
 		String seq1 = getSequence(pos1, pos2);
 		String seq2 = getComplementary(pos1, pos2);
 		
@@ -324,8 +345,7 @@ public class NucleotidSequences {
 	
 	public static String convertToPyr_Pur(String sequence){
 		StringBuffer newSeq = new StringBuffer(sequence.length());
-		
-		for (int i = 0; i < sequence.length(); i++){
+		for (int i = 0; i <= sequence.length() - 1; i++){
 			switch (sequence.charAt(i)) {
 			case 'A':
 				newSeq.append('R');
@@ -342,7 +362,9 @@ public class NucleotidSequences {
 			case 'C':
 				newSeq.append('Y');
 				break;
-
+			case '-':
+				newSeq.append('-');
+				break;
 			default:
 				throw new SequenceException("There are non watson crick bases in the sequence.");
 			}
@@ -351,23 +373,23 @@ public class NucleotidSequences {
 	}
 	
 	public String getLoopType(int pos1, int pos2){
-		if (isAsymmetricLoop(pos1, pos2)){
+		if (isAsymetricLoop(pos1, pos2)){
 			int internalLoopSize1 = 0;
 			int internalLoopSize2 = 0;
-			
-			for (int i = 1; i < getSequence(pos1, pos2).length() - 1; i++ ){
-				if (this.sequence.charAt(i) != '-'){
+			for (int i = 1; i <= getSequence(pos1, pos2).length() - 2; i++ ){
+				
+				if (getSequence(pos1, pos2).charAt(i) != '-'){
 					internalLoopSize1 ++;
 				}
 				
-				if (this.complementary.charAt(i) != '-'){
+				if (getComplementary().charAt(i) != '-'){
 					internalLoopSize2 ++;
 				}
 			}
 			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
 				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
 			}
-			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3) || (internalLoopSize2 == 2 && internalLoopSize1 != 3)){
+			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3 && internalLoopSize2 != 1) || (internalLoopSize2 == 2 && internalLoopSize1 != 3 && internalLoopSize1 != 1)){
 				return "others_non_2x2";
 			}
 			else {
@@ -375,7 +397,7 @@ public class NucleotidSequences {
 			}
 		}
 		else{
-			String internalLoopSize = Integer.toString(getDuplexLength() - 2);
+			String internalLoopSize = Integer.toString(pos2 - pos1 - 1);
 			return internalLoopSize + "x" + internalLoopSize;
 		}
 	}
@@ -392,12 +414,12 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isSymetric(int pos1, int pos2){
-		for (int i = 0; i < getSequence(pos1, pos2).length(); i++){
-			if (getSequence(pos1, pos2).charAt(i) == getComplementary(pos1, pos2).charAt(getSequence(pos1, pos2).length() - i - 1)){
-				return true;
+		for (int i = 0; i < getDuplexLength() - 1; i++){
+			if (getSequence(pos1, pos2).charAt(i) != getComplementary(pos1, pos2).charAt(getSequence(pos1, pos2).length() - i - 1)){
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	public static String buildSymetricSequence(String seq1, String seq2){
@@ -649,15 +671,13 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isCNGMotif(int pos1, int pos2){
-
 		int index = pos1;
 		char mismatch = sequence.charAt(pos1 + 1);
-		
 		if (pos2 > getDuplexLength() - 1 || pos2 - pos1 + 1 < 3 || pos1 < 0){
 			return false;
 		}
 
-		while (index < pos2 - 2){
+		while (index <= pos2 - 2){
 			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
 				return false;
 			}
@@ -706,11 +726,10 @@ public class NucleotidSequences {
 		if (pos1 != 0 && pos2 != getDuplexLength() - 1){
 			return false;
 		}
-		 
+
 		String sequenceWithoutDanglingEnd = getSequenceContainig("-", pos1, pos2);
 		String sequenceWithDanglingEnd = getComplementaryTo(sequenceWithoutDanglingEnd, pos1, pos2);
-		
-		for (int i = pos1; i <= pos2; i++){
+		for (int i = pos1 + 1; i < pos2; i++){
 			if (sequenceWithoutDanglingEnd.charAt(i) != '-' || Helper.isWatsonCrickBase(sequenceWithDanglingEnd.charAt(i)) == false){
 				return false;
 			}
@@ -759,13 +778,13 @@ public class NucleotidSequences {
 				return false;
 			}
 			else if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false){
-				if (this.sequence.charAt(i) != '-'){
+				if (this.sequence.charAt(i) != '-' || (this.sequence.charAt(i) == '-' && pos2 - pos1 + 1 == 3)){
 					return false;
 				}
 				numbergapSequence ++;
 			}
 			else if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false){
-				if (this.complementary.charAt(i) != '-'){
+				if (this.complementary.charAt(i) != '-' || (this.sequence.charAt(i) == '-' && pos2 - pos1 + 1 == 3)){
 					return false;
 				}
 				numbergapComplementary ++;
@@ -779,26 +798,23 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isBulgeLoop(int pos1, int pos2){
-		
-		if (pos2 > getDuplexLength() - 2 || pos1 < 0){
+		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
 			return false;
 		}
-		
+
 		if ((getSequence(pos1, pos2).contains("-") && getComplementary(pos1, pos2).contains("-")) || (getSequence(pos1, pos2).contains("-") == false && getComplementary(pos1, pos2).contains("-") == false)){
 			return false;
 		}
-		
 		String sequenceWithGap = getSequenceContainig("-", pos1, pos2);
-		
+
 		int numbergap = 0;
 		
-		for (int i = pos1; i <= pos2 ; i++){
+		for (int i = 0; i <= pos2 - pos1 ; i++){
 			if (sequenceWithGap.charAt(i) == '-'){
 				numbergap ++;
 			}
 		}
-		
-		if (numbergap != pos2 - pos1){
+		if (numbergap != pos2 - pos1 - 1){
 			return false;
 		}
 		return true;
@@ -888,4 +904,62 @@ public class NucleotidSequences {
 		}
 		return null;
 	}
+	
+	public boolean isAPyrimidineInThePosition(int pos){
+		if (Helper.isPyrimidine(this.sequence.charAt(pos)) || Helper.isPyrimidine(this.complementary.charAt(pos))){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isTandemMismatchGGPenaltyNecessary(int pos){
+		if ((isBasePair('G', 'G', pos) && isBasePair('A','A', pos + 1)) || (isBasePair('G', 'G', pos + 1) && isBasePair('A','A', pos))){
+			return true;	
+		}
+		else if ((isBasePair('G', 'G', pos) && isAPyrimidineInThePosition(pos + 1)) || (isBasePair('G', 'G', pos + 1) && isAPyrimidineInThePosition(pos))){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isTandemMismatchDeltaPPenaltyNecessary(int pos){
+		if (isBasePairEqualsTo('A', 'G', pos) || isBasePairEqualsTo('A', 'G', pos + 1)){
+			if (isBasePairEqualsTo('C', 'U', pos) || isBasePairEqualsTo('C', 'U', pos + 1)){
+				return true;
+			}
+			else if (isBasePair('C', 'C', pos) || isBasePair('C', 'C', pos + 1)){
+				return true;
+			}
+		}
+		else if ((isBasePair('U', 'U', pos) && isBasePair('A', 'A', pos + 1)) || (isBasePair('U', 'U', pos + 1) && isBasePair('A', 'A', pos))){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean is2StabilizingMismatchesPenaltyNecessary(int pos){
+		if (isBasePairEqualsTo('G', 'U', pos) || isBasePairEqualsTo('G', 'A', pos) || isBasePair('U', 'U', pos)){
+			if (isBasePairEqualsTo('G', 'U', pos + 1) || isBasePairEqualsTo('G', 'A', pos + 1) || isBasePair('U', 'U', pos + 1)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean is1StabilizingMismatchPenaltyNecessary(int pos){
+		if ((isBasePairEqualsTo('G', 'U', pos) || isBasePairEqualsTo('G', 'A', pos) || isBasePair('U', 'U', pos)) || (isBasePairEqualsTo('G', 'U', pos + 1) || isBasePairEqualsTo('G', 'A', pos + 1) || isBasePair('U', 'U', pos + 1))){
+			if (isBasePairEqualsTo('C', 'A', pos ) == false && isBasePairEqualsTo('C', 'A', pos + 1) == false){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isSequenceGap(int pos1, int pos2){
+		if (getSequence(pos1, pos2).contains("-") || getComplementary(pos1, pos2).contains("-")){
+			return false;
+		}
+		return true;
+	}
+
 }

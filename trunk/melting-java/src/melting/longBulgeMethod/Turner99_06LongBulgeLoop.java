@@ -32,6 +32,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		return true;
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
@@ -85,6 +86,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -97,6 +99,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

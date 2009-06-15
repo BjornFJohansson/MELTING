@@ -113,7 +113,14 @@ public class ThermoHandler extends NodeHandler{
 			}
 		} 
 		else {
+
 			if (name.equals(this.name)) {
+				if (enthalpy == null){
+					enthalpy = 0.0;
+				}
+				if (entropy == null){
+					entropy = 0.0;
+				}
 				thermo = new Thermodynamics(enthalpy, entropy);
 			}	
 			if (hasEnthalpy == false && hasEntropy == false) {

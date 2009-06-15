@@ -30,7 +30,7 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "CNG motifs method : from Broda et al. (2005). \n");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs method : from Broda et al. (2005). \n");
 		
 		int repeats = (pos2 - pos1 + 1) / 3;
 		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1, pos1 + 2,"rna"), sequences.getComplementary(pos1, pos1 + 2, "rna"));
@@ -45,6 +45,7 @@ public class Broda05CNGRepeats extends PartialCalcul {
 		return result;
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -56,12 +57,12 @@ public class Broda05CNGRepeats extends PartialCalcul {
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int repeats = sequences.getDuplexLength() / 3;
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
-		if (this.collector.getCNGvalue(Integer.toString(repeats), newSequences.getSequence(), newSequences.getComplementary()) == null){
+		if (this.collector.getCNGvalue(Integer.toString(repeats), newSequences.getSequence(0,2), newSequences.getComplementary(0,2)) == null){
 			return true;			
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);

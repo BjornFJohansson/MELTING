@@ -23,6 +23,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		return false;
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
@@ -43,10 +44,10 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		return result;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
 		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
 			return true;
 		}
@@ -58,15 +59,15 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String singleBulgeName = options.get(OptionManagement.singleBulgeLoopMethod);
+		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod singleBulge = register.getPartialCalculMethod(OptionManagement.singleBulgeLoopMethod, singleBulgeName);
-		singleBulge.initializeFileName(singleBulgeName);
+		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initializeFileName(crickName);
 
-		String fileSingleBulge = singleBulge.getDataFileName(singleBulgeName);
+		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(fileSingleBulge, this.collector);
+		loadFile(NNfile, this.collector);
 	}
 
 }

@@ -11,12 +11,13 @@ import melting.configuration.OptionManagement;
 
 public abstract class SingleDanglingEndMethod extends PartialCalcul {
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		Thermodynamics danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
-		double entropy = result.getEnthalpy() + danglingValue.getEntropy();		
+		double entropy = result.getEntropy() + danglingValue.getEntropy();		
 			
 		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
 		
@@ -26,6 +27,7 @@ public abstract class SingleDanglingEndMethod extends PartialCalcul {
 		return result;
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -38,6 +40,7 @@ public abstract class SingleDanglingEndMethod extends PartialCalcul {
 		return isApplicable;
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;

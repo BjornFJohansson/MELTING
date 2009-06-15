@@ -28,6 +28,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
@@ -55,6 +56,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		
@@ -74,6 +76,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		return isApplicable;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));

@@ -131,6 +131,7 @@ public class DataCollect {
 		seq1 = seq1.replaceAll("-", "");
 		seq2 = seq2.replaceAll("-", "");
 		Thermodynamics s = data.get("dangling"+seq1+"/"+seq2+"sens"+sens);
+
 		if (s == null){
 			s = data.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
 		}
@@ -187,7 +188,7 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getAsymmetry(){
-		Thermodynamics s = data.get("symmetry");
+		Thermodynamics s = data.get("asymetry");
 		return s;
 	}
 	
@@ -231,20 +232,23 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
-		Thermodynamics s = data.get("bulge"+seq1+"/"+seq2.substring(0, 1)+seq2.substring(2,3));
+		String sequence1 =seq1.replace("-", "");
+		String sequence2 =seq2.replace("-", "");
+
+		Thermodynamics s = data.get("bulge"+sequence1+"/"+sequence2);
 		if (s == null){
-			s = data.get("bulge"+getSymetricSequencePairs(seq1, seq2.substring(0, 1)+seq2.substring(2,3)));
+			s = data.get("bulge"+getSymetricSequencePairs(sequence1, sequence2));
 		}
 		return s;
 	}
 	
 	public Thermodynamics getBulgeLoopvalue(String size){
-		Thermodynamics s = data.get("mismatch"+"size"+size);
+		Thermodynamics s = data.get("bulge"+"size"+size);
 		return s;
 	}
 	
 	public Thermodynamics getInitiationBulgevalue(String size){
-		Thermodynamics s = data.get("mismatch"+"initiation"+"size"+size);
+		Thermodynamics s = data.get("bulge"+"initiation"+"size"+size);
 		return s;
 	}
 }

@@ -27,6 +27,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		formulaS.append(" + S(intervening NN)");
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
@@ -47,14 +48,13 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		return result;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
 		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
 			return true;
 		}
-		
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
@@ -62,14 +62,14 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String singleBulgeName = options.get(OptionManagement.singleBulgeLoopMethod);
+		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod singleBulge = register.getPartialCalculMethod(OptionManagement.singleBulgeLoopMethod, singleBulgeName);
-		singleBulge.initializeFileName(singleBulgeName);
+		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initializeFileName(crickName);
 
-		String fileSingleBulge = singleBulge.getDataFileName(singleBulgeName);
+		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(fileSingleBulge, this.collector);
+		loadFile(NNfile, this.collector);
 	}
 }

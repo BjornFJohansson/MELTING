@@ -22,6 +22,7 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
@@ -41,6 +42,7 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));

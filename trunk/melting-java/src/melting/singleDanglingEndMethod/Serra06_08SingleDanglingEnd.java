@@ -24,25 +24,28 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for dangling ends" +
-					"of Serra et al. (2006 - 2008) are established for RNA sequences.");
+					" of Serra et al. (2006 - 2008) are established for RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single dangling end are from Serra et al. (2006, 2008) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single dangling end are from Serra et al. (2006, 2008) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

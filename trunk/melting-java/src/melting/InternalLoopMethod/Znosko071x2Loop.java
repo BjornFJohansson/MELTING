@@ -9,11 +9,11 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public class Znosco071x2Loop extends PartialCalcul {
+public class Znosko071x2Loop extends PartialCalcul {
 
 	/*REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. */
 	
-	public static String defaultFileName = "Znosco20071x2loop.xml";
+	public static String defaultFileName = "Znosko20071x2loop.xml";
 	private static String formulaEnthalpy = "delat H = H(first mismath) + H(initiation 1x2 loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
 	
 	@Override
@@ -25,12 +25,14 @@ public class Znosco071x2Loop extends PartialCalcul {
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The 1 x 2 internal loop formulas from Znosco et al. (2007) : " + formulaEnthalpy + " (entropy formula is similar)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The 1 x 2 internal loop formulas from Znosco et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 		
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
@@ -46,12 +48,22 @@ public class Znosco071x2Loop extends PartialCalcul {
 		
 		Thermodynamics firstMismatch; 
 		if (sequences.isBasePairEqualsTo('G', 'A', pos1 + 1)){
-			firstMismatch = this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2");
-
+			if (this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2") == null){
+				firstMismatch = new Thermodynamics(0,0);
+			}
+			else {
+				firstMismatch = this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2");
+			}
+			
 			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		else {
-			firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2");
+			if (this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2") == null){
+				firstMismatch = new Thermodynamics(0,0);
+			}
+			else {
+				firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2");
+			}
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
@@ -84,24 +96,20 @@ public class Znosco071x2Loop extends PartialCalcul {
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
-		Environment newEnvironment = environment;
 
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
 					"Znosco et al. (2007) are originally established " +
 					"for RNA sequences.");
 			
-			newEnvironment = Environment.modifieSequences(newEnvironment,environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
-			pos1 = 0;
-			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		boolean isApplicable = super.isApplicable(newEnvironment, pos1, pos2);
-		
-		if (loopType.equals("1x2") == false){
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		if (loopType.equals("1x2") == false && loopType.equals("2x1") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +
 					"established only for 1x2 internal loop.");
 			
@@ -111,14 +119,13 @@ public class Znosco071x2Loop extends PartialCalcul {
 		return isApplicable;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2,"rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
-		
 		if (this.collector.getInitiationLoopValue() == null){
 			return true;
 		}
@@ -133,15 +140,6 @@ public class Znosco071x2Loop extends PartialCalcul {
 			if (this.collector.getClosureValue("G", "U") == null){
 				return true;
 			}
-		}
-		
-		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2");
-		
-		if (sequences.isBasePairEqualsTo('G', 'A', pos1 + 1)){
-			firstMismatch = this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2");
-		}
-		if (firstMismatch == null){
-			return true;
 		}
 		return isMissingParameters;
 	}

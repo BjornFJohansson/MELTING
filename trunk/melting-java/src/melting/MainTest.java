@@ -32,7 +32,7 @@ public class MainTest {
 
 				RegisterCalculMethod register = new RegisterCalculMethod();
 				CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
-				ThermoResult results = calculMethod.CalculateThermodynamics();
+				ThermoResult results = calculMethod.calculateThermodynamics();
 				environment.setResult(results);
 
 				results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);

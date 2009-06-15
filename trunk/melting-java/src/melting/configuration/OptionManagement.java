@@ -87,6 +87,9 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(tandemMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
 		this.DNADefaultOptions.put(internalLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(singleBulgeLoopMethod, "Tanaka_2004");
+		this.DNADefaultOptions.put(singleDanglingEndMethod, "Bommarito_2000");
+		this.DNADefaultOptions.put(doubleDanglingEndMethod, "Serra_2006");
+		this.DNADefaultOptions.put(longDanglingEndMethod, "Sugimoto_2002_dna");
 		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(approximativeMode, "Wetmurdna_1991");
@@ -119,6 +122,9 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 		this.RNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
 		this.RNADefaultOptions.put(formamideCorrection, "Blake_1996");
+		this.RNADefaultOptions.put(singleDanglingEndMethod, "Serra_2006_2008");
+		this.RNADefaultOptions.put(doubleDanglingEndMethod, "Serra_2006");
+		this.RNADefaultOptions.put(longDanglingEndMethod, "Sugimoto_2002_rna");
 
 	}
 	
@@ -326,11 +332,13 @@ public class OptionManagement {
 			return false;
 		}
 		
-		if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
+		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
 			String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 			optionSet.put(complementarySequence, seq2);
 		}
-		
+		if (optionSet.get(OptionManagement.sequence).length() != optionSet.get(OptionManagement.complementarySequence).length()){
+			throw new OptionSyntaxError("The sequences have two different length. Replace the gaps by the character '-'.");
+		}
 		return true;
 	}
 	
@@ -435,8 +443,13 @@ public class OptionManagement {
 			if (i + 1 <= args.length - 1){
 				value = args[i+1];
 			}
-
-				if (isAValue(option) == false){
+			boolean isAnValue = isAValue(option);
+			if (i > 0){
+				if (args[i - 1].equals(OptionManagement.sequence) || args[i - 1].equals(OptionManagement.complementarySequence)){
+					isAnValue = true;
+				}
+			}
+			if (isAnValue == false){
 
 					if (option.equals(OptionManagement.verboseMode)){
 						meltingLogger.setLevel(Level.FINE);
@@ -469,9 +482,10 @@ public class OptionManagement {
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
 						}
 					}
+
 					else {
 
-						if (isAValue(value)){
+						if (isAValue(value) || option.equals(OptionManagement.sequence) || option.equals(OptionManagement.complementarySequence)){
 
 							optionSet.put(option, value);
 						}

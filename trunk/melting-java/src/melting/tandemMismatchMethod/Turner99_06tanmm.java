@@ -4,7 +4,6 @@ package melting.tandemMismatchMethod;
 import java.util.logging.Level;
 
 import melting.Environment;
-import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
@@ -28,12 +27,14 @@ public class Turner99_06tanmm extends PartialCalcul{
 		}
 	}
 
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The tandem mismatch parameters for symmetric sequences are from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : " + enthalpyFormula + "(entropy formula is similar.)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The tandem mismatch parameters for symmetric sequences are from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : ");
+		OptionManagement.meltingLogger.log(Level.FINE,enthalpyFormula + "(entropy formula is similar.)");
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -44,7 +45,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			closing.append("/");
 			closing.append(newSequences.getComplementary().charAt(0));
 			
-			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(), newSequences.getComplementary(), closing.toString());
+			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(1, newSequences.getDuplexLength() - 2), newSequences.getComplementary(1, newSequences.getDuplexLength() - 2), closing.toString());
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
@@ -53,8 +54,8 @@ public class Turner99_06tanmm extends PartialCalcul{
 		}
 		else {
 			String symetricSequence1 = NucleotidSequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricSequence2 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricComplementary1 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
+			String symetricComplementary1 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
+			String symetricSequence2 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
 			String symetricComplementary2 = NucleotidSequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
 			
 			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
@@ -65,73 +66,51 @@ public class Turner99_06tanmm extends PartialCalcul{
 			ThermoResult result1 = new ThermoResult(0,0,0);
 			ThermoResult result2 = new ThermoResult(0,0,0);
 			
-			result1 = calculateThermodynamics(sequences1, 0, 3, result1);
-			result2 = calculateThermodynamics(sequences2, 0, 3, result2);
-			
-			OptionManagement.meltingLogger.log(Level.FINE, symetricSequence1 + "/" + symetricComplementary1 + " : enthalpy = " + result1.getEnthalpy() + "  entropy = " + result1.getEntropy());
-			OptionManagement.meltingLogger.log(Level.FINE, symetricSequence2 + "/" + symetricComplementary2 + " : enthalpy = " + result2.getEnthalpy() + "  entropy = " + result2.getEntropy());
+			result1 = calculateThermodynamics(sequences1, 0, sequences1.getDuplexLength() - 1, result1);
+			result2 = calculateThermodynamics(sequences2, 0, sequences2.getDuplexLength() - 1, result2);
 
 			enthalpy += (result1.getEnthalpy() + result2.getEnthalpy()) / 2;
 			entropy += (result1.getEntropy() + result2.getEntropy()) / 2;
 			
-			boolean isPenaltyNecessary = false;
-
-			if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('G', 'G', pos1 + 2)){
+			if (newSequences.isTandemMismatchGGPenaltyNecessary(1)){
 				Thermodynamics penalty1 = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
-				
-				if ((sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) && sequences.isBasePairEqualsTo('A','A', pos1 + 2)) || (sequences.isBasePairEqualsTo('G', 'G', pos1 + 2) && sequences.isBasePairEqualsTo('A','A', pos1 + 1))){
-					enthalpy += penalty1.getEnthalpy();
-					entropy += penalty1.getEntropy();
-					
-					isPenaltyNecessary = true;
-				}
-				else if (Helper.isPyrimidine(sequences.getSequence().charAt(1)) || (Helper.isPyrimidine(sequences.getSequence().charAt(2))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(1))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(2)))){
-					enthalpy += penalty1.getEnthalpy();
-					entropy += penalty1.getEntropy();
-					
-					isPenaltyNecessary = true;
-				}
-				
-				if (isPenaltyNecessary){
-					OptionManagement.meltingLogger.log(Level.FINE, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
-					isPenaltyNecessary = false;
-				}
+				OptionManagement.meltingLogger.log(Level.FINE, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
+				enthalpy += penalty1.getEnthalpy();
+				entropy += penalty1.getEntropy();
 			}
 			
-			else if (sequences.isBasePairEqualsTo('A', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('A', 'G', pos1 + 2)){
+			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(1)){
 				Thermodynamics penalty2 = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
-				if (sequences.isBasePairEqualsTo('C', 'U', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'U', pos1 + 2)){
-					enthalpy += penalty2.getEnthalpy();
-					entropy += penalty2.getEntropy();
-					isPenaltyNecessary = true;
-				}
-				else if (sequences.isBasePairEqualsTo('C', 'C', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'C', pos1 + 2)){
-					enthalpy += penalty2.getEnthalpy();
-					entropy += penalty2.getEntropy();
-					isPenaltyNecessary = true;
-				}
 				
+				enthalpy += penalty2.getEnthalpy();
+				entropy += penalty2.getEntropy();
+				OptionManagement.meltingLogger.log(Level.FINE, "penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
 			}
-			else if ((sequences.isBasePairEqualsTo('U', 'U', pos1 + 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (sequences.isBasePairEqualsTo('U', 'U', pos1 + 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
-				Thermodynamics penalty = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
-				enthalpy += penalty.getEnthalpy();
-				entropy += penalty.getEntropy();
-				isPenaltyNecessary = true;
+			
+			if (newSequences.is2StabilizingMismatchesPenaltyNecessary(1)){
+				Thermodynamics penalty3 = this.collector.getPenalty("GU_GA_UU_Mismatches");
+				
+				enthalpy += penalty3.getEnthalpy();
+				entropy += penalty3.getEntropy();
+				OptionManagement.meltingLogger.log(Level.FINE, "penalty3 : enthalpy = " + penalty3.getEnthalpy() + "  entropy = " + penalty3.getEntropy());
 			}
-			if (isPenaltyNecessary){
-				Thermodynamics penalty = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
-
-				OptionManagement.meltingLogger.log(Level.FINE, "penalty2 : enthalpy = " + penalty.getEnthalpy() + "  entropy = " + penalty.getEntropy());
-				isPenaltyNecessary = false;
+			
+			else if (newSequences.is1StabilizingMismatchPenaltyNecessary(1)){
+				Thermodynamics penalty4 = this.collector.getPenalty("One_GU_GA_UU_Mismatch");
+				
+				enthalpy += penalty4.getEnthalpy();
+				entropy += penalty4.getEntropy();
+				OptionManagement.meltingLogger.log(Level.FINE, "penalty4 : enthalpy = " + penalty4.getEnthalpy() + "  entropy = " + penalty4.getEntropy());
 			}
 		}
-	
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		
 		return result;
-	}
+		}
 
+
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -145,48 +124,60 @@ public class Turner99_06tanmm extends PartialCalcul{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		StringBuffer closing = new StringBuffer();
-		
-		closing.append(newSequences.getSequence().charAt(0));
-		closing.append("/");
-		closing.append(newSequences.getComplementary().charAt(0));
-		
-		if (this.collector.getMismatchValue(newSequences.getSequence(), newSequences.getComplementary(), closing.toString()) == null){
-			return true;
-		}
-		if (sequences.isSymetric(pos1, pos2) == false){
-			boolean needPenaltyGG = false;
-			boolean needPenaltyAG = false;
+		if (newSequences.isSymetric(0, newSequences.getDuplexLength() - 1) == false){
+			String symetricSequence1 = NucleotidSequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
+			String symetricComplementary1 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
+			String symetricSequence2 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
+			String symetricComplementary2 = NucleotidSequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
 			
-			if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('G', 'G', pos1 + 2)){
-				if ((sequences.isBasePairEqualsTo('G', 'G', pos1 + 1) && sequences.isBasePairEqualsTo('A','A', pos1 + 2)) || (sequences.isBasePairEqualsTo('G', 'G', pos1 + 2) && sequences.isBasePairEqualsTo('A','A', pos1 + 1))){
-					needPenaltyGG = true;
-				}
-				else if (Helper.isPyrimidine(sequences.getSequence().charAt(1)) || (Helper.isPyrimidine(sequences.getSequence().charAt(2))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(1))) || (Helper.isPyrimidine(sequences.getComplementary().charAt(2)))){
-					needPenaltyGG = true;
-				}
-			}
-			
-			else if (sequences.isBasePairEqualsTo('A', 'G', pos1 + 1) || sequences.isBasePairEqualsTo('A', 'G', pos1 + 2)){
-				if (newSequences.isBasePairEqualsTo('C', 'U', 1) || newSequences.isBasePairEqualsTo('C', 'U', 2)){
-					needPenaltyAG = true;
-				}
-				else if (sequences.isBasePairEqualsTo('C', 'C', pos1 + 1) || sequences.isBasePairEqualsTo('C', 'C', pos1 + 2)){
-					needPenaltyAG = true;
-				}
-			}
-			else if ((newSequences.isBasePairEqualsTo('U', 'U', 1) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 2)) || (newSequences.isBasePairEqualsTo('U', 'U', 2) && sequences.isBasePairEqualsTo('A', 'A', pos1 + 1))){
-				needPenaltyAG = true;
-			}
-				
-			if (needPenaltyGG && this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
+			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
+			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
+			if (isMissingParameters(sequences1, 0, sequences1.getDuplexLength() - 1)){
 				return true;
 			}
-			else if (needPenaltyAG && this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
+			if (isMissingParameters(sequences2, 0, sequences2.getDuplexLength() - 1)){
+				return true;
+			}
+			if (newSequences.isTandemMismatchGGPenaltyNecessary(1)){
+				if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
+					return true;
+				}
+				
+			}
+			
+			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(1)){
+				if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
+					return true;
+				}
+				
+			}
+			
+			if (newSequences.is2StabilizingMismatchesPenaltyNecessary(1)){
+				if (this.collector.getPenalty("GU_GA_UU_Mismatches") == null){
+					return true;
+				}
+				
+			}
+			
+			else if (newSequences.is1StabilizingMismatchPenaltyNecessary(1)){
+				if (this.collector.getPenalty("One_GU_GA_UU_Mismatch") == null){
+					return true;
+				}
+			}
+		}
+		else{
+			StringBuffer closing = new StringBuffer();
+			
+			closing.append(newSequences.getSequence().charAt(0));
+			closing.append("/");
+			closing.append(newSequences.getComplementary().charAt(0));
+			System.out.println(newSequences.getSequence() + "and" + newSequences.getComplementary() + "and" + closing.toString());
+			if (this.collector.getMismatchValue(newSequences.getSequence(1, newSequences.getDuplexLength() - 2), newSequences.getComplementary(1, newSequences.getDuplexLength() - 2), closing.toString()) == null){
 				return true;
 			}
 		}

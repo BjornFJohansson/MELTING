@@ -11,6 +11,7 @@ import melting.configuration.OptionManagement;
 public abstract class InosineNNMethod extends PartialCalcul{
 	
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 			 
@@ -32,6 +33,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		

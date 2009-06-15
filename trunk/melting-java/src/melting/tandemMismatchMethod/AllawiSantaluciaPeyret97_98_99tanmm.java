@@ -32,6 +32,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "The tandem mismatch parameters are from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
@@ -55,6 +56,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		
@@ -66,6 +68,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));

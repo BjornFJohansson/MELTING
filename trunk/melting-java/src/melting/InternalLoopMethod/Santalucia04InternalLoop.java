@@ -31,15 +31,18 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The internal loop formulas fron Santalucia (2004) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop formulas fron Santalucia (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy);
+		OptionManagement.meltingLogger.log(Level.FINE, formulaEntropy);
 
-		Thermodynamics rightMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(pos1), newSequences.getComplementaryNNPair(pos1));
-		Thermodynamics leftMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(pos2 - 1), newSequences.getComplementaryNNPair(pos2 - 1));
+		Thermodynamics rightMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
+		Thermodynamics leftMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(newSequences.getDuplexLength() - 2), newSequences.getComplementaryNNPair(newSequences.getDuplexLength() - 2));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "Right terminal mismatch : " + sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
 		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + sequences.getSequenceNNPair(pos2 - 1) + "/" + sequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
@@ -74,7 +77,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			}		
 		}
 		
-		if (sequences.isAsymmetricLoop(pos1, pos2)){
+		if (sequences.isAsymetricLoop(pos1, pos2)){
 			Thermodynamics asymmetry = collector.getAsymmetry();
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
@@ -96,6 +99,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		Environment newEnvironment = environment;
@@ -120,13 +124,14 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		return isApplicable;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
 			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
-		if (sequences.isAsymmetricLoop(pos1, pos2)){
+		if (sequences.isAsymetricLoop(pos1, pos2)){
 			if (collector.getAsymmetry() == null) {
 				isMissingParameters = true;
 			}
@@ -137,9 +142,11 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	@Override
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
-		
+
 		String singleMismatchName = options.get(OptionManagement.singleMismatchMethod);
+
 		RegisterCalculMethod register = new RegisterCalculMethod();
+
 		PartialCalculMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
 		singleMismatch.initializeFileName(singleMismatchName);
 		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);

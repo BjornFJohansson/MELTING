@@ -60,7 +60,7 @@
 			</CNG>					
 			<CNG sequence="CAG/GAC" repeats="4">
 				<enthalpy>-32000.0</enthalpy>
-				<entropy>-180.2</entropy>
+				<entropy>-80.2</entropy>
 			</CNG>
 			<CNG sequence="CGG/GGC" repeats="4">
 				<enthalpy>-58000.0</enthalpy>

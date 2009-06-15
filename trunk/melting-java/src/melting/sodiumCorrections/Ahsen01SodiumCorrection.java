@@ -17,6 +17,7 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	
 	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x ln(Na)";
 	
+	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
@@ -33,6 +34,7 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	@Override
 	protected double correctEntropy(Environment environment){
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Ahsen et al. (2001) : " );

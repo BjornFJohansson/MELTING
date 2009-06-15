@@ -12,11 +12,12 @@ public class WetmurDNARNA91 extends Wetmur91 {
 	
 	private static String temperatureEquation = "Tm = 67 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.8 * percentGC - 500 / duplexLength - percentMismatching";
 	
-	public ThermoResult CalculateThermodynamics() {
+	@Override
+	public ThermoResult calculateThermodynamics() {
 		double percentGC = this.environment.getSequences().calculatePercentGC();
 		double percentMismatching = this.environment.getSequences().getPercentMismatching();
 		int duplexLength = this.environment.getSequences().getDuplexLength();
-		double Tm = super.CalculateThermodynamics().getTm();
+		double Tm = super.calculateThermodynamics().getTm();
 		
 		Tm = 67.0 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 *this.environment.getNa())) + 0.8 * percentGC - 500.0 / duplexLength - percentMismatching;
 
@@ -27,6 +28,7 @@ public class WetmurDNARNA91 extends Wetmur91 {
 		return this.environment.getResult();
 	}
 	
+	@Override
 	public boolean isApplicable() {
 		
 		if (this.environment.getHybridization().equals("rnarna") == false || this.environment.getHybridization().equals("dnadna") == false || this.environment.getHybridization().equals("dnarna") == false || this.environment.getHybridization().equals("rnadna") == false){

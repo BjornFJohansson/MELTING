@@ -17,6 +17,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(Na)";
 
+	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
@@ -40,6 +41,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	@Override
 	protected double correctEntropy(Environment environment){
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n he sodium correction is from Santalucia et al. (1998) : ");
@@ -51,6 +53,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		return entropy;
 	}
 	
+	@Override
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		environment.setNa(NaEq);

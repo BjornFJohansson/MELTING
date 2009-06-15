@@ -23,6 +23,7 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -34,15 +35,17 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single dangling end are from Bommarito et al. (2000) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single dangling end are from Bommarito et al. (2000) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));

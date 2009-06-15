@@ -30,6 +30,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		}
 	}
 
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 
@@ -53,6 +54,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		Environment newEnvironment = environment;
 
@@ -70,6 +72,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		return super.isApplicable(newEnvironment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		

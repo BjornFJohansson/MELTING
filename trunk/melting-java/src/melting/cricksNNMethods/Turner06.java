@@ -24,6 +24,7 @@ public class Turner06 extends CricksNNMethod {
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		double enthalpy = result.getEnthalpy();
@@ -51,6 +52,7 @@ public class Turner06 extends CricksNNMethod {
 		return result;
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
@@ -67,6 +69,7 @@ public class Turner06 extends CricksNNMethod {
 		return isApplicable;
 	}
 	
+	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
 
@@ -100,6 +103,7 @@ public class Turner06 extends CricksNNMethod {
 		return entropy1MNa;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 

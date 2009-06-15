@@ -12,6 +12,7 @@ import melting.exceptions.SequenceException;
 
 public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 	
+	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));

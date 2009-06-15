@@ -28,22 +28,27 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for double dangling end are from Serra et al. (2005) :");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for double dangling end are from Serra et al. (2005) :");
 		
 		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
+		String sequence = sequences.getSequenceContainig("-", pos1, pos2);
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
-		
 		Thermodynamics doubleDanglingValue;
-		if (Helper.isPyrimidine(complementary.charAt(1))){
+		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1))){
 			doubleDanglingValue = this.collector.getDanglingValue("Y","");			
 		}
 		else {
-			doubleDanglingValue = this.collector.getDanglingValue(sequence.substring(1),"");
+			if (sequence.charAt(0) == '-'){
+				complementary = complementary.substring(0, 2);
+			}
+			else{
+				complementary = complementary.substring(1);
+			}
+			doubleDanglingValue = this.collector.getDanglingValue("",complementary.substring(1));
 			enthalpy += doubleDanglingValue.getEnthalpy();
 			entropy += doubleDanglingValue.getEntropy();
 			}
@@ -59,20 +64,27 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 		return result;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
+		String sequence = sequences.getSequenceContainig("-", pos1, pos2);
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
-		
-		if (Helper.isPyrimidine(complementary.charAt(1))){
+
+		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1))){
 			if (this.collector.getDanglingValue("Y","") == null){
 			return true;			
 			}
 		}
 		else {
-			if (this.collector.getDanglingValue(sequence.substring(1),"") == null){
+			if (sequence.charAt(0) == '-'){
+				complementary = complementary.substring(0, 2);
+			}
+			else{
+				complementary = complementary.substring(1);
+			}
+			if (this.collector.getDanglingValue("",complementary.substring(1)) == null){
 				return true;			
 				}
 			}
