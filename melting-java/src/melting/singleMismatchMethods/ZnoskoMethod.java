@@ -14,6 +14,7 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 	
 	protected static String formulaEnthalpy = "delat H = H(single mismatch N/N) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(NNN intervening)";
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
@@ -57,6 +58,7 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		if (environment.getHybridization().equals("rnarna") == false){
@@ -69,6 +71,7 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 			NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));

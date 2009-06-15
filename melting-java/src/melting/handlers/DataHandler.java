@@ -69,6 +69,9 @@ public class DataHandler extends NodeHandler {
 						if (handler.getAttribut().containsKey("size")) {
 							key += "size" + handler.getAttribut().get("size");
 						}
+						if (handler.getAttribut().containsKey("repeats")) {
+							key += "repeats" + handler.getAttribut().get("repeats");
+						}
 						if (handler.getAttribut().containsKey("sequence")) {
 							key += handler.getAttribut().get("sequence");
 						}
@@ -82,7 +85,6 @@ public class DataHandler extends NodeHandler {
 							key += "parameter" + handler.getAttribut().get("parameter");
 						}
 						map.put(key, handler.getThermo());
-						System.out.println(key);
 						handler.initializeAttributes();	
 					subHandler = null;
 				}

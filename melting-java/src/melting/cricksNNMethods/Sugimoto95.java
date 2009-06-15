@@ -25,6 +25,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1995).");
@@ -48,6 +49,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		return result;
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = true;
 		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
@@ -65,6 +67,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		return isApplicable;
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		boolean isMissing = false;

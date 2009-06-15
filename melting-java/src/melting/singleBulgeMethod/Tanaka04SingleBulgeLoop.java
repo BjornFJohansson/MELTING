@@ -12,7 +12,7 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 
 	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150*/
 	
-	public static String defaultFileName = "Tanaka2004Bulge.xml";
+	public static String defaultFileName = "Tanaka2004bulge.xml";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -22,6 +22,7 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 			this.fileName = defaultFileName;
 		}
 	}
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -34,17 +35,20 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single bulge loop are from Tanaka et al. (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single bulge loop are from Tanaka et al. (2004) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}

@@ -12,7 +12,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 
 	/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
 	
-	public static String defaultFileName = "Serra07bulge.xml";
+	public static String defaultFileName = "Serra2007bulge.xml";
 	
 	@Override
 	public void initializeFileName(String methodName){
@@ -23,6 +23,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		}
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -35,15 +36,17 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for single bulge loop are from Serra et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single bulge loop are from Serra et al. (2007) : ");
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

@@ -25,6 +25,7 @@ public class Turner06mm extends PartialCalcul{
 			this.fileName = defaultFileName;
 		}
 	}
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
@@ -86,6 +87,7 @@ public class Turner06mm extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		Environment newEnvironment = environment;
@@ -103,6 +105,7 @@ public class Turner06mm extends PartialCalcul{
 		return super.isApplicable(newEnvironment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 

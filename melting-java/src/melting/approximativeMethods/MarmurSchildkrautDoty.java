@@ -35,9 +35,10 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	
 	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na) + 0.41 * percentGC - 675 / duplexLength.";
 	
-	public ThermoResult CalculateThermodynamics() {
-		double Tm = super.CalculateThermodynamics().getTm();
-		Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675 / this.environment.getSequences().getDuplexLength();
+	@Override
+	public ThermoResult calculateThermodynamics() {
+		double Tm = super.calculateThermodynamics().getTm();
+		Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675.0 / this.environment.getSequences().getDuplexLength();
 
 		this.environment.setResult(Tm);
 		
@@ -47,6 +48,7 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		return this.environment.getResult();
 	}
 
+	@Override
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		

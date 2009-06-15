@@ -58,35 +58,35 @@
 				<enthalpy>-13100.0</enthalpy>
 				<entropy>-39.5</entropy>
 			</dangling>			
-			<dangling sequence="TA/A" sens="3">
+			<dangling sequence="UA/A" sens="3">
 				<enthalpy>-950.0</enthalpy>
 				<entropy>-1.0</entropy>
 			</dangling>
-			<dangling sequence="TAA/A" sens="3">
+			<dangling sequence="UAA/A" sens="3">
 				<enthalpy>-3200.0</enthalpy>
 				<entropy>-7.0</entropy>
 			</dangling>
-			<dangling sequence="TAAA/A" sens="3">
+			<dangling sequence="UAAA/A" sens="3">
 				<enthalpy>-4200.0</enthalpy>
 				<entropy>-9.5</entropy>
 			</dangling>
-			<dangling sequence="TAAAA/A" sens="3">
+			<dangling sequence="UAAAA/A" sens="3">
 				<enthalpy>-5250.0</enthalpy>
 				<entropy>-13.0</entropy>
 			</dangling>			
-			<dangling sequence="AA/T" sens="5">
+			<dangling sequence="AA/U" sens="5">
 				<enthalpy>-1100.0</enthalpy>
 				<entropy>-2.5</entropy>
 			</dangling>
-			<dangling sequence="AAA/T" sens="5">
+			<dangling sequence="AAA/U" sens="5">
 				<enthalpy>-3350.0</enthalpy>
 				<entropy>-9.0</entropy>
 			</dangling>
-			<dangling sequence="AAAA/T" sens="5">
+			<dangling sequence="AAAA/U" sens="5">
 				<enthalpy>-3800.0</enthalpy>
 				<entropy>-10.0</entropy>
 			</dangling>
-			<dangling sequence="AAAAA/T" sens="5">
+			<dangling sequence="AAAAA/U" sens="5">
 				<enthalpy>-3850.0</enthalpy>
 				<entropy>-9.0</entropy>
 			</dangling>

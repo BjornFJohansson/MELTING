@@ -15,10 +15,11 @@ public class Ahsen01 extends ApproximativeMode{
 
 	private static String temperatureEquation = "Tm = 80.4 + 0.345 * percentGC + log10(Na) * (17.0 - 0.135 * percentGC) - 550 / duplexLength.";
 	
-	public ThermoResult CalculateThermodynamics() {
-		double Tm = super.CalculateThermodynamics().getTm();
+	@Override
+	public ThermoResult calculateThermodynamics() {
+		double Tm = super.calculateThermodynamics().getTm();
 		double percentGC = this.environment.getSequences().calculatePercentGC();
-		Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550 / this.environment.getSequences().getDuplexLength();
+		Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550.0 / this.environment.getSequences().getDuplexLength();
 		environment.setResult(Tm);
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "from Ahsen et al. (2001)");
@@ -27,6 +28,7 @@ public class Ahsen01 extends ApproximativeMode{
 		return environment.getResult();
 	}
 
+	@Override
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		

@@ -31,12 +31,12 @@
  				<entropy>3.1</entropy>
  			</mismatch>
  			
- 			<closure type="per_AU">
+ 			<closure type="per_A/U">
  				<enthalpy>-3500.0</enthalpy>
  				<entropy>-13.6</entropy>
  			</closure>
  			
- 			<closure type="per_GU">
+ 			<closure type="per_G/U">
  				<enthalpy>-3500.0</enthalpy>
  				<entropy>-13.6</entropy>
  			</closure>

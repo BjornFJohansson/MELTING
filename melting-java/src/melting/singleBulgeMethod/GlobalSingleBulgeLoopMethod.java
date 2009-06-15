@@ -10,6 +10,7 @@ import melting.configuration.OptionManagement;
 
 public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		Thermodynamics singleBulge = this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
@@ -24,9 +25,9 @@ public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-
 		if (this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			return true;
 		}

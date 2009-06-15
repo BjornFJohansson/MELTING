@@ -29,19 +29,25 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for double dangling end are from Serra et al. (2006) :");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for double dangling end are from Serra et al. (2006) :");
+
 		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, 0, newSequences.getDuplexLength() - 1, result);
-		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
-		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
-		
+		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
+
 		Thermodynamics doubleDanglingValue;
-		if (Helper.isPyrimidine(complementary.charAt(1)) || (Helper.isPyrimidine(complementary.charAt(1)) == false && Helper.isPyrimidine(complementary.charAt(0)))){
-			doubleDanglingValue = this.collector.getDanglingValue(sequence.substring(0, 2),complementary);
+		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) || (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) == false && Helper.isPyrimidine(newSequences.getComplementary().charAt(0)))){
+			if (sequence.charAt(0) == '-'){
+				complementary = complementary.substring(1, 3);
+			}
+			else {
+				complementary = complementary.substring(0, 2);
+			}
+
+			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
 		}
 		else {
 			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
@@ -57,15 +63,22 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		return result;
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
-		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
+		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
 		
-		if (Helper.isPyrimidine(complementary.charAt(1)) || (Helper.isPyrimidine(complementary.charAt(1)) == false && Helper.isPyrimidine(complementary.charAt(0)))){
-			if (this.collector.getDanglingValue(sequence.substring(0, 2),complementary) == null){
+		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) || (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) == false && Helper.isPyrimidine(newSequences.getComplementary().charAt(0)))){
+			if (sequence.charAt(0) == '-'){
+				complementary = complementary.substring(1, 3);
+			}
+			else {
+				complementary = complementary.substring(0, 2);
+			}
+			if (this.collector.getDanglingValue(sequence,complementary) == null){
 			return true;			
 			}
 		}
@@ -74,6 +87,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 				return true;			
 				}
 			}
+
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 

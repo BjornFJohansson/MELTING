@@ -27,24 +27,26 @@ public class Turner06InternalLoop extends PartialCalcul{
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 	
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "The internal loop formulas from Turner et al. (2006) : " + formulaEnthalpy + " (entropy formula is similar)");
+
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop formulas from Turner et al. (2006) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		boolean needFirstMismatchEnergy = true;
-		String loopType = internalLoop.getLoopType(pos1, pos2);
-		
+
+		String loopType = sequences.getLoopType(pos1, pos2);
+
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
 		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
-		
 		
 		if (loopType.charAt(0) == '1' && Integer.parseInt(loopType.substring(2, 3)) > 2){
 			
@@ -71,10 +73,10 @@ public class Turner06InternalLoop extends PartialCalcul{
 			enthalpy += initiationLoop.getEnthalpy();
 
 			if (loopLength > 4){
-				saltIndependentEntropy += initiationLoop.getEntropy() - 1.08 * Math.log((double)loopLength / 6.0);
+				saltIndependentEntropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6.0);
 			}
 			else {
-				entropy += initiationLoop.getEntropy() - 1.08 * Math.log((double)loopLength / 6.0);
+				entropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6.0);
 			}
 		}
 		
@@ -99,8 +101,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 			enthalpy += numberGU *  closureGU.getEnthalpy();
 			entropy += numberGU * closureGU.getEntropy();
 		}
-		
-		if (sequences.isAsymmetricLoop(pos1, pos2)){
+		if (sequences.isAsymetricLoop(pos1, pos2)){
 			
 			Thermodynamics asymmetry = this.collector.getAsymmetry();
 			int asymetricValue = Math.abs(Integer.parseInt(loopType.substring(0, 1)) - Integer.parseInt(loopType.substring(2, 3)));
@@ -117,15 +118,24 @@ public class Turner06InternalLoop extends PartialCalcul{
 		}
 		
 		if (needFirstMismatchEnergy == true){
-			
+
 			Thermodynamics firstMismatch;
 			if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){	
-				firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
-
+				if (this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType) == null){
+					firstMismatch = new Thermodynamics(0.0,0.0);
+				}
+				else{
+					firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
+				}
 				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch1.substring(1, 2) + "/" + mismatch2.substring(1, 2) + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
 			else {
-				firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
+				if (this.collector.getFirstMismatch(mismatch1, mismatch2, loopType) == null){
+					firstMismatch = new Thermodynamics(0.0,0.0);
+				}
+				else{
+					firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
+				}
 
 				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
@@ -133,7 +143,6 @@ public class Turner06InternalLoop extends PartialCalcul{
 			entropy += firstMismatch.getEntropy();
 			
 		}
-		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		result.setSaltIndependentEntropy(saltIndependentEntropy);
@@ -141,6 +150,7 @@ public class Turner06InternalLoop extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
@@ -165,13 +175,13 @@ public class Turner06InternalLoop extends PartialCalcul{
 		return isApplicable;
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
 			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
-		
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("6") == null){
 				return true;
@@ -190,25 +200,12 @@ public class Turner06InternalLoop extends PartialCalcul{
 			}
 		}
 		
-		if (sequences.isAsymmetricLoop(pos1, pos2)){
+		if (sequences.isAsymetricLoop(pos1, pos2)){
 			if (this.collector.getAsymmetry() == null){
 				return true;
 			}
 		}
-		
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(newSequences.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(newSequences.getComplementary());
-		String loopType = sequences.getLoopType(pos1, pos2);
-		
-		Thermodynamics firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, loopType);
-		
-		if ((mismatch1.charAt(1) == 'G' && mismatch2.charAt(1) == 'G') || (mismatch1.charAt(1) == 'U' && mismatch2.charAt(1) == 'U')){
-			firstMismatch = this.collector.getFirstMismatch(mismatch1.substring(1, 2), mismatch2.substring(1, 2), loopType);
-		}
-		
-		if (firstMismatch == null){
-			return true;
-		}
+
 		return isMissingParameters;
 	}
 }

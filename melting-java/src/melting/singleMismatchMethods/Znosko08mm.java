@@ -22,6 +22,7 @@ public class Znosko08mm extends ZnoskoMethod {
 		}
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
@@ -35,6 +36,7 @@ public class Znosko08mm extends ZnoskoMethod {
 		return isApplicable;
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

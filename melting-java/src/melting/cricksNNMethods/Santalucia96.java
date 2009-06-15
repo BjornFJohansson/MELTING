@@ -24,6 +24,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
@@ -33,6 +34,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		Environment newEnvironment = environment;
 
@@ -73,6 +75,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));

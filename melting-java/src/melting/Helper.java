@@ -80,6 +80,8 @@ public class Helper {
 				return true;
 			case 'C':
 				return true;
+			case 'U':
+				return true;
 			case 'G':
 				return false;
 			default:

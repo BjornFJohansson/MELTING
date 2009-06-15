@@ -62,10 +62,10 @@
  				<entropy>13.86</entropy>
  			</closure>
  			
- 			<asymmetry>
+ 			<asymetry>
  				<enthalpy>3200.0</enthalpy>
  				<entropy>8.38</entropy>
- 			</asymmetry>
+ 			</asymetry>
  			
  			<mismatch sequence="RA/YG" loop="1x2" type="first_non_canonical_pair">
  				<enthalpy>0.0</enthalpy>

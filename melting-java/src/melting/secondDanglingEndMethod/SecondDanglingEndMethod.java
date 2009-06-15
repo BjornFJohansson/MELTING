@@ -15,9 +15,11 @@ import melting.configuration.RegisterCalculMethod;
 public abstract class SecondDanglingEndMethod extends PartialCalcul {
 
 	
+	@Override
 	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -39,8 +41,16 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	
 	public ThermoResult calculateThermodynamicsWithoutSecondDanglingEnd(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
 		
-		Thermodynamics danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1));
+		Thermodynamics danglingValue;
+		if (gapSequence.charAt(0) == '-'){
+			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2));
+
+		}
+		else{
+			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1));
+		}
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
 		double entropy = result.getEntropy() + danglingValue.getEntropy();
 		
@@ -56,21 +66,15 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String doubleDanglingName = options.get(OptionManagement.doubleDanglingEndMethod);
+		String singleDanglingName = options.get(OptionManagement.singleDanglingEndMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod secondDangling = register.getPartialCalculMethod(OptionManagement.doubleDanglingEndMethod, doubleDanglingName);
-		secondDangling.initializeFileName(doubleDanglingName);
+		PartialCalculMethod singleDangling = register.getPartialCalculMethod(OptionManagement.singleDanglingEndMethod, singleDanglingName);
+		singleDangling.initializeFileName(singleDanglingName);
 
-		String fileDoubleDangling = secondDangling.getDataFileName(doubleDanglingName);
+		String fileDoubleDangling = singleDangling.getDataFileName(singleDanglingName);
 		
 		
 		loadFile(fileDoubleDangling, this.collector);
-	}
-	
-	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
-			int pos2) {
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
 }

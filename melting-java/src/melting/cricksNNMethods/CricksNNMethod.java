@@ -12,6 +12,7 @@ import melting.configuration.OptionManagement;
 
 public abstract class CricksNNMethod extends PartialCalcul{
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		double enthalpy = result.getEnthalpy();
@@ -60,6 +61,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 		return environment.getResult();
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 
 		for (int i = pos1; i <= pos2 - 1; i++){

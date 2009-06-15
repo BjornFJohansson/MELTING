@@ -24,6 +24,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
@@ -49,6 +50,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		return result;
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		NucleotidSequences inosine = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
@@ -72,6 +74,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		return isApplicable;
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

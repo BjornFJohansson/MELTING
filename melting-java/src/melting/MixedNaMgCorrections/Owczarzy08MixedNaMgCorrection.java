@@ -19,6 +19,7 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 	private static String gFormula = "g = a + b / (duplexLength^2)";
 
 	
+	@Override
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
 		double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;

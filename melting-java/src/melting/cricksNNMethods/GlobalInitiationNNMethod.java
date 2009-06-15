@@ -9,6 +9,7 @@ import melting.configuration.OptionManagement;
 
 public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 	
+	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
 		environment.setResult(super.calculateInitiationHybridation(environment));

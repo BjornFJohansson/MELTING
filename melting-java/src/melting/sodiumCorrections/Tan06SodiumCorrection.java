@@ -19,6 +19,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	private static String bFormula = "b1 = 0.013 x ln(Mg)^2";
 	private static String gFormula = "g1 = a1 + b1 / duplexLength";
 	
+	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
@@ -36,6 +37,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	@Override
 	protected double correctEntropy(Environment environment){
 		
 		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
@@ -43,6 +45,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		return entropy;
 	}
 	
+	@Override
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction from Zhi-Jie Tan et al. (2006) : ");

@@ -21,6 +21,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	protected static String x2Formula = "x2 = 1 - x1";
 	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) *x Na) / duplexLength";
 	
+	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		
@@ -43,6 +44,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	@Override
 	protected double correctEntropy(Environment environment){
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2007) : ");

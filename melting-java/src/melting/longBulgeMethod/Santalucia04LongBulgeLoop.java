@@ -28,6 +28,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		}
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
@@ -46,7 +47,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " + 2.44 x 1.99 x 310.15 x ln(bulgeSize / 30)");
 
-			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Integer.parseInt(bulgeSize) / 30);
+			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Double.parseDouble(bulgeSize) / 30.0);
 		}
 		else {
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
@@ -54,7 +55,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			entropy += bulgeLoopValue.getEntropy();
 		}
 		
-		if (numberAT> 0){
+		/*if (numberAT> 0){
 			Thermodynamics closingAT = this.collector.getClosureValue("A", "T");
 
 			OptionManagement.meltingLogger.log(Level.FINE, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
@@ -62,7 +63,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			enthalpy += numberAT * closingAT.getEnthalpy();
 			enthalpy += numberAT * closingAT.getEntropy();
 		
-		}
+		}*/
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -70,6 +71,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		return result;
 	}
 
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -82,19 +84,21 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		return super.isApplicable(environment, pos1, pos2);
 	}
 
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
+		//int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		
-		if (numberAT > 0){
-			if (this.collector.getClosureValue("A", "T") == null){
-				return true;
-			}
-		}
-
+		//if (numberAT > 0){
+			//if (this.collector.getClosureValue("A", "T") == null){
+				//return true;
+			//}
+		//}
+		System.out.println(this.collector.getBulgeLoopvalue(bulgeSize));
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){
 			return true;

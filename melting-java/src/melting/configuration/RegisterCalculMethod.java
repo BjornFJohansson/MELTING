@@ -12,7 +12,7 @@ import melting.DMSOCorrections.Escara80DMSOCorrection;
 import melting.DMSOCorrections.Musielski81DMSOCorrection;
 import melting.InternalLoopMethod.Santalucia04InternalLoop;
 import melting.InternalLoopMethod.Turner06InternalLoop;
-import melting.InternalLoopMethod.Znosco071x2Loop;
+import melting.InternalLoopMethod.Znosko071x2Loop;
 import melting.MagnesiumCorrections.Owczarzy08MagnesiumCorrection;
 import melting.MagnesiumCorrections.Tan06MagnesiumCorrection;
 import melting.MagnesiumCorrections.Tan07MagnesiumCorrection;
@@ -200,7 +200,7 @@ public class RegisterCalculMethod {
 	private void initializeInternalLoopMethods(){
 		internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
 		internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
-		internalLoopMethod.put("Znosco_2007", Znosco071x2Loop.class);
+		internalLoopMethod.put("Znosko_2007", Znosko071x2Loop.class);
 	}
 	
 	private void initializeSingleBulgeLoopMethods(){
@@ -218,7 +218,7 @@ public class RegisterCalculMethod {
 	
 	private void initializeSingleDanglingEndMethods(){
 		singleDangingEndMethod.put("Bommarito_2000", Bommarito00SingleDanglingEnd.class);
-		longBulgeLoopMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
+		singleDangingEndMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
 	}
 	
 	private void initializeDoubleDanglingEndMethods(){
@@ -232,7 +232,7 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeCNGRepeatsMethods(){
-		CNGRepeatsMethod.put("Sugimoto_2002_dna", Broda05CNGRepeats.class);
+		CNGRepeatsMethod.put("Broda_2005", Broda05CNGRepeats.class);
 	}
 	
 	private void initializeInosineMethods(){
@@ -332,8 +332,8 @@ public class RegisterCalculMethod {
 				if (getPartialCalculMethodHashMap(optionName).get(methodName) == null){
 					throw new NoExistingMethodException("We don't know the method " + methodName);
 				}
+
 				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
-				
 				return method;
 			} catch (InstantiationException e) {
 				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName);

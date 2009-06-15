@@ -187,7 +187,7 @@
    			<enthalpy>13400.0</enthalpy>
    			<entropy>34.2</entropy>
    		</mismatch>
-  		<mismatch sequence="GA/AG" closing="U/G">
+  		<!--<mismatch sequence="GA/AG" closing="U/G">
    			<enthalpy>-15300.0</enthalpy>
    		</mismatch>
    		<mismatch sequence="AG/GA" closing="U/G">
@@ -220,38 +220,48 @@
   		<mismatch sequence="GA/AG"  closing="G/U">
    			<enthalpy>-19900.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="AG/GA" closing="U/G">
+   		<mismatch sequence="AG/GA" closing="G/U">
    			<enthalpy>-16100.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="UU/UU" closing="U/G">
+   		<mismatch sequence="UU/UU" closing="G/U">
   			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="GG/GG" closing="U/G">
+   		<mismatch sequence="GG/GG" closing="G/U">
   			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="CA/AC" closing="U/G">
+   		<mismatch sequence="CA/AC" closing="G/U">
    			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="CU/UC" closing="U/G">
+   		<mismatch sequence="CU/UC" closing="G/U">
    			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="UC/CU" closing="U/G">
+   		<mismatch sequence="UC/CU" closing="G/U">
    			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="CC/CC" closing="U/G">
+   		<mismatch sequence="CC/CC" closing="G/U">
    			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="AC/CA" closing="U/G">
+   		<mismatch sequence="AC/CA" closing="G/U">
    			<enthalpy>-19600.0</enthalpy>
    		</mismatch>
-   		<mismatch sequence="AA/AA" closing="U/G">
+   		<mismatch sequence="AA/AA" closing="G/U">
    			<enthalpy>-23200.0</enthalpy>
-   		</mismatch>
+   		</mismatch> -->
    		
    		<penalty type="G/G_adjacent_AA_or_nonCanonicalPyrimidine">
  				<enthalpy>12500.0</enthalpy>
+ 				<entropy>0.0</entropy>
  		</penalty>
  		<penalty type="AG_GA_UU_adjacent_UU_CU_CC_AA">
  				<enthalpy>2400.0</enthalpy>
- 			</penalty>
+ 				<entropy>0.0</entropy>
+ 		</penalty>
+ 		<penalty type="GU_GA_UU_Mismatches">
+ 				<enthalpy>0.0</enthalpy>
+ 				<entropy>-5.8</entropy>
+ 		</penalty>
+ 		<penalty type="One_GU_GA_UU_Mismatch">
+ 				<enthalpy>0.0</enthalpy>
+ 				<entropy>-3.2</entropy>
+ 		</penalty>
    	</data>

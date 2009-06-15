@@ -22,6 +22,7 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		}
 	}
 	
+	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
@@ -34,6 +35,7 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		return super.isApplicable(environment, pos1, pos2);
 	}
 	
+	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
@@ -42,6 +44,7 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));

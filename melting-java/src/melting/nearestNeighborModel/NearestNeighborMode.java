@@ -24,30 +24,27 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private PartialCalculMethod azobenzeneMethod;
 	private PartialCalculMethod CNGRepeatsMethod;
 	private PartialCalculMethod deoxyadenineMethod;
-	private PartialCalculMethod doubleDangingEndMethod;
+	private PartialCalculMethod doubleDanglingEndMethod;
 	private PartialCalculMethod hydroxyadenosineMethod;
 	private PartialCalculMethod inosineMethod;
 	private PartialCalculMethod internalLoopMethod;
 	private PartialCalculMethod lockedAcidMethod;
 	private PartialCalculMethod longBulgeLoopMethod;
-	private PartialCalculMethod longDangingEndMethod;
+	private PartialCalculMethod longDanglingEndMethod;
 	private PartialCalculMethod cricksMethod;
 	private PartialCalculMethod singleBulgeLoopMethod;
-	private PartialCalculMethod singleDangingEndMethod;
+	private PartialCalculMethod singleDanglingEndMethod;
 	private PartialCalculMethod singleMismatchMethod;
 	private PartialCalculMethod tandemMismatchMethod;
 	private PartialCalculMethod wobbleMethod;
 	
-	public ThermoResult CalculateThermodynamics() {
+	public ThermoResult calculateThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
-
 		analyzeSequence();
 		this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
-		
+
 		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
-
 		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
-
 		this.environment.setResult(resultinitiation);
 		
 		int pos1 = 0; 
@@ -55,9 +52,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 		while (pos2 < this.environment.getSequences().getDuplexLength() - 1){
 			int [] positions = getPositionsMotif(pos1);
+
 			pos1 = positions[0];
 			pos2 = positions[1];
-
 			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
@@ -127,18 +124,21 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	private int [] getPositionsMotif(int pos1){
 		int position = pos1;
-
 		if(environment.getSequences().isCNGMotif(pos1, pos1 + 5)){
-			while (position + 2 < environment.getSequences().getDuplexLength() - 1){
-				int testPosition = position + 3;
-				if (environment.getSequences().isCNGMotif(testPosition, testPosition + 2)){
+			position = pos1 + 6;
+
+			while (position + 2 <= environment.getSequences().getDuplexLength() - 1){
+				
+				int testPosition = position + 2;
+				if (environment.getSequences().isCNGMotif(position, testPosition)){
 					position += 3;
+
 				}
 				else {
 					break;
 				}
 			}
-			int [] positions = {pos1, position};
+			int [] positions = {pos1, position - 1};
 			return positions;
 		}
 		else {
@@ -226,25 +226,24 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
-
 			if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
 				if (positions[1] - positions[0] + 1 == 2){
-					if (this.singleDangingEndMethod == null){
-						initializeSingleDangingEndMethod();
+					if (this.singleDanglingEndMethod == null){
+						initializeSingleDanglingEndMethod();
 					}
-					return this.singleDangingEndMethod;
+					return this.singleDanglingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 == 3){
-					if (this.doubleDangingEndMethod == null){
-						initializeDoubleDangingEndMethod();
+					if (this.doubleDanglingEndMethod == null){
+						initializeDoubleDanglingEndMethod();
 					}
-					return this.doubleDangingEndMethod;
+					return this.doubleDanglingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 > 3){
-					if (this.longDangingEndMethod == null){
-						initializeLongDangingEndMethod();
+					if (this.longDanglingEndMethod == null){
+						initializeLongDanglingEndMethod();
 					}
-					return this.longDangingEndMethod;
+					return this.longDanglingEndMethod;
 				}
 				else {
 					throw new SequenceException("we don't recognize the motif " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
@@ -254,7 +253,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				throw new NoExistingMethodException("No method for terminal mismatches have been implemented yet.");
 			}
 		}
-
 		if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
 			if (this.cricksMethod == null){
 				initializeCrickMethod();
@@ -274,20 +272,19 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			return this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
-
 			if (positions[1] - positions[0] + 1 == 3){
 				if (this.singleMismatchMethod == null){
 					initializeSingleMismatchMethod();
 				}
 				return this.singleMismatchMethod;
 			}
-			else if (positions[1] - positions[0] + 1 == 4){
+			else if (positions[1] - positions[0] + 1 == 4 && this.environment.getSequences().isSequenceGap(positions[0], positions[1])){
 				if (this.tandemMismatchMethod == null){
 					initializeTandemMismatchMethod();
 				}
 				return this.tandemMismatchMethod;
 			}
-			else if (positions[1] - positions[0] + 1 > 4){
+			else if (positions[1] - positions[0] + 1 >= 4){
 				if (this.internalLoopMethod == null){
 					initializeInternalLoopMethod();
 				}
@@ -371,10 +368,10 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		this.deoxyadenineMethod = initializeMethod(optionName, methodName);
 	}
 	
-	private void initializeDoubleDangingEndMethod(){
+	private void initializeDoubleDanglingEndMethod(){
 		String optionName = OptionManagement.doubleDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.doubleDangingEndMethod = initializeMethod(optionName, methodName);
+		this.doubleDanglingEndMethod = initializeMethod(optionName, methodName);
 	}
 	
 	private void initializeHydroxyadenosineMethod(){
@@ -392,7 +389,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private void initializeInternalLoopMethod(){
 		String optionName = OptionManagement.internalLoopMethod;
 		String methodName = this.environment.getOptions().get(optionName);
+
 		this.internalLoopMethod = initializeMethod(optionName, methodName);
+
 	}
 	
 	private void initializeLockedAcidMethod(){
@@ -407,10 +406,10 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		this.longBulgeLoopMethod = initializeMethod(optionName, methodName);
 	}
 	
-	private void initializeLongDangingEndMethod(){
+	private void initializeLongDanglingEndMethod(){
 		String optionName = OptionManagement.longDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.longDangingEndMethod = initializeMethod(optionName, methodName);
+		this.longDanglingEndMethod = initializeMethod(optionName, methodName);
 	}
 	
 	private void initializeSingleBulgeLoopMethod(){
@@ -419,10 +418,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		this.singleBulgeLoopMethod = initializeMethod(optionName, methodName);
 	}
 	
-	private void initializeSingleDangingEndMethod(){
+	private void initializeSingleDanglingEndMethod(){
 		String optionName = OptionManagement.singleDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.singleDangingEndMethod = initializeMethod(optionName, methodName);
+
+		this.singleDanglingEndMethod = initializeMethod(optionName, methodName);
 	}
 	
 	private void initializeSingleMismatchMethod(){
@@ -444,11 +444,10 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private PartialCalculMethod initializeMethod(String optionName, String methodName){
 
 		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
-
 		if (necessaryMethod != null){
 			necessaryMethod.initializeFileName(methodName);
-
 			necessaryMethod.loadData(environment.getOptions());
+
 		}
 		else {
 			throw new NoExistingMethodException("one or more method(s) is(are) missing to compute the melting" +
@@ -470,13 +469,15 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
 
+			if (necessaryMethod == null){
+				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
+			}
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
 			}
 			pos1 = pos2 + 1;
 		}
-
 		return isApplicableMethod;
 	}
 	
