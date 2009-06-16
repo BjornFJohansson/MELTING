@@ -36,13 +36,10 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
-		Environment newEnvironment = environment;
 
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
-
-		newEnvironment = Environment.modifieSequences(newEnvironment, newSequences.getSequence(), newSequences.getComplementary());
 		
-		environment.setResult(super.calculateInitiationHybridation(newEnvironment));
+		environment.setResult(super.calculateInitiationHybridation(environment));
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 				

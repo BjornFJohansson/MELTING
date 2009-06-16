@@ -40,12 +40,8 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	public ThermoResult calculateThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
-		analyzeSequence();
-		this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
 
-		CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
-		ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
-		this.environment.setResult(resultinitiation);
+		analyzeSequence();
 		
 		int pos1 = 0; 
 		int pos2 = 0;
@@ -56,6 +52,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			pos1 = positions[0];
 			pos2 = positions[1];
 			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
+
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
@@ -64,6 +61,18 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 			pos1 = pos2 + 1;
 		}
+		
+		if (this.CNGRepeatsMethod == null){
+			if (this.cricksMethod == null){
+				this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
+			}
+
+			CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
+
+			ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
+			this.environment.setResult(resultinitiation);
+		}
+		
 		
 		double Tm = calculateMeltingTemperature(this.environment);
 		this.environment.setResult(Tm);
@@ -116,102 +125,113 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			String sequence = environment.getSequences().getSequence();
 			String complementary = environment.getSequences().getComplementary();
 			if (Helper.isComplementaryBasePair(sequence.charAt(pos1 - 1), complementary.charAt(pos1 - 1))){
-				pos1 --;
+				if (pos1 - 2 >= 0){
+					if (environment.getSequences().isModifiedAcidBefore(pos1 - 1) == false){
+						pos1 --;
+
+					}
+				}
 			}
 		}
+		
 		return pos1;
 	}
 	
 	private int [] getPositionsMotif(int pos1){
 		int position = pos1;
-		if(environment.getSequences().isCNGMotif(pos1, pos1 + 5)){
-			position = pos1 + 6;
+		if (pos1 == 0){
+			if(environment.getSequences().isCNGMotif(0, this.environment.getSequences().getDuplexLength() - 1)){			
+				int [] positions = {0, this.environment.getSequences().getDuplexLength() - 1};
+				return positions;
+			}
+		}
+			
+		if (pos1 + 1 < environment.getSequences().getDuplexLength() - 1){
+			if (environment.getSequences().isModifiedAcidAfter(pos1 + 1)){
+				pos1 ++;
+			}
+		}
 
-			while (position + 2 <= environment.getSequences().getDuplexLength() - 1){
-				
-				int testPosition = position + 2;
-				if (environment.getSequences().isCNGMotif(position, testPosition)){
-					position += 3;
-
+		if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
+			pos1 = correctFirstPosition(pos1);
+			while (position < environment.getSequences().getDuplexLength() - 1){
+				int testPosition = position + 1;
+				if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition))){
+					position ++;
 				}
-				else {
+				else{
 					break;
+					}
+				}
+			if (position < environment.getSequences().getDuplexLength() - 1){
+				if (environment.getSequences().isModifiedAcidAfter(position + 1)){
+					position --;
 				}
 			}
-			int [] positions = {pos1, position - 1};
+			int [] positions = {pos1, position};
 			return positions;
 		}
+			
 		else {
-			if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
-				pos1 = correctFirstPosition(pos1);
-
+			if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
-					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition))){
+					if (environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition)){
 						position ++;
 					}
 					else{
 						break;
 					}
 				}
+				if (pos1 > 0){
+					pos1--;
+				}
+				if (position + 1 >= this.environment.getSequences().getDuplexLength() - 1){
+					int [] positions = {pos1, position};
+					return positions;
+				}
+				else if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
 
-				int [] positions = {pos1, position};
-				return positions;
+					int [] positions = {pos1, position};
+					return positions;
+				}
+				else{
+					int [] positions = {pos1, position + 1};
+					return positions;
+				}
 			}
-			
 			else {
-				if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
-					while (position < environment.getSequences().getDuplexLength() - 1){
-						int testPosition = position + 1;
-						if (environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition)){
-							position ++;
-						}
-						else{
-							break;
-						}
-					}
-					if (pos1 > 0){
-						pos1--;
-					}
-					if (position + 1 >= this.environment.getSequences().getDuplexLength() - 1){
-						int [] positions = {pos1, position};
-						return positions;
-					}
-					else if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
-
-						int [] positions = {pos1, position};
-						return positions;
+				
+				while (position < environment.getSequences().getDuplexLength() - 1){
+					int testPosition = position + 1;
+					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false){
+						position ++;
+						
 					}
 					else{
-						int [] positions = {pos1, position + 1};
-						return positions;
+						break;
 					}
 				}
-				else {
-
-					while (position < environment.getSequences().getDuplexLength() - 1){
-						int testPosition = position + 1;
-						if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false){
-							position ++;
-						}
-						else{
-							break;
-						}
-					}
 
 					if (environment.getSequences().isBasePairEqualsTo('G', 'U', position)){
 						position --;
 					}
-					if (pos1 == 0 && position == environment.getSequences().getDuplexLength() - 1){
-						int [] positions = {pos1, position};
+					else if (environment.getSequences().isModifiedAcidAfter(position)){
+						pos1 --;
+					}
+					else if (environment.getSequences().isModifiedAcidBefore(position)){
+						position ++;
+					}
+					if (pos1 <= 0 && position == environment.getSequences().getDuplexLength() - 1){
+						int [] positions = {0, position};
 						return positions;
 					}
 					else if (position == environment.getSequences().getDuplexLength() - 1){
 						int [] positions = {pos1 - 1, position};
 						return positions;
 					}
-					else if (pos1 == 0){
-						int [] positions = {pos1, position + 1};
+					else if (pos1 <= 0){
+						int [] positions = {0, position + 1};
 						return positions;
 					}
 					else{
@@ -221,7 +241,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					}
 				}
 			}
-		}	
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
@@ -466,9 +485,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
-
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
-
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}

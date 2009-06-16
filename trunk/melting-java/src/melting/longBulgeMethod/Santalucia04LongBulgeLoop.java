@@ -34,7 +34,8 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The long bulge loop formulas from Santalucia. (2004) : " + formulaEnthalpy + " and " + formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop formulas from Santalucia. (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " and " + formulaEntropy);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -55,7 +56,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			entropy += bulgeLoopValue.getEntropy();
 		}
 		
-		/*if (numberAT> 0){
+		if (numberAT> 0){
 			Thermodynamics closingAT = this.collector.getClosureValue("A", "T");
 
 			OptionManagement.meltingLogger.log(Level.FINE, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
@@ -63,7 +64,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			enthalpy += numberAT * closingAT.getEnthalpy();
 			enthalpy += numberAT * closingAT.getEntropy();
 		
-		}*/
+		}
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -90,14 +91,14 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		//int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
+		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		
-		//if (numberAT > 0){
-			//if (this.collector.getClosureValue("A", "T") == null){
-				//return true;
-			//}
-		//}
+		if (numberAT > 0){
+			if (this.collector.getClosureValue("A", "T") == null){
+				return true;
+			}
+		}
 		System.out.println(this.collector.getBulgeLoopvalue(bulgeSize));
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){

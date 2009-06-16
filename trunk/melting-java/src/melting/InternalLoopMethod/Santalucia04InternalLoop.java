@@ -102,19 +102,14 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		Environment newEnvironment = environment;
 
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " the internal loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
-			
-			newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
-			pos1 = 0;
-			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		boolean isApplicable = super.isApplicable(newEnvironment, pos1, pos2);
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
 		if (environment.getSequences().calculateLoopLength(pos1, pos2) == 2){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");

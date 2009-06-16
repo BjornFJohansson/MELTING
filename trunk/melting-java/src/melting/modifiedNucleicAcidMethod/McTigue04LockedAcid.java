@@ -33,7 +33,7 @@ public class McTigue04LockedAcid extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The locked acid nuceic thermodynamic parameters are from McTigue et al. (2004) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The locked acid nuceic thermodynamic parameters are from McTigue et al. (2004) (delta delta H and delta delta S): ");
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		double enthalpy = result.getEnthalpy();
@@ -41,10 +41,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		
 		Thermodynamics lockedAcidValue;
 		
-		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
-			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
-			
-			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
+		for (int i = 0; i + 2 <= newSequences.getDuplexLength() - 1; i++){
+			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequence(i, i+2), newSequences.getComplementary(i, i+2));
+
+			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequence(i, i+2) + "/" + newSequences.getComplementary(i, i+2) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
 
 			enthalpy += lockedAcidValue.getEnthalpy();
 			entropy += lockedAcidValue.getEntropy();
@@ -80,13 +80,13 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
 		if (this.collector.getNNvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0)) == null || this.collector.getNNvalue(newSequences.getSequence(1,1) + newSequences.getSequence(3, 3), newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3)) == null){
 			return true;
 		}
 		
-		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
-			if (this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
+		for (int i = 0; i + 2 <= newSequences.getDuplexLength() - 1; i++){
+
+			if (this.collector.getLockedAcidValue(newSequences.getSequence(i, i+2), newSequences.getComplementary(i, i+2)) == null){
 				return true;
 			}
 		}
@@ -104,8 +104,8 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		double enthalpy = result.getEnthalpy() + firstNNValue.getEnthalpy() + secondNNValue.getEnthalpy();
 		double entropy = result.getEntropy() + firstNNValue.getEntropy()  + secondNNValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + firstNNValue.getEnthalpy() + "  entropy = " + firstNNValue.getEntropy());
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1 + 1,pos1 + 1) + sequences.getSequence(pos1 + 3, pos1 + 3) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + sequences.getComplementary(pos1 + 3, pos1 + 3) + " : enthalpy = " + secondNNValue.getEnthalpy() + "  entropy = " + secondNNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(0) + "/" + newSequences.getComplementaryNNPair(0) + " : enthalpy = " + firstNNValue.getEnthalpy() + "  entropy = " + firstNNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequence(1,1)  + newSequences.getSequence(3,3)  + "/" + newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3) + " : enthalpy = " + secondNNValue.getEnthalpy() + "  entropy = " + secondNNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -117,13 +117,15 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String azobenzeneName = options.get(OptionManagement.azobenzeneMethod);
+		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod azobenzene = register.getPartialCalculMethod(OptionManagement.azobenzeneMethod, azobenzeneName);
-		String fileAzobenzene = azobenzene.getDataFileName(azobenzeneName);
+		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initializeFileName(crickName);
+
+		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(fileAzobenzene, this.collector);
+		loadFile(NNfile, this.collector);
 	}
 	
 }

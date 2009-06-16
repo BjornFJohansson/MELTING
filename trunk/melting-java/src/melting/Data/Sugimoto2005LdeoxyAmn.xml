@@ -39,11 +39,11 @@
   			<entropy>68.0</entropy>
   		</modified> 		
   		<modified sequence="A_AG/TTC">
-  			<enthalpy>29600.0.0</enthalpy>
+  			<enthalpy>29600.0</enthalpy>
   			<entropy>86.0</entropy>
   		</modified>
   		<modified sequence="AAG/T_XC">
-  			<enthalpy>49600.0.0</enthalpy>
+  			<enthalpy>49600.0</enthalpy>
   			<entropy>140.7</entropy>
   		</modified>
   		<modified sequence="A_AG/T_XC">

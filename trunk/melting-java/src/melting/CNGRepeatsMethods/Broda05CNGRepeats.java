@@ -48,13 +48,18 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
 					"(2005) is only established for RNA sequences.");
 		}
+		
+		if (environment.getSequences().isBasePair('G', 'C', pos1) == false && environment.getSequences().isBasePair('C', 'G', pos2) == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
+			"(2005) is only established for CNG RNA sequences. The sequence must begin with a G/C base pair and end with a C/Gbase pair.");
+		}
 
-		return super.isApplicable(environment, pos1, pos2);
+		return isApplicable;
 	}
 	
 	@Override

@@ -24,20 +24,14 @@ public class Freier86 extends CricksNNMethod {
 	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		Environment newEnvironment = environment;
 
 		if (environment.getHybridization().equals("rnarna") == false){
 
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Freier et al. (1986)" +
 			"are established for RNA sequences.");	
-
-			newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
-			pos1 = 0;
-			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
-			
 		}
 
-		return super.isApplicable(newEnvironment, pos1, pos2);
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	@Override
