@@ -15,31 +15,27 @@ public class NucleotidSequences {
 	private static HashMap<String, ModifiedAcidNucleic> modifiedAcidNames = new HashMap<String, ModifiedAcidNucleic>();
 	
 	public NucleotidSequences(String sequence, String complementary){
-		initializeModifiedAcidArrayList();
-		initializeModifiedAcidHashmap();
 
 		this.sequence = sequence;
-		this.complementary = complementary;
-		encodeSequence();
-		encodeComplementary();		
+		this.complementary = complementary;		
 	}
 	
-	private void initializeModifiedAcidArrayList(){
+	public void initializeModifiedAcidArrayList(){
 		modifiedNucleotides.add("_A");
-		modifiedNucleotides.add("_T");
-		modifiedNucleotides.add("_C");
 		modifiedNucleotides.add("_X");
-		modifiedNucleotides.add("X");
+		modifiedNucleotides.add("X_T");
+		modifiedNucleotides.add("X_C");
 		modifiedNucleotides.add("A*");
 		modifiedNucleotides.add("L");
 		modifiedNucleotides.add("I");
 	}
 	
-	private void initializeModifiedAcidHashmap(){
+	public void initializeModifiedAcidHashmap(){
 		modifiedAcidNames.put("I", ModifiedAcidNucleic.inosine);
 		modifiedAcidNames.put("L", ModifiedAcidNucleic.lockedAcidNucleic);
 		modifiedAcidNames.put("A*", ModifiedAcidNucleic.hydroxyadenine);
-		modifiedAcidNames.put("X", ModifiedAcidNucleic.azobenzene);
+		modifiedAcidNames.put("X_C", ModifiedAcidNucleic.azobenzene);
+		modifiedAcidNames.put("X_T", ModifiedAcidNucleic.azobenzene);
 		modifiedAcidNames.put("_A", ModifiedAcidNucleic.L_deoxyadenine);
 		modifiedAcidNames.put("_X", ModifiedAcidNucleic.L_deoxyadenine);
 	}
@@ -230,6 +226,9 @@ public class NucleotidSequences {
 		}
 		else if (seq1.charAt(seq1.length() - 1) == '-'){
 			return "5";
+		}
+		else if (seq1.contains("-") == false && seq2.contains("-") == false){
+			return null;
 		}
 		throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
 	}
@@ -452,32 +451,22 @@ public class NucleotidSequences {
 		return newSequence.toString();
 	}
 	
-	private void encodeSequence(){
+	public void encodeSequence(){
 		StringBuffer comp = new StringBuffer(getDuplexLength());
-		boolean is_XAcid = false;
 		comp.append(this.complementary);
 		
-		for (int i = 0; i < getDuplexLength();i++){
+		for (int i = 0; i < this.sequence.length();i++){
 			
-			if (i < getDuplexLength() - 1){
-				if (sequence.substring(i, i+2).equals("_X")){
-					is_XAcid = true;
-				}
-				if (this.sequence.substring(i, i+2).equals("_A") || this.sequence.substring(i, i+2).equals("_X")){
-					comp.insert(i," ");
-				}
-				else if (this.sequence.substring(i, i+2).equals("_T") || this.sequence.substring(i, i+2).equals("_C")){
+			if (i < this.sequence.length() - 2){
+				if (this.sequence.substring(i, i+3).equals("X_T") || this.sequence.substring(i, i+2).equals("X_C")){
 					comp.insert(i," ");
 					comp.insert(i + 1, " ");
+					comp.insert(i + 2, " ");
 				}
 			}
-			
-			if (sequence.charAt(i) == 'X' && is_XAcid){
-				is_XAcid = false;
-			}
-			else {
-				if (sequence.charAt(i) == 'X'){
-					comp.deleteCharAt(i);
+			if (i < this.sequence.length() - 1){
+				if (this.sequence.substring(i, i+2).equals("_A") || this.sequence.substring(i, i+2).equals("_X")){
+					comp.insert(i," ");
 				}
 			}
 			
@@ -492,32 +481,21 @@ public class NucleotidSequences {
 		this.complementary = comp.toString();
 	}
 	
-	private void encodeComplementary(){
+	public void encodeComplementary(){
 		StringBuffer seq = new StringBuffer(getDuplexLength());
-		boolean is_XAcid = false;
 		seq.append(this.sequence);
 		
-		for (int i = 0; i < getDuplexLength();i++){
-			
-			if (i < getDuplexLength() - 1){
-				if (complementary.substring(i, i+2).equals("_X")){
-					is_XAcid = true;
-				}
-				if (this.complementary.substring(i, i+2).equals("_A") || this.complementary.substring(i, i+2).equals("_X")){
-					seq.insert(i," ");
-				}
-				else if (this.complementary.substring(i, i+2).equals("_T") || this.complementary.substring(i, i+2).equals("_C")){
+		for (int i = 0; i < this.complementary.length();i++){
+			if (i < this.complementary.length() - 2){
+				if (this.complementary.substring(i, i+3).equals("X_T") || this.complementary.substring(i, i+2).equals("X_C")){
 					seq.insert(i," ");
 					seq.insert(i + 1, " ");
+					seq.insert(i + 2, " ");
 				}
 			}
-			
-			if (complementary.charAt(i) == 'X' && is_XAcid){
-				is_XAcid = false;
-			}
-			else {
-				if (complementary.charAt(i) == 'X'){
-					seq.deleteCharAt(i);
+			if (i < this.complementary.length() - 1){
+				if (this.complementary.substring(i, i+2).equals("_A") || this.complementary.substring(i, i+2).equals("_X")){
+					seq.insert(i," ");
 				}
 			}
 			
@@ -533,74 +511,34 @@ public class NucleotidSequences {
 	}
 	
 	public static NucleotidSequences decodeSequences(String sequence, String complementary){
-		int duplexLength = Math.max(sequence.length(), complementary.length());
-
-		StringBuffer seq = new StringBuffer(duplexLength);
-		StringBuffer comp = new StringBuffer(duplexLength);
+		StringBuffer seq = new StringBuffer(sequence.length());
+		StringBuffer comp = new StringBuffer(complementary.length());
 		
 		seq.append(sequence);
 		comp.append(complementary);
 		
-		
-		for (int i = 0; i < duplexLength ;i++){
-			boolean is_XAcid = false;
-			
-			if (i < duplexLength - 1){
-				if (sequence.substring(i, i+2).equals("_X") || complementary.substring(i, i+2).equals("_X")){
-					is_XAcid = true;
-				}
-				if (complementary.substring(i, i+2).equals("_A") || complementary.substring(i, i+2).equals("_X")){
-					seq.deleteCharAt(i);
-				}
-				else if (complementary.substring(i, i+2).equals("_T") || complementary.substring(i, i+2).equals("_C")){
-					seq.deleteCharAt(i);
-					seq.deleteCharAt(i + 1);
-					
-				}
-				else if (sequence.substring(i, i+2).equals("_A") || sequence.substring(i, i+2).equals("_X")){
-					comp.deleteCharAt(i);
-				}
-				else if (sequence.substring(i, i+2).equals("_T") || sequence.substring(i, i+2).equals("_C")){
-					comp.deleteCharAt(i);
-					comp.deleteCharAt(i + 1);
-				}
+		for (int i = 0 ; i < sequence.length() - 2; i++){
+			if (sequence.substring(i, i + 3).equals("X_T") || sequence.substring(i, i + 3).equals("X_C")){
+				seq.deleteCharAt(i + 1);
+				seq.deleteCharAt(i + 1);
+
 			}
-			
-			if (sequence.charAt(i) == 'X' && is_XAcid || complementary.charAt(i) == 'X' && is_XAcid){
-				is_XAcid = false;
-			}
-			else {
-				if (sequence.charAt(i) == 'X'){
-					comp.deleteCharAt(i);
-				}
-				else if (complementary.charAt(i) == 'X'){
-					seq.deleteCharAt(i);
-				}
-			}
-			
-			if (complementary.charAt(i) == 'L'){
-				seq.deleteCharAt(i);
-			}
-			else if (sequence.charAt(i) == 'L'){
-				comp.deleteCharAt(i);
-			}
-			else if (complementary.charAt(i) == 'L'){
-				seq.deleteCharAt(i);
-			}
-			else if (sequence.charAt(i) == '*'){
-				comp.deleteCharAt(i);
-			}
-			else if (complementary.charAt(i) == '*'){
-				seq.deleteCharAt(i);
+			if (complementary.substring(i, i + 3).equals("X_T") || complementary.substring(i, i + 3).equals("X_C")){
+				comp.deleteCharAt(i + 1);
+				comp.deleteCharAt(i + 1);	
 			}
 		}
+
+		String newSequence = seq.toString().replace(" ", "");
+		String newComplementary = comp.toString().replace(" ", "");
 		
-		NucleotidSequences DecodedSequences = new NucleotidSequences(seq.toString(), comp.toString());
+		NucleotidSequences DecodedSequences = new NucleotidSequences(newSequence, newComplementary);
 		
 		return DecodedSequences;
 	}
 	
 	public String getComplementaryTo(String sequence, int pos1, int pos2){
+		
 		if (sequence.equals(getSequence(pos1, pos2))){
 			return getComplementary(pos1, pos2);
 		}
@@ -671,13 +609,13 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isCNGMotif(int pos1, int pos2){
-		int index = pos1;
-		char mismatch = sequence.charAt(pos1 + 1);
-		if (pos2 > getDuplexLength() - 1 || pos2 - pos1 + 1 < 3 || pos1 < 0){
+		int index = pos1 + 1;
+		char mismatch = sequence.charAt(pos1 + 2);
+		if (pos2 != getDuplexLength() - 1 || pos1 != 0){
 			return false;
 		}
 
-		while (index <= pos2 - 2){
+		while (index <= pos2 - 3){
 			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
 				return false;
 			}
@@ -791,7 +729,7 @@ public class NucleotidSequences {
 			}
 		}
 		
-		if (numbergapSequence == pos2 - pos1 || numbergapComplementary == pos2 - pos1){
+		if (numbergapSequence == pos2 - pos1 - 1 || numbergapComplementary == pos2 - pos1 - 1){
 			return false;
 		}
 		return true;
@@ -820,6 +758,22 @@ public class NucleotidSequences {
 		return true;
 	}
 	
+	public boolean isModifiedAcidAfter(int pos){
+		if (isBasePairEqualsTo('L', ' ', pos) || isBasePairEqualsTo('*', ' ', pos)){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isModifiedAcidBefore(int pos){
+		if (pos + 1 <= getDuplexLength() - 1){
+			if (getSequence(pos, pos + 1).equals("_A") || getSequence(pos, pos + 1).equals("_X") || getComplementary(pos, pos + 1).equals("A_") || getComplementary(pos, pos + 1).equals("X_")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private static String getModifiedAcid(String sequence, int pos){
 		
 		StringBuffer modifiedAcid = new StringBuffer();
@@ -827,13 +781,27 @@ public class NucleotidSequences {
 		
 		while (Helper.isWatsonCrickBase(sequence.charAt(index)) == false && index <= sequence.length() - 1){
 			modifiedAcid.append(sequence.charAt(index));
+			if (modifiedAcid.toString().equals("X_")){
+				index ++;
+				modifiedAcid.append(sequence.charAt(index));
+			}
 			index ++;
+		}
+		if (modifiedAcid.toString().equals("_")){
+			modifiedAcid.append(sequence.charAt(index));
+		}
+		if (index - 2 > 0){
+			if (modifiedAcid.toString().equals("*")){
+				index -= 2;
+				modifiedAcid.deleteCharAt(0);
+				modifiedAcid.append(sequence.substring(index, index + 2));
+			}
 		}
 		return modifiedAcid.toString();
 	}
 	
 	public boolean isListedModifiedAcid(int pos1, int pos2){
-		if (pos2 > getDuplexLength() - 2 || pos1 < 0){
+		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
 			return false;
 		}
 		
@@ -845,9 +813,6 @@ public class NucleotidSequences {
 				modifiedAcid1 = getModifiedAcid(this.sequence, i);
 				break;
 			}
-		}
-		
-		for (int i = pos1; i <= pos2; i++){
 			if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false && this.complementary.charAt(i) != '-'){
 				modifiedAcid2 = getModifiedAcid(this.complementary, i);
 				break;

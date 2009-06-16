@@ -41,7 +41,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 
 		
 		if (initiation != null) {
-			OptionManagement.meltingLogger.log(Level.FINE, "Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
 			
 			enthalpy += initiation.getEnthalpy();
 			entropy += initiation.getEntropy();

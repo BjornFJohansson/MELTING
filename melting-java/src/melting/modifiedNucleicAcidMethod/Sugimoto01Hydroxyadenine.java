@@ -34,10 +34,9 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The hydroxyadenine thermodynamic parameters are from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine thermodynamic parameters are from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
-		
 		Thermodynamics hydroxyAdenineValue = this.collector.getHydroxyadenosineValue(newSequences.getSequence(), newSequences.getComplementary());
 		double enthalpy = result.getEnthalpy() + hydroxyAdenineValue.getEnthalpy();
 		double entropy = result.getEntropy() + hydroxyAdenineValue.getEntropy();
@@ -130,38 +129,36 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		NucleotidSequences noModified = sequences.removeHydroxyadenine(pos1, pos2);
-		
-		if (pos1 != 0 && pos2 != sequences.getDuplexLength() - 1){
-			Thermodynamics NNValue;
-			for (int i = 0; i < noModified.getDuplexLength(); i++){
-				NNValue = this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i));
-				enthalpy += NNValue.getEnthalpy();
-				entropy += NNValue.getEntropy();
-				
-				OptionManagement.meltingLogger.log(Level.FINE, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
-			}
+		Thermodynamics NNValue;
+
+		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
+			NNValue = this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i));
+			enthalpy += NNValue.getEnthalpy();
+			entropy += NNValue.getEntropy();
+				
+			OptionManagement.meltingLogger.log(Level.FINE, noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+
+		}
 		
 			result.setEnthalpy(enthalpy);
 			result.setEntropy(entropy);
 			return result;
-		}
-		else{
-			return null;
-		}
 	}
 	
 	@Override
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String hydroxyadenineName = options.get(OptionManagement.hydroxyadenineMethod);
+		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod hydroxyadenine = register.getPartialCalculMethod(OptionManagement.hydroxyadenineMethod, hydroxyadenineName);
-		String fileHydroxyadenine = hydroxyadenine.getDataFileName(hydroxyadenineName);
+		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initializeFileName(crickName);
+
+		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(fileHydroxyadenine, this.collector);
+		loadFile(NNfile, this.collector);
 	}
 
 }

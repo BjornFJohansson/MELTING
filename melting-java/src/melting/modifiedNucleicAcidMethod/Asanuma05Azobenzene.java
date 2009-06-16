@@ -31,11 +31,11 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		
 		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + azobenzeneValue.getEnthalpy();
-		double entropy = result.getEnthalpy() + azobenzeneValue.getEntropy();
+		double entropy = result.getEntropy() + azobenzeneValue.getEntropy();
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -68,8 +68,7 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
-		if (this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2, "dna"),sequences.getComplementary(pos1, pos2, "dna")) == null){
+		if (this.collector.getAzobenzeneValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
 			return true;
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);

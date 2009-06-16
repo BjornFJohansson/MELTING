@@ -212,7 +212,7 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeLongBulgeLoopMethods(){
-		longBulgeLoopMethod.put("Turner_2006", Turner99_06LongBulgeLoop.class);
+		longBulgeLoopMethod.put("Turner_1999_2006", Turner99_06LongBulgeLoop.class);
 		longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
 	}
 	

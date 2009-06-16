@@ -56,20 +56,15 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		Environment newEnvironment = environment;
 
 		if (environment.getHybridization().equals("dnadna") == false){
 				
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
-			
-			newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
-			pos1 = 0;
-			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		return super.isApplicable(newEnvironment, pos1, pos2);
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	@Override

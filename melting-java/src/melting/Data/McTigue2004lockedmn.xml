@@ -26,131 +26,131 @@
     /******************************************************************************/-->
   		
   	<data type="modified_nucleotides">
-  		<modified sequence="AlA/TT">
+  		<modified sequence="ALA/TT">
   			<enthalpy>707.0</enthalpy>
   			<entropy>2.5</entropy>
   		</modified>
-  		<modified sequence="AlT/TA">
+  		<modified sequence="ALT/TA">
   			<enthalpy>2282.0</enthalpy>
   			<entropy>7.5</entropy>
   		</modified>
-  		<modified sequence="AlG/TC">
+  		<modified sequence="ALG/TC">
   			<enthalpy>264.0</enthalpy>
   			<entropy>2.6</entropy>
   		</modified>
-  		<modified   sequence="AlC/TG">
+  		<modified   sequence="ALC/TG">
   			<enthalpy>1131.0</enthalpy>
   			<entropy>4.1</entropy>
   		</modified>  		
-  		<modified   sequence="TlA/AT">
+  		<modified   sequence="TLA/AT">
   			<enthalpy>-46.0</enthalpy>
   			<entropy>1.6</entropy>
   		</modified>
-  		<modified   sequence="TlT/AA">
+  		<modified   sequence="TLT/AA">
   			<enthalpy>1528.0</enthalpy>
   			<entropy>5.3</entropy>
   		</modified>
-  		<modified   sequence="TlG/AC">
+  		<modified   sequence="TLG/AC">
   			<enthalpy>-1540.0</enthalpy>
   			<entropy>-3.0</entropy>
   		</modified>
-  		<modified   sequence="TlC/AG">
+  		<modified   sequence="TLC/AG">
   			<enthalpy>1893.0</enthalpy>
-  			<entropy>6.7s</entropy>
+  			<entropy>6.7</entropy>
   		</modified> 		
-  		<modified   sequence="GlA/CT">
+  		<modified   sequence="GLA/CT">
   			<enthalpy>3162.0</enthalpy>
   			<entropy>10.5</entropy>
   		</modified>
-  		<modified   sequence="GlT/CA">
+  		<modified   sequence="GLT/CA">
   			<enthalpy>-212.0</enthalpy>
   			<entropy>0.1</entropy>
   		</modified>
-  		<modified   sequence="GlG/CC">
+  		<modified   sequence="GLG/CC">
   			<enthalpy>-2844.0</enthalpy>
   			<entropy>-6.7</entropy>
   		</modified>
-  		<modified   sequence="GlC/CG">
+  		<modified   sequence="GLC/CG">
   			<enthalpy>-360.0</enthalpy>
   			<entropy>-0.3</entropy>
   		</modified> 		
-  		<modified   sequence="ClA/GT">
+  		<modified   sequence="CLA/GT">
   			<enthalpy>1049.0</enthalpy>
   			<entropy>4.3</entropy>
   		</modified>
-  		<modified   sequence="ClT/GA">
+  		<modified   sequence="CLT/GA">
   			<enthalpy>708.0</enthalpy>
   			<entropy>4.2</entropy>
   		</modified>
-  		<modified   sequence="ClG/GC">
+  		<modified   sequence="CLG/GC">
   			<enthalpy>785.0</enthalpy>
   			<entropy>3.7</entropy>
   		</modified>
-  		<modified   sequence="Cl/GG">
+  		<modified   sequence="CL/GG">
   			<enthalpy>2096.0</enthalpy>
   			<entropy>8.0</entropy>
   		</modified>  		
-  		<modified   sequence="AAl/TT">
+  		<modified   sequence="AAL/TT">
   			<enthalpy>992.0</enthalpy>
   			<entropy>74.1</entropy>
   		</modified>
-  		<modified   sequence="ATl/TA">
+  		<modified   sequence="ATL/TA">
   			<enthalpy>1816.0</enthalpy>
   			<entropy>6.9</entropy>
   		</modified>
-  		<modified   sequence="AGl/TC">
+  		<modified   sequence="AGL/TC">
   			<enthalpy>-1200.0</enthalpy>
   			<entropy>-1.8</entropy>
   		</modified>
-  		<modified   sequence="ACl/TG">
+  		<modified   sequence="ACL/TG">
   			<enthalpy>2890.0</enthalpy>
   			<entropy>10.6</entropy>
   		</modified>  		
-  		<modified   sequence="TAl/AT">
+  		<modified   sequence="TAL/AT">
   			<enthalpy>1591.0</enthalpy>
   			<entropy>5.3</entropy>
   		</modified>
-  		<modified   sequence="TTl/AA">
+  		<modified   sequence="TTL/AA">
   			<enthalpy>2326.0</enthalpy>
   			<entropy>8.1</entropy>
   		</modified>
-  		<modified   sequence="TGl/AC">
+  		<modified   sequence="TGL/AC">
   			<enthalpy>2165.0</enthalpy>
   			<entropy>7.2</entropy>
   		</modified>
-  		<modified   sequence="TCl/AG">
+  		<modified   sequence="TCL/AG">
   			<enthalpy>609.0</enthalpy>
   			<entropy>3.2</entropy>
   		</modified> 		
-  		<modified   sequence="GAl/CT">
+  		<modified   sequence="GAL/CT">
   			<enthalpy>444.0</enthalpy>
   			<entropy>2.9</entropy>
   		</modified>
-  		<modified   sequence="GTl/CA">
+  		<modified   sequence="GTL/CA">
   			<enthalpy>-635.0</enthalpy>
   			<entropy>-0.3</entropy>
   		</modified>
-  		<modified   sequence="GGl/CC">
+  		<modified   sequence="GGL/CC">
   			<enthalpy>-943.0</enthalpy>
   			<entropy>-0.9</entropy>
   		</modified>
-  		<modified   sequence="GCl/CG">
+  		<modified   sequence="GCL/CG">
   			<enthalpy>-925.0</enthalpy>
   			<entropy>-1.1</entropy>
   		</modified> 		
-  		<modified   sequence="CAl/GT">
+  		<modified   sequence="CAL/GT">
   			<enthalpy>1358.0</enthalpy>
   			<entropy>4.4</entropy>
   		</modified>
-  		<modified   sequence="CTl/GA">
+  		<modified   sequence="CTL/GA">
   			<enthalpy>-1671.0</enthalpy>
   			<entropy>-4.1</entropy>
   		</modified>
-  		<modified   sequence="CGl/GC">
+  		<modified   sequence="CGL/GC">
   			<enthalpy>-276.0</enthalpy>
   			<entropy>-0.7</entropy>
   		</modified>
-  		<modified   sequence="CCl/GG">
+  		<modified   sequence="CCL/GG">
   			<enthalpy>2063.0</enthalpy>
   			<entropy>7.6</entropy>
   		</modified>

@@ -34,11 +34,10 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
-		
-		Thermodynamics deoxyadenineValue = this.collector.getModifiedvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		Thermodynamics deoxyadenineValue = this.collector.getDeoxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		double enthalpy = result.getEnthalpy() + deoxyadenineValue.getEnthalpy();
 		double entropy = result.getEntropy() + deoxyadenineValue.getEntropy();
 		
@@ -87,7 +86,6 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		if (this.collector.getDeoxyadenosineValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
 			return true;
 		}
-		
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 	
@@ -100,7 +98,6 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		Thermodynamics NNValue;
 		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
-			
 			NNValue = this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i));
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
@@ -119,13 +116,15 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String deoxyadenineName = options.get(OptionManagement.deoxyadenineMethod);
+		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod deoxyadenine = register.getPartialCalculMethod(OptionManagement.deoxyadenineMethod, deoxyadenineName);
-		String fileDeoxyadenine = deoxyadenine.getDataFileName(deoxyadenineName);
+		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initializeFileName(crickName);
+
+		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(fileDeoxyadenine, this.collector);
+		loadFile(NNfile, this.collector);
 	}
 
 }

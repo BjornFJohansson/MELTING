@@ -336,9 +336,6 @@ public class OptionManagement {
 			String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 			optionSet.put(complementarySequence, seq2);
 		}
-		if (optionSet.get(OptionManagement.sequence).length() != optionSet.get(OptionManagement.complementarySequence).length()){
-			throw new OptionSyntaxError("The sequences have two different length. Replace the gaps by the character '-'.");
-		}
 		return true;
 	}
 	
