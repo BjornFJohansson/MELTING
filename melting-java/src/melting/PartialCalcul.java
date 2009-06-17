@@ -47,9 +47,8 @@ public abstract class PartialCalcul implements PartialCalculMethod{
 	public void loadFile(String name, DataCollect collector){
 
 		File dataFile = new File(OptionManagement.dataPathwayValue + "/" + name);
-		FileReader reader = new FileReader();
 		try {
-			collector.setData(reader.readFile(dataFile, collector.getData()));
+			collector.setData(FileReader.readFile(dataFile, collector.getData()));
 
 		} catch (ParserConfigurationException e) {
 			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.");

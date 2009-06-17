@@ -100,6 +100,10 @@ public class Helper {
 		return methodName.split(":")[1];
 	}
 	
+	public static String getOptionMethodName(String methodName){
+		return methodName.split(":")[0];
+	}
+	
 	public static double calculateNaEquivalent(Environment environment){
 		double NaEq = environment.getNa() + environment.getK() + environment.getTris() / 2;
 		

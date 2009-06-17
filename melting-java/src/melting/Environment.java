@@ -38,8 +38,8 @@ public class Environment {
 		}
 		
 		this.factor = Integer.parseInt(options.get(OptionManagement.factor));
+		if (options.get(OptionManagement.selfComplementarity).equals("true")){
 
-		if (options.containsKey(OptionManagement.selfComplementarity)){
 			this.IsSelfComplementarity = true;
 		}
 		
@@ -70,6 +70,10 @@ public class Environment {
 	public int getFactor() {
 		return factor;
 	}
+	
+	public void setFactor(int factor) {
+		this.factor = factor;
+	}
 
 	public ThermoResult getResult() {
 		return result;
@@ -85,6 +89,10 @@ public class Environment {
 	
 	public boolean isSelfComplementarity() {
 		return IsSelfComplementarity;
+	}
+	
+	public void setSelfComplementarity(boolean b){
+		this.IsSelfComplementarity = b;
 	}
 	
 	public String getHybridization() {
