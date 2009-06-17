@@ -327,12 +327,12 @@ public class RegisterCalculMethod {
 			PartialCalculMethod method;
 			try {
 				if (Helper.useOtherDataFile(methodName)){
-					methodName = Helper.getOptionFileName(methodName);
+					methodName = Helper.getOptionMethodName(methodName);
+
 				}
 				if (getPartialCalculMethodHashMap(optionName).get(methodName) == null){
 					throw new NoExistingMethodException("We don't know the method " + methodName);
 				}
-
 				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
 				return method;
 			} catch (InstantiationException e) {

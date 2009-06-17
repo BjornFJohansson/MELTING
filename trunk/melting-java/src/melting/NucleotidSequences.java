@@ -609,12 +609,12 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isCNGMotif(int pos1, int pos2){
-		int index = pos1 + 1;
-		char mismatch = sequence.charAt(pos1 + 2);
-		if (pos2 != getDuplexLength() - 1 || pos1 != 0){
+		if (pos2 != getDuplexLength() - 1 || pos1 != 0 || getDuplexLength() - 2 < 3){
 			return false;
 		}
-
+		
+		int index = pos1 + 1;
+		char mismatch = sequence.charAt(pos1 + 2);
 		while (index <= pos2 - 3){
 			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
 				return false;
@@ -694,6 +694,13 @@ public class NucleotidSequences {
 			}
 		}
 		return true;
+	}
+	
+	public boolean isMismatchPair(int pos){
+		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos), this.complementary.charAt(pos)) == false && Helper.isWatsonCrickBase(this.sequence.charAt(pos)) && Helper.isWatsonCrickBase(this.complementary.charAt(pos))){
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isMismatch(int pos1, int pos2){
@@ -845,8 +852,8 @@ public class NucleotidSequences {
 				break;
 			}
 		}
-		
-		for (int i = 0; i <= complementary.length(); i++){
+		for (int i = 0; i <= complementary.length() - 1; i++){
+
 			if (Helper.isWatsonCrickBase(complementary.charAt(i)) == false && complementary.charAt(i) != '-'){
 				modifiedAcid2 = getModifiedAcid(complementary, i);
 				break;

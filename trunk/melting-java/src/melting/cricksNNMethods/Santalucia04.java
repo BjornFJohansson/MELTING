@@ -77,6 +77,7 @@ public class Santalucia04 extends CricksNNMethod {
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}

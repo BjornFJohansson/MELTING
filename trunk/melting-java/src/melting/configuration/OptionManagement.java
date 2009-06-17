@@ -15,6 +15,7 @@ import melting.MeltingFormatter;
 import melting.NucleotidSequences;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
+import melting.exceptions.SequenceException;
 
 public class OptionManagement {
 	
@@ -101,6 +102,8 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
 		this.DNADefaultOptions.put(deoxyadenineMethod, "Sugimoto_2005");
 		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
+		this.DNADefaultOptions.put(CNGMethod, "Broda_2005");
+
 	}
 	
 	public HashMap<String, String> getRNADefaultOptions() {
@@ -163,7 +166,7 @@ public class OptionManagement {
 	private void setOptionValues(String [] args){
 
 		boolean isNecessaryToSetOptionsValues = true;
-		
+
 		if (args.length == 1){
 			isNecessaryToSetOptionsValues = false;
 		}
@@ -315,7 +318,7 @@ public class OptionManagement {
 		String value = optionSet.get(sequence).toUpperCase();
 		if (NucleotidSequences.checkSequence(value)){
 
-			if (value.contains("I") || value.contains("A*") || (value.contains("X") && value.contains("_X") == false)){
+			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*") || (value.contains("X") && value.contains("_X") == false)){
 				needComplementaryInput = true;
 			}
 		}
@@ -333,8 +336,22 @@ public class OptionManagement {
 		}
 		
 		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
-			String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
-			optionSet.put(complementarySequence, seq2);
+			if(optionSet.get(selfComplementarity).equals("false")){
+				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
+				optionSet.put(complementarySequence, seq2);
+			}
+			else{
+				int length = optionSet.get(sequence).length();
+				
+				if (length % 2 != 0){
+					throw new SequenceException("The sequence is self-complementary. Full the gaps in the sequence with the character '-' because the length of the sequence is not even.");
+				}
+				String seq1 = optionSet.get(sequence).substring(0, length / 2);
+				String seq2 = optionSet.get(sequence).substring(length / 2, length);
+
+				optionSet.put(sequence, seq1);
+				optionSet.put(complementarySequence, seq2);
+			}
 		}
 		return true;
 	}
@@ -400,6 +417,7 @@ public class OptionManagement {
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
 		optionSet.put(completMethod, "default");
+		optionSet.put(selfComplementarity, "false");
 			
 		return optionSet;
 	}
@@ -478,6 +496,10 @@ public class OptionManagement {
 						else{
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
 						}
+					}
+					else if (option.equals(OptionManagement.selfComplementarity)){
+						optionSet.put(option, "true");
+						optionSet.put(factor, "1");
 					}
 
 					else {

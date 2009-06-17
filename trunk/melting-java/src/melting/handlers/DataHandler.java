@@ -12,10 +12,6 @@ public class DataHandler extends NodeHandler {
 		private String type;
 		private HashMap<String, Thermodynamics> map = new HashMap<String, Thermodynamics>();
 		
-		public DataHandler(HashMap<String, Thermodynamics> map){
-			this.map = map;
-		}
-		
 		public HashMap<String, Thermodynamics> getMap() {
 			return map;
 		}

@@ -47,7 +47,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 			entropy += initiation.getEntropy();
 		}
 		
-		if (environment.getOptions().containsKey(OptionManagement.selfComplementarity)){
+		if (environment.isSelfComplementarity()){
 			Thermodynamics symmetry = this.collector.getsymmetry();
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
@@ -65,7 +65,6 @@ public abstract class CricksNNMethod extends PartialCalcul{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 
 		for (int i = pos1; i <= pos2 - 1; i++){
-
 			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
 				return true;
 			}
