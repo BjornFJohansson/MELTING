@@ -17,17 +17,16 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		
-		Thermodynamics mismatchValue = this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos2), sequences.getComplementary(pos1 + 1, pos2));
+		Thermodynamics mismatchValue = this.collector.getMismatchParameterValue(sequences.getSequence(pos1 + 1, pos1 + 1), sequences.getComplementary(pos1 + 1, pos1 + 1));
 		if (mismatchValue == null){
 			mismatchValue = new Thermodynamics(0,0);
 		}
-		Thermodynamics NNNeighboringValue = this.collector.getMismatchvalue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), sequences.getComplementary(pos1, pos2));
+		Thermodynamics NNNeighboringValue = this.collector.getMismatchValue(NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)), NucleotidSequences.convertToPyr_Pur( sequences.getComplementary(pos1, pos2)));
 		if (NNNeighboringValue == null){
 			NNNeighboringValue = new Thermodynamics(0,0);
 		}
 		OptionManagement.meltingLogger.log(Level.FINE, "N/N mismatch " + sequences.getSequence(pos1 + 1, pos1 + 1) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
-		OptionManagement.meltingLogger.log(Level.FINE, "NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2)) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
 		
 		double enthalpy = result.getEnthalpy() + mismatchValue.getEnthalpy() + NNNeighboringValue.getEnthalpy();
 		double entropy = result.getEntropy() + mismatchValue.getEntropy() + NNNeighboringValue.getEntropy();

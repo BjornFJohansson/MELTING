@@ -89,6 +89,7 @@ public class NucleotidSequences {
 		for (int i = 0; i < sequence.length(); i++){
 			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-' && modifiedAcid == null){
 				modifiedAcid = getModifiedAcid(sequence, i);
+
 				position = i;
 			}
 			else if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-' && modifiedAcid != null){
@@ -168,10 +169,15 @@ public class NucleotidSequences {
 		comp.append(this.complementary);
 		
 		int indexStart = 0;
-		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexStart), this.complementary.charAt(indexStart)) == false && indexStart <= getDuplexLength() - 1){
-			seq.deleteCharAt(0);
-			comp.deleteCharAt(0);
-			indexStart ++;
+		while (indexStart <= getDuplexLength() - 1){
+			if (Helper.isComplementaryBasePair(this.sequence.charAt(indexStart), this.complementary.charAt(indexStart)) == false && Helper.isWobbleBasePair(this.sequence.charAt(indexStart), this.complementary.charAt(indexStart)) == false){
+				seq.deleteCharAt(0);
+				comp.deleteCharAt(0);
+				indexStart ++;
+			}
+			else {
+				break;
+			}
 		}
 
 		if (indexStart == getDuplexLength() - 1){
@@ -179,10 +185,15 @@ public class NucleotidSequences {
 		}
 		
 		int indexEnd = getDuplexLength() - 1;
-		while (Helper.isComplementaryBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false && indexEnd >= 0){
-			seq.deleteCharAt(getDuplexLength() - 1);
-			comp.deleteCharAt(getDuplexLength() - 1);
-			indexEnd --;
+		while (indexEnd >= 0){
+			if (Helper.isWobbleBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false && Helper.isComplementaryBasePair(this.sequence.charAt(indexEnd), this.complementary.charAt(indexEnd)) == false){
+				seq.deleteCharAt(getDuplexLength() - 1);
+				comp.deleteCharAt(getDuplexLength() - 1);
+				indexEnd --;
+			}
+			else{
+				break;
+			}
 		}
 		if (indexEnd == 0){
 			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
@@ -247,18 +258,34 @@ public class NucleotidSequences {
 	
 	public double calculatePercentGC(){
 		int numberGC = 0;
-		for (int i = 0; i < getDuplexLength();i++){
-			if (this.sequence.charAt(i) == 'G' || this.sequence.charAt(i) == 'C'){
-				if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i))){
+		
+		if (this.complementary.length() == 0){
+			for (int i = 0; i < getDuplexLength();i++){
+				if (this.sequence.charAt(i) == 'G'){
 					numberGC++;
 				}
 			}
 		}
+		else{
+			for (int i = 0; i < getDuplexLength();i++){
+				if (this.sequence.charAt(i) == 'G' || this.sequence.charAt(i) == 'C'){
+					if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i))){
+						numberGC++;
+					}
+				}
+			}
+		}
+		
 		return numberGC / getDuplexLength() * 100;
 	}
 	
 	public double getPercentMismatching(){
 		double numberMismatching = 0.0;
+		if (this.complementary.length() == 0){
+			return numberMismatching;
+
+		}
+
 		for (int i = 0; i < getDuplexLength(); i++){
 			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i)) == false){
 				numberMismatching++;
@@ -451,7 +478,7 @@ public class NucleotidSequences {
 		return newSequence.toString();
 	}
 	
-	public void encodeSequence(){
+	public void encodeComplementary(){
 		StringBuffer comp = new StringBuffer(getDuplexLength());
 		comp.append(this.complementary);
 		
@@ -481,7 +508,7 @@ public class NucleotidSequences {
 		this.complementary = comp.toString();
 	}
 	
-	public void encodeComplementary(){
+	public void encodeSequence(){
 		StringBuffer seq = new StringBuffer(getDuplexLength());
 		seq.append(this.sequence);
 		
@@ -608,26 +635,45 @@ public class NucleotidSequences {
 		return noModifiedSequence;
 	}
 	
-	public boolean isCNGMotif(int pos1, int pos2){
-		if (pos2 != getDuplexLength() - 1 || pos1 != 0 || getDuplexLength() - 2 < 3){
+	public static boolean isCNGSequence(String sequence){
+		if (sequence.charAt(0) != 'G' || sequence.charAt(sequence.length() - 1) != 'C'){
+			return false;
+		}
+		
+		int index = 1;
+		String CNG = sequence.substring(1, 4);
+		while (index <= sequence.length() - 4){
+			if (sequence.substring(index, index + 3).equals(CNG) == false){
+				return false;
+			}
+			else{
+				index += 3;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isCNGPattern(int pos1, int pos2){
+		int duplexLength = this.sequence.length();
+		if (pos2 != duplexLength - 1 || pos1 != 0 || duplexLength - 2 < 3){
+			return false;
+		}
+		
+		if (sequence.charAt(0) != 'G' || sequence.charAt(duplexLength - 1) != 'C'){
 			return false;
 		}
 		
 		int index = pos1 + 1;
-		char mismatch = sequence.charAt(pos1 + 2);
+		String CNG = this.sequence.substring(1, 4);
 		while (index <= pos2 - 3){
-			if (this.sequence.charAt(index + 1) != this.complementary.charAt(index + 1)){
+			if (this.sequence.substring(index, index + 3).equals(CNG) == false){
 				return false;
 			}
-			else {
-				if(isBasePair('G', 'C', index + 2) && isBasePair('C', 'G', index) && isBasePair(mismatch, mismatch, index + 1)){
-					index += 3;
-				}
-				else{
-					return false;
-				}
+			else{
+				index += 3;
 			}
 		}
+		
 		return true;
 	}
 	
@@ -711,10 +757,10 @@ public class NucleotidSequences {
 		int numbergapSequence = 0;
 		int numbergapComplementary = 0;
 		
-		if (isBasePair('G', 'U', pos1) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false){
+		if (isBasePairEqualsTo('G', 'U', pos1) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false){
 			return false;
 		}
-		else if (isBasePair('G', 'U', pos2) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false){
+		else if (isBasePairEqualsTo('G', 'U', pos2) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false){
 				return false;
 		}
 		
@@ -782,17 +828,21 @@ public class NucleotidSequences {
 	}
 	
 	private static String getModifiedAcid(String sequence, int pos){
-		
 		StringBuffer modifiedAcid = new StringBuffer();
 		int index = pos;
 		
-		while (Helper.isWatsonCrickBase(sequence.charAt(index)) == false && index <= sequence.length() - 1){
-			modifiedAcid.append(sequence.charAt(index));
-			if (modifiedAcid.toString().equals("X_")){
-				index ++;
+		while (index <= sequence.length() - 1){
+			if (Helper.isWatsonCrickBase(sequence.charAt(index)) == false){
 				modifiedAcid.append(sequence.charAt(index));
+				if (modifiedAcid.toString().equals("X_")){
+					index ++;
+					modifiedAcid.append(sequence.charAt(index));
+				}
+				index ++;
 			}
-			index ++;
+			else {
+				break;
+			}
 		}
 		if (modifiedAcid.toString().equals("_")){
 			modifiedAcid.append(sequence.charAt(index));

@@ -75,7 +75,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			Tm = calculateMeltingTemperature(this.environment);
 		}
 		else {
-			int CNGRepeats = 2 * (this.environment.getSequences().getDuplexLength() - 2) / 3;
+			int CNGRepeats = (this.environment.getSequences().getSequence().length() - 3) / 3;
 			if (CNGRepeats > 4){
 				Tm = calculateHairpinTemperature(this.environment);
 				
@@ -85,6 +85,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				this.environment.setSelfComplementarity(true);
 				this.environment.setFactor(1);
 				Tm = calculateMeltingTemperature(this.environment);
+
 			}
 		}
 		
@@ -154,7 +155,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private int [] getPositionsMotif(int pos1){
 		int position = pos1;
 		if (pos1 == 0){
-			if(environment.getSequences().isCNGMotif(0, this.environment.getSequences().getDuplexLength() - 1) && this.environment.isSelfComplementarity()){			
+			if(environment.getSequences().isCNGPattern(0, this.environment.getSequences().getSequence().length() - 1) && this.environment.isSelfComplementarity()){			
 				int [] positions = {0, this.environment.getSequences().getDuplexLength() - 1};
 				return positions;
 			}
@@ -204,7 +205,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					return positions;
 				}
 				else if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
-
 					int [] positions = {pos1, position};
 					return positions;
 				}
@@ -255,7 +255,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
-			if (environment.getSequences().isCNGMotif(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
+			if (environment.getSequences().isCNGPattern(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
 				if (this.CNGRepeatsMethod == null){
 					initializeCNGRepeatsMethod();
 				}
@@ -285,7 +285,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				}
 			}
 		else if (environment.getSequences().isMismatchPair(positions[0]) || environment.getSequences().isMismatchPair(positions[1])){
-			System.out.println(positions[0] + "and" + positions[1]);
 			throw new NoExistingMethodException("No method for terminal mismatches have been implemented yet.");
 		}
 	}
@@ -492,12 +491,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		int pos1 = 0;
 		int pos2 = 0;
 		boolean isApplicableMethod = true;
-
 		while (pos2 + 1 <= environment.getSequences().getDuplexLength() - 1){
 
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
+
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );

@@ -32,8 +32,8 @@ public class Broda05CNGRepeats extends PartialCalcul {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs method : from Broda et al. (2005). \n");
 		
-		int repeats = 2 * (pos2 - pos1 - 1) / 3;
-		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3,"rna"), sequences.getComplementary(pos1 + 1, pos1 + 3, "rna"));
+		int repeats = (pos2 - pos1 - 1) / 3;
+		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3,"rna"));
 		double enthalpy = result.getEnthalpy() + CNGValue.getEnthalpy();
 		double entropy = result.getEntropy() + CNGValue.getEntropy();			
 		
@@ -55,7 +55,7 @@ public class Broda05CNGRepeats extends PartialCalcul {
 					"(2005) is only established for RNA sequences.");
 		}
 		
-		if (environment.getSequences().isBasePair('G', 'C', pos1) == false && environment.getSequences().isBasePair('C', 'G', pos2) == false){
+		if (environment.getSequences().getSequence().charAt(pos1) != 'G' && environment.getSequences().getSequence().charAt(pos2) != 'C'){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
 			"(2005) is only established for CNG RNA sequences. The sequence must begin with a G/C base pair and end with a C/Gbase pair.");
 		}
@@ -74,11 +74,10 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int repeats = (sequences.getDuplexLength() - 2) / 3;
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		if (this.collector.getCNGvalue(Integer.toString(repeats), newSequences.getSequence(1,3), newSequences.getComplementary(1,3)) == null){
+		if (this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3, "rna")) == null){
 			return true;			
 		}
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
 }

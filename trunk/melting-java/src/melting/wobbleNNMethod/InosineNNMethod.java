@@ -40,7 +40,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		for (int i = pos1; i <= pos2 - 1; i++){
 	
 			if (collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
-				OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic values for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing. Check the inosine file.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic values for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing. Check the inosine file.");
 
 				return true;
 			}
