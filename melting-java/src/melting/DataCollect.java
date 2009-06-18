@@ -195,7 +195,7 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getMismatchvalue(String seq1, String seq2){
+	public Thermodynamics getMismatchValue(String seq1, String seq2){
 		Thermodynamics s = data.get("mismatch"+seq1+"/"+seq2);
 		if (s == null){
 			s = data.get("mismatch"+getSymetricSequencePairs(seq1, seq2));
@@ -283,8 +283,8 @@ public class DataCollect {
 		return s;
 	}
 	
-	public Thermodynamics getCNGvalue(String repeats, String seq1, String seq2){
-		Thermodynamics s = data.get("CNG"+"repeats"+repeats+seq1+"/"+seq2);
+	public Thermodynamics getCNGvalue(String repeats, String seq1){
+		Thermodynamics s = data.get("CNG"+"repeats"+repeats+seq1);
 		return s;
 	}
 	

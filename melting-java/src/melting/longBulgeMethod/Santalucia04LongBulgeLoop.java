@@ -99,7 +99,6 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 				return true;
 			}
 		}
-		System.out.println(this.collector.getBulgeLoopvalue(bulgeSize));
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){
 			return true;

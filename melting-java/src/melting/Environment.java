@@ -44,17 +44,19 @@ public class Environment {
 		}
 		
 		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		
-		this.sequences.initializeModifiedAcidArrayList();
-		this.sequences.initializeModifiedAcidHashmap();
-		this.sequences.encodeSequence();
-		this.sequences.encodeComplementary();
-		
-		if (this.sequences.getSequence().length() != this.sequences.getComplementary().length()){
-			throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
+		if (NucleotidSequences.isCNGSequence(this.sequences.getSequence()) == false){
+			this.sequences.initializeModifiedAcidArrayList();
+			this.sequences.initializeModifiedAcidHashmap();
+			this.sequences.encodeSequence();
+			this.sequences.encodeComplementary();
+			
+			if (this.sequences.getSequence().length() != this.sequences.getComplementary().length()){
+				throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
+			}
 		}
-		this.result = new ThermoResult(0,0,0);
 		
+		this.result = new ThermoResult(0,0,0);
+
 	}
 	
 	public void sortSquences(String hybridization, String firstSequence, String secondSequence){

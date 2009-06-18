@@ -46,4 +46,8 @@
 	        	<enthalpy>-1400.0</enthalpy>
                	<entropy>-6.2</entropy>
 	    	</mismatch>
+	    	<mismatch sequence="GG/TT">
+	        	<enthalpy>5800.0</enthalpy>
+               	<entropy>16.3</entropy>
+	    	</mismatch>
 	    </data>

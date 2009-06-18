@@ -1,5 +1,11 @@
-package melting.tandemMismatchMethod;
 
+/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
+	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
+	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
+	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
+	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
+
+package melting.tandemMismatchMethod;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -14,12 +20,6 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
-
-	/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
-	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
-	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999tanmm.xml";
 	
@@ -35,7 +35,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The tandem mismatch parameters are from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The tandem mismatch parameters are from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
 
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
@@ -43,7 +43,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		double entropy = result.getEntropy();
 		Thermodynamics mismatchValue;
 		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
-			mismatchValue = this.collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
+			mismatchValue = this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
 			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(pos1 + i) + "/" + sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
 
@@ -74,7 +74,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
-			if (this.collector.getMismatchvalue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
+			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the parameters for tandem mismatches.");
 				return true;
 			}
 		}

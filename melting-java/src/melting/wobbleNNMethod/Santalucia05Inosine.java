@@ -1,5 +1,7 @@
-package melting.wobbleNNMethod;
 
+/*Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267*/
+
+package melting.wobbleNNMethod;
 
 import java.util.logging.Level;
 
@@ -9,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Santalucia05Inosine extends InosineNNMethod{
-
-	/*Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267*/
 	
 	public static String defaultFileName = "Santalucia2005inomn.xml";
 	

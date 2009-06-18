@@ -1,5 +1,6 @@
 package melting.wobbleNNMethod;
 
+/*Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 */
 
 import java.util.logging.Level;
 
@@ -10,8 +11,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Znosko07Inosine extends InosineNNMethod {
-
-	/*Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 */
 	
 	public static String defaultFileName = "Znosko2007inomn.xml";
 	
@@ -37,7 +36,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		double entropy = result.getEntropy();
 		int numberIU = inosine.calculateNumberOfTerminal('I', 'U');
 		
-		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0) {
+		if ((pos1 == 0 || pos2 == sequences.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
 			OptionManagement.meltingLogger.log(Level.FINE, numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
 
@@ -61,7 +60,6 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		}
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		System.out.println(inosine.getDuplexLength() - 1 + "and" +inosine.getSequence() + "and" + inosine.getComplementary());
 
 		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
 			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.isBasePairEqualsTo('I', 'U', i) == false){
@@ -82,6 +80,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0){
 			if (this.collector.getTerminal("per_I/U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for terminal IU base pair is missing.");
 				return true;
 			}
 		}

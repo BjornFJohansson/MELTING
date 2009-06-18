@@ -36,7 +36,6 @@ public class FormamideLinearMethod implements CorrectionMethod{
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The implemented formamide correction methods are established for DNA duplexes..");
 
-			System.out.println("WARNING : the implemented formamide correction methods are established for DNA duplexes.");
 			return false;
 		}
 		return true;

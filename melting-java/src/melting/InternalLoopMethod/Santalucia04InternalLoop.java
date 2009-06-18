@@ -41,8 +41,8 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy);
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEntropy);
 
-		Thermodynamics rightMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
-		Thermodynamics leftMismatch =  collector.getMismatchvalue(newSequences.getSequenceNNPair(newSequences.getDuplexLength() - 2), newSequences.getComplementaryNNPair(newSequences.getDuplexLength() - 2));
+		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
+		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(newSequences.getDuplexLength() - 2), newSequences.getComplementaryNNPair(newSequences.getDuplexLength() - 2));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "Right terminal mismatch : " + sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
 		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + sequences.getSequenceNNPair(pos2 - 1) + "/" + sequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());

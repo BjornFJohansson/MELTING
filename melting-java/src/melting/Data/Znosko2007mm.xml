@@ -26,7 +26,7 @@
     	/******************************************************************************/-->
    			
    		<data type="single_mismatch">
-   			<parameters pair="A/G">
+   			<parameters sequence="A/G">
 	        	<enthalpy>-6900.0</enthalpy>
                 <entropy>-21.0</entropy>
    			</parameters>	

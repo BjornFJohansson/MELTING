@@ -112,7 +112,7 @@ public class OptionManagement {
 	
 	private void setRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "Xia_1998");
-		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2008");
+		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2007");
 		this.RNADefaultOptions.put(wobbleBaseMethod, "Turner_1999");
 		this.RNADefaultOptions.put(tandemMismatchMethod, "Turner_1999_2006");
 		this.RNADefaultOptions.put(internalLoopMethod, "Turner_1999_2006");
@@ -299,7 +299,6 @@ public class OptionManagement {
 	
 	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
 		boolean needComplementaryInput = false;
-
 		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false || optionSet.containsKey(sequence) == false){
 			return false;
 		}
@@ -334,7 +333,6 @@ public class OptionManagement {
 		if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
 			return false;
 		}
-		
 		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
 			if(optionSet.get(selfComplementarity).equals("false")){
 				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
@@ -343,14 +341,25 @@ public class OptionManagement {
 			else{
 				int length = optionSet.get(sequence).length();
 				
-				if (length % 2 != 0){
+				if (length % 2 != 0 && NucleotidSequences.isCNGSequence(optionSet.get(sequence)) == false){
 					throw new SequenceException("The sequence is self-complementary. Full the gaps in the sequence with the character '-' because the length of the sequence is not even.");
 				}
-				String seq1 = optionSet.get(sequence).substring(0, length / 2);
-				String seq2 = optionSet.get(sequence).substring(length / 2, length);
+				else if (NucleotidSequences.isCNGSequence(optionSet.get(sequence))){
+					optionSet.put(complementarySequence, "");
+				}
+				else{
+					String seq1 = optionSet.get(sequence).substring(0, length / 2);
+					String seq2 = NucleotidSequences.getInversedSequence(optionSet.get(sequence).substring(length / 2, length));
 
-				optionSet.put(sequence, seq1);
-				optionSet.put(complementarySequence, seq2);
+
+					optionSet.put(sequence, seq1);
+					optionSet.put(complementarySequence, seq2);
+				}
+			}
+		}
+		else if(optionSet.containsKey(complementarySequence)){
+			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
+				throw new OptionSyntaxError("The complementary sequence contains some characters we can't understand.");
 			}
 		}
 		return true;

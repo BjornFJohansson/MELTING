@@ -1,5 +1,7 @@
-package melting.tandemMismatchMethod;
+/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 
+package melting.tandemMismatchMethod;
 
 import java.util.logging.Level;
 
@@ -11,9 +13,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Turner99_06tanmm extends PartialCalcul{
-
-	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
 	
 	public static String defaultFileName = "Turner1999_2006tanmm.xml";
 	private static String enthalpyFormula = "delta H(5'PXYS/3'QWZT) = (H(5'PXWQ/3'QWXP) + H(5'TZYS/3'SYZT)) / 2 + penalty1( = H(GG pair adjacent to an AA or any non canonical pair with a pyrimidine) + penalty2 (= H(AG or GA pair adjacent to UC,CU or CC pairs or with a UU pair adjacent to a AA.))";
@@ -145,6 +144,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			}
 			if (newSequences.isTandemMismatchGGPenaltyNecessary(1)){
 				if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -152,6 +152,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			
 			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(1)){
 				if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -159,6 +160,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			
 			if (newSequences.is2StabilizingMismatchesPenaltyNecessary(1)){
 				if (this.collector.getPenalty("GU_GA_UU_Mismatches") == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for stabilizing mismatches is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -166,6 +168,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 			
 			else if (newSequences.is1StabilizingMismatchPenaltyNecessary(1)){
 				if (this.collector.getPenalty("One_GU_GA_UU_Mismatch") == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for one stabilizing and one destabilizing mismatch is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 			}
@@ -176,8 +179,9 @@ public class Turner99_06tanmm extends PartialCalcul{
 			closing.append(newSequences.getSequence().charAt(0));
 			closing.append("/");
 			closing.append(newSequences.getComplementary().charAt(0));
-			System.out.println(newSequences.getSequence() + "and" + newSequences.getComplementary() + "and" + closing.toString());
 			if (this.collector.getMismatchValue(newSequences.getSequence(1, newSequences.getDuplexLength() - 2), newSequences.getComplementary(1, newSequences.getDuplexLength() - 2), closing.toString()) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(1, newSequences.getDuplexLength() - 2) + "and" + newSequences.getComplementary(1, newSequences.getDuplexLength() - 2) + " is missing. Check the tandem mismatch parameters.");
+
 				return true;
 			}
 		}
