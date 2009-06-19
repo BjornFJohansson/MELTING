@@ -1,16 +1,16 @@
+
+/*REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344*/ 
+
 package melting.secondDanglingEndMethod;
 
 import java.util.logging.Level;
 
-import melting.Helper;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
-
-	/*REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344*/ 
 	
 	public static String defaultFileName = "Serra2006doublede.xml";
 	
@@ -37,21 +37,27 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
-
 		Thermodynamics doubleDanglingValue;
-		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) || (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) == false && Helper.isPyrimidine(newSequences.getComplementary().charAt(0)))){
-			if (sequence.charAt(0) == '-'){
+
+		if (sequence.charAt(0) == '-'){
+			if (complementary.charAt(1) == 'Y' || (complementary.charAt(1) != 'Y' && complementary.charAt(2) == 'Y')){
 				complementary = complementary.substring(1, 3);
 			}
-			else {
-				complementary = complementary.substring(0, 2);
-			}
-
-			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
 		}
 		else {
-			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
+			if (complementary.charAt(1) == 'Y' || (complementary.charAt(1) != 'Y' && complementary.charAt(0) == 'Y')){
+				complementary = complementary.substring(0, 2);
 			}
+		} 
+		
+		if (sequences.getSequenceSens(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2).equals("5'3'")){
+			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
+		}
+		else{
+			doubleDanglingValue = this.collector.getDanglingValue(complementary,sequence);
+
+		}
+		
 		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
 		
 		enthalpy += doubleDanglingValue.getEnthalpy();
@@ -67,26 +73,38 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
 		
-		if (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) || (Helper.isPyrimidine(newSequences.getComplementary().charAt(1)) == false && Helper.isPyrimidine(newSequences.getComplementary().charAt(0)))){
-			if (sequence.charAt(0) == '-'){
+		if (sequence.charAt(0) == '-'){
+
+			if (complementary.charAt(1) == 'Y' || (complementary.charAt(1) != 'Y' && complementary.charAt(2) == 'Y')){
 				complementary = complementary.substring(1, 3);
-			}
-			else {
-				complementary = complementary.substring(0, 2);
-			}
-			if (this.collector.getDanglingValue(sequence,complementary) == null){
-			return true;			
 			}
 		}
 		else {
-			if (this.collector.getDanglingValue(sequence,complementary) == null){
-				return true;			
-				}
+			if (complementary.charAt(1) == 'Y' || (complementary.charAt(1) != 'Y' && complementary.charAt(0) == 'Y')){
+				complementary = complementary.substring(0, 2);
 			}
+
+		} 
+		
+		if (sequences.getSequenceSens(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2).equals("5'3'")){
+			
+			if (this.collector.getDanglingValue(sequence,complementary) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for " + sequence + "/" + complementary + " are missing. Check the second dangling ends parameters.");
+
+				return true;			
+			}
+		}
+		else{
+			
+			if (this.collector.getDanglingValue(complementary,sequence) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for " + complementary + "/" + sequence + " are missing. Check the second dangling ends parameters.");
+
+				return true;			
+			}
+		}
 
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}

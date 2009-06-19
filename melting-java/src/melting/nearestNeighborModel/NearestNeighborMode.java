@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.Helper;
 import melting.ModifiedAcidNucleic;
+import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.CorrectionMethod;
@@ -51,14 +52,18 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			pos1 = positions[0];
 			pos2 = positions[1];
 			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
-
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
-
-			pos1 = pos2 + 1;
+			
+			if (pos1 == 0 && environment.getSequences().isDanglingEnd(pos1, pos2)){
+				pos1 = pos2;
+			}
+			else{
+				pos1 = pos2 + 1;
+			}
 		}
 		double Tm = 0.0;
 		boolean isASaltCorrectionNecessary = true;
@@ -69,26 +74,22 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 
 			CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
-
 			ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
 			this.environment.setResult(resultinitiation);
 			Tm = calculateMeltingTemperature(this.environment);
 		}
 		else {
-			int CNGRepeats = (this.environment.getSequences().getSequence().length() - 3) / 3;
+			int CNGRepeats = (this.environment.getSequences().getDuplexLength() - 3) / 3;
 			if (CNGRepeats > 4){
 				Tm = calculateHairpinTemperature(this.environment);
 				
 				isASaltCorrectionNecessary = false;
 			}
 			else{
-				this.environment.setSelfComplementarity(true);
-				this.environment.setFactor(1);
 				Tm = calculateMeltingTemperature(this.environment);
 
 			}
 		}
-		
 		this.environment.setResult(Tm);
 		
 		if (isASaltCorrectionNecessary){
@@ -198,7 +199,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 					}
 				}
 				if (pos1 > 0){
-					pos1--;
+					if (Helper.isComplementaryBasePair(this.environment.getSequences().getSequence().charAt(pos1 - 1), this.environment.getSequences().getComplementary().charAt(pos1 - 1))){
+						pos1--;
+					}
 				}
 				if (position >= this.environment.getSequences().getDuplexLength() - 1){
 					int [] positions = {pos1, position};
@@ -254,7 +257,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
+
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
+
 			if (environment.getSequences().isCNGPattern(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
 				if (this.CNGRepeatsMethod == null){
 					initializeCNGRepeatsMethod();
@@ -505,7 +510,13 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
 			}
-			pos1 = pos2 + 1;
+			
+			if (pos1 == 0 && environment.getSequences().isDanglingEnd(pos1, pos2)){
+				pos1 = pos2;
+			}
+			else{
+				pos1 = pos2 + 1;
+			}
 		}
 		return isApplicableMethod;
 	}
@@ -525,6 +536,8 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	public static double calculateMeltingTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / (delta S + 1.99 x ln([nucleotides] / F)) - 273.15");
+		double Test = -91000.0 / (-260.0 + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
+		System.out.println(Test);
 		return Tm;
 	}
 

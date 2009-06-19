@@ -183,6 +183,17 @@ public class DataCollect {
 		}
 	}
 	
+	public Thermodynamics getSecondDanglingValue(String seq1, String seq2, String sens){
+		seq1 = seq1.replaceAll("-", "");
+		seq2 = seq2.replaceAll("-", "");
+		Thermodynamics s = data.get("dangling"+seq1+"/"+seq2+"sens"+sens);
+
+		if (s == null){
+			s = data.get("dangling"+getSymetricSequencePairs(seq1, seq2)+"sens"+sens);
+		}
+		return s;
+	}
+	
 	public Thermodynamics getDanglingValue(String seq1, String seq2){
 		String sens = NucleotidSequences.getSens(seq1, seq2);
 		seq1 = seq1.replaceAll("-", "");

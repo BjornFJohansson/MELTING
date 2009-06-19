@@ -1,5 +1,7 @@
-package melting.singleBulgeMethod;
 
+/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150*/
+
+package melting.singleBulgeMethod;
 
 import java.util.logging.Level;
 
@@ -9,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
-
-	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150*/
 	
 	public static String defaultFileName = "Tanaka2004bulge.xml";
 	

@@ -1,3 +1,6 @@
+	
+/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
+
 package melting.singleBulgeMethod;
 
 import java.util.HashMap;
@@ -12,8 +15,6 @@ import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 
 public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
-
-	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	private static StringBuffer formulaH = new StringBuffer();
 	private static StringBuffer formulaS = new StringBuffer();
@@ -53,6 +54,8 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
+			OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for " + NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()) + "/" + NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary()) + " are missing. Check the single bulge loop parameters.");
+
 			return true;
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);

@@ -1,5 +1,7 @@
-package melting.singleDanglingEndMethod;
 
+/*REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 */
+
+package melting.singleDanglingEndMethod;
 
 import java.util.logging.Level;
 
@@ -9,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
-
-	/*REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 */
 	
 	public static String defaultFileName = "Bommarito2000de.xml";
 	

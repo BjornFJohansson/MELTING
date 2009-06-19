@@ -1,5 +1,10 @@
-package melting.singleMismatchMethods;
+/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
+	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
+	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
+	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
+	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 
+package melting.singleMismatchMethods;
 
 import java.util.logging.Level;
 
@@ -11,12 +16,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
-
-	/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
-	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
-	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 	
 
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999mm.xml";
@@ -75,6 +74,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 
 		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
 			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
 				return true;
 			}
 		}

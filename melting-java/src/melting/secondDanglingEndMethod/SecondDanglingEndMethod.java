@@ -62,6 +62,26 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		return result;
 	}
 	
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
+		
+		if (gapSequence.charAt(0) == '-'){
+			if (this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
+				return true;
+			}
+		}
+		else{
+			if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
+				return true;
+			}
+		}
+		
+		return super.isMissingParameters(sequences, pos1, pos2);
+	}
+	
 	@Override
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
