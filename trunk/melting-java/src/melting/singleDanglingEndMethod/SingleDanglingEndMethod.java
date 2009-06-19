@@ -43,6 +43,7 @@ public abstract class SingleDanglingEndMethod extends PartialCalcul {
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the dangling ends prameters.");
 			return true;
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);

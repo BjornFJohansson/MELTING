@@ -37,22 +37,28 @@ public class Environment {
 			this.Hybridization = "mrnarna";
 		}
 		
-		this.factor = Integer.parseInt(options.get(OptionManagement.factor));
 		if (options.get(OptionManagement.selfComplementarity).equals("true")){
-
 			this.IsSelfComplementarity = true;
+			this.factor = 1;
 		}
-		
+		else if (NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase())){
+			this.IsSelfComplementarity = true;
+			this.factor = 1;
+		}
+		else {
+			this.IsSelfComplementarity = false;
+			this.factor = Integer.parseInt(options.get(OptionManagement.factor));
+		}
+
 		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		if (NucleotidSequences.isCNGSequence(this.sequences.getSequence()) == false){
-			this.sequences.initializeModifiedAcidArrayList();
-			this.sequences.initializeModifiedAcidHashmap();
-			this.sequences.encodeSequence();
-			this.sequences.encodeComplementary();
+		this.sequences.initializeModifiedAcidArrayList();
+		this.sequences.initializeModifiedAcidHashmap();
+		this.sequences.correctSequences();
+		this.sequences.encodeSequence();
+		this.sequences.encodeComplementary();
 			
-			if (this.sequences.getSequence().length() != this.sequences.getComplementary().length()){
-				throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
-			}
+		if (this.sequences.getSequence().length() != this.sequences.getComplementary().length()){
+			throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
 		}
 		
 		this.result = new ThermoResult(0,0,0);

@@ -1,3 +1,6 @@
+	
+/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
+
 package melting.singleMismatchMethods;
 
 import java.util.logging.Level;
@@ -11,8 +14,6 @@ import melting.configuration.OptionManagement;
 
 public class Turner06mm extends PartialCalcul{
 	
-	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
-
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
 	private static String formulaEnthalpy = "delat H = H(loop initiation n=2) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(bonus if GG mismatch) + H(bonus if 5'RU/3'YU)";
@@ -90,19 +91,15 @@ public class Turner06mm extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		Environment newEnvironment = environment;
 
 		if (environment.getHybridization().equals("rnarna") == false){
 
 			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
-			//newEnvironment = Environment.modifieSequences(newEnvironment, environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
-			pos1 = 0;
-			pos2 = newEnvironment.getSequences().getDuplexLength() - 1;
 		}
 		
-		return super.isApplicable(newEnvironment, pos1, pos2);
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	@Override
@@ -115,28 +112,33 @@ public class Turner06mm extends PartialCalcul{
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
 		if (this.collector.getInitiationLoopValue("2") == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The initiation parameters for a loop of 2 are missing. Check the single mismatch parameters.");
 			return true;
 		}
 		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
 			if (this.collector.getFirstMismatch("G", "G", "1x1") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for GG mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
 			if (this.collector.getFirstMismatch("RU", "YU", "1x1") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for RU/YU mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}

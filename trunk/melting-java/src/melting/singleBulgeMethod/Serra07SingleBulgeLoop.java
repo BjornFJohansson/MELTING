@@ -1,5 +1,7 @@
-package melting.singleBulgeMethod;
 
+/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
+
+package melting.singleBulgeMethod;
 
 import java.util.logging.Level;
 
@@ -9,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
-
-	/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
 	
 	public static String defaultFileName = "Serra2007bulge.xml";
 	

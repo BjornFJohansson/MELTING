@@ -15,7 +15,6 @@ import melting.MeltingFormatter;
 import melting.NucleotidSequences;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
-import melting.exceptions.SequenceException;
 
 public class OptionManagement {
 	
@@ -329,37 +328,26 @@ public class OptionManagement {
 
 			throw new OptionSyntaxError("There is one syntax mistake in the concentrations. Check the option" + solutioncomposition + ".");
 		}
+		if(optionSet.containsKey(complementarySequence)){
+			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
+				throw new OptionSyntaxError("The complementary sequence contains some characters we can't understand.");
+			}
+		}
 		
-		if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
+		else if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
 			return false;
 		}
 		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
-			if(optionSet.get(selfComplementarity).equals("false")){
-				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
+			if (NucleotidSequences.isSelfComplementarySequence(optionSet.get(OptionManagement.sequence).toUpperCase()) || optionSet.get(selfComplementarity).equals("true")){
+				optionSet.put(selfComplementarity, "true");
+				optionSet.put(factor, "1");
+				
+				String seq2 = NucleotidSequences.getInversedSequence(optionSet.get(sequence));
 				optionSet.put(complementarySequence, seq2);
 			}
-			else{
-				int length = optionSet.get(sequence).length();
-				
-				if (length % 2 != 0 && NucleotidSequences.isCNGSequence(optionSet.get(sequence)) == false){
-					throw new SequenceException("The sequence is self-complementary. Full the gaps in the sequence with the character '-' because the length of the sequence is not even.");
-				}
-				else if (NucleotidSequences.isCNGSequence(optionSet.get(sequence))){
-					optionSet.put(complementarySequence, "");
-				}
-				else{
-					String seq1 = optionSet.get(sequence).substring(0, length / 2);
-					String seq2 = NucleotidSequences.getInversedSequence(optionSet.get(sequence).substring(length / 2, length));
-
-
-					optionSet.put(sequence, seq1);
-					optionSet.put(complementarySequence, seq2);
-				}
-			}
-		}
-		else if(optionSet.containsKey(complementarySequence)){
-			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
-				throw new OptionSyntaxError("The complementary sequence contains some characters we can't understand.");
+			else {
+				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
+				optionSet.put(complementarySequence, seq2);
 			}
 		}
 		return true;
@@ -550,7 +538,7 @@ public class OptionManagement {
 			Map.Entry<String, Double> couple = entry.next();
 			String ion = couple.getKey();
 			Double concentration = couple.getValue();
-			OptionManagement.meltingLogger.log(Level.FINE, ion + " = " + concentration);
+			OptionManagement.meltingLogger.log(Level.FINE, ion + " = " + concentration + " mol / L");
 		}
 		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + environment.getHybridization());
 		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + environment.getNucleotides() + "mol/L");

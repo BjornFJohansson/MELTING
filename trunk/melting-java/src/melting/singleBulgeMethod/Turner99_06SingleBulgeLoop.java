@@ -1,3 +1,6 @@
+/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
+	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
+	
 package melting.singleBulgeMethod;
 
 import java.util.HashMap;
@@ -12,9 +15,6 @@ import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 
 public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
-	
-	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 	private static String formulaH = "delat H = H(bulge of 1 initiation) + H(NN intervening)";
 	
@@ -50,6 +50,8 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + NucleotidSequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2)) + " are missing. Check the single bulge loop thermodynamic parameters.");
+
 			return true;
 		}
 		
