@@ -1,3 +1,6 @@
+
+/*REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. */
+
 package melting.InternalLoopMethod;
 
 import java.util.logging.Level;
@@ -10,8 +13,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Znosko071x2Loop extends PartialCalcul {
-
-	/*REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. */
 	
 	public static String defaultFileName = "Znosko20071x2loop.xml";
 	private static String formulaEnthalpy = "delat H = H(first mismath) + H(initiation 1x2 loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
@@ -127,17 +128,23 @@ public class Znosko071x2Loop extends PartialCalcul {
 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		if (this.collector.getInitiationLoopValue() == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for loop initiation are missing. Check the internal loop parameters.");
+
 			return true;
 		}
 		
 		if (internalLoop.calculateNumberOfTerminal('A', 'U') > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}
 		
 		if (internalLoop.calculateNumberOfTerminal('G', 'U') > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}

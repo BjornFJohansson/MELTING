@@ -1,5 +1,7 @@
-package melting.modifiedNucleicAcidMethod;
+	
+/*Sugimoto et al. (2005). Analytical sciences 21 : 77-82*/ 
 
+package melting.modifiedNucleicAcidMethod;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -14,9 +16,7 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
 public class Sugimoto05Deoxyadenosine extends PartialCalcul{
-	
-	/*Sugimoto et al. (2005). Analytical sciences 21 : 77-82*/ 
-	
+		
 	public static String defaultFileName = "Sugimoto2005LdeoxyAmn.xml";
 	
 	@Override
@@ -63,7 +63,7 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		if (modified.calculateNumberOfTerminal("_A"," T") > 0 || modified.calculateNumberOfTerminal("_X"," A") > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for L-deoxyadenosine of " +
-					"Santaluciae (2005) are not established for terminal L-deoxyadenosine.");
+					"Sugimoto et al. (2005) are not established for terminal L-deoxyadenosine.");
 			isApplicable = false;
 		}
 		
@@ -79,11 +79,13 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 
 		for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 			if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for " + noModified.getSequenceNNPair(i) + "/" +noModified.getComplementaryNNPair(i) + " are missing. Check the L-deoxyadenine parameters.");
 				return true;
 			}
 		} 
-		
 		if (this.collector.getDeoxyadenosineValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for " + newSequences.getSequence() + "/" + newSequences.getComplementary() + " are missing. Check the L-deoxyadenine parameters.");
+
 			return true;
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);

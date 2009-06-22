@@ -1,5 +1,7 @@
-package melting.InternalLoopMethod;
 
+/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
+
+package melting.InternalLoopMethod;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -14,8 +16,6 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
 public class Santalucia04InternalLoop extends PartialCalcul{
-
-	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	public static String defaultFileName = "Santalucia2004longmm.xml";
 	
@@ -64,7 +64,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			}
 		}
 		else {
-			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(loopLength/30.0);
+			double value = collector.getInternalLoopValue("30").getEntropy() - 2.44 * 1.99 * Math.log(loopLength/30.0);
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "Internal loop of" + loopLength + " :  enthalpy = 0" + "  entropy = " + value);
 
@@ -126,8 +126,16 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
+		if (this.collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
+			if (this.collector.getInitiationLoopValue("30") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for internal loop of 30 are missing. Check the internal loop parameters.");
+
+				return true;
+			}
+		}
 		if (sequences.isAsymetricLoop(pos1, pos2)){
 			if (collector.getAsymmetry() == null) {
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for loop asymetry are missing. Check the internal loop parameters.");
 				isMissingParameters = true;
 			}
 		}

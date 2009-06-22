@@ -126,16 +126,14 @@ public class DataCollect {
 	
 	public Thermodynamics getAzobenzeneValue(String seq1, String seq2){
 		String typeBase = "";
-		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
-
-		String sequence1 = sequences.getSequenceContainig("_", 0, sequences.getDuplexLength() - 1);
-
-		if (sequence1.contains("X_T")){
+		if (seq1.contains("X_T") || seq2.contains("X_T")){
 			typeBase = "trans";
 		}
-		else if (sequence1.contains("X_C")){
+		else if (seq1.contains("X_C") || seq2.contains("X_C")){
 			typeBase = "cys";
 		}
+		
+		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
 		Thermodynamics s = data.get("modified"+ typeBase + sequences.getSequence()+"/"+sequences.getComplementary());
 		

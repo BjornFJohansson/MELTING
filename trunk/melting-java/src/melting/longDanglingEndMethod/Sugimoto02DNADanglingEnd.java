@@ -1,3 +1,4 @@
+	
 package melting.longDanglingEndMethod;
 
 import java.util.logging.Level;
@@ -7,10 +8,7 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
-
 public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
-
-	/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
 	
 	public static String defaultFileName = "Sugimoto2002longdde.xml";
 	

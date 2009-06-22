@@ -33,7 +33,16 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		
 		result = super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
-		Thermodynamics NNValue = this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary()));
+		String sequenceNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence());
+		String complementaryNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary());
+		Thermodynamics NNValue;
+		
+		if (newSequences.isBasePairEqualsTo('G', 'U', 0) || newSequences.isBasePairEqualsTo('G', 'U', 2)){
+			NNValue = this.collector.getMismatchValue(sequenceNeighbors, complementaryNeighbors);
+		}
+		else{
+			NNValue = this.collector.getNNvalue(sequenceNeighbors, complementaryNeighbors);
+		}
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 
@@ -49,8 +58,11 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + NucleotidSequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2)) + " are missing. Check the single bulge loop thermodynamic parameters.");
+		
+		String sequenceNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence());
+		String complementaryNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary());
+		if (this.collector.getNNvalue(sequenceNeighbors, complementaryNeighbors) == null && this.collector.getMismatchValue(sequenceNeighbors, complementaryNeighbors) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequenceNeighbors + "/" + complementaryNeighbors + " are missing. Check the single bulge loop thermodynamic parameters.");
 
 			return true;
 		}
@@ -63,14 +75,20 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		super.loadData(options);
 		
 		String crickName = options.get(OptionManagement.NNMethod);
+		String wobbleName = options.get(OptionManagement.wobbleBaseMethod);
+		
 		RegisterCalculMethod register = new RegisterCalculMethod();
 		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
-		NNMethod.initializeFileName(crickName);
+		PartialCalculMethod wobbleMethod = register.getPartialCalculMethod(OptionManagement.wobbleBaseMethod, wobbleName);
 
-		String NNfile = NNMethod.getDataFileName(crickName);
+		NNMethod.initializeFileName(crickName);
+		wobbleMethod.initializeFileName(wobbleName);
 		
+		String NNfile = NNMethod.getDataFileName(crickName);
+		String wobbleFile = wobbleMethod.getDataFileName(wobbleName);
 		
 		loadFile(NNfile, this.collector);
+		loadFile(wobbleFile, this.collector);
 	}
 
 }

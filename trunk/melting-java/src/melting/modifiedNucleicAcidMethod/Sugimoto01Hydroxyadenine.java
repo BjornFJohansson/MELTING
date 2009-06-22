@@ -1,5 +1,7 @@
-package melting.modifiedNucleicAcidMethod;
 
+/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
+
+package melting.modifiedNucleicAcidMethod;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -15,8 +17,6 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
 public class Sugimoto01Hydroxyadenine extends PartialCalcul{
-
-	/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
 	
 	public static String defaultFileName = "Sugimoto2001hydroxyAmn.xml";
 	
@@ -109,6 +109,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		if (pos1 != 0 && pos2 != pos1 + sequences.getDuplexLength() - 1){
 			for (int i = 0; i < noModified.getDuplexLength() - 1; i++){
 				if (this.collector.getNNvalue(noModified.getSequenceNNPair(i), noModified.getComplementaryNNPair(i)) == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + noModified.getSequenceNNPair(i) + "/" + noModified.getComplementaryNNPair(i) + " are missing. Check the hydroxyadenine parameters.");
 					return true;
 				}
 			}
@@ -118,6 +119,8 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		}
 		
 		if (this.collector.getHydroxyadenosineValue(newSequences.getSequence(), newSequences.getComplementary()) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence() + "/" + newSequences.getComplementary() + " are missing. Check the hydroxyadenine parameters.");
+
 			return true;
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);	

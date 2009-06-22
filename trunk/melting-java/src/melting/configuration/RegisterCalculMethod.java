@@ -151,21 +151,21 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeCompletCalculMethods(){
-		completCalculMethod.put("approximate", ApproximativeMode.class);
-		completCalculMethod.put("nearest_neighbor", NearestNeighborMode.class);
-		completCalculMethod.put("default", null);
+		completCalculMethod.put("A", ApproximativeMode.class);
+		completCalculMethod.put("NN", NearestNeighborMode.class);
+		completCalculMethod.put("def", null);
 	}
 	
 	private void initializeApproximativeMethods(){
-		approximativeMethod.put("Ahsen_2001", Ahsen01.class);
-		approximativeMethod.put("Marmur_Chester_1962_1993", MarmurChester62_93.class);//650
-		approximativeMethod.put("Marmur_Chester_1962_1993_corr", MarmurChester62_93.class);//535
-		approximativeMethod.put("Marmur_Schildkraut_Doty", MarmurSchildkrautDoty.class);
-		approximativeMethod.put("Owen_1969", Owen69.class);
-		approximativeMethod.put("Santalucia_1998", Santalucia98.class);
-		approximativeMethod.put("Wetmurdna_1991", WetmurDNA91.class);
-		approximativeMethod.put("Wetmurrna_1991", WetmurRNA91.class);
-		approximativeMethod.put("Wetmurdnarna_1991", WetmurDNARNA91.class);
+		approximativeMethod.put("ahs01", Ahsen01.class);
+		approximativeMethod.put("che93", MarmurChester62_93.class);//650
+		approximativeMethod.put("che93corr", MarmurChester62_93.class);//535
+		approximativeMethod.put("schdot", MarmurSchildkrautDoty.class);
+		approximativeMethod.put("owe69", Owen69.class);
+		approximativeMethod.put("san98", Santalucia98.class);
+		approximativeMethod.put("wetdna91", WetmurDNA91.class);
+		approximativeMethod.put("Wetrna91", WetmurRNA91.class);
+		approximativeMethod.put("Wetdnarna91", WetmurDNARNA91.class);
 	}
 	
 	private void initializeCricksMethods(){
@@ -449,9 +449,9 @@ public class RegisterCalculMethod {
 	
 	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
 		
-		String methodName = optionSet.get(OptionManagement.completMethod);
+		String methodName = optionSet.get(OptionManagement.globalMethod);
 		if (methodName == null){
-			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.completMethod + ".");
+			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.globalMethod + ".");
 		}
 	
 		CompletCalculMethod method = null;
@@ -484,7 +484,7 @@ public class RegisterCalculMethod {
 					method.setUpVariable(optionSet);
 				}
 			}
-			else if (methodName.equals("approximate")){
+			else if (methodName.equals("A")){
 				methodName = optionSet.get(OptionManagement.approximativeMode);
 
 				try {
@@ -509,7 +509,7 @@ public class RegisterCalculMethod {
 				return method;
 			}
 			else {
-				throw new MethodNotApplicableException("The melting temperature calcul method (option " + OptionManagement.completMethod + ") is not applicable with this environment.");
+				throw new MethodNotApplicableException("The melting temperature calcul method (option " + OptionManagement.globalMethod + ") is not applicable with this environment.");
 			}
 	}
 	

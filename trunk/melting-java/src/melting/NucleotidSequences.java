@@ -63,10 +63,24 @@ public class NucleotidSequences {
 				}
 				break;
 			case 'T':
-				complementary.append('A');
+				if (i != 0){
+					if (sequence.charAt(i - 1) != '_'){
+						complementary.append('A');
+					}
+				}
+				else{
+					complementary.append('A');
+				}
 				break;
 			case 'C':
-				complementary.append('G');
+				if (i != 0){
+					if (sequence.charAt(i - 1) != '_'){
+						complementary.append('G');
+					}
+				}
+				else{
+					complementary.append('G');
+				}
 				break;
 			case 'G':
 				complementary.append('C');
@@ -83,6 +97,7 @@ public class NucleotidSequences {
 						complementary.append('A');
 					}
 				}
+				break;
 			}
 		}
 		return complementary.toString();
@@ -555,14 +570,14 @@ public class NucleotidSequences {
 		for (int i = 0; i < this.sequence.length();i++){
 			
 			if (i < this.sequence.length() - 2){
-				if (this.sequence.substring(i, i+3).equals("X_T") || this.sequence.substring(i, i+2).equals("X_C")){
+				if (this.sequence.substring(i, i+3).equals("X_T") || this.sequence.substring(i, i+3).equals("X_C")){
 					comp.insert(i," ");
 					comp.insert(i + 1, " ");
 					comp.insert(i + 2, " ");
 				}
 			}
 			if (i < this.sequence.length() - 1){
-				if (this.sequence.substring(i, i+2).equals("_A") || this.sequence.substring(i, i+2).equals("_X")){
+				if ((this.sequence.substring(i, i+2).equals("_A") || this.sequence.substring(i, i+2).equals("_X")) && (isBasePairEqualsTo('A', 'X', i + 1) == false)){
 					comp.insert(i," ");
 				}
 			}
@@ -584,14 +599,14 @@ public class NucleotidSequences {
 		
 		for (int i = 0; i < this.complementary.length();i++){
 			if (i < this.complementary.length() - 2){
-				if (this.complementary.substring(i, i+3).equals("X_T") || this.complementary.substring(i, i+2).equals("X_C")){
+				if (this.complementary.substring(i, i+3).equals("X_T") || this.complementary.substring(i, i+3).equals("X_C")){
 					seq.insert(i," ");
 					seq.insert(i + 1, " ");
 					seq.insert(i + 2, " ");
 				}
 			}
 			if (i < this.complementary.length() - 1){
-				if (this.complementary.substring(i, i+2).equals("_A") || this.complementary.substring(i, i+2).equals("_X")){
+				if (this.complementary.substring(i, i+2).equals("_A") || this.complementary.substring(i, i+2).equals("_X") && (isBasePairEqualsTo('A', 'X', i + 1) == false)){
 					seq.insert(i," ");
 				}
 			}
@@ -686,20 +701,34 @@ public class NucleotidSequences {
 		StringBuffer seq = new StringBuffer(modifiedSequence.getDuplexLength());
 		StringBuffer comp = new StringBuffer(modifiedSequence.getDuplexLength());
 		
-		seq.append(getSequenceContainig("_", pos1, pos2));
-		comp.append(getComplementaryTo(seq.toString(), pos1, pos2));
+		seq.append(getSequence(pos1, pos2));
+		comp.append(getComplementary(pos1, pos2));
 		
-		int index = seq.toString().indexOf("_");
+		if (seq.toString().contains("_")){
+			int index = seq.toString().indexOf("_");
+			seq.deleteCharAt(index);
+			comp.deleteCharAt(index);
+						
+		}
 		
-		seq.deleteCharAt(index);
-		comp.deleteCharAt(index);
-			
+		else if (comp.toString().contains("_")){
+			int index = comp.toString().indexOf("_");
+			seq.deleteCharAt(index);
+			comp.deleteCharAt(index);
+		}
+
 		if (seq.toString().contains("X")){
 			int Xpos = seq.toString().indexOf("X");
-				comp.deleteCharAt(Xpos);
-				comp.insert(Xpos, 'T');
-			}
-
+			seq.deleteCharAt(Xpos);
+			seq.insert(Xpos, 'T');
+		}
+		
+		else if (comp.toString().contains("X")){
+			int Xpos = comp.toString().indexOf("X");
+			comp.deleteCharAt(Xpos);
+			comp.insert(Xpos, 'T');
+		}
+		
 		NucleotidSequences noModifiedSequence = new NucleotidSequences(seq.toString(), comp.toString());
 
 		return noModifiedSequence;
@@ -943,16 +972,17 @@ public class NucleotidSequences {
 		String modifiedAcid2 = null;
 		
 		for (int i = pos1; i <= pos2; i++){
-			if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false && this.sequence.charAt(i) != '-'){
+			if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false && this.sequence.charAt(i) != '-' && this.sequence.charAt(i) != ' '){
 				modifiedAcid1 = getModifiedAcid(this.sequence, i);
+
 				break;
 			}
-			if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false && this.complementary.charAt(i) != '-'){
+			if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false && this.complementary.charAt(i) != '-' && this.complementary.charAt(i) != ' '){
 				modifiedAcid2 = getModifiedAcid(this.complementary, i);
+
 				break;
 			}
 		}
-		
 		if (modifiedAcid1 != null && modifiedNucleotides.contains(modifiedAcid1) == false){
 			return false;
 		}
