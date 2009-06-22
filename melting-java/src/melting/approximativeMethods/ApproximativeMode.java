@@ -37,7 +37,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 		
 		if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
 			
-			if (environment.getOptions().get(OptionManagement.completMethod).equals("default")){
+			if (environment.getOptions().get(OptionManagement.globalMethod).equals("default")){
 				isApplicable = false;
 			}
 			OptionManagement.meltingLogger.log(Level.WARNING, "the approximative equations " +

@@ -1,5 +1,7 @@
-package melting.modifiedNucleicAcidMethod;
 
+/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
+
+package melting.modifiedNucleicAcidMethod;
 
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -14,9 +16,7 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterCalculMethod;
 
 public class McTigue04LockedAcid extends PartialCalcul{
-	
-	/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
-	
+		
 	public static String defaultFileName = "McTigue2004lockedmn.xml";
 	
 	@Override
@@ -81,12 +81,16 @@ public class McTigue04LockedAcid extends PartialCalcul{
 			int pos2) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		if (this.collector.getNNvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0)) == null || this.collector.getNNvalue(newSequences.getSequence(1,1) + newSequences.getSequence(3, 3), newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3)) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequenceNNPair(0) + "/" + newSequences.getComplementaryNNPair(0) + " or " + newSequences.getSequence(1,1) + newSequences.getSequence(3, 3) + "/" + newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3) +
+			"are missing. Check the locked nucleic acid parameters.");
 			return true;
 		}
 		
 		for (int i = 0; i + 2 <= newSequences.getDuplexLength() - 1; i++){
 
 			if (this.collector.getLockedAcidValue(newSequences.getSequence(i, i+2), newSequences.getComplementary(i, i+2)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(i, i+2) + "/" + newSequences.getComplementary(i, i+2) +
+				"are missing. Check the locked nucleic acid parameters.");
 				return true;
 			}
 		}

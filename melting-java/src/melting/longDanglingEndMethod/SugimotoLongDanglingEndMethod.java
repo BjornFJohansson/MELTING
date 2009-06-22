@@ -1,3 +1,5 @@
+/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
+
 package melting.longDanglingEndMethod;
 
 import java.util.logging.Level;
@@ -10,8 +12,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
-
-	/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
 
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
@@ -58,6 +58,7 @@ public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 			int pos2) {
 
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the long dangling ends parameters.");
 			return true;			
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);

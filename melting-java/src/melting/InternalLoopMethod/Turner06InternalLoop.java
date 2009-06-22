@@ -1,5 +1,7 @@
-package melting.InternalLoopMethod;
+	
+/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 
+package melting.InternalLoopMethod;
 
 import java.util.logging.Level;
 
@@ -11,8 +13,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Turner06InternalLoop extends PartialCalcul{
-
-	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
 	
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
@@ -68,15 +68,15 @@ public class Turner06InternalLoop extends PartialCalcul{
 		}
 		else {
 			initiationLoop = this.collector.getInitiationLoopValue(">6");
-			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - 1.08 x ln(loopLength / 6)");
+			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - (1.08 x ln(loopLength / 6)) / 310.15");
 
 			enthalpy += initiationLoop.getEnthalpy();
 
 			if (loopLength > 4){
-				saltIndependentEntropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6.0);
+				saltIndependentEntropy += initiationLoop.getEntropy() - (1.08 * Math.log(loopLength / 6.0)) / 310.15;
 			}
 			else {
-				entropy += initiationLoop.getEntropy() - 1.08 * Math.log(loopLength / 6.0);
+				entropy += initiationLoop.getEntropy() - (1.08 * Math.log(loopLength / 6.0)) / 310.15;
 			}
 		}
 		
@@ -184,24 +184,32 @@ public class Turner06InternalLoop extends PartialCalcul{
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("6") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for internal loop of 6 are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}
 		
 		if (newSequences.calculateNumberOfTerminal('A', 'U') > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}
 		
 		if (newSequences.calculateNumberOfTerminal('G', 'U') > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}
 		
 		if (sequences.isAsymetricLoop(pos1, pos2)){
 			if (this.collector.getAsymmetry() == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for asymetric loop are missing. Check the internal loop parameters.");
+
 				return true;
 			}
 		}

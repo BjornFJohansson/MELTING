@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.Helper;
 import melting.ModifiedAcidNucleic;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.calculMethodInterfaces.CorrectionMethod;
@@ -58,11 +57,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
 			
-			if (pos1 == 0 && environment.getSequences().isDanglingEnd(pos1, pos2)){
-				pos1 = pos2;
-			}
-			else{
+			if (isPositionIncrementationNecessary(pos2, currentCalculMethod)){
 				pos1 = pos2 + 1;
+			}
+			else {
+				pos1 = pos2;
 			}
 		}
 		double Tm = 0.0;
@@ -107,6 +106,13 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		}
 		return this.environment.getResult();
 	}
+	
+	private boolean isPositionIncrementationNecessary(int position, PartialCalculMethod currentMethod){
+		if (this.environment.getSequences().isBasePairEqualsTo('G', 'U', position) && currentMethod != this.cricksMethod && currentMethod != this.wobbleMethod){
+			return false;
+		}
+		return true;
+	}
 
 	public RegisterCalculMethod getRegister() {
 		return register;
@@ -119,7 +125,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			"shorter sequences. (length superior to 6 and inferior to" +
 			 this.environment.getOptions().get(OptionManagement.threshold) +")");
 			
-			if (this.environment.getOptions().get(OptionManagement.completMethod).equals("default")){
+			if (this.environment.getOptions().get(OptionManagement.globalMethod).equals("default")){
 				isApplicable = false;
 			}
 		}
@@ -501,8 +507,8 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
-
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}
@@ -511,11 +517,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				isApplicableMethod = false;
 			}
 			
-			if (pos1 == 0 && environment.getSequences().isDanglingEnd(pos1, pos2)){
-				pos1 = pos2;
-			}
-			else{
+			if (isPositionIncrementationNecessary(pos2, necessaryMethod)){
 				pos1 = pos2 + 1;
+			}
+			else {
+				pos1 = pos2;
 			}
 		}
 		return isApplicableMethod;
@@ -536,8 +542,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	public static double calculateMeltingTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / (delta S + 1.99 x ln([nucleotides] / F)) - 273.15");
-		double Test = -91000.0 / (-260.0 + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
-		System.out.println(Test);
 		return Tm;
 	}
 

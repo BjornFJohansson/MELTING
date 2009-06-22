@@ -1,5 +1,7 @@
-package melting.longBulgeMethod;
 
+/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
+
+package melting.longBulgeMethod;
 
 import java.util.logging.Level;
 
@@ -11,8 +13,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Santalucia04LongBulgeLoop extends PartialCalcul{
-
-/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 	
 	public static String defaultFileName = "Santalucia2004longbulge.xml";
 	
@@ -46,9 +46,9 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		if (bulgeLoopValue == null){
 			bulgeLoopValue = this.collector.getBulgeLoopvalue("30");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " + 2.44 x 1.99 x 310.15 x ln(bulgeSize / 30)");
+			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " - 2.44 x 1.99 x ln(bulgeSize / 30)");
 
-			entropy += bulgeLoopValue.getEntropy() + 2.44 * 1.99 * 310.15 * Math.log(Double.parseDouble(bulgeSize) / 30.0);
+			entropy += bulgeLoopValue.getEntropy() - 2.44 * 1.99 * Math.log(Double.parseDouble(bulgeSize) / 30.0);
 		}
 		else {
 			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
@@ -56,7 +56,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 			entropy += bulgeLoopValue.getEntropy();
 		}
 		
-		if (numberAT> 0){
+		if (numberAT> 0 && this.collector.getClosureValue("A", "T") != null){
 			Thermodynamics closingAT = this.collector.getClosureValue("A", "T");
 
 			OptionManagement.meltingLogger.log(Level.FINE, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
@@ -96,12 +96,14 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		if (numberAT > 0){
 			if (this.collector.getClosureValue("A", "T") == null){
-				return true;
+				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AT closing base pair are missing. The results can lose accuracy.");
 			}
 		}
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){
-			return true;
+				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge loop parameters.");
+
+				return true;
 			}
 		}
 		return isMissingParameters;

@@ -22,13 +22,13 @@ public class OptionManagement {
 	public static final String complementarySequence = "-C";
 	public static final String solutioncomposition = "-E";
 	public static final String nucleotides = "-P";
-	public static final String completMethod = "-mode";
+	public static final String globalMethod = "-mode";
 	public static final String hybridization = "-H";
-	public static final String approximativeMode = "-AMode";
+	public static final String approximativeMode = "-am";
 	public static final String ionCorrection = "-ionCorr";
 	public static final String DMSOCorrection = "-DMSOCorr";
 	public static final String formamideCorrection = "-formCorr";
-	public static final String NNMethod = "-NN";
+	public static final String NNMethod = "-nn";
 	public static final String singleMismatchMethod = "-sinMM";
 	public static final String wobbleBaseMethod = "-woddle";
 	public static final String tandemMismatchMethod = "-tanMM";
@@ -48,7 +48,7 @@ public class OptionManagement {
 	public static final String NaEquivalentMethod = "-Naeq";
 	public static final String meltingHelp = "-h";
 	public static final String legalInformation = "-L";
-	public static final String dataPathway = "-data";
+	public static final String dataPathway = "-p";
 	public static final String verboseMode = "-v";
 	public static final String threshold = "-T";
 	public static final String NN_Path = "-NNPath";
@@ -92,7 +92,7 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(longDanglingEndMethod, "Sugimoto_2002_dna");
 		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
 		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
-		this.DNADefaultOptions.put(approximativeMode, "Wetmurdna_1991");
+		this.DNADefaultOptions.put(approximativeMode, "wetdna91");
 		this.DNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
 		this.DNADefaultOptions.put(formamideCorrection, "Blake_1996");
 		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
@@ -114,12 +114,12 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2007");
 		this.RNADefaultOptions.put(wobbleBaseMethod, "Turner_1999");
 		this.RNADefaultOptions.put(tandemMismatchMethod, "Turner_1999_2006");
-		this.RNADefaultOptions.put(internalLoopMethod, "Turner_1999_2006");
+		this.RNADefaultOptions.put(internalLoopMethod, "Turner_2006");
 		this.RNADefaultOptions.put(singleBulgeLoopMethod, "Serra_2007");
 		this.RNADefaultOptions.put(longBulgeLoopMethod, "Turner_1999_2006");
 		this.RNADefaultOptions.put(hairpinLoopMethod, "Serra_1997_1998_2000_2006");
 		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
-		this.RNADefaultOptions.put(approximativeMode, "Wetmurrna_1991");
+		this.RNADefaultOptions.put(approximativeMode, "wetrna91");
 		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
 		this.RNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 		this.RNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
@@ -136,7 +136,7 @@ public class OptionManagement {
 	
 	private void setHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
-		this.hybridDefaultOptions.put(approximativeMode, "Wetmurdnarna_1991");
+		this.hybridDefaultOptions.put(approximativeMode, "Wetdnarna91");
 		this.hybridDefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
 		this.hybridDefaultOptions.put(DMSOCorrection, "Ahsen_2001");
 		this.hybridDefaultOptions.put(formamideCorrection, "Blake_1996");
@@ -243,7 +243,22 @@ public class OptionManagement {
 	}
 	
 	private void readMeltingHelp(){
-		System.out.println("help");
+		StringBuffer help = new StringBuffer();
+		help.append("   MELTING 5 help \n\n");
+		help.append("   Information about MELTING 5 : \n");
+		help.append("   -h : Displays this help and quit. \n");
+		help.append("   -L : Displays legal information and quit. \n");
+		help.append("   -V : Print the version number. \n");
+		help.append("   -p : Return path where to find the calorimetric tables. \n");
+		help.append("   More information is available in the user-guide. Type `man melting to access it" +
+				    "   or consult one of the melting.xxx files, where xxx states for ps (postscript), pdf or html.\n");
+		help.append("   Set of MELTING 5 parameters and methods : \n");
+		help.append("   -mode : Force to compute an approximative Tm (A) or to compute a Tm using the nearest neighbor model (NN). \n");
+		help.append("   By default, the approximative mode is used for oligonucleotides longer than 60 bases, otherwise the nearest neighbor model is used. \n");
+		help.append("   -am : Force to use a specific approximative formula. You can choose between (DNA) ahs01, che93corr (from Ahsen et al. 2001), che93 (from Marmur, Chester and al. 1962, 1993), \n");
+		help.append("   schdot (Marmur-Schildkraut-Doty formula), owe69 (from Owen et al. 1969), san98 (from Santalucia et al. 1998), wetdna91 (from Wetmur 1991); (RNA) wetrna91 (from Wetmur 1991); (DNA/RNA) wetdnarna91 (from Wetmur 1991)\n");
+		help.append("   -nn : Force to use a specific nearest neighbor model. You can choose between (DNA) all97 (from Allawi and Santalucia 1997), bre86 (from Breslauer et al. 1986), fre86 (from Freier al. 1986), \n");
+
 	}
 	
 	private void readLegalInformation(){
@@ -316,7 +331,7 @@ public class OptionManagement {
 		String value = optionSet.get(sequence).toUpperCase();
 		if (NucleotidSequences.checkSequence(value)){
 
-			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*") || (value.contains("X") && value.contains("_X") == false)){
+			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*")){
 				needComplementaryInput = true;
 			}
 		}
@@ -413,7 +428,7 @@ public class OptionManagement {
 		optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
-		optionSet.put(completMethod, "default");
+		optionSet.put(globalMethod, "def");
 		optionSet.put(selfComplementarity, "false");
 			
 		return optionSet;

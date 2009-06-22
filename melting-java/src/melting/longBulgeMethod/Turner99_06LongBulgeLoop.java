@@ -1,5 +1,7 @@
-package melting.longBulgeMethod;
+/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
+	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 
+package melting.longBulgeMethod;
 
 import java.util.logging.Level;
 
@@ -11,9 +13,6 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
 public class Turner99_06LongBulgeLoop extends PartialCalcul{
-
-	/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 	public static String defaultFileName = "Turner1999_2006longbulge.xml";
 	
@@ -92,7 +91,7 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "The long bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
 		}
@@ -110,12 +109,14 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		
 		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing base pair are missing. Check the long bulge parameters.");
 				return true;
 			}
 		}
 		
 		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing base pair are missing. Check the long bulge parameters.");
 				return true;
 			}
 		}
@@ -123,6 +124,8 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		if (this.collector.getInitiationBulgevalue(bulgeSize) == null){
 			if (this.collector.getInitiationBulgevalue("6") == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge parameters.");
+
 				return true;
 			}
 		}
