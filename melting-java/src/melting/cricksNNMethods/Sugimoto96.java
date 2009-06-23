@@ -1,3 +1,6 @@
+	
+/*Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505*/ 
+
 package melting.cricksNNMethods;
 
 import java.util.logging.Level;
@@ -8,9 +11,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Sugimoto96 extends CricksNNMethod {
-	
-	/*Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505*/ 
-	
+		
 	public static String defaultFileName = "Sugimoto1996nn.xml";
 	
 	@Override
@@ -26,8 +27,8 @@ public class Sugimoto96 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Sugimoto et al (1996)" +
-					"are established for DNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al (1996)" +
+					"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -35,7 +36,8 @@ public class Sugimoto96 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Sugimoto et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

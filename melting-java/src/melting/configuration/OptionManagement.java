@@ -1,6 +1,10 @@
 package melting.configuration;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,52 +15,57 @@ import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
 import melting.Environment;
+import melting.Helper;
 import melting.MeltingFormatter;
 import melting.NucleotidSequences;
+import melting.exceptions.FileException;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
 
 public class OptionManagement {
 	
+	public static final String meltingHelp = "-h";
+	public static final String legalInformation = "-L";
+	public static final String dataPathway = "-p";
+	public static final String versionNumber = "-V";
+	public static final String globalMethod = "-mode";
+	public static final String approximativeMode = "-am";
+	public static final String NNMethod = "-nn";
+	public static final String singleMismatchMethod = "-sinMM";
+	public static final String wobbleBaseMethod = "-GU";
+	public static final String tandemMismatchMethod = "-tan";
+	public static final String internalLoopMethod = "-intLP";
+	public static final String singleDanglingEndMethod = "-sinDE";
+	public static final String doubleDanglingEndMethod = "-secDE";
+	public static final String longDanglingEndMethod = "-lonDE";
+	public static final String singleBulgeLoopMethod = "-sinBU";
+	public static final String longBulgeLoopMethod = "-lonBU";
+	public static final String CNGMethod = "-CNG";
+	public static final String inosineMethod = "-ino";
+	public static final String hydroxyadenineMethod = "-ha";
+	public static final String azobenzeneMethod = "-azo";
+	public static final String lockedAcidMethod = "-lck";
+	public static final String deoxyadenineMethod = "-deox";
 	public static final String sequence = "-S";
 	public static final String complementarySequence = "-C";
 	public static final String solutioncomposition = "-E";
 	public static final String nucleotides = "-P";
-	public static final String globalMethod = "-mode";
 	public static final String hybridization = "-H";
-	public static final String approximativeMode = "-am";
-	public static final String ionCorrection = "-ionCorr";
-	public static final String DMSOCorrection = "-DMSOCorr";
-	public static final String formamideCorrection = "-formCorr";
-	public static final String NNMethod = "-nn";
-	public static final String singleMismatchMethod = "-sinMM";
-	public static final String wobbleBaseMethod = "-woddle";
-	public static final String tandemMismatchMethod = "-tanMM";
-	public static final String internalLoopMethod = "-intLoop";
-	public static final String singleDanglingEndMethod = "-sinDE";
-	public static final String doubleDanglingEndMethod = "-douDE";
-	public static final String longDanglingEndMethod = "-lonDE";
-	public static final String hairpinLoopMethod = "-hairpin";
-	public static final String singleBulgeLoopMethod = "-sinBulge";
-	public static final String longBulgeLoopMethod = "-lonBulge";
-	public static final String CNGMethod = "-CNG";
-	public static final String inosineMethod = "-ino";
-	public static final String hydroxyadenineMethod = "-HydroxyA";
-	public static final String azobenzeneMethod = "-azoB";
-	public static final String lockedAcidMethod = "-locked";
-	public static final String deoxyadenineMethod = "-deoxyA";
-	public static final String NaEquivalentMethod = "-Naeq";
-	public static final String meltingHelp = "-h";
-	public static final String legalInformation = "-L";
-	public static final String dataPathway = "-p";
+	public static final String ionCorrection = "-ion";
+	public static final String NaEquivalentMethod = "-naeq";
+	public static final String DMSOCorrection = "-DMSO";
+	public static final String formamideCorrection = "-for";
 	public static final String verboseMode = "-v";
 	public static final String threshold = "-T";
 	public static final String NN_Path = "-NNPath";
-	public static final String outPutFile = "-out";
-	public static final String versionNumber = "-V";
+	public static final String outPutFile = "-O";
 	public static final String selfComplementarity = "-self";
 	public static final String factor = "-F";
 	public static final Logger meltingLogger = Logger.getLogger("melting");
+	
+	private static final ArrayList<String> registerPartialMethods = new ArrayList<String>();
+	private static final ArrayList<String> registerMeltingVariables = new ArrayList<String>();
+	private static final ArrayList<String> registerEnvironmentOptions = new ArrayList<String>();
 	
 	private static final String version = "5";
 	public static String dataPathwayValue = "src/melting/Data";
@@ -75,6 +84,49 @@ public class OptionManagement {
 		setRNADefaultOptions();
 		setHybridDefaultOptions();
 		setMRNADefaultOptions();
+		initializeMeltingVariables();
+		initializeRegisterPartialMethods();
+		initializeRegisterEnvironmentOptions();
+	}
+	
+	private void initializeRegisterPartialMethods(){
+		registerPartialMethods.add(NNMethod);
+		registerPartialMethods.add(singleMismatchMethod);
+		registerPartialMethods.add(wobbleBaseMethod);
+		registerPartialMethods.add(tandemMismatchMethod);
+		registerPartialMethods.add(internalLoopMethod);
+		registerPartialMethods.add(singleDanglingEndMethod);
+		registerPartialMethods.add(doubleDanglingEndMethod);
+		registerPartialMethods.add(longDanglingEndMethod);
+		registerPartialMethods.add(singleBulgeLoopMethod);
+		registerPartialMethods.add(longBulgeLoopMethod);
+		registerPartialMethods.add(CNGMethod);
+		registerPartialMethods.add(inosineMethod);
+		registerPartialMethods.add(hydroxyadenineMethod);
+		registerPartialMethods.add(azobenzeneMethod);
+		registerPartialMethods.add(lockedAcidMethod);
+		registerPartialMethods.add(deoxyadenineMethod);
+	}
+	
+	private void initializeRegisterEnvironmentOptions(){
+		registerEnvironmentOptions.add(solutioncomposition);
+		registerEnvironmentOptions.add(globalMethod);
+		registerEnvironmentOptions.add(approximativeMode);
+		registerEnvironmentOptions.add(NaEquivalentMethod);
+		registerEnvironmentOptions.add(sequence);
+		registerEnvironmentOptions.add(complementarySequence);
+		registerEnvironmentOptions.add(nucleotides);
+		registerEnvironmentOptions.add(hybridization);
+		registerEnvironmentOptions.add(ionCorrection);
+		registerEnvironmentOptions.add(DMSOCorrection);
+		registerEnvironmentOptions.add(formamideCorrection);
+
+	}
+	
+	private void initializeMeltingVariables(){
+		registerMeltingVariables.add(NN_Path);
+		registerMeltingVariables.add(threshold);
+		registerMeltingVariables.add(factor);
 	}
 	
 	public HashMap<String, String> getDNADefaultOptions() {
@@ -82,26 +134,24 @@ public class OptionManagement {
 	}
 	
 	private void setDNADefaultOptions() {
-		this.DNADefaultOptions.put(NNMethod, "Santalucia_2004");
-		this.DNADefaultOptions.put(singleMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
-		this.DNADefaultOptions.put(tandemMismatchMethod, "Allawi_Santalucia_Peyret_1997_1998_1999");
-		this.DNADefaultOptions.put(internalLoopMethod, "Santalucia_2004");
-		this.DNADefaultOptions.put(singleBulgeLoopMethod, "Tanaka_2004");
-		this.DNADefaultOptions.put(singleDanglingEndMethod, "Bommarito_2000");
-		this.DNADefaultOptions.put(doubleDanglingEndMethod, "Serra_2006");
-		this.DNADefaultOptions.put(longDanglingEndMethod, "Sugimoto_2002_dna");
-		this.DNADefaultOptions.put(longBulgeLoopMethod, "Santalucia_2004");
-		this.DNADefaultOptions.put(hairpinLoopMethod, "Santalucia_2004");
+		this.DNADefaultOptions.put(NNMethod, "san04");
+		this.DNADefaultOptions.put(singleMismatchMethod, "allsanpey");
+		this.DNADefaultOptions.put(tandemMismatchMethod, "allsanpey");
+		this.DNADefaultOptions.put(internalLoopMethod, "san04");
+		this.DNADefaultOptions.put(singleDanglingEndMethod, "bom00");
+		this.DNADefaultOptions.put(doubleDanglingEndMethod, "sugdna02");
+		this.DNADefaultOptions.put(singleBulgeLoopMethod, "tan04");
+		this.DNADefaultOptions.put(longDanglingEndMethod, "sugdna02");
+		this.DNADefaultOptions.put(longBulgeLoopMethod, "san04");
 		this.DNADefaultOptions.put(approximativeMode, "wetdna91");
-		this.DNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
-		this.DNADefaultOptions.put(formamideCorrection, "Blake_1996");
-		this.DNADefaultOptions.put(inosineMethod, "Santalucia_2005");
-		this.DNADefaultOptions.put(hydroxyadenineMethod, "Sugimoto_2001");
-		this.DNADefaultOptions.put(azobenzeneMethod, "Asanuma_2005");
-		this.DNADefaultOptions.put(lockedAcidMethod, "McTigue_2004");
-		this.DNADefaultOptions.put(deoxyadenineMethod, "Sugimoto_2005");
-		this.DNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
-		this.DNADefaultOptions.put(CNGMethod, "Broda_2005");
+		this.DNADefaultOptions.put(DMSOCorrection, "ahs01");
+		this.DNADefaultOptions.put(formamideCorrection, "bla96");
+		this.DNADefaultOptions.put(inosineMethod, "san05");
+		this.DNADefaultOptions.put(hydroxyadenineMethod, "sug01");
+		this.DNADefaultOptions.put(azobenzeneMethod, "asa05");
+		this.DNADefaultOptions.put(lockedAcidMethod, "mct04");
+		this.DNADefaultOptions.put(deoxyadenineMethod, "sug05");
+		this.DNADefaultOptions.put(NaEquivalentMethod, "ahs01");
 
 	}
 	
@@ -110,23 +160,22 @@ public class OptionManagement {
 	}
 	
 	private void setRNADefaultOptions() {
-		this.RNADefaultOptions.put(NNMethod, "Xia_1998");
-		this.RNADefaultOptions.put(singleMismatchMethod, "Znosko_2007");
-		this.RNADefaultOptions.put(wobbleBaseMethod, "Turner_1999");
-		this.RNADefaultOptions.put(tandemMismatchMethod, "Turner_1999_2006");
-		this.RNADefaultOptions.put(internalLoopMethod, "Turner_2006");
-		this.RNADefaultOptions.put(singleBulgeLoopMethod, "Serra_2007");
-		this.RNADefaultOptions.put(longBulgeLoopMethod, "Turner_1999_2006");
-		this.RNADefaultOptions.put(hairpinLoopMethod, "Serra_1997_1998_2000_2006");
-		this.RNADefaultOptions.put(CNGMethod, "Broda_2005");
+		this.RNADefaultOptions.put(NNMethod, "xia98");
+		this.RNADefaultOptions.put(singleMismatchMethod, "zno07");
+		this.RNADefaultOptions.put(wobbleBaseMethod, "tur99");
+		this.RNADefaultOptions.put(tandemMismatchMethod, "tur06");
+		this.RNADefaultOptions.put(internalLoopMethod, "tur06");
+		this.RNADefaultOptions.put(singleBulgeLoopMethod, "ser07");
+		this.RNADefaultOptions.put(longBulgeLoopMethod, "tur06");
+		this.RNADefaultOptions.put(CNGMethod, "bro05");
 		this.RNADefaultOptions.put(approximativeMode, "wetrna91");
-		this.RNADefaultOptions.put(inosineMethod, "Znosko_2007");
-		this.RNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
-		this.RNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
-		this.RNADefaultOptions.put(formamideCorrection, "Blake_1996");
-		this.RNADefaultOptions.put(singleDanglingEndMethod, "Serra_2006_2008");
-		this.RNADefaultOptions.put(doubleDanglingEndMethod, "Serra_2006");
-		this.RNADefaultOptions.put(longDanglingEndMethod, "Sugimoto_2002_rna");
+		this.RNADefaultOptions.put(inosineMethod, "zno07");
+		this.RNADefaultOptions.put(NaEquivalentMethod, "ahs01");
+		this.RNADefaultOptions.put(DMSOCorrection, "ahs01");
+		this.RNADefaultOptions.put(formamideCorrection, "bla96");
+		this.RNADefaultOptions.put(singleDanglingEndMethod, "ser08");
+		this.RNADefaultOptions.put(doubleDanglingEndMethod, "ser06");
+		this.RNADefaultOptions.put(longDanglingEndMethod, "sugrna02");
 
 	}
 	
@@ -135,11 +184,11 @@ public class OptionManagement {
 	}
 	
 	private void setHybridDefaultOptions() {
-		this.hybridDefaultOptions.put(NNMethod, "Sugimoto_1995");
+		this.hybridDefaultOptions.put(NNMethod, "sug95");
 		this.hybridDefaultOptions.put(approximativeMode, "Wetdnarna91");
-		this.hybridDefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
-		this.hybridDefaultOptions.put(DMSOCorrection, "Ahsen_2001");
-		this.hybridDefaultOptions.put(formamideCorrection, "Blake_1996");
+		this.hybridDefaultOptions.put(NaEquivalentMethod, "ahs01");
+		this.hybridDefaultOptions.put(DMSOCorrection, "ahs01");
+		this.hybridDefaultOptions.put(formamideCorrection, "bla96");
 		
 	}
 	
@@ -148,14 +197,17 @@ public class OptionManagement {
 	}
 	
 	private void setMRNADefaultOptions() {
-		this.mRNADefaultOptions.put(NNMethod, "Turner_2006");
-		this.mRNADefaultOptions.put(NaEquivalentMethod, "Ahsen_2001");
-		this.mRNADefaultOptions.put(DMSOCorrection, "Ahsen_2001");
-		this.mRNADefaultOptions.put(formamideCorrection, "Blake_1996");
+		this.mRNADefaultOptions.put(NNMethod, "tur06");
+		this.mRNADefaultOptions.put(NaEquivalentMethod, "ahs01");
+		this.mRNADefaultOptions.put(DMSOCorrection, "ahs01");
+		this.mRNADefaultOptions.put(formamideCorrection, "bla96");
 
 	}
 	
 	private boolean isAValue(String optionValue){
+		if (optionValue.length() == 0){
+			return false;
+		}
 		if (optionValue.charAt(0) != '-'){
 			return true;
 		}
@@ -243,22 +295,25 @@ public class OptionManagement {
 	}
 	
 	private void readMeltingHelp(){
-		StringBuffer help = new StringBuffer();
-		help.append("   MELTING 5 help \n\n");
-		help.append("   Information about MELTING 5 : \n");
-		help.append("   -h : Displays this help and quit. \n");
-		help.append("   -L : Displays legal information and quit. \n");
-		help.append("   -V : Print the version number. \n");
-		help.append("   -p : Return path where to find the calorimetric tables. \n");
-		help.append("   More information is available in the user-guide. Type `man melting to access it" +
-				    "   or consult one of the melting.xxx files, where xxx states for ps (postscript), pdf or html.\n");
-		help.append("   Set of MELTING 5 parameters and methods : \n");
-		help.append("   -mode : Force to compute an approximative Tm (A) or to compute a Tm using the nearest neighbor model (NN). \n");
-		help.append("   By default, the approximative mode is used for oligonucleotides longer than 60 bases, otherwise the nearest neighbor model is used. \n");
-		help.append("   -am : Force to use a specific approximative formula. You can choose between (DNA) ahs01, che93corr (from Ahsen et al. 2001), che93 (from Marmur, Chester and al. 1962, 1993), \n");
-		help.append("   schdot (Marmur-Schildkraut-Doty formula), owe69 (from Owen et al. 1969), san98 (from Santalucia et al. 1998), wetdna91 (from Wetmur 1991); (RNA) wetrna91 (from Wetmur 1991); (DNA/RNA) wetdnarna91 (from Wetmur 1991)\n");
-		help.append("   -nn : Force to use a specific nearest neighbor model. You can choose between (DNA) all97 (from Allawi and Santalucia 1997), bre86 (from Breslauer et al. 1986), fre86 (from Freier al. 1986), \n");
+		try {
+			FileReader help = new FileReader("src/melting/help.txt");
+			BufferedReader buffer = new BufferedReader(help);
+			
+			String line = buffer.readLine();
+			while (line != null){
+				meltingLogger.log(Level.INFO, line);
+				line = buffer.readLine();
+			}
 
+			buffer.close();
+	
+		} catch (FileNotFoundException e) {
+			throw new FileException("The help file doesn't exist. Check if the melting help file is src/melting/help.txt");
+		}
+		catch (IOException e) {
+			throw new FileException("The help file can't be read or can't be closed. Check src/melting/help.txt.");
+		}
+		
 	}
 	
 	private void readLegalInformation(){
@@ -477,7 +532,6 @@ public class OptionManagement {
 				}
 			}
 			if (isAnValue == false){
-
 					if (option.equals(OptionManagement.verboseMode)){
 						meltingLogger.setLevel(Level.FINE);
 						Handler[] handlers = meltingLogger.getHandlers();
@@ -513,16 +567,38 @@ public class OptionManagement {
 						optionSet.put(option, "true");
 						optionSet.put(factor, "1");
 					}
-
-					else {
-
+					else if (registerEnvironmentOptions.contains(option)){
 						if (isAValue(value) || option.equals(OptionManagement.sequence) || option.equals(OptionManagement.complementarySequence)){
 
 							optionSet.put(option, value);
 						}
+						else if (option.equals(approximativeMode)){
+							optionSet.put(globalMethod, "A");
+						}
 						else{
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 						}
+					}
+					else if (registerMeltingVariables.contains(option) == false && registerPartialMethods.contains(option)){
+
+						if (isAValue(value)){
+							if (Helper.useOtherDataFile(value) && Helper.getOptionMethodName(value) != ""){
+								String newValue = optionSet.get(option) + value;
+								optionSet.put(option, newValue);
+							}
+							else {
+								optionSet.put(option, value);
+							}
+						}
+						else if (option.equals(NNMethod)){
+							optionSet.put(globalMethod, "NN");
+						}
+						else{
+							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+						}
+					}
+					else{
+						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 					}
 				}
 			}

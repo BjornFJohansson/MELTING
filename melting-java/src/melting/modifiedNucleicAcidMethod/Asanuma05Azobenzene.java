@@ -31,7 +31,9 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		
 		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The azobenzene thermodynamic parameters are from Asanuma et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The azobenzene model is from Asanuma et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + azobenzeneValue.getEnthalpy();

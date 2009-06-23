@@ -35,7 +35,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The tandem mismatch parameters are from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for tandem mismatches is from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

@@ -34,7 +34,8 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine thermodynamic parameters are from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine model is from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		Thermodynamics hydroxyAdenineValue = this.collector.getHydroxyadenosineValue(newSequences.getSequence(), newSequences.getComplementary());

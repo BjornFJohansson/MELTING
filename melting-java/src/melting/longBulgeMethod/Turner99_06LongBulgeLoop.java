@@ -36,9 +36,10 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop formulas from Turner et al. (1999, 2006) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop model is from Turner et al. (1999, 2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy + " (entropy formula is similar)");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();

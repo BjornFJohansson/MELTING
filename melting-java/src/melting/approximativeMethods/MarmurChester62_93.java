@@ -68,10 +68,10 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		String method = options.get(OptionManagement.approximativeMode);
 		
 		super.setUpVariable(options);
-		if (method.equals("Marmur_Chester_1962_1993_corr")){
+		if (method.equals("che93corr")){
 			parameter = 535;
 		}
-		else if (method.equals("Marmur_Chester_1962_1993")){
+		else if (method.equals("che93")){
 			parameter = 650;
 		}
 		else {

@@ -1,5 +1,7 @@
-package melting.cricksNNMethods;
 
+/*Sugimoto et al. (1995). Biochemistry 34 : 11211-11216*/ 
+
+package melting.cricksNNMethods;
 
 import java.util.logging.Level;
 
@@ -11,9 +13,7 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.MethodNotApplicableException;
 
 public class Sugimoto95 extends CricksNNMethod {
-	
-	/*Sugimoto et al. (1995). Biochemistry 34 : 11211-11216*/ 
-	
+		
 	public static String defaultFileName = "Sugimoto1995nn.xml";
 
 	@Override
@@ -28,7 +28,8 @@ public class Sugimoto95 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for the watson crick base pairs are from Sugimoto et al (1995).");
+		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model is  from Sugimoto et al (1995).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -54,8 +55,8 @@ public class Sugimoto95 extends CricksNNMethod {
 		boolean isApplicable = true;
 		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Sugimoto et al. (1995)" +
-					"are established for hybrid DNA/RNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al. (1995)" +
+					"is established for hybrid DNA/RNA sequences.");
 		}
 		
 		isApplicable = super.isApplicable(environment, pos1, pos2);

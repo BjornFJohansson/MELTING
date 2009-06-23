@@ -78,7 +78,7 @@ import melting.sodiumCorrections.Santalucia98_04SodiumCorrection;
 import melting.sodiumCorrections.SchildkrautLifson65SodiumCorrection;
 import melting.sodiumCorrections.Tan06SodiumCorrection;
 import melting.sodiumCorrections.Tan07SodiumCorrection;
-import melting.sodiumCorrections.Wetmur91SodiumCarrection;
+import melting.sodiumCorrections.Wetmur91SodiumCorrection;
 import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
 import melting.sodiumEquivalence.Mitsuhashi96NaEquivalent;
 import melting.sodiumEquivalence.Peyret00_NaEquivalent;
@@ -145,9 +145,9 @@ public class RegisterCalculMethod {
 	}
 	
 	private void initializeNaEqMethods(){
-		NaEqMethod.put("Ahsen_2001", Ahsen01_NaEquivalent.class);
-		NaEqMethod.put("Peyret_2000", Peyret00_NaEquivalent.class);
-		NaEqMethod.put("Mitsuhashi_1996", Mitsuhashi96NaEquivalent.class);
+		NaEqMethod.put("ahs01", Ahsen01_NaEquivalent.class);
+		NaEqMethod.put("pey00", Peyret00_NaEquivalent.class);
+		NaEqMethod.put("mit96", Mitsuhashi96NaEquivalent.class);
 	}
 	
 	private void initializeCompletCalculMethods(){
@@ -164,129 +164,131 @@ public class RegisterCalculMethod {
 		approximativeMethod.put("owe69", Owen69.class);
 		approximativeMethod.put("san98", Santalucia98.class);
 		approximativeMethod.put("wetdna91", WetmurDNA91.class);
-		approximativeMethod.put("Wetrna91", WetmurRNA91.class);
-		approximativeMethod.put("Wetdnarna91", WetmurDNARNA91.class);
+		approximativeMethod.put("wetrna91", WetmurRNA91.class);
+		approximativeMethod.put("wetdnarna91", WetmurDNARNA91.class);
 	}
 	
 	private void initializeCricksMethods(){
-		cricksMethod.put("Allawi_Santalucia_1997", AllawiSantalucia97.class);
-		cricksMethod.put("Breslauer_1986", Breslauer86.class);
-		cricksMethod.put("Freier_1986", Freier86.class);
-		cricksMethod.put("Santalucia_2004", Santalucia04.class);
-		cricksMethod.put("Santalucia_1996", Santalucia96.class);
-		cricksMethod.put("Sugimoto_1995", Sugimoto95.class);
-		cricksMethod.put("Sugimoto_1996", Sugimoto96.class);
-		cricksMethod.put("Tanaka_2004", Tanaka04.class);
-		cricksMethod.put("Turner_2006", Turner06.class);
-		cricksMethod.put("Xia_1998", Xia98.class);
+		cricksMethod.put("all97", AllawiSantalucia97.class);
+		cricksMethod.put("bre86", Breslauer86.class);
+		cricksMethod.put("fre86", Freier86.class);
+		cricksMethod.put("san04", Santalucia04.class);
+		cricksMethod.put("san96", Santalucia96.class);
+		cricksMethod.put("sug95", Sugimoto95.class);
+		cricksMethod.put("sug96", Sugimoto96.class);
+		cricksMethod.put("tan04", Tanaka04.class);
+		cricksMethod.put("tur06", Turner06.class);
+		cricksMethod.put("xia98", Xia98.class);
 	}
 	
 	private void initializeSingleMismatchMethods(){
-		singleMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99mm.class);
-		singleMismatchMethod.put("Znosko_2007", Znosko07mm.class);
-		singleMismatchMethod.put("Znosko_2008", Znosko08mm.class);
-		singleMismatchMethod.put("Turner_2006", Turner06mm.class);
+		singleMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99mm.class);
+		singleMismatchMethod.put("zno07", Znosko07mm.class);
+		singleMismatchMethod.put("zno08", Znosko08mm.class);
+		singleMismatchMethod.put("tur06", Turner06mm.class);
 	}
 	
 	private void initializeTandemMismatchMethods(){
-		tandemMismatchMethod.put("Allawi_Santalucia_Peyret_1997_1998_1999", AllawiSantaluciaPeyret97_98_99tanmm.class);
-		tandemMismatchMethod.put("Turner_1999_2006", Turner99_06tanmm.class);
+		tandemMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99tanmm.class);
+		tandemMismatchMethod.put("tur06", Turner99_06tanmm.class);
 	}
 	
 	private void initializeWoddleMismatchMethods(){
-		woddleMethod.put("Turner_1999", Turner99Wobble.class);
+		woddleMethod.put("tur99", Turner99Wobble.class);
 	}
 	
 	private void initializeInternalLoopMethods(){
-		internalLoopMethod.put("Turner_2006", Turner06InternalLoop.class);
-		internalLoopMethod.put("Santalucia_2004", Santalucia04InternalLoop.class);
-		internalLoopMethod.put("Znosko_2007", Znosko071x2Loop.class);
+		internalLoopMethod.put("tur06", Turner06InternalLoop.class);
+		internalLoopMethod.put("san04", Santalucia04InternalLoop.class);
+		internalLoopMethod.put("zno07", Znosko071x2Loop.class);
 	}
 	
 	private void initializeSingleBulgeLoopMethods(){
-		singleBulgeLoopMethod.put("Turner_2006", Turner99_06SingleBulgeLoop.class);
-		singleBulgeLoopMethod.put("Santalucia_2004", Santalucia04SingleBulgeLoop.class);
-		singleBulgeLoopMethod.put("Serra_2007", Serra07SingleBulgeLoop.class);
-		singleBulgeLoopMethod.put("Tanaka_2004", Tanaka04SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("tur06", Turner99_06SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("san04", Santalucia04SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("ser07", Serra07SingleBulgeLoop.class);
+		singleBulgeLoopMethod.put("tan04", Tanaka04SingleBulgeLoop.class);
 
 	}
 	
 	private void initializeLongBulgeLoopMethods(){
-		longBulgeLoopMethod.put("Turner_1999_2006", Turner99_06LongBulgeLoop.class);
-		longBulgeLoopMethod.put("Santalucia_2004", Santalucia04LongBulgeLoop.class);
+		longBulgeLoopMethod.put("tur06", Turner99_06LongBulgeLoop.class);
+		longBulgeLoopMethod.put("san04", Santalucia04LongBulgeLoop.class);
 	}
 	
 	private void initializeSingleDanglingEndMethods(){
-		singleDangingEndMethod.put("Bommarito_2000", Bommarito00SingleDanglingEnd.class);
-		singleDangingEndMethod.put("Serra_2006_2008", Serra06_08SingleDanglingEnd.class);
+		singleDangingEndMethod.put("bom00", Bommarito00SingleDanglingEnd.class);
+		singleDangingEndMethod.put("ser08", Serra06_08SingleDanglingEnd.class);
 	}
 	
 	private void initializeDoubleDanglingEndMethods(){
-		doubleDangingEndMethod.put("Serra_2005", Serra05DoubleDanglingEnd.class);
-		doubleDangingEndMethod.put("Serra_2006", Serra06DoubleDanglingEnd.class);
+		doubleDangingEndMethod.put("ser05", Serra05DoubleDanglingEnd.class);
+		doubleDangingEndMethod.put("ser06", Serra06DoubleDanglingEnd.class);
+		doubleDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+
 	}
 	
 	private void initializeLongDanglingEndMethods(){
-		longDangingEndMethod.put("Sugimoto_2002_dna", Sugimoto02DNADanglingEnd.class);
-		longDangingEndMethod.put("Sugimoto_2002_rna", Sugimoto02RNADanglingEnd.class);
+		longDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		longDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 	}
 	
 	private void initializeCNGRepeatsMethods(){
-		CNGRepeatsMethod.put("Broda_2005", Broda05CNGRepeats.class);
+		CNGRepeatsMethod.put("bro05", Broda05CNGRepeats.class);
 	}
 	
 	private void initializeInosineMethods(){
-		inosineMethod.put("Santalucia_2005", Santalucia05Inosine.class);
-		inosineMethod.put("Znosko_2007", Znosko07Inosine.class);
+		inosineMethod.put("san05", Santalucia05Inosine.class);
+		inosineMethod.put("zno07", Znosko07Inosine.class);
 	}
 	
 	private void initializeAzobenzeneMethods(){
-		azobenzeneMethod.put("Asanuma_2005", Asanuma05Azobenzene.class);
+		azobenzeneMethod.put("asa05", Asanuma05Azobenzene.class);
 	}
 	
 	private void initializeLockedAcidMethods(){
-		lockedAcidMethod.put("McTigue_2004", McTigue04LockedAcid.class);
+		lockedAcidMethod.put("mct04", McTigue04LockedAcid.class);
 	}
 	
 	private void initializeHydroxyadenosineMethods(){
-		hydroxyadenosineMethod.put("Sugimoto_2001", Sugimoto01Hydroxyadenine.class);
+		hydroxyadenosineMethod.put("sug01", Sugimoto01Hydroxyadenine.class);
 	}
 	
 	private void initializeDeoxyadenosineMethods(){
-		deoxyadenosineMethod.put("Sugimoto_2005", Sugimoto05Deoxyadenosine.class);
+		deoxyadenosineMethod.put("sug05", Sugimoto05Deoxyadenosine.class);
 	}
 	
 	private void initializeIonCorrectionMethod(){
-		ionCorrection.put("Ahsen_2001", Ahsen01SodiumCorrection.class);
-		ionCorrection.put("Kamenetskii_1971", FrankKamenetskii71SodiumCorrection.class);
-		ionCorrection.put("Marmur_Schildkraut_Doty_1962_1998", MarmurSchildkrautDoty98_62SodiumCorrection.class);
-		ionCorrection.put("Owczarzy_19_2004", Owczarzy04SodiumCorrection19.class);
-		ionCorrection.put("Owczarzy_20_2004", Owczarzy04SodiumCorrection20.class);
-		ionCorrection.put("Owczarzy_21_2004", Owczarzy04SodiumCorrection21.class);
-		ionCorrection.put("Owczarzy_22_2004", Owczarzy04SodiumCorrection22.class);
-		ionCorrection.put("Santalucia_1996", Santalucia96SodiumCorrection.class);
-		ionCorrection.put("Santalucia_1998_2004", Santalucia98_04SodiumCorrection.class);
-		ionCorrection.put("Schildkraut_Lifson_1965", SchildkrautLifson65SodiumCorrection.class);
-		ionCorrection.put("Tan_2006_Na", Tan06SodiumCorrection.class);
-		ionCorrection.put("Tan_2007_Na", Tan07SodiumCorrection.class);
-		ionCorrection.put("Wetmur_1991", Wetmur91SodiumCarrection.class);
-		ionCorrection.put("Owczarzy_2008_Mg", Owczarzy08MagnesiumCorrection.class);
-		ionCorrection.put("Tan_2006_Mg", Tan06MagnesiumCorrection.class);
-		ionCorrection.put("Tan_2007_Mg", Tan07MagnesiumCorrection.class);
-		ionCorrection.put("Owczarzy_2008_mixed", Owczarzy08MixedNaMgCorrection.class);
-		ionCorrection.put("Tan_2007_mixed", Tan07MixedNaMgCorrection.class);
+		ionCorrection.put("ahs01", Ahsen01SodiumCorrection.class);
+		ionCorrection.put("kam71", FrankKamenetskii71SodiumCorrection.class);
+		ionCorrection.put("marschdot", MarmurSchildkrautDoty98_62SodiumCorrection.class);
+		ionCorrection.put("owc1904", Owczarzy04SodiumCorrection19.class);
+		ionCorrection.put("owc2004", Owczarzy04SodiumCorrection20.class);
+		ionCorrection.put("owc2104", Owczarzy04SodiumCorrection21.class);
+		ionCorrection.put("owc2204", Owczarzy04SodiumCorrection22.class);
+		ionCorrection.put("san96", Santalucia96SodiumCorrection.class);
+		ionCorrection.put("san04", Santalucia98_04SodiumCorrection.class);
+		ionCorrection.put("schlif", SchildkrautLifson65SodiumCorrection.class);
+		ionCorrection.put("tanna06", Tan06SodiumCorrection.class);
+		ionCorrection.put("tanna07", Tan07SodiumCorrection.class);
+		ionCorrection.put("wet91", Wetmur91SodiumCorrection.class);
+		ionCorrection.put("owcmg08", Owczarzy08MagnesiumCorrection.class);
+		ionCorrection.put("tanmg06", Tan06MagnesiumCorrection.class);
+		ionCorrection.put("tanmg07", Tan07MagnesiumCorrection.class);
+		ionCorrection.put("owcmix08", Owczarzy08MixedNaMgCorrection.class);
+		ionCorrection.put("tanmix07", Tan07MixedNaMgCorrection.class);
 	}
 	
 	private void initializeDMSOCorrectionMethod(){
-		DMSOCorrection.put("Ahsen_2001", Ahsen01DMSOCorrection.class);
-		DMSOCorrection.put("Cullen_1976", Cullen76DMSOCorrection.class);
-		DMSOCorrection.put("Escara_1980", Escara80DMSOCorrection.class);
-		DMSOCorrection.put("Musielski_1981", Musielski81DMSOCorrection.class);
+		DMSOCorrection.put("ahs01", Ahsen01DMSOCorrection.class);
+		DMSOCorrection.put("cul76", Cullen76DMSOCorrection.class);
+		DMSOCorrection.put("esc80", Escara80DMSOCorrection.class);
+		DMSOCorrection.put("mus81", Musielski81DMSOCorrection.class);
 	}
 	
 	private void initializeFormamideCorrectionMethod(){
-		formamideCorrection.put("linear_correction", FormamideLinearMethod.class);
-		formamideCorrection.put("Blake_1996", Blake96FormamideCorrection.class);
+		formamideCorrection.put("lincorr", FormamideLinearMethod.class);
+		formamideCorrection.put("bla96", Blake96FormamideCorrection.class);
 	}
 	
 	private void initializeOtherCorrectionMethod(){
@@ -398,9 +400,9 @@ public class RegisterCalculMethod {
 			double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
 			
 			if (environment.getHybridization().equals("dnarna") || environment.getHybridization().equals("rnadna")){
-				return new Wetmur91SodiumCarrection();
+				return new Wetmur91SodiumCorrection();
 			}
-			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false && environment.getHybridization().equals("mrnarna") == false){
+			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false && environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
 				throw new NoExistingMethodException("There is no existing ion correction method (option " + OptionManagement.ionCorrection + ") for this type of hybridization.");
 			}
 			
@@ -408,7 +410,7 @@ public class RegisterCalculMethod {
 				if (environment.getHybridization().equals("dnadna")){
 					return new Owczarzy08MagnesiumCorrection();
 				}
-				else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
+				else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna") || environment.getHybridization().equals("rnamrna")){
 					return new Tan07MagnesiumCorrection();
 				}
 			}
@@ -417,10 +419,11 @@ public class RegisterCalculMethod {
 				double ratio = Math.sqrt(Mg) / monovalent;
 				
 				if (ratio < 0.22){
+					environment.setMg(0.0);
 					if (environment.getHybridization().equals("dnadna")){
 						return new Owczarzy04SodiumCorrection22();
 					}
-					else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
+					else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna") || environment.getHybridization().equals("rnamrna")){
 						return new Tan07SodiumCorrection();
 					}
 				}
@@ -429,7 +432,7 @@ public class RegisterCalculMethod {
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MixedNaMgCorrection();
 						}
-						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna") || environment.getHybridization().equals("rnamrna")){
 							return new Tan07MixedNaMgCorrection();
 						}
 					}
@@ -437,7 +440,7 @@ public class RegisterCalculMethod {
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MagnesiumCorrection();
 						}
-						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna")){
+						else if (environment.getHybridization().equals("rnarna") || environment.getHybridization().equals("mrnarna") || environment.getHybridization().equals("rnamrna")){
 							return new Tan07MagnesiumCorrection();
 						}
 					}

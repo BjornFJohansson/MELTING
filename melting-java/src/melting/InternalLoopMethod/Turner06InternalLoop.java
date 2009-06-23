@@ -33,8 +33,9 @@ public class Turner06InternalLoop extends PartialCalcul{
 	
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop formulas from Turner et al. (2006) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop model is from Turner et al. (2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy();

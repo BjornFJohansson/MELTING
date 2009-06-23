@@ -17,7 +17,9 @@ public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The long dangling end parameters are from Sugimoto et al. (2002). (delta delta H and delta delta S)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The long dangling end model is from Sugimoto et al. (2002). (delta delta H and delta delta S)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		Thermodynamics longDangling = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		double enthalpy = result.getEnthalpy() + longDangling.getEnthalpy();
 		double entropy = result.getEntropy() + longDangling.getEntropy();

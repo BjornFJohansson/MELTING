@@ -1,3 +1,6 @@
+
+/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
+
 package melting.cricksNNMethods;
 
 import java.util.logging.Level;
@@ -10,8 +13,6 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.SequenceException;
 
 public class Santalucia96 extends GlobalInitiationNNMethod {
-
-	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
 	
 	public static String defaultFileName = "Santalucia1996nn.xml";
 	
@@ -28,8 +29,8 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Santalucia (1996)" +
-			"are established for DNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Santalucia (1996)" +
+			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -64,7 +65,8 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Santalucia et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Santalucia et al (1996).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

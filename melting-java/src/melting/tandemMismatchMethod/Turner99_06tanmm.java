@@ -32,8 +32,9 @@ public class Turner99_06tanmm extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The tandem mismatch parameters for symmetric sequences are from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for tandem mismatches is from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : ");
 		OptionManagement.meltingLogger.log(Level.FINE,enthalpyFormula + "(entropy formula is similar.)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();

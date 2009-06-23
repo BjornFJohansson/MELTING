@@ -32,9 +32,10 @@ public class Znosko071x2Loop extends PartialCalcul {
 		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The 1 x 2 internal loop formulas from Znosco et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The 1 x 2 internal loop model is from Znosco et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
 		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');

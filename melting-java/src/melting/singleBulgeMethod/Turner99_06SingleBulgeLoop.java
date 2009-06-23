@@ -28,9 +28,10 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The formulas and thermodynamic parameters for single bulge loop are from Turner et al. (1999-2006) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Turner et al. (1999-2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaH + " (entropy formula is similar)");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		result = super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
 		String sequenceNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence());

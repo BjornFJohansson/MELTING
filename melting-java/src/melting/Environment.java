@@ -32,10 +32,6 @@ public class Environment {
 		
 		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization).toLowerCase();
-
-		if (this.Hybridization.equals("rnamrna")){
-			this.Hybridization = "mrnarna";
-		}
 		
 		if (options.get(OptionManagement.selfComplementarity).equals("true")){
 			this.IsSelfComplementarity = true;
@@ -66,8 +62,7 @@ public class Environment {
 	}
 	
 	public void sortSquences(String hybridization, String firstSequence, String secondSequence){
-		
-		if (hybridization.equals("rnadna")){
+		if (hybridization.equals("rnadna") || hybridization.equals("rnamrna")){
 			this.sequences = new NucleotidSequences(secondSequence, firstSequence);
 		}
 		else {
@@ -123,6 +118,10 @@ public class Environment {
 			return concentrations.get("Mg");
 		}
 		return 0;
+	}
+	
+	public void setMg(double Mg){
+		this.concentrations.put("Mg", Mg);
 	}
 	
 	public double getTris() {
