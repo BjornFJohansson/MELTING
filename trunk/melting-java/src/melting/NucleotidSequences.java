@@ -58,7 +58,7 @@ public class NucleotidSequences {
 				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
 					complementary.append('T');
 				}
-				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("dnarna")){
+				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("rnamrna") || hybridization.equals("dnarna")){
 					complementary.append('U');
 				}
 				break;

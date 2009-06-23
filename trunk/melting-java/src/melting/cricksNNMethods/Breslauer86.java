@@ -1,3 +1,6 @@
+
+/* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 */
+
 package melting.cricksNNMethods;
 
 import java.util.logging.Level;
@@ -8,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Breslauer86 extends GlobalInitiationNNMethod{
-
-	/* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 */
 	
 	public static String defaultFileName = "Breslauer1986nn.xml";
 	
@@ -26,8 +27,8 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Breslauer et al (1986)" +
-					"are established for DNA sequences.");			
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Breslauer et al (1986)" +
+					"is established for DNA sequences.");			
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -35,8 +36,9 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Breslauer et al (1986).");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Breslauer et al (1986).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);

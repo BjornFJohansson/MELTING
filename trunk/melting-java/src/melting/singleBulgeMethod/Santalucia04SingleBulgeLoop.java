@@ -33,8 +33,9 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "The formula and thermodynamic parameters for single bulge loop are from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		result = super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		
 		Thermodynamics NNValue = this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary()));

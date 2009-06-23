@@ -28,8 +28,9 @@ public class Znosko07Inosine extends InosineNNMethod {
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for inosine are from Znosco et al. (2007) : ");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Znosco et al. (2007) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		result = super.calculateThermodynamics(inosine, 0, inosine.getDuplexLength() - 1, result);
 		
 		double enthalpy = result.getEnthalpy();

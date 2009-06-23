@@ -40,8 +40,9 @@ public class Santalucia05Inosine extends InosineNNMethod{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for inosine are from Santalucia et al. (2005) : ");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Santalucia et al. (2005) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	

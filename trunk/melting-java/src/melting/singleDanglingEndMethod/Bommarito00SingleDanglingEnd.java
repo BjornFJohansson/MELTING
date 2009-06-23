@@ -40,8 +40,9 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single dangling end are from Bommarito et al. (2000) : ");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighor model for single dangling end is from Bommarito et al. (2000) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 	}
 	

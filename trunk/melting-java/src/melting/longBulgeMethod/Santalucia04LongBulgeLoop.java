@@ -34,9 +34,10 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop formulas from Santalucia. (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop model is from Santalucia. (2004) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " and " + formulaEntropy);
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');

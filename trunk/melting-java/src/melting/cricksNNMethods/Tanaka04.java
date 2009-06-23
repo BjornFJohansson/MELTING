@@ -1,3 +1,6 @@
+	
+/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 */
+
 package melting.cricksNNMethods;
 
 import java.util.logging.Level;
@@ -8,8 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Tanaka04 extends DecomposedInitiationNNMethod {
-
-	/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 */
 	
 	public static String defaultFileName = "Tanaka2004nn.xml";
 	
@@ -26,8 +27,8 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Tanaka (2004)" +
-					"are established for DNA sequences ");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Tanaka (2004)" +
+					"is established for DNA sequences ");
 		}
 
 		return super.isApplicable(environment, pos1, pos2);
@@ -36,7 +37,8 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Tanaka (2004).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Tanaka (2004).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		

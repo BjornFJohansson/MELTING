@@ -34,7 +34,8 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The L-deoxyadenine thermodynamic parameters are from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The L-deoxyadenine model is from Sugimoto et al. (2005) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		result = calculateThermodynamicsNoModifiedAcid(newSequences, 0, newSequences.getDuplexLength() - 1, result);
 		Thermodynamics deoxyadenineValue = this.collector.getDeoxyadenosineValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));

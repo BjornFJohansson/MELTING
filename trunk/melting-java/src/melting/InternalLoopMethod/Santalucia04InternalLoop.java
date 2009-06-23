@@ -37,9 +37,10 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop formulas fron Santalucia (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop model is from Santalucia (2004) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy);
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEntropy);
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
 		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(newSequences.getDuplexLength() - 2), newSequences.getComplementaryNNPair(newSequences.getDuplexLength() - 2));

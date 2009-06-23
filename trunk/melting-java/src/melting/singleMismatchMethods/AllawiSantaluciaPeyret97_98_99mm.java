@@ -34,8 +34,9 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for single mismatches are from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single mismatches is from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		Thermodynamics mismatchValue;

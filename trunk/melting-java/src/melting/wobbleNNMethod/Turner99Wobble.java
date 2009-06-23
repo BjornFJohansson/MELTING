@@ -30,8 +30,9 @@ public class Turner99Wobble extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences newSequence = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for GU base pairs are from Turner et al. (1999) : ");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Turner et al. (1999) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
@@ -70,8 +71,8 @@ public class Turner99Wobble extends PartialCalcul{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "the woddle base parameters of " +
-					"Turner (1999) are originally established " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "the model of " +
+					"Turner (1999) is only established " +
 					"for RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);

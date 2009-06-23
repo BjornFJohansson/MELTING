@@ -31,9 +31,10 @@ public class Turner06mm extends PartialCalcul{
 			int pos1, int pos2, ThermoResult result) {
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The formulas and thermodynamic parameters for single mismatches are from Turner et al. (2006) : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Turner et al. (2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy + " (entropy formula is similar)");
-		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		Thermodynamics initiationValue = this.collector.getInitiationLoopValue("2");
 		double enthalpy = result.getEnthalpy() + initiationValue.getEnthalpy();
 		double entropy = result.getEntropy() + initiationValue.getEntropy();

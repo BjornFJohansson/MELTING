@@ -1,3 +1,6 @@
+
+/*Xia et al (1998) Biochemistry 37: 14719-14735 */
+
 package melting.cricksNNMethods;
 
 import java.util.logging.Level;
@@ -10,8 +13,6 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.SequenceException;
 
 public class Xia98 extends CricksNNMethod {
-
-	/*Xia et al (1998) Biochemistry 37: 14719-14735 */
 	
 	public static String defaultFileName = "Xia1998nn.xml";
 	
@@ -28,8 +29,8 @@ public class Xia98 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Xia et al. (1998)" +
-			"are established for RNA/RNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Xia et al. (1998)" +
+			"is established for RNA/RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
 	}
@@ -68,7 +69,9 @@ public class Xia98 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for the watson crick base pairs are from Xia (1998).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Xia (1998).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		

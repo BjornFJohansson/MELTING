@@ -8,7 +8,7 @@ import melting.ThermoResult;
 import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
-public class Wetmur91SodiumCarrection implements CorrectionMethod{
+public class Wetmur91SodiumCorrection implements CorrectionMethod{
 
 	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/

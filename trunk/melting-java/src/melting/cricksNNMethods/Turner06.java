@@ -1,5 +1,8 @@
-package melting.cricksNNMethods;
+/*Turner et al (2006)
+ * Nucleic acids research 34: 3609-3614
+ */
 
+package melting.cricksNNMethods;
 
 import java.util.logging.Level;
 
@@ -32,8 +35,9 @@ public class Turner06 extends CricksNNMethod {
 		
 		Thermodynamics NNValue;
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters are from Turner et al. (2006)");
-		 
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Turner et al. (2006)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+ 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			
 			NNValue = this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
@@ -55,11 +59,10 @@ public class Turner06 extends CricksNNMethod {
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-
-		if (environment.getHybridization().equals("mrnarna") == false){
+		if (environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Turner et al. (2006)" +
-			"are established for 2-0-methyl RNA/RNA sequences.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Turner et al. (2006)" +
+			"is established for 2-0-methyl RNA/RNA sequences.");
 		}
 		
 		if (environment.isSelfComplementarity()){
