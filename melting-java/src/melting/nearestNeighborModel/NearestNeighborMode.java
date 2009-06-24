@@ -125,7 +125,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			"shorter sequences. (length superior to 6 and inferior to" +
 			 this.environment.getOptions().get(OptionManagement.threshold) +")");
 			
-			if (this.environment.getOptions().get(OptionManagement.globalMethod).equals("default")){
+			if (this.environment.getOptions().get(OptionManagement.globalMethod).equals("def")){
 				isApplicable = false;
 			}
 		}
