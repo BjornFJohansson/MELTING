@@ -1,16 +1,12 @@
-package melting;
+package examples;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
+
 
 public class MainTestPerfectMatching{
 
 	public static void main(String[] args) {
-		NumberFormat format = NumberFormat.getInstance(); 
-		format.setMaximumFractionDigits(2);
 		
 		ArrayList<String> DNAmethods = new ArrayList<String>();
 		DNAmethods.add("all97");
@@ -24,11 +20,11 @@ public class MainTestPerfectMatching{
 		RNAmethods.add("fre86");
 		RNAmethods.add("xia98");
 		
-		ArrayList<String> RNADNAmethods = new ArrayList<String>();
-		RNADNAmethods.add("sug95");
+		ArrayList<String> DNARNAmethods = new ArrayList<String>();
+		DNARNAmethods.add("sug95");
 		
 		ArrayList<String> mRNAmethods = new ArrayList<String>();
-		mRNAmethods.add("tu06");
+		mRNAmethods.add("tur06");
 
 		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNANoSelfComplementary.txt");
 		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNASelfComplementary.txt");
@@ -40,19 +36,29 @@ public class MainTestPerfectMatching{
 		
 		Properties mRNASequences = MainTest.loadSequencesTest("src/melting/test/2OMethylRNADuplexes.txt");
 		
-		Iterator<Map.Entry<Object, Object>> DNAEntry1 = DNANoSelfComplementarySequences.entrySet().iterator();
-		System.out.println("Sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
-		while (DNAEntry1.hasNext()){
-			Map.Entry<Object, Object> pairs = DNAEntry1.next();
-			System.out.println( pairs.getKey() + "\t" + pairs.getValue());
+		System.out.print("\n\n Sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
 
-			for (int i=0; i < DNAmethods.size(); i++){
-				String [] argsOption = {"-H", "dnadna", "-E", "Na=1", "-P", "0.0004", "-S", pairs.getKey().toString(), "-nn", DNAmethods.get(i)}; 
-				//double Tm = MainTest.getMeltingTest(argsOption);
-				//System.out.println(Tm + DNAmethods.get(i));
-				//System.out.println("\t" + format.format(Tm));
-			}
-		}
+		MainTest.displayResults(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0004", "-nn");
+		
+		System.out.print("\n\n Sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
+
+		MainTest.displayResults(DNASelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0001", "-nn");
+
+		System.out.print("\n\n Sequences \t TmExp \t fre86 \t xia98 \n");
+		
+		MainTest.displayResults(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0002", "-nn");
+
+		System.out.print("\n\n Sequences \t TmExp \t fre86 \t xia98 \n");
+		
+		MainTest.displayResults(RNASelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0001", "-nn");
+
+		System.out.print("\n\n Sequences \t TmExp \t sug95 \n");
+
+		MainTest.displayResults(DNARNASequences, DNARNAmethods, "rnadna", "Na=1", "0.0001", "-nn");
+
+		System.out.print("\n\n Sequences \t TmExp \t tur06 \n");
+		
+		MainTest.displayResults(mRNASequences, mRNAmethods, "mrnarna", "Na=0.1", "0.0001", "-nn");
 	}
 
 }

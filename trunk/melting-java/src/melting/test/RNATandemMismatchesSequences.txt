@@ -1,0 +1,12 @@
+# Tianbing Xia, Jeffrey A, McDowell and Douglas M. Turner, "Thermodynamics of Nonsymmetric Tandem Mismatches Adjacent to GC base pairs in RNA", Bichemistry, 1997, 36, 12486-12497.
+# 0.0001M oligomer concentration, 1M Na.
+
+GAGGAGAG/CUCAGCUC=38.8
+GAGAGGAG/CUCCACUC=34.7
+GAGUAGAG/CUCGGCUC=34.9
+GAGAGGAG/CUCGACUC=34.4
+GAGCGGAG/CUCAACUC=32.7
+GAGUUGAG/CUCUUCUC=34.0
+GAGCGGAG/CUCCACUC=31.6
+GAGAAGAG/CUCGGCUC=33.3
+GAGCAGAG/CUCAGCUC=30.8

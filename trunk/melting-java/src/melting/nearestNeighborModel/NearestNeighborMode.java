@@ -78,7 +78,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			Tm = calculateMeltingTemperature(this.environment);
 		}
 		else {
-			int CNGRepeats = (this.environment.getSequences().getDuplexLength() - 3) / 3;
+			int CNGRepeats = (this.environment.getSequences().getDuplexLength() - 2) / 3;
 			if (CNGRepeats > 4){
 				Tm = calculateHairpinTemperature(this.environment);
 				
@@ -263,9 +263,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	}
 	
 	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
-
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
-
 			if (environment.getSequences().isCNGPattern(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
 				if (this.CNGRepeatsMethod == null){
 					initializeCNGRepeatsMethod();
@@ -508,7 +506,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			pos1 = positions[0];
 			pos2 = positions[1];
 			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
-
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}

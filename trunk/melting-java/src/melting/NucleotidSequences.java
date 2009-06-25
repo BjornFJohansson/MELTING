@@ -2,9 +2,7 @@ package melting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
 
-import melting.configuration.OptionManagement;
 import melting.exceptions.NucleicAcidNotKnownException;
 import melting.exceptions.SequenceException;
 
@@ -111,9 +109,6 @@ public class NucleotidSequences {
 		if (sequence.length() == 0){
 			throw new SequenceException("The sequence must be entered.");
 		}
-		else if (sequence.length() <= 6){
-			OptionManagement.meltingLogger.log(Level.WARNING, "Be aware : we cannot compute with accuracy the melting temperature of oligonucleotides composed by less than 6 nucleotides.");
-		}
 		
 		for (int i = 0; i < sequence.length(); i++){
 			
@@ -183,12 +178,15 @@ public class NucleotidSequences {
 		return numberOfTerminal;
 	}
 	
-	public boolean isTerminal5TA(){
-		
+	public int getNumberTerminal5AT(){
+		int number5AT = 0;
 		if (this.sequence.charAt(0) == 'T' && this.complementary.charAt(0) == 'A'){
-			return true;
+			number5AT ++;
 		}
-		return false;
+		if (this.sequence.charAt(getDuplexLength() - 1) == 'A' && this.complementary.charAt(getDuplexLength() - 1) == 'T'){
+			number5AT ++;
+		}
+		return number5AT;
 	}
 	
 	public NucleotidSequences removeTerminalUnpairedNucleotides(){
@@ -738,9 +736,11 @@ public class NucleotidSequences {
 		if (sequence.charAt(0) != 'G' || sequence.charAt(sequence.length() - 1) != 'C'){
 			return false;
 		}
-		
+		if (sequence.length() < 8){
+			return false;
+		}
 		int index = 1;
-		String CNG = sequence.substring(1, 4);
+		String CNG = "C" + sequence.substring(2, 3) + "G";
 		while (index <= sequence.length() - 4){
 			if (sequence.substring(index, index + 3).equals(CNG) == false){
 				return false;
@@ -753,26 +753,25 @@ public class NucleotidSequences {
 	}
 	
 	public boolean isCNGPattern(int pos1, int pos2){
-		int duplexLength = this.sequence.length();
-		if (pos2 != duplexLength - 1 || pos1 != 0 || duplexLength - 2 < 3){
+		if (pos2 - pos1 + 1 != getDuplexLength() || pos2 - pos1 + 1 < 8){
 			return false;
 		}
 		
-		if (sequence.charAt(0) != 'G' || sequence.charAt(duplexLength - 1) != 'C'){
+		if (sequence.charAt(0) != 'G' || sequence.charAt(sequence.length() - 1) != 'C'){
 			return false;
 		}
-		
-		int index = pos1 + 1;
-		String CNG = this.sequence.substring(1, 4);
-		while (index <= pos2 - 3){
-			if (this.sequence.substring(index, index + 3).equals(CNG) == false){
+
+		int index = 1;
+		String CNG = "C" + sequence.substring(2, 3) + "G";
+		while (index <= sequence.length() - 4){
+
+			if (sequence.substring(index, index + 3).equals(CNG) == false){
 				return false;
 			}
 			else{
 				index += 3;
 			}
 		}
-		
 		return true;
 	}
 	
@@ -960,6 +959,19 @@ public class NucleotidSequences {
 				modifiedAcid.append(sequence.substring(index, index + 2));
 			}
 		}
+		
+		if (modifiedAcid.toString().length() > 1 && modifiedAcid.toString().contains("I")){
+			int numberI = 0;
+			for (int i = 0; i < modifiedAcid.toString().length(); i++){
+				if( modifiedAcid.toString().charAt(i) == 'I'){
+					numberI ++;
+				}
+			}
+			
+			if (numberI > 1 && numberI == modifiedAcid.toString().length()){
+				return "I";
+			}
+		}
 		return modifiedAcid.toString();
 	}
 	
@@ -967,7 +979,6 @@ public class NucleotidSequences {
 		if (pos2 > getDuplexLength() - 1 || pos1 < 0){
 			return false;
 		}
-		
 		String modifiedAcid1 = null;
 		String modifiedAcid2 = null;
 		

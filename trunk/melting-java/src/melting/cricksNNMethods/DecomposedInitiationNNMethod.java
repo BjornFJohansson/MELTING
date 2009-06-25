@@ -15,7 +15,7 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 		
 		NucleotidSequences sequences = environment.getSequences();
 		NucleotidSequences withoutTerminalUnpairedNucleotides = sequences.removeTerminalUnpairedNucleotides();
@@ -27,8 +27,8 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
 		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
 		
-		double enthalpy = 0;
-		double entropy = 0;
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 		
 		if (numberTerminalAT != 0){
 			Thermodynamics initiationAT = this.collector.getInitiation("per_A/T");

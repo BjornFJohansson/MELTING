@@ -28,7 +28,7 @@
 	<data type="crick">
 		<neighbor sequence="AA/TT">
 	        <enthalpy>-8400.0</enthalpy>
-            <entropy>-23.0</entropy>
+            <entropy>-23.6</entropy>
 	    </neighbor> 
 	    <neighbor sequence="AC/TG">
 	        <enthalpy>-8600.0</enthalpy>

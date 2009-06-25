@@ -69,11 +69,11 @@
 
 	    <initiation type="one_GC_Pair">
             <enthalpy>0.0</enthalpy>
-            <entropy>-20.1</entropy>
+            <entropy>-16.8</entropy>
         </initiation>  
         <initiation type="all_AT_pairs">
             <enthalpy>0.0</enthalpy>
-            <entropy>-9.0</entropy>
+            <entropy>-20.1</entropy>
         </initiation> 
 
         <symmetry>

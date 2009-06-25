@@ -10,6 +10,7 @@ public class EnergyHandler extends NodeHandler{
 
 	private double energy;
 	private boolean hasEnergy = false;
+	private StringBuilder stringenergy = new StringBuilder();
 	
 	public double getEnergy() {
 		return energy;
@@ -27,17 +28,20 @@ public class EnergyHandler extends NodeHandler{
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		String e = new String(ch,start,length);
-		try {
-			energy = Double.parseDouble(e);
-			hasEnergy = true;
-		} catch (NumberFormatException e2) {
-			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.");
-		}
+		stringenergy.append(e);
 	}
 	
 	@Override
 	public void endElement(String uri, String localName, String name)
 	throws SAXException {
+		try {
+			if (stringenergy.length() != 0){
+				energy = Double.parseDouble(stringenergy.toString());
+				hasEnergy = true;
+			}
+		} catch (NumberFormatException e2) {
+			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.");
+		}
 		if (hasEnergy){
 			completedNode();
 		}

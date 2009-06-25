@@ -40,15 +40,15 @@ public class Santalucia04 extends CricksNNMethod {
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
 		
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
 		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
-		double enthalpy = 0;
-		double entropy = 0;
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 		
 		if (numberTerminalAT != 0){
 			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
