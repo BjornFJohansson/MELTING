@@ -40,22 +40,23 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
 		
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 				
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
-		double enthalpy = 0;
-		double entropy = 0;
-
-		if (withoutTerminalUnpairedNucleotides.isTerminal5TA()) {
+		double enthalpy = 0.0;
+		double entropy = 0.0;
+		int number5AT = withoutTerminalUnpairedNucleotides.getNumberTerminal5AT();
+		
+		if (number5AT > 0) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
-			OptionManagement.meltingLogger.log(Level.FINE, "penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE,number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
 			
-			enthalpy += terminal5AT.getEnthalpy();
-			entropy += terminal5AT.getEntropy();
+			enthalpy += number5AT * terminal5AT.getEnthalpy();
+			entropy += number5AT * terminal5AT.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);

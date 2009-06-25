@@ -34,8 +34,8 @@ public abstract class CricksNNMethod extends PartialCalcul{
 	}
 	
 	public ThermoResult calculateInitiationHybridation(Environment environment){
-		double enthalpy = 0;
-		double entropy = 0;
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 
 		Thermodynamics initiation = this.collector.getInitiation();
 

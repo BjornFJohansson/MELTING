@@ -76,14 +76,14 @@ public class Turner06 extends CricksNNMethod {
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
 
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 		
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
 		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
-		double enthalpy = 0;
-		double entropy = 0;
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 		
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");

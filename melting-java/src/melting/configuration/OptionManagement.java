@@ -382,8 +382,13 @@ public class OptionManagement {
 		} catch (NumberFormatException e) {
 			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.");
 		}
-				
+		
 		String value = optionSet.get(sequence).toUpperCase();
+
+		NucleotidSequences sequences = new NucleotidSequences(value, "");
+		sequences.initializeModifiedAcidArrayList();
+		sequences.initializeModifiedAcidHashmap();
+		
 		if (NucleotidSequences.checkSequence(value)){
 
 			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*")){

@@ -40,7 +40,7 @@ public class Xia98 extends CricksNNMethod {
 
 		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
 
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 
 		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
 		
@@ -49,8 +49,8 @@ public class Xia98 extends CricksNNMethod {
 		}
 		
 		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
-		double enthalpy = 0;
-		double entropy = 0;
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 		
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");

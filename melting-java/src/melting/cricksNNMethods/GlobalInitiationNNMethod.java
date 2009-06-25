@@ -12,10 +12,10 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 		
-		environment.setResult(super.calculateInitiationHybridation(environment));
+		super.calculateInitiationHybridation(environment);
 
-		double enthalpy = environment.getResult().getEnthalpy();
-		double entropy = environment.getResult().getEntropy();
+		double enthalpy = 0.0;
+		double entropy = 0.0;
 
 		if (environment.getSequences().isOneGCBasePair()){
 			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_Pair");
@@ -27,19 +27,11 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 		}
 		
 		else {
-			Thermodynamics initiationAllAT = this.collector.getInitiation("all_AT_pair");
+			Thermodynamics initiationAllAT = this.collector.getInitiation("all_AT_pairs");
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "\n The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
 			enthalpy += initiationAllAT.getEnthalpy();
 			entropy += initiationAllAT.getEntropy();
-		}
-		
-		if (environment.isSelfComplementarity()){
-			Thermodynamics symmetry = this.collector.getsymmetry();
-			
-			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
-			enthalpy += symmetry.getEnthalpy();
-			entropy += symmetry.getEntropy();
 		}
 		
 		environment.setResult(enthalpy, entropy);
