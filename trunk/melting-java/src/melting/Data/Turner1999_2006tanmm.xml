@@ -254,14 +254,6 @@
  		</penalty>
  		<penalty type="AG_GA_UU_adjacent_UU_CU_CC_AA">
  				<enthalpy>2400.0</enthalpy>
- 				<entropy>0.0</entropy>
- 		</penalty>
- 		<penalty type="GU_GA_UU_Mismatches">
- 				<enthalpy>0.0</enthalpy>
- 				<entropy>-5.8</entropy>
- 		</penalty>
- 		<penalty type="One_GU_GA_UU_Mismatch">
- 				<enthalpy>0.0</enthalpy>
- 				<entropy>-3.2</entropy>
+ 				<entropy>4.5</entropy>
  		</penalty>
    	</data>

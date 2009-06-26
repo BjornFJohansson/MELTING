@@ -1076,24 +1076,6 @@ public class NucleotidSequences {
 		}
 		return false;
 	}
-	
-	public boolean is2StabilizingMismatchesPenaltyNecessary(int pos){
-		if (isBasePairEqualsTo('G', 'U', pos) || isBasePairEqualsTo('G', 'A', pos) || isBasePair('U', 'U', pos)){
-			if (isBasePairEqualsTo('G', 'U', pos + 1) || isBasePairEqualsTo('G', 'A', pos + 1) || isBasePair('U', 'U', pos + 1)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean is1StabilizingMismatchPenaltyNecessary(int pos){
-		if ((isBasePairEqualsTo('G', 'U', pos) || isBasePairEqualsTo('G', 'A', pos) || isBasePair('U', 'U', pos)) || (isBasePairEqualsTo('G', 'U', pos + 1) || isBasePairEqualsTo('G', 'A', pos + 1) || isBasePair('U', 'U', pos + 1))){
-			if (isBasePairEqualsTo('C', 'A', pos ) == false && isBasePairEqualsTo('C', 'A', pos + 1) == false){
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public boolean isSequenceGap(int pos1, int pos2){
 		if (getSequence(pos1, pos2).contains("-") || getComplementary(pos1, pos2).contains("-")){

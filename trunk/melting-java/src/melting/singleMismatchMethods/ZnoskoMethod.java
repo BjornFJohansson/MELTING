@@ -84,8 +84,9 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 			}
 			
 			if (mismatch.calculateNumberOfTerminal('G', 'U') > 0){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
 				if (this.collector.getClosureValue("G", "U") == null){
+					OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
+
 					return true;
 				}
 			}

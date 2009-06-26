@@ -34,7 +34,7 @@ public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
 			entropy += initiationAllAT.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
 	}

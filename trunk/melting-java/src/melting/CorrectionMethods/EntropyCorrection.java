@@ -9,7 +9,7 @@ public abstract class EntropyCorrection implements CorrectionMethod{
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		double entropy = correctEntropy(environment);
-		environment.setResult(0, entropy);
+		environment.addResult(0, entropy);
 		double Tm = NearestNeighborMode.calculateMeltingTemperature(environment);
 		environment.setResult(Tm);
 		

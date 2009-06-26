@@ -94,7 +94,7 @@ public class Turner06 extends CricksNNMethod {
 			entropy += numberTerminalAU * terminalAU.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
 	}

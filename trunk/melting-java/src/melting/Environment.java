@@ -160,7 +160,7 @@ public class Environment {
 		concentrations.put("Na", na);
 	}
 	
-	public void setResult(double enthalpy, double entropy){
+	public void addResult(double enthalpy, double entropy){
 		this.result.setEnthalpy(this.result.getEnthalpy() + enthalpy);
 		this.result.setEntropy(this.result.getEntropy() + entropy);
 	}
