@@ -57,7 +57,7 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 			entropy += numberTerminalGC * initiationGC.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
 	}

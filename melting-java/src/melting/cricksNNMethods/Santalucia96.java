@@ -59,7 +59,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 			entropy += number5AT * terminal5AT.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		return environment.getResult();
 	}
 	

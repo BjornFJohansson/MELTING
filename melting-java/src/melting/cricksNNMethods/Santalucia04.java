@@ -59,7 +59,7 @@ public class Santalucia04 extends CricksNNMethod {
 			entropy += numberTerminalAT * terminalAT.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
 		

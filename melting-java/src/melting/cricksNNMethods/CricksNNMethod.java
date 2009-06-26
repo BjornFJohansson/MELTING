@@ -56,7 +56,7 @@ public abstract class CricksNNMethod extends PartialCalcul{
 			entropy += symmetry.getEntropy();
 		}
 		
-		environment.setResult(enthalpy, entropy);
+		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
 	}

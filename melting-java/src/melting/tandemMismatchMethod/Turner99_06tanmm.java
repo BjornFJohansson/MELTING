@@ -86,22 +86,6 @@ public class Turner99_06tanmm extends PartialCalcul{
 				entropy += penalty2.getEntropy();
 				OptionManagement.meltingLogger.log(Level.FINE, "penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
 			}
-			
-			if (newSequences.is2StabilizingMismatchesPenaltyNecessary(1)){
-				Thermodynamics penalty3 = this.collector.getPenalty("GU_GA_UU_Mismatches");
-				
-				enthalpy += penalty3.getEnthalpy();
-				entropy += penalty3.getEntropy();
-				OptionManagement.meltingLogger.log(Level.FINE, "penalty3 : enthalpy = " + penalty3.getEnthalpy() + "  entropy = " + penalty3.getEntropy());
-			}
-			
-			else if (newSequences.is1StabilizingMismatchPenaltyNecessary(1)){
-				Thermodynamics penalty4 = this.collector.getPenalty("One_GU_GA_UU_Mismatch");
-				
-				enthalpy += penalty4.getEnthalpy();
-				entropy += penalty4.getEntropy();
-				OptionManagement.meltingLogger.log(Level.FINE, "penalty4 : enthalpy = " + penalty4.getEnthalpy() + "  entropy = " + penalty4.getEntropy());
-			}
 		}
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -157,21 +141,6 @@ public class Turner99_06tanmm extends PartialCalcul{
 					return true;
 				}
 				
-			}
-			
-			if (newSequences.is2StabilizingMismatchesPenaltyNecessary(1)){
-				if (this.collector.getPenalty("GU_GA_UU_Mismatches") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for stabilizing mismatches is missing. Check the tandem mismatch parameters.");
-					return true;
-				}
-				
-			}
-			
-			else if (newSequences.is1StabilizingMismatchPenaltyNecessary(1)){
-				if (this.collector.getPenalty("One_GU_GA_UU_Mismatch") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for one stabilizing and one destabilizing mismatch is missing. Check the tandem mismatch parameters.");
-					return true;
-				}
 			}
 		}
 		else{
