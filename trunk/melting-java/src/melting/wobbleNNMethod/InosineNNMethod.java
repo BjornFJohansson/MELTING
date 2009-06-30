@@ -48,4 +48,14 @@ public abstract class InosineNNMethod extends PartialCalcul{
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
+	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

@@ -26,13 +26,19 @@ public class NucleotidSequences {
 		modifiedNucleotides.add("X_T");
 		modifiedNucleotides.add("X_C");
 		modifiedNucleotides.add("A*");
-		modifiedNucleotides.add("L");
+		modifiedNucleotides.add("AL");
+		modifiedNucleotides.add("TL");
+		modifiedNucleotides.add("CL");
+		modifiedNucleotides.add("GL");
 		modifiedNucleotides.add("I");
 	}
 	
 	public void initializeModifiedAcidHashmap(){
 		modifiedAcidNames.put("I", ModifiedAcidNucleic.inosine);
-		modifiedAcidNames.put("L", ModifiedAcidNucleic.lockedAcidNucleic);
+		modifiedAcidNames.put("AL", ModifiedAcidNucleic.lockedAcidNucleic);
+		modifiedAcidNames.put("TL", ModifiedAcidNucleic.lockedAcidNucleic);
+		modifiedAcidNames.put("CL", ModifiedAcidNucleic.lockedAcidNucleic);
+		modifiedAcidNames.put("GL", ModifiedAcidNucleic.lockedAcidNucleic);
 		modifiedAcidNames.put("A*", ModifiedAcidNucleic.hydroxyadenine);
 		modifiedAcidNames.put("X_C", ModifiedAcidNucleic.azobenzene);
 		modifiedAcidNames.put("X_T", ModifiedAcidNucleic.azobenzene);
@@ -810,18 +816,14 @@ public class NucleotidSequences {
 		}
 		String sequenceWithoutDanglingEnd = getSequenceContainig("-", pos1, pos2);
 		String sequenceWithDanglingEnd = getComplementaryTo(sequenceWithoutDanglingEnd, pos1, pos2);
-		int numberNucleotid = 0;
 
 		for (int i = 0; i <= sequenceWithoutDanglingEnd.length() - 1; i++){
 			if (Helper.isWatsonCrickBase(sequenceWithDanglingEnd.charAt(i)) == false){
 				return false;
 			}
 			if (sequenceWithoutDanglingEnd.charAt(i) != '-'){
-				numberNucleotid ++;
+				return false;
 			}
-		}
-		if (numberNucleotid > 1){
-			return false;
 		}
 		return true;
 	}
@@ -831,15 +833,7 @@ public class NucleotidSequences {
 			return false;
 		}
 		
-		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false && isBasePairEqualsTo('G', 'U', pos1) == false){
-			return false;
-		}
-		
-		if (Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false && isBasePairEqualsTo('G', 'U', pos2) == false){
-			return false;
-		}
-		
-		for (int i = pos1 + 1; i <= pos2 - 1; i++){
+		for (int i = pos1; i <= pos2; i++){
 			if (isBasePairEqualsTo('G', 'U', i) == false){
 				return false;
 			}
@@ -861,33 +855,25 @@ public class NucleotidSequences {
 		}
 		int numbergapSequence = 0;
 		int numbergapComplementary = 0;
-		
-		if (isBasePairEqualsTo('G', 'U', pos1) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos1), this.complementary.charAt(pos1)) == false){
-			return false;
-		}
-		else if (isBasePairEqualsTo('G', 'U', pos2) == false && Helper.isComplementaryBasePair(this.sequence.charAt(pos2), this.complementary.charAt(pos2)) == false){
-				return false;
-		}
-		
-		for (int i = pos1 + 1; i <= pos2 - 1 ; i++){
+		for (int i = pos1; i <= pos2; i++){
 			if (Helper.isComplementaryBasePair(this.sequence.charAt(i), this.complementary.charAt(i))){
 				return false;
 			}
 			else if (Helper.isWatsonCrickBase(this.sequence.charAt(i)) == false){
-				if (this.sequence.charAt(i) != '-' || (this.sequence.charAt(i) == '-' && pos2 - pos1 + 1 == 3)){
+				if (this.sequence.charAt(i) != '-'){
 					return false;
 				}
 				numbergapSequence ++;
 			}
+
 			else if (Helper.isWatsonCrickBase(this.complementary.charAt(i)) == false){
-				if (this.complementary.charAt(i) != '-' || (this.sequence.charAt(i) == '-' && pos2 - pos1 + 1 == 3)){
+				if (this.complementary.charAt(i) != '-'){
 					return false;
 				}
 				numbergapComplementary ++;
 			}
 		}
-		
-		if (numbergapSequence == pos2 - pos1 - 1 || numbergapComplementary == pos2 - pos1 - 1){
+		if (numbergapSequence == pos2 - pos1 + 1 || numbergapComplementary == pos2 - pos1 + 1){
 			return false;
 		}
 		return true;
@@ -902,16 +888,11 @@ public class NucleotidSequences {
 			return false;
 		}
 		String sequenceWithGap = getSequenceContainig("-", pos1, pos2);
-
-		int numbergap = 0;
 		
 		for (int i = 0; i <= pos2 - pos1 ; i++){
-			if (sequenceWithGap.charAt(i) == '-'){
-				numbergap ++;
+			if (sequenceWithGap.charAt(i) != '-'){
+				return false;
 			}
-		}
-		if (numbergap != pos2 - pos1 - 1){
-			return false;
 		}
 		return true;
 	}
@@ -953,13 +934,13 @@ public class NucleotidSequences {
 			modifiedAcid.append(sequence.charAt(index));
 		}
 		if (index - 2 > 0){
-			if (modifiedAcid.toString().equals("*")){
+			if (modifiedAcid.toString().equals("*") || modifiedAcid.toString().equals("L")){
 				index -= 2;
 				modifiedAcid.deleteCharAt(0);
 				modifiedAcid.append(sequence.substring(index, index + 2));
 			}
 		}
-		
+
 		if (modifiedAcid.toString().length() > 1 && modifiedAcid.toString().contains("I")){
 			int numberI = 0;
 			for (int i = 0; i < modifiedAcid.toString().length(); i++){
@@ -1010,32 +991,26 @@ public class NucleotidSequences {
 	}
 	
 	public ModifiedAcidNucleic getModifiedAcidName(String sequence, String complementary){
-		String modifiedAcid1 = null;
-		String modifiedAcid2 = null;
+		String modifiedAcid1 = sequence;
+		String modifiedAcid2 = complementary;
 		ModifiedAcidNucleic name;
 		
-		for (int i = 0; i <= sequence.length() - 1; i++){
-			if (Helper.isWatsonCrickBase(sequence.charAt(i)) == false && sequence.charAt(i) != '-'){
-				modifiedAcid1 = getModifiedAcid(sequence, i);
-				break;
-			}
-		}
-		for (int i = 0; i <= complementary.length() - 1; i++){
-
-			if (Helper.isWatsonCrickBase(complementary.charAt(i)) == false && complementary.charAt(i) != '-'){
-				modifiedAcid2 = getModifiedAcid(complementary, i);
-				break;
-			}
+		if (getModifiedAcid(sequence, 0).equals("I") || getModifiedAcid(complementary, 0).equals("I")){
+			modifiedAcid1 = "I";
+			modifiedAcid2 = null;
 		}
 
-		if (modifiedAcid1 != null){
+		if (modifiedAcid1 != null && modifiedAcid1.contains(" ") == false){
 			name = modifiedAcidNames.get(modifiedAcid1);
+
 			if (name != null){
 				return name;
 			}
 		}
 		
-		if (modifiedAcid2 != null){
+		if (modifiedAcid2 != null && modifiedAcid1.contains(" ") == false){
+			System.out.println(modifiedAcid2);
+
 			name = modifiedAcidNames.get(modifiedAcid2);
 
 			if (name != null){
@@ -1077,7 +1052,7 @@ public class NucleotidSequences {
 		return false;
 	}
 
-	public boolean isSequenceGap(int pos1, int pos2){
+	public boolean isGapInSequence(int pos1, int pos2){
 		if (getSequence(pos1, pos2).contains("-") || getComplementary(pos1, pos2).contains("-")){
 			return false;
 		}

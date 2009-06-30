@@ -31,6 +31,9 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
@@ -53,15 +56,19 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2, "dna"), environment.getSequences().getComplementary(pos1, pos2, "dna"));
 
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for L-deoxyadenosine of" +
 					"Sugimoto et al. (2005) are established for DNA sequences.");
 		}
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+				
 		if (modified.calculateNumberOfTerminal("_A"," T") > 0 || modified.calculateNumberOfTerminal("_X"," A") > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for L-deoxyadenosine of " +
 					"Sugimoto et al. (2005) are not established for terminal L-deoxyadenosine.");
@@ -74,6 +81,10 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		NucleotidSequences noModified = newSequences.removeDeoxyadenine(0, newSequences.getDuplexLength() - 1);
@@ -130,4 +141,14 @@ public class Sugimoto05Deoxyadenosine extends PartialCalcul{
 		loadFile(NNfile, this.collector);
 	}
 
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

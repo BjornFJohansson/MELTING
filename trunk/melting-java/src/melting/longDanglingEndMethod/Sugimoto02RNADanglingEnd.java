@@ -24,7 +24,7 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 
-		if (environment.getHybridization().equals("rnarna")){
+		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The following thermodynamic parameters for long dangling end of Sugimoto et al." +
 			"(2002) are established for RNA sequences.");
 		
@@ -37,6 +37,10 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
+		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
 		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
@@ -45,6 +49,10 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}

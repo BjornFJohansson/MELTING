@@ -6,6 +6,7 @@ package melting.wobbleNNMethod;
 import java.util.logging.Level;
 
 import melting.Environment;
+import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
@@ -28,6 +29,10 @@ public class Turner99Wobble extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength(), sequences);
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequence = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Turner et al. (1999) : ");
@@ -81,6 +86,10 @@ public class Turner99Wobble extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength(), sequences);
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		String closing = "not_G/C";
 		
@@ -107,6 +116,22 @@ public class Turner99Wobble extends PartialCalcul{
 			}
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+	}
+	
+	private int[] correctPositions(int pos1, int pos2, int duplexLength, NucleotidSequences sequences){
+
+		if (pos1 > 0){
+			if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos1 - 1), sequences.getComplementary().charAt(pos1 - 1))){
+				pos1 --;
+			}
+		}
+		if (pos2 < duplexLength - 1){
+			if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos2 + 1), sequences.getComplementary().charAt(pos2 + 1))){
+				pos2 ++;
+			}
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
 	}
 
 }

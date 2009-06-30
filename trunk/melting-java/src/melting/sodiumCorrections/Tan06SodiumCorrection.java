@@ -1,3 +1,7 @@
+/* Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
+	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
+	 * */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,10 +13,6 @@ import melting.CorrectionMethods.EntropyCorrection;
 import melting.configuration.OptionManagement;
 
 public class Tan06SodiumCorrection extends EntropyCorrection {
-
-	/* Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
-	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
-	 * */
 	
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x (duplexLength - 1) x g"; 
 	private static String aFormula = "a1 = -0.07 x ln(Na) + 0.012 x ln(Mg)^2";

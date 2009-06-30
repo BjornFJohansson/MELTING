@@ -59,7 +59,7 @@
   		</modified> 		
   		<modified sequence="AXT/TA" type = "trans">
   			<enthalpy>-5000.0</enthalpy>
-  			<entropy>13.2</entropy>
+  			<entropy>-13.2</entropy>
   		</modified>
   		<modified sequence="TXT/AA" type = "trans">
   			<enthalpy>600.0</enthalpy>
@@ -79,7 +79,7 @@
   		</modified>
   		<modified sequence="TXT/AA" type = "cys">
   			<enthalpy>25800.0</enthalpy>
-  			<entropy>78</entropy>
+  			<entropy>78.0</entropy>
   		</modified>
   		<modified sequence="GXT/CA" type = "cys">
   			<enthalpy>22700.0</enthalpy>
@@ -121,7 +121,7 @@
   			<enthalpy>2700.0</enthalpy>
   			<entropy>9.2</entropy>
   		</modified>  		
-  		<modified sequence="AXC/GG" type = "trans">
+  		<modified sequence="AXC/TG" type = "trans">
   			<enthalpy>-900.0</enthalpy>
   			<entropy>0.1</entropy>
   		</modified>

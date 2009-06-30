@@ -34,11 +34,11 @@
 				<enthalpy>-6750.0</enthalpy>
 				<entropy>-16.0</entropy>
 			</dangling>
-			<dangling sequence="AAA" sens="3">
+			<dangling sequence="CAAA/G" sens="3">
 				<enthalpy>-10450.0</enthalpy>
 				<entropy>-26.5</entropy>
 			</dangling>
-			<dangling sequence="AAAA" sens="3">
+			<dangling sequence="CAAAA/G" sens="3">
 				<enthalpy>-11950.0</enthalpy>
 				<entropy>-31</entropy>
 			</dangling>			

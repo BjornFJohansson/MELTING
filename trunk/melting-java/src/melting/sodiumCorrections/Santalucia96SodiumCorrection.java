@@ -1,3 +1,5 @@
+	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,8 +11,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class Santalucia96SodiumCorrection implements CorrectionMethod {
-
-	/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 12.5 x log10(Na)";
 

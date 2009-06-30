@@ -165,7 +165,7 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(wobbleBaseMethod, "tur99");
 		this.RNADefaultOptions.put(tandemMismatchMethod, "tur06");
 		this.RNADefaultOptions.put(internalLoopMethod, "tur06");
-		this.RNADefaultOptions.put(singleBulgeLoopMethod, "ser07");
+		this.RNADefaultOptions.put(singleBulgeLoopMethod, "tur06");
 		this.RNADefaultOptions.put(longBulgeLoopMethod, "tur06");
 		this.RNADefaultOptions.put(CNGMethod, "bro05");
 		this.RNADefaultOptions.put(approximativeMode, "wetrna91");

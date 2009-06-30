@@ -22,14 +22,17 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		if (environment.getHybridization().equals("rnarna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for second dangling end of Serra et al." +
 					"(2005 and 2006) is established for RNA sequences.");
 		}
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+				
 		if (NucleotidSequences.getSens(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2)).equals("5")){
 			isApplicable = false;
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for second dangling end of Serra et al." +
@@ -97,4 +100,14 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		loadFile(fileDoubleDangling, this.collector);
 	}
 
+	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

@@ -73,6 +73,10 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 			NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 			
 			if (mismatch.calculateNumberOfTerminal('A', 'U') > 0){
@@ -93,4 +97,14 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		return super.isMissingParameters(mismatch, 0, mismatch.getDuplexLength() - 1);
 	}
 
+	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

@@ -29,6 +29,9 @@ public class Znosko071x2Loop extends PartialCalcul {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 		
@@ -101,6 +104,10 @@ public class Znosko071x2Loop extends PartialCalcul {
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		String loopType = environment.getSequences().getLoopType(pos1,pos2);
 
 		if (environment.getHybridization().equals("rnarna") == false){
@@ -124,7 +131,10 @@ public class Znosko071x2Loop extends PartialCalcul {
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2,"rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
@@ -152,4 +162,14 @@ public class Znosko071x2Loop extends PartialCalcul {
 		return isMissingParameters;
 	}
 
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

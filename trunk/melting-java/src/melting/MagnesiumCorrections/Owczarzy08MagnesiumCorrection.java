@@ -1,3 +1,8 @@
+/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
+	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
+	 * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
+	 * */
+
 package melting.MagnesiumCorrections;
 
 import java.util.logging.Level;
@@ -8,11 +13,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
-
-	/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
-	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
-	 * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
-	 * */
 	
 	protected double a = 3.92 / 100000;
 	protected double b = -9.11 / 1000000;

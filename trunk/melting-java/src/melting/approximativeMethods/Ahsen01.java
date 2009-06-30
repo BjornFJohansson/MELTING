@@ -1,3 +1,9 @@
+/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
+	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
+	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
+	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
+	 * */
+
 package melting.approximativeMethods;
 
 import java.util.logging.Level;
@@ -6,12 +12,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Ahsen01 extends ApproximativeMode{
-	 
-	/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
-	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
-	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
-	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
-	 * */
 
 	private static String temperatureEquation = "Tm = 80.4 + 0.345 * percentGC + log10(Na) * (17.0 - 0.135 * percentGC) - 550 / duplexLength.";
 	

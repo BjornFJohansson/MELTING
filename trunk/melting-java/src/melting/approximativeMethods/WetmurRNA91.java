@@ -6,9 +6,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class WetmurRNA91 extends Wetmur91 {
-
-	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
-	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
 	
 	private static String temperatureEquation = "Tm = 78 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.7 * percentGC - 500 / duplexLength - percentMismatching";
 	

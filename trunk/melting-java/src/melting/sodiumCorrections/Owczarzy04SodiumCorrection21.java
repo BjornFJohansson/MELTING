@@ -1,3 +1,7 @@
+/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
+	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
+	 * Biochemistry, 2004, 43, 3537-3554.*/
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,10 +13,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class Owczarzy04SodiumCorrection21 implements CorrectionMethod {
-
-	/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
-	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
-	 * Biochemistry, 2004, 43, 3537-3554.*/
 	
 	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (-4.62 x Fgc + 4.52) x ln(NaEquivalent) - 0.985 x ln(Na)^2";
 	

@@ -1,3 +1,7 @@
+/* Schildkraut, C., and Lifson, S. (1965) Dependence of the melting
+	 *  temperature of DNA on salt concentration, Biopolymers 3, 195-208.
+	 */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -10,9 +14,6 @@ import melting.configuration.OptionManagement;
 
 public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 
-	/* Schildkraut, C., and Lifson, S. (1965) Dependence of the melting
-	 *  temperature of DNA on salt concentration, Biopolymers 3, 195-208.
-	 */
 	private static String temperatureCorrection = "	Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na)";
 	
 	public ThermoResult correctMeltingResult(Environment environment) {
