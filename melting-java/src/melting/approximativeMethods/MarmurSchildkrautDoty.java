@@ -1,14 +1,4 @@
-package melting.approximativeMethods;
-
-
-import java.util.logging.Level;
-
-import melting.ThermoResult;
-import melting.configuration.OptionManagement;
-
-public class MarmurSchildkrautDoty extends ApproximativeMode{
-
-	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
+/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 	*1991, Critical reviews in biochemistry and molecular biology, 26, 227-259
 	
 	 * Marmur J, Doty P, "Determination of the base composition of 
@@ -32,6 +22,15 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	 *  Hall TJ, Grula JW, Davidson EH, Britten RJ. Evolution of sea urchin
      *  non-repetitive DNA. J Mol Evol 1980;16:95–110.
 	 */
+
+package melting.approximativeMethods;
+
+import java.util.logging.Level;
+
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+
+public class MarmurSchildkrautDoty extends ApproximativeMode{
 	
 	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na) + 0.41 * percentGC - 675 / duplexLength.";
 	

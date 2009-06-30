@@ -31,6 +31,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The locked acid nuceic model is from McTigue et al. (2004) (delta delta H and delta delta S): ");
@@ -60,14 +64,17 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for locked acid nucleiques of" +
 					"McTigue et al. (2004) are established for DNA sequences.");
 		}
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		
+				
 		if ((pos1 == 0 || pos2 == environment.getSequences().getDuplexLength() - 1) && environment.getSequences().calculateNumberOfTerminal('L', '-') > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for locked acid nucleiques of " +
 					"McTigue (2004) are not established for terminal locked acid nucleiques.");
@@ -80,6 +87,10 @@ public class McTigue04LockedAcid extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		if (this.collector.getNNvalue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0)) == null || this.collector.getNNvalue(newSequences.getSequence(1,1) + newSequences.getSequence(3, 3), newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3)) == null){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequenceNNPair(0) + "/" + newSequences.getComplementaryNNPair(0) + " or " + newSequences.getSequence(1,1) + newSequences.getSequence(3, 3) + "/" + newSequences.getComplementary(1, 1) + newSequences.getComplementary(3, 3) +
@@ -133,4 +144,14 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		loadFile(NNfile, this.collector);
 	}
 	
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

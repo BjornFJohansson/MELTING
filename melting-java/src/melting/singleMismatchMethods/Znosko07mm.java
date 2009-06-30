@@ -24,6 +24,10 @@ public class Znosko07mm extends ZnoskoMethod {
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Znosco et al. (2007) : ");

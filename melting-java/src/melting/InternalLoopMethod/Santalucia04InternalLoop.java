@@ -34,6 +34,9 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
@@ -103,7 +106,10 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		if (environment.getHybridization().equals("dnadna") == false){
 			OptionManagement.meltingLogger.log(Level.WARNING, " the internal loop parameters of " +
 					"Santalucia (2004) are originally established " +
@@ -123,7 +129,11 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
-			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
+		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
@@ -161,6 +171,17 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	private double calculateGibbs (String seq1, String seq2){
 		double gibbs = Math.abs(seq1.length() - seq2.length()) * 0.3;
 		return gibbs;
+	}
+	
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
 	}
 
 }

@@ -1,3 +1,8 @@
+/* John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
+	 * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465*/
+	
+	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,11 +14,6 @@ import melting.CorrectionMethods.EntropyCorrection;
 import melting.configuration.OptionManagement;
 
 public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
-
-	/* John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
-	 * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465*/
-	
-	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
 
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(Na)";
 

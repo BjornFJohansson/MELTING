@@ -28,6 +28,7 @@ public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		
 		if (this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the single bulge loop parameters.");
 
@@ -36,4 +37,14 @@ public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
+	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

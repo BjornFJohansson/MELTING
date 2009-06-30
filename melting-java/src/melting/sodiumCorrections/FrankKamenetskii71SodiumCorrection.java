@@ -1,3 +1,9 @@
+/* Frank-Kamenetskii, M. D. (1971) Simplification of the empirical
+	 * relationship between melting temperature of DNA, its GC content
+	 * and concentration of sodium ions in solution, Biopolymers 10,
+	 * 2623-2624.
+	 * */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,12 +15,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
-
-	/* Frank-Kamenetskii, M. D. (1971) Simplification of the empirical
-	 * relationship between melting temperature of DNA, its GC content
-	 * and concentration of sodium ions in solution, Biopolymers 10,
-	 * 2623-2624.
-	 * */
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (7.95 - 3.06 x Fgc) x ln(Na)";
 

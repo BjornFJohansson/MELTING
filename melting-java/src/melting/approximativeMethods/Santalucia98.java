@@ -1,3 +1,8 @@
+/* Santalucia J Jr, "A unified view of polymer, dumbbel, and 
+	 * oligonucleotide DNA nearest-neighbor thermodynamics", Proc
+	 * Nacl Acad Sci USA 1998, 95, 1460-1465.
+	 * */
+
 package melting.approximativeMethods;
 
 import java.util.logging.Level;
@@ -6,11 +11,6 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 public class Santalucia98 extends ApproximativeMode{
-	
-	/* Santalucia J Jr, "A unified view of polymer, dumbbel, and 
-	 * oligonucleotide DNA nearest-neighbor thermodynamics", Proc
-	 * Nacl Acad Sci USA 1998, 95, 1460-1465.
-	 * */
 	
 	private static String temperatureEquation = "Tm = 77.1 + 11.7 * log10(Na) + 0.41 * PercentGC - 528 / duplexLength.";
 

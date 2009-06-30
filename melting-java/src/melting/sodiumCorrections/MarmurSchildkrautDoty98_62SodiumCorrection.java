@@ -1,3 +1,11 @@
+/*Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
+	 * Nucleic Acids Res. 26, 3323-3332 and corrigendum.
+	 * 
+	 *  Marmur, J., and Doty, P. (1962) Determination of the base
+	 *  composition of deoxyribonucleic acid from its thermal denaturation
+	 *  temperature, J. Mol. Biol. 5, 109-118.
+	 * */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,14 +17,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
-
-	/*Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
-	 * Nucleic Acids Res. 26, 3323-3332 and corrigendum.
-	 * 
-	 *  Marmur, J., and Doty, P. (1962) Determination of the base
-	 *  composition of deoxyribonucleic acid from its thermal denaturation
-	 *  temperature, J. Mol. Biol. 5, 109-118.
-	 * */
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(Na)";
 

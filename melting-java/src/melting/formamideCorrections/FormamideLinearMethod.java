@@ -1,3 +1,13 @@
+/*McConaughy, B.L., Laird, C.D. and McCarthy, B.I., 1969, Biochemistry
+	 * 8, 3289-3295.
+	 * 
+	 * Record, M.T., Jr, 1967, Biopolymers, 5, 975-992.
+	 * 
+	 * Casey J., and Davidson N., 1977, Nucleic acids research, 4, 1539-1532.
+	 * 
+	 * Hutton Jr, 1977, Nucleic acids research, 4, 3537-3555.
+	 * */
+
 package melting.formamideCorrections;
 
 import java.util.logging.Level;
@@ -8,16 +18,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class FormamideLinearMethod implements CorrectionMethod{
-
-	/*McConaughy, B.L., Laird, C.D. and McCarthy, B.I., 1969, Biochemistry
-	 * 8, 3289-3295.
-	 * 
-	 * Record, M.T., Jr, 1967, Biopolymers, 5, 975-992.
-	 * 
-	 * Casey J., and Davidson N., 1977, Nucleic acids research, 4, 1539-1532.
-	 * 
-	 * Hutton Jr, 1977, Nucleic acids research, 4, 3537-3555.
-	 * */
 	
 	private static String temperatureCorrection = "Tm (x % formamide) = Tm(0 % formamide) - 0.65 * x % formamide";
 	

@@ -13,7 +13,7 @@ public class MainTestInosineBasePairs {
 		
 		System.out.print("\n\n Sequences \t TmExp \t san05 \n");
 
-		MainTest.displayResultsWithComplementarySequence(DNAInosineSequences, DNAInosineMethods, "dnadna", "Na=1", "0.0004", "-ino");
+		MainTest.displayResultsWithComplementarySequence(DNAInosineSequences, DNAInosineMethods, "dnadna", "Na=1", "0.0001", "-ino");
 		
 		ArrayList<String> RNAInosineMethods = new ArrayList<String>();
 		RNAInosineMethods.add("zno07");

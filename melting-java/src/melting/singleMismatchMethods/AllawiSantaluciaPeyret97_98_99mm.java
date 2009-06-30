@@ -32,7 +32,10 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single mismatches is from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
@@ -70,6 +73,9 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
@@ -81,5 +87,14 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
-	
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

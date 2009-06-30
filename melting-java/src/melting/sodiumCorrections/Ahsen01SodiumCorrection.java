@@ -1,3 +1,9 @@
+/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
+	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
+	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
+	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
+	 * */
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -8,12 +14,6 @@ import melting.CorrectionMethods.EntropyCorrection;
 import melting.configuration.OptionManagement;
 
 public class Ahsen01SodiumCorrection extends EntropyCorrection {
-
-	/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
-	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
-	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
-	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
-	 * */
 	
 	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x ln(Na)";
 	

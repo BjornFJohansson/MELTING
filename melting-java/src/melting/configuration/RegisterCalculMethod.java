@@ -219,12 +219,15 @@ public class RegisterCalculMethod {
 	private void initializeSingleDanglingEndMethods(){
 		singleDangingEndMethod.put("bom00", Bommarito00SingleDanglingEnd.class);
 		singleDangingEndMethod.put("ser08", Serra06_08SingleDanglingEnd.class);
+		singleDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		singleDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 	}
 	
 	private void initializeDoubleDanglingEndMethods(){
 		doubleDangingEndMethod.put("ser05", Serra05DoubleDanglingEnd.class);
 		doubleDangingEndMethod.put("ser06", Serra06DoubleDanglingEnd.class);
 		doubleDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		doubleDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 
 	}
 	

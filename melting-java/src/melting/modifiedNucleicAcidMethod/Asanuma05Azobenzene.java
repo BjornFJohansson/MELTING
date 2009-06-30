@@ -28,6 +28,9 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
 		
@@ -48,14 +51,17 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
 		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
 		}
-
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
 		if (modified.calculateNumberOfTerminal('X', ' ') > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
@@ -68,13 +74,27 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		if (this.collector.getAzobenzeneValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence() + "/" + newSequences.getComplementary()+ 
-			"are missing. Check the L-deoxyadenine parameters.");
+			" are missing. Check the azobenzene parameters.");
 			return true;
 		}
 		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
 	}
 
+	private int[] correctPositions(int pos1, int pos2, int duplexLength){
+		if (pos1 > 0){
+			pos1 --;
+		}
+		if (pos2 < duplexLength - 1){
+			pos2 ++;
+		}
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
 }

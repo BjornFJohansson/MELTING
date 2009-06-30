@@ -1,3 +1,6 @@
+/* R. D. Blake* and Scott G. Delcourt, "Thermodynamic effects of formamide on DNA stability", Nucleic Acids Research, 1996, Vol. 24, No. 11 2095–2103
+ * */
+
 package melting.formamideCorrections;
 
 import java.util.logging.Level;

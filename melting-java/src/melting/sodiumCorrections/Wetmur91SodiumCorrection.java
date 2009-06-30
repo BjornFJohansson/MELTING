@@ -1,3 +1,6 @@
+/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
+	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
+
 package melting.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -9,9 +12,6 @@ import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
 
 public class Wetmur91SodiumCorrection implements CorrectionMethod{
-
-	/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
-	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na / (1.0 + 0.7 * Na)) + 3.83";
 	

@@ -1,13 +1,4 @@
-package melting.approximativeMethods;
-
-import java.util.logging.Level;
-
-import melting.ThermoResult;
-import melting.configuration.OptionManagement;
-
-public class Owen69 extends ApproximativeMode{
-
-	/* Owen RJ, Hill LR, Lapage SP. Determination of DNA base 
+/* Owen RJ, Hill LR, Lapage SP. Determination of DNA base 
 	 * compositions from melting profiles in dilute buffers. Biopolymers 1969;
 	 * 7:503–16.
 	 
@@ -22,6 +13,15 @@ public class Owen69 extends ApproximativeMode{
 	 * Blake RD, Delcourt SG. Thermal stability of DNA. Nucleic Acids
 	 * Res 1998;26:3323–32.
 */
+
+package melting.approximativeMethods;
+
+import java.util.logging.Level;
+
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+
+public class Owen69 extends ApproximativeMode{
 	
 	private static String temperatureEquation = "Tm = 87.16 + 0.345 * percentGC + log10(Na) * (20.17 - 0.066 * percentGC)";
 	

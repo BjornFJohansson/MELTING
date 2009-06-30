@@ -57,12 +57,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
 			
-			if (isPositionIncrementationNecessary(pos2, currentCalculMethod)){
+			//if (isPositionIncrementationNecessary(pos2, currentCalculMethod)){
 				pos1 = pos2 + 1;
-			}
-			else {
-				pos1 = pos2;
-			}
+			//}
+			//else {
+				//pos1 = pos2;
+			//}
 		}
 		double Tm = 0.0;
 		boolean isASaltCorrectionNecessary = true;
@@ -106,13 +106,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		}
 		return this.environment.getResult();
 	}
-	
-	private boolean isPositionIncrementationNecessary(int position, PartialCalculMethod currentMethod){
-		if (this.environment.getSequences().isBasePairEqualsTo('G', 'U', position) && currentMethod != this.cricksMethod && currentMethod != this.wobbleMethod){
-			return false;
-		}
-		return true;
-	}
 
 	public RegisterCalculMethod getRegister() {
 		return register;
@@ -142,23 +135,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		
 		}
 	
-	private int correctFirstPosition(int pos1){
-		if (pos1 > 0){
-			String sequence = environment.getSequences().getSequence();
-			String complementary = environment.getSequences().getComplementary();
-			if (Helper.isComplementaryBasePair(sequence.charAt(pos1 - 1), complementary.charAt(pos1 - 1))){
-				if (pos1 - 2 >= 0){
-					if (environment.getSequences().isModifiedAcidBefore(pos1 - 1) == false){
-						pos1 --;
-
-					}
-				}
-			}
-		}
-		
-		return pos1;
-	}
-	
 	private int [] getPositionsMotif(int pos1){
 		int position = pos1;
 		if (pos1 == 0){
@@ -174,7 +150,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 		if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
-			pos1 = correctFirstPosition(pos1);
 			while (position < environment.getSequences().getDuplexLength() - 1){
 				int testPosition = position + 1;
 				if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition))){
@@ -204,28 +179,14 @@ public class NearestNeighborMode implements CompletCalculMethod{
 						break;
 					}
 				}
-				if (pos1 > 0){
-					if (Helper.isComplementaryBasePair(this.environment.getSequences().getSequence().charAt(pos1 - 1), this.environment.getSequences().getComplementary().charAt(pos1 - 1))){
-						pos1--;
-					}
-				}
-				if (position >= this.environment.getSequences().getDuplexLength() - 1){
-					int [] positions = {pos1, position};
-					return positions;
-				}
-				else if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(position + 1), environment.getSequences().getComplementary().charAt(position + 1)) == false){
-					int [] positions = {pos1, position};
-					return positions;
-				}
-				else{
-					int [] positions = {pos1, position + 1};
-					return positions;
-				}
+				
+				int [] positions = {pos1, position};
+				return positions;
 			}
 			else {
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
-					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false){
+					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false && environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition) == false){
 						position ++;
 						
 					}
@@ -233,31 +194,14 @@ public class NearestNeighborMode implements CompletCalculMethod{
 						break;
 					}
 				}
-					if (environment.getSequences().isBasePairEqualsTo('G', 'U', position)){
-						position --;
-					}
-					else if (environment.getSequences().isModifiedAcidAfter(position)){
+					if (environment.getSequences().isModifiedAcidAfter(position)){
 						pos1 --;
 					}
 					else if (environment.getSequences().isModifiedAcidBefore(position)){
 						position ++;
 					}
-					if (pos1 <= 0 && position == environment.getSequences().getDuplexLength() - 1){
-						int [] positions = {0, position};
-						return positions;
-					}
-					else if (position == environment.getSequences().getDuplexLength() - 1){
-						int [] positions = {pos1 - 1, position};
-						return positions;
-					}
-					else if (pos1 <= 0){
-						int [] positions = {0, position + 1};
-						return positions;
-					}
-					else{
-						int [] positions = {pos1 - 1, position + 1};
-						return positions;
-					}
+					int [] positions = {pos1, position};
+					return positions;
 				}
 			}
 	}
@@ -271,19 +215,19 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				return this.CNGRepeatsMethod;
 			}
 			else if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
-				if (positions[1] - positions[0] + 1 == 2){
+				if (positions[1] - positions[0] + 1 == 1){
 					if (this.singleDanglingEndMethod == null){
 						initializeSingleDanglingEndMethod();
 					}
 					return this.singleDanglingEndMethod;
 				}
-				else if (positions[1] - positions[0] + 1 == 3){
+				else if (positions[1] - positions[0] + 1 == 2){
 					if (this.doubleDanglingEndMethod == null){
 						initializeDoubleDanglingEndMethod();
 					}
 					return this.doubleDanglingEndMethod;
 				}
-				else if (positions[1] - positions[0] + 1 > 3){
+				else if (positions[1] - positions[0] + 1 > 2){
 					if (this.longDanglingEndMethod == null){
 						initializeLongDanglingEndMethod();
 					}
@@ -311,19 +255,19 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			return this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
-			if (positions[1] - positions[0] + 1 == 3){
+			if (positions[1] - positions[0] + 1 == 1){
 				if (this.singleMismatchMethod == null){
 					initializeSingleMismatchMethod();
 				}
 				return this.singleMismatchMethod;
 			}
-			else if (positions[1] - positions[0] + 1 == 4 && this.environment.getSequences().isSequenceGap(positions[0], positions[1])){
+			else if (positions[1] - positions[0] + 1 == 2 && this.environment.getSequences().isGapInSequence(positions[0], positions[1])){
 				if (this.tandemMismatchMethod == null){
 					initializeTandemMismatchMethod();
 				}
 				return this.tandemMismatchMethod;
 			}
-			else if (positions[1] - positions[0] + 1 >= 4){
+			else if (positions[1] - positions[0] + 1 >= 2){
 				if (this.internalLoopMethod == null){
 					initializeInternalLoopMethod();
 				}
@@ -331,13 +275,13 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 		else if (environment.getSequences().isBulgeLoop(positions[0], positions[1])){
-			if (positions[1] - positions[0] + 1 == 3){
+			if (positions[1] - positions[0] + 1 == 1){
 				if (this.singleBulgeLoopMethod == null){
 					initializeSingleBulgeLoopMethod();
 				}
 				return this.singleBulgeLoopMethod;
 			}
-			else if (positions[1] - positions[0] + 1 >= 4){
+			else if (positions[1] - positions[0] + 1 >= 2){
 				if (this.longBulgeLoopMethod == null){
 					initializeLongBulgeLoopMethod();
 				}
@@ -345,9 +289,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 		else if (environment.getSequences().isListedModifiedAcid(positions[0], positions[1])){
-
 			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1]));
-
 			if (acidName != null){
 
 				switch (acidName) {
@@ -514,12 +456,12 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				isApplicableMethod = false;
 			}
 			
-			if (isPositionIncrementationNecessary(pos2, necessaryMethod)){
+			//if (isPositionIncrementationNecessary(pos2, necessaryMethod)){
 				pos1 = pos2 + 1;
-			}
-			else {
-				pos1 = pos2;
-			}
+			//}
+			//else {
+				//pos1 = pos2;
+			//}
 		}
 		return isApplicableMethod;
 	}

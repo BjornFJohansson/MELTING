@@ -1,3 +1,7 @@
+/* Zhi-Jie Tan and Shi-Jie Chen," RNA helix stability in Mixed Na+/Mg2+ solutions", 2007, 
+	 * Biophysical Journal, 92, 3615-3632.
+	 * */
+
 package melting.MixedNaMgCorrections;
 
 import java.util.logging.Level;
@@ -11,10 +15,6 @@ import melting.sodiumCorrections.Tan06SodiumCorrection;
 import melting.sodiumCorrections.Tan07SodiumCorrection;
 
 public class Tan07MixedNaMgCorrection extends EntropyCorrection {
-
-	/* Zhi-Jie Tan and Shi-Jie Chen," RNA helix stability in Mixed Na+/Mg2+ solutions", 2007, 
-	 * Biophysical Journal, 92, 3615-3632.
-	 * */
 	
 	protected static String entropyCorrection = "delta S(Na, Mg) = delta S(Na = 1M) - 3.22 x ((duplexLength - 1) x (x1 x g1 + x2 x g2) + g12)"; 
 	protected static String x1Formula = "x1 = Na / (Na + (8.1 - 32.4 / duplexLength) x (5.2 - ln(Na)) x Mg)";

@@ -52,7 +52,7 @@
 			</bulge>
 			<bulge sequence="ATC/TG">
 				<enthalpy>-4800.0</enthalpy>
-				<entropy>20.0</entropy>
+				<entropy>-20.0</entropy>
 			</bulge>
 			<bulge sequence="ATG/TC">
 				<enthalpy>5600.0</enthalpy>
@@ -95,7 +95,7 @@
 				<entropy>38.5</entropy>
 			</bulge>
 			<bulge sequence="TAT/AA">
-				<enthalpy>-19800.0</enthalpy>
+				<enthalpy>19800.0</enthalpy>
 				<entropy>56.7</entropy>
 			</bulge>
 			<bulge sequence="TAC/AG">
@@ -103,7 +103,7 @@
 				<entropy>-12.7</entropy>
 			</bulge>
 			<bulge sequence="TAG/AC">
-				<enthalpy>1500.0</enthalpy>
+				<enthalpy>15000.0</enthalpy>
 				<entropy>40.4</entropy>
 			</bulge>
 			<bulge sequence="TTA/AT">

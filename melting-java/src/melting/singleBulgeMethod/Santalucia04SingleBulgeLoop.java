@@ -31,6 +31,10 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	@Override
 	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
+		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
@@ -53,6 +57,10 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
 		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		if (this.collector.getNNvalue(NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()), NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary())) == null){
 			OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for " + NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence()) + "/" + NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary()) + " are missing. Check the single bulge loop parameters.");

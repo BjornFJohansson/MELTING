@@ -1,3 +1,12 @@
+/* Marmur J, Doty P, "Determination of the base composition of 
+	 * deoxyribonucleic acid from its thermal denaturation temperature", 
+	 * 1962, Journal of molecular biology, 5, 109-118.
+	 * 
+	 * Chester N, Marshak DR, "dimethyl sulfoxide-mediated primer Tm reduction : 
+	 * a method for analyzing the role of renaturation temperature in the polymerase 
+	 * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
+	 */
+
 package melting.approximativeMethods;
 
 import java.util.HashMap;
@@ -8,15 +17,6 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.NoExistingMethodException;
 
 public class MarmurChester62_93 extends ApproximativeMode{
-
-	/* Marmur J, Doty P, "Determination of the base composition of 
-	 * deoxyribonucleic acid from its thermal denaturation temperature", 
-	 * 1962, Journal of molecular biology, 5, 109-118.
-	 * 
-	 * Chester N, Marshak DR, "dimethyl sulfoxide-mediated primer Tm reduction : 
-	 * a method for analyzing the role of renaturation temperature in the polymerase 
-	 * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
-	 */
 	
 	private double parameter;
 	private String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - parameter / duplexLength.";

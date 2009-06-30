@@ -86,13 +86,13 @@
   			<enthalpy>785.0</enthalpy>
   			<entropy>3.7</entropy>
   		</modified>
-  		<modified   sequence="CL/GG">
+  		<modified   sequence="CLC/GG">
   			<enthalpy>2096.0</enthalpy>
   			<entropy>8.0</entropy>
   		</modified>  		
   		<modified   sequence="AAL/TT">
   			<enthalpy>992.0</enthalpy>
-  			<entropy>74.1</entropy>
+  			<entropy>4.1</entropy>
   		</modified>
   		<modified   sequence="ATL/TA">
   			<enthalpy>1816.0</enthalpy>
