@@ -68,6 +68,7 @@ neighbor model is used.
 		(DNA)
 			ahs01, che93corr (from Ahsen et al. 2001)
 			che93 (from Marmur, Chester and al. 1962, 1993)
+			che93corr (from Ahsen et al. 2001 and Marmur, Chester and al. 1962, 1993)
 			schdot (Marmur-Schildkraut-Doty formula)
 			owe69 (from Owen et al. 1969)
 			san98 (from Santalucia et al. 1998)

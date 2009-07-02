@@ -20,11 +20,14 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
+		if (environment.getMg() == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
 		
-		if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
+		else if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for magnseium concentrations between 0.1M and 0.3M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false){
@@ -40,7 +43,7 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
-		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
+		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
 		
 		return entropy;
 	}
@@ -52,7 +55,7 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 		OptionManagement.meltingLogger.log(Level.FINE, bFormula);
 		
 		double Mg = environment.getMg() - environment.getDNTP();
-		int duplexLength = environment.getSequences().getDuplexLength();
+		double duplexLength = (double)environment.getSequences().getDuplexLength();
 		
 		double square = Math.log(Mg) * Math.log(Mg);
 		double a = -0.6 / duplexLength + 0.025 * Math.log(Mg) + 0.0068 * square;

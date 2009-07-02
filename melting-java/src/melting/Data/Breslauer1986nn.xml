@@ -22,7 +22,7 @@
 
  <!--/******************************************************************************/
     /* contains the parameters for DNA/DNA hybridisation of Breslauer et al.      */
-    /* (1986). Proc Natl Acad Sci USA 83 : 3746-3750                              */
+    /* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 
     /******************************************************************************/-->
     
     <data type="crick">

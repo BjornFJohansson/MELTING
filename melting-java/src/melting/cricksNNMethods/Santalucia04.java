@@ -46,7 +46,7 @@ public class Santalucia04 extends CricksNNMethod {
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
-		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
+		double numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
 		double enthalpy = 0.0;
 		double entropy = 0.0;
 		

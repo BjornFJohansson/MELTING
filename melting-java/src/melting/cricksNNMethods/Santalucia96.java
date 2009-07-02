@@ -49,7 +49,7 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		}
 		double enthalpy = 0.0;
 		double entropy = 0.0;
-		int number5AT = withoutTerminalUnpairedNucleotides.getNumberTerminal5AT();
+		double number5AT = withoutTerminalUnpairedNucleotides.getNumberTerminal5AT();
 		
 		if (number5AT > 0) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");

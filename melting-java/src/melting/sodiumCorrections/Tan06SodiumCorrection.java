@@ -23,11 +23,14 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
+		if (NaEq == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
 		
-		if (NaEq < 0.001 && NaEq > 1){
+		else if (NaEq < 0.001 && NaEq > 1){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Zhi-Jie Tan et al. (2006)" +
 					"is reliable for sodium concentrations between 0.001M and 1M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
@@ -40,7 +43,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	@Override
 	protected double correctEntropy(Environment environment){
 		
-		double entropy = -3.22 * (environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
+		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1.0) * calculateFreeEnergyPerBaseStack(environment);
 		
 		return entropy;
 	}
@@ -68,7 +71,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		double a = -0.07 * Math.log(Na) + 0.012 * square;
 		double b = 0.013 * square;
 		
-		double g = a + b / environment.getSequences().getDuplexLength();
+		double g = a + b / (double)environment.getSequences().getDuplexLength();
 		
 		return g;
 	}

@@ -32,11 +32,14 @@ public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
-		
-		if (NaEq < 0.07 || NaEq > 0.12){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Schildkraut Lifson (1965) is applicable for " +
-					"sodium concentrations between 0.01 and 0.2 M.");
+		if (NaEq == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
+		} 
+		
+		else if (NaEq < 0.07 || NaEq > 0.12){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Schildkraut Lifson (1965) is applicable for " +
+			"sodium concentrations between 0.01 and 0.2 M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){

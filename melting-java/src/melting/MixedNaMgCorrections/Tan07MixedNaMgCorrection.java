@@ -24,17 +24,18 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		
-		if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
+		if (environment.getMg() == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
+		else if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The mixed Na/Mg correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for magnesium concentrations between 0.1M and 0.3M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getNa() < 0 && environment.getNa() > 1){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The mixed Na/Mg correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for sodium concentrations between 0M and 1M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false || environment.getHybridization().equals("dnadna") == false){
@@ -52,7 +53,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 
 		double Na = environment.getNa();
 		double Mg = environment.getMg() - environment.getDNTP();
-		int duplexLength = environment.getSequences().getDuplexLength();
+		double duplexLength = (double)environment.getSequences().getDuplexLength();
 		
 		double x1 = Na / (Na + (8.1 - 32.4 / duplexLength) * (5.2 - Math.log(Na)) * Mg);
 		double x2 = 1 - x1;

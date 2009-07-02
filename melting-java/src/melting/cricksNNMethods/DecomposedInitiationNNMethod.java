@@ -23,9 +23,9 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		if (withoutTerminalUnpairedNucleotides == null){
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
-		int numberTerminalGC = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('G', 'C');
-		int numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
-		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
+		double numberTerminalGC = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('G', 'C');
+		double numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
+		double numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
 		
 		double enthalpy = 0.0;
 		double entropy = 0.0;

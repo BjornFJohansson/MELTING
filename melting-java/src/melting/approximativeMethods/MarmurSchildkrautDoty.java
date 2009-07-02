@@ -37,7 +37,7 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	@Override
 	public ThermoResult calculateThermodynamics() {
 		double Tm = super.calculateThermodynamics().getTm();
-		Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675.0 / this.environment.getSequences().getDuplexLength();
+		Tm = 81.5 + 16.6 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 675.0 / (double)this.environment.getSequences().getDuplexLength();
 
 		this.environment.setResult(Tm);
 		

@@ -35,8 +35,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 					" and unpaired nucleotides.");
 		}
 		
-		if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) <= environment.getSequences().getDuplexLength()){
-			
+		if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) >= environment.getSequences().getDuplexLength()){
 			if (environment.getOptions().get(OptionManagement.globalMethod).equals("def")){
 				isApplicable = false;
 			}

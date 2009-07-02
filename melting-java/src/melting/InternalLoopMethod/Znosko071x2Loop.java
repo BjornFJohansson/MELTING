@@ -41,8 +41,8 @@ public class Znosko071x2Loop extends PartialCalcul {
 
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
-		int numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
-		int numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
+		double numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
+		double numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
 		
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue();
 		

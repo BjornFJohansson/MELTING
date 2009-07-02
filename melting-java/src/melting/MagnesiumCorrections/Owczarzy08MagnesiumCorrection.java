@@ -34,11 +34,14 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
+		if (environment.getMg() == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
 		
-		if (environment.getMg() < 0.0005 || environment.getMg() > 0.6){
+		else if (environment.getMg() < 0.0005 || environment.getMg() > 0.6){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Owczarzy et al. " +
 			"(2008) is accurate in the magnesium concentration range of 0.5mM to 600mM.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
@@ -60,10 +63,10 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 
 		double Mg = environment.getMg() - environment.getDNTP();
 		double square = Math.log(Mg) * Math.log(Mg);
-		double Fgc = environment.getSequences().calculatePercentGC() / 100;
+		double Fgc = environment.getSequences().calculatePercentGC() / 100.0;
 		
-		double TmInverse = 1.0 / environment.getResult().getTm() + this.a +this.b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1.0 / (2.0 * (environment.getSequences().getDuplexLength() - 1.0)) * (this.e + this.f * Math.log(Mg) + this.g * square);
-		return 1.0 / TmInverse;
+		double TmInverse = 1.0 / (environment.getResult().getTm() + 273.15) + this.a +this.b * Math.log(Mg) + Fgc * (this.c + this.d * Math.log(Mg)) + 1.0 / (2.0 * ((double)environment.getSequences().getDuplexLength() - 1.0)) * (this.e + this.f * Math.log(Mg) + this.g * square);
+		return (1.0 / TmInverse) - 273.15;
 	}
 	
 	protected void displayVariable(){

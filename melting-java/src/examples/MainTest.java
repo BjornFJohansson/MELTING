@@ -79,6 +79,24 @@ public class MainTest {
 		}
 	}
 	
+	public static void displayResultsSodium(Properties properties, ArrayList<String> methodNames, String hybridization, String nucleotides, String option){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+
+			String [] coupleValues = pairs.getKey().toString().split("/");
+			System.out.print("\n" + coupleValues[0] + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String [] argsOption = {"-H", hybridization, "-E", "Na=" + coupleValues[1], "-P", nucleotides, "-S", coupleValues[0], option, methodNames.get(i)}; 
+				double Tm = MainTest.getMeltingTest(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
 	public static void displayResultsLongDanglingEnd(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);

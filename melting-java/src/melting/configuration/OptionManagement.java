@@ -573,30 +573,35 @@ public class OptionManagement {
 						optionSet.put(factor, "1");
 					}
 					else if (registerEnvironmentOptions.contains(option)){
-						if (isAValue(value) || option.equals(OptionManagement.sequence) || option.equals(OptionManagement.complementarySequence)){
+						if (option.equals(approximativeMode)){
+							optionSet.put(globalMethod, "A");
+							if (isAValue(value)){
+								optionSet.put(option, value);
+							}
+						}
+						else if (isAValue(value) || option.equals(OptionManagement.sequence) || option.equals(OptionManagement.complementarySequence)){
 
 							optionSet.put(option, value);
-						}
-						else if (option.equals(approximativeMode)){
-							optionSet.put(globalMethod, "A");
 						}
 						else{
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 						}
 					}
 					else if (registerMeltingVariables.contains(option) == false && registerPartialMethods.contains(option)){
-
-						if (isAValue(value)){
-							if (Helper.useOtherDataFile(value) && Helper.getOptionMethodName(value) != ""){
+						if (option.equals(NNMethod)){
+							optionSet.put(globalMethod, "NN");
+							if (isAValue(value)){
+								optionSet.put(option, value);
+							}
+						}
+						else if (isAValue(value)){
+							if (Helper.useOtherDataFile(value) && Helper.getOptionMethodName(value).length() == 0){
 								String newValue = optionSet.get(option) + value;
 								optionSet.put(option, newValue);
 							}
 							else {
 								optionSet.put(option, value);
 							}
-						}
-						else if (option.equals(NNMethod)){
-							optionSet.put(globalMethod, "NN");
 						}
 						else{
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");

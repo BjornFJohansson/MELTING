@@ -21,11 +21,14 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.calculateNaEquivalent(environment);
+		if (NaEq == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
 		
-		if (NaEq < 0.05 || NaEq > 1.1){
+		else if (NaEq < 0.05 || NaEq > 1.1){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Santalucia et al. (1998 - 2004) is only reliable for " +
 					"sodium concentrations between 0.015M and 1.1M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
@@ -36,7 +39,6 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		if (environment.getSequences().getDuplexLength() > 16){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Santalucia et al. (1998 - 2004) begins to break down for " +
 			"DNA duplexes longer than 16 bp.");
-			isApplicable = false;
 		}
 		return isApplicable;
 	}
@@ -48,7 +50,7 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
 		double Na = environment.getNa();
-		double entropy = 0.368 * (environment.getSequences().getDuplexLength() - 1) * Math.log(Na);
+		double entropy = 0.368 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log(Na);
 		
 		return entropy;
 	}
