@@ -32,8 +32,8 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		double entropy = result.getEntropy() + mismatchValue.getEntropy() + NNNeighboringValue.getEntropy();
 		
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
+		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
 		
 		if (numberAU > 0){
 			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");

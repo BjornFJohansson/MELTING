@@ -37,7 +37,7 @@ public class Environment {
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
 		}
-		else if (NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase())){
+		else if (NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase()) && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.complementarySequence).toUpperCase())){
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
 		}

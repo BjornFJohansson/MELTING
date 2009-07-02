@@ -43,7 +43,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
+		double numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		
 		Thermodynamics bulgeLoopValue = this.collector.getBulgeLoopvalue(bulgeSize);
@@ -98,7 +98,7 @@ public class Santalucia04LongBulgeLoop extends PartialCalcul{
 		
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		int numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
+		double numberAT = bulgeLoop.calculateNumberOfTerminal('A', 'T');
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		
 		if (numberAT > 0){

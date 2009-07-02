@@ -14,7 +14,7 @@ import melting.configuration.OptionManagement;
 
 public class Owczarzy04SodiumCorrection22 implements CorrectionMethod {
 	
-	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (4.29 * Fgc - 3.95) x 1 / 100000 x ln(NaEquivalent) + 9.40 x 1 / 1000000 x ln(Na)^2";
+	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (4.29 * Fgc - 3.95) x 1 / 100000 x ln(Na) + 9.40 x 1 / 1000000 x ln(Na)^2";
 
 	public ThermoResult correctMeltingResult(Environment environment) {
 		
@@ -22,12 +22,10 @@ public class Owczarzy04SodiumCorrection22 implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
 		double NaEq = Helper.calculateNaEquivalent(environment);
-		double Fgc = environment.getSequences().calculatePercentGC() / 100;
+		double Fgc = environment.getSequences().calculatePercentGC() / 100.0;
 		double square = Math.log(NaEq) * Math.log(NaEq);
-		
-		double TmInverse = 1 / environment.getResult().getTm() + (4.29 * Fgc - 3.95) * 1 / 100000 * Math.log(NaEq) + 9.40 * 1 / 1000000 * square;
-		environment.setResult(1 / TmInverse);
-		
+		double TmInverse = 1.0 / (environment.getResult().getTm() + 273.15) + (4.29 * Fgc - 3.95) * 1.0 / 100000.0 * Math.log(NaEq) + 9.40 * 1.0 / 1000000.0 * square;
+		environment.setResult((1.0 / TmInverse) - 273.15);
 		return environment.getResult();
 	}
 

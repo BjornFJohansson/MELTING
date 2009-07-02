@@ -30,11 +30,14 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		double NaEq = Helper.calculateNaEquivalent(environment);
+		if (NaEq == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			isApplicable = false;
+		}
 		
-		if (NaEq < 0.1){
+		else if (NaEq < 0.1){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium correction of Santalucia et al. (1996) is not reliable for " +
 					"sodium concentrations inferior to 0.1M.");
-			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){

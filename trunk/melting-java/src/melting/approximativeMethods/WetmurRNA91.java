@@ -13,7 +13,7 @@ public class WetmurRNA91 extends Wetmur91 {
 	public ThermoResult calculateThermodynamics() {
 		double percentGC = this.environment.getSequences().calculatePercentGC();
 		double percentMismatching = this.environment.getSequences().getPercentMismatching();
-		int duplexLength = this.environment.getSequences().getDuplexLength();
+		double duplexLength = (double)this.environment.getSequences().getDuplexLength();
 		double Tm = super.calculateThermodynamics().getTm();
 		
 		Tm = 78.0 + 16.6 * Math.log10(this.environment.getNa() / (1.0 + 0.7 * this.environment.getNa())) + 0.7 * percentGC - 500.0 / duplexLength - percentMismatching;

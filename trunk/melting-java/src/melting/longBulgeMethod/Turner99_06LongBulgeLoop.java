@@ -65,8 +65,8 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		}
 		
 		if (isClosingPenaltyNecessary()){
-			int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
-			int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+			double numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
+			double numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 			if (numberAU > 0){
 				Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 				
@@ -112,8 +112,8 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		pos2 = positions[1];
 		
 		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		int numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
-		int numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+		double numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
+		double numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		
 		if (numberAU > 0){

@@ -25,7 +25,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	public ThermoResult calculateThermodynamics() {
 		double Tm = super.calculateThermodynamics().getTm();
 		
-		Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / this.environment.getSequences().getDuplexLength();
+		Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / (double)this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 		

@@ -39,7 +39,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		int numberIU = inosine.calculateNumberOfTerminal('I', 'U');
+		double numberIU = inosine.calculateNumberOfTerminal('I', 'U');
 		
 		if ((pos1 == 0 || pos2 == sequences.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
@@ -85,7 +85,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		pos2 = positions[1];
 		
 		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		int numberIU = inosine.calculateNumberOfTerminal('I', 'U');
+		double numberIU = inosine.calculateNumberOfTerminal('I', 'U');
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0){
 			if (this.collector.getTerminal("per_I/U") == null){

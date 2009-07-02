@@ -48,7 +48,7 @@ public class Xia98 extends CricksNNMethod {
 			throw new SequenceException("The two sequences can't be hybridized.");
 		}
 		
-		int numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
+		double numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
 		double enthalpy = 0.0;
 		double entropy = 0.0;
 		

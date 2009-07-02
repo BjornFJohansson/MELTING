@@ -42,8 +42,8 @@ public class Turner06mm extends PartialCalcul{
 		Thermodynamics initiationValue = this.collector.getInitiationLoopValue("2");
 		double enthalpy = result.getEnthalpy() + initiationValue.getEnthalpy();
 		double entropy = result.getEntropy() + initiationValue.getEntropy();
-		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
+		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
 		
@@ -115,8 +115,8 @@ public class Turner06mm extends PartialCalcul{
 		pos2 = positions[1];
 		
 		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		int numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		int numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
+		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
 		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
 		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
 		if (this.collector.getInitiationLoopValue("2") == null){
