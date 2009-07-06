@@ -19,7 +19,6 @@ public class DataCollect {
 	}
 	
 	private String getSymetricSequencePairs(String seq1, String seq2){
-		
 		String newSeq1 = NucleotidSequences.getInversedSequence(seq1);
 		String newSeq2 = NucleotidSequences.getInversedSequence(seq2);
 		return newSeq2+"/"+ newSeq1;
@@ -34,18 +33,6 @@ public class DataCollect {
 		sequence1 = newSeq1.replace("T_X", "X_T");
 		String sequence2 = newSeq2.replace("C_X", "X_C");
 		sequence2 = newSeq2.replace("T_X", "X_T");
-		return sequence2+"/"+ sequence1;
-	}
-	
-	private String getSymetricDeoxyadenineSequencePairs(String seq1, String seq2){
-		
-		String newSeq1 = NucleotidSequences.getInversedSequence(seq1);
-		String newSeq2 = NucleotidSequences.getInversedSequence(seq2);
-		
-		String sequence1 = newSeq1.replace("A_", "_A");
-		sequence1 = newSeq1.replace("X_", "_X");
-		String sequence2 = newSeq2.replace("A_", "_A");
-		sequence2 = newSeq2.replace("X_", "_X");
 		return sequence2+"/"+ sequence1;
 	}
 	
@@ -132,33 +119,23 @@ public class DataCollect {
 		else if (seq1.contains("X_C") || seq2.contains("X_C")){
 			typeBase = "cys";
 		}
+		String [] sequences = NucleotidSequences.decodeSequences(seq1, seq2); 
 		
-		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
-		
-		Thermodynamics s = data.get("modified"+ typeBase + sequences.getSequence()+"/"+sequences.getComplementary());
+		Thermodynamics s = data.get("modified"+ typeBase + sequences[0]+"/"+sequences[1]);
 		
 		if (s == null){
-			s = data.get("modified"+ typeBase + getSymetricAzobenzeneSequencePairs(sequences.getSequence(), sequences.getComplementary()));
+			s = data.get("modified"+ typeBase + getSymetricAzobenzeneSequencePairs(sequences[0], sequences[1]));
 		}
 		
 		return s;
 	}
 	
 	public Thermodynamics getLockedAcidValue(String seq1, String seq2){
-		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
+		String [] sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
-		Thermodynamics s = data.get("modified"+sequences.getSequence()+"/"+sequences.getComplementary());
+		Thermodynamics s = data.get("modified"+sequences[0]+"/"+sequences[1]);
 		if (s == null){
-			s = data.get("modified"+getSymetricLockedSequencePairs(sequences.getSequence(), sequences.getComplementary()));
-		}
-		return s;
-	}
-	
-	public Thermodynamics getDeoxyadenosineValue(String seq1, String seq2){
-		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
-		Thermodynamics s = data.get("modified" + sequences.getSequence()+"/"+sequences.getComplementary());
-		if (s == null){
-			s = data.get("modified"+ getSymetricDeoxyadenineSequencePairs(sequences.getSequence(), sequences.getComplementary()));
+			s = data.get("modified"+getSymetricLockedSequencePairs(sequences[0], sequences[1]));
 		}
 		return s;
 	}
@@ -166,17 +143,17 @@ public class DataCollect {
 	public Thermodynamics getHydroxyadenosineValue(String seq1, String seq2){
 		String sens = NucleotidSequences.getSens(seq1, seq2);
 
-		NucleotidSequences sequences = NucleotidSequences.decodeSequences(seq1, seq2);
+		String [] sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
 		if (sens == null){
-			Thermodynamics s = data.get("modified"+sequences.getSequence()+"/"+sequences.getComplementary());
+			Thermodynamics s = data.get("modified"+sequences[0]+"/"+sequences[1]);
 			if (s == null){
-				s = data.get("modified"+getSymetricHydroxyadenineSequencePairs(sequences.getSequence(), sequences.getComplementary()));
+				s = data.get("modified"+getSymetricHydroxyadenineSequencePairs(sequences[0], sequences[1]));
 			}
 			return s;
 		}
 		else {
-			Thermodynamics s = getModifiedvalue(sequences.getSequence(), sequences.getComplementary(), sens);
+			Thermodynamics s = getModifiedvalue(sequences[0], sequences[0], sens);
 			return s;
 		}
 	}

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
+import melting.BasePair;
 import melting.Environment;
 import melting.Helper;
 import melting.MeltingFormatter;
@@ -45,7 +46,6 @@ public class OptionManagement {
 	public static final String hydroxyadenineMethod = "-ha";
 	public static final String azobenzeneMethod = "-azo";
 	public static final String lockedAcidMethod = "-lck";
-	public static final String deoxyadenineMethod = "-deox";
 	public static final String sequence = "-S";
 	public static final String complementarySequence = "-C";
 	public static final String solutioncomposition = "-E";
@@ -105,7 +105,6 @@ public class OptionManagement {
 		registerPartialMethods.add(hydroxyadenineMethod);
 		registerPartialMethods.add(azobenzeneMethod);
 		registerPartialMethods.add(lockedAcidMethod);
-		registerPartialMethods.add(deoxyadenineMethod);
 	}
 	
 	private void initializeRegisterEnvironmentOptions(){
@@ -150,7 +149,6 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "sug01");
 		this.DNADefaultOptions.put(azobenzeneMethod, "asa05");
 		this.DNADefaultOptions.put(lockedAcidMethod, "mct04");
-		this.DNADefaultOptions.put(deoxyadenineMethod, "sug05");
 		this.DNADefaultOptions.put(NaEquivalentMethod, "ahs01");
 
 	}
@@ -384,13 +382,8 @@ public class OptionManagement {
 		}
 		
 		String value = optionSet.get(sequence).toUpperCase();
-
-		NucleotidSequences sequences = new NucleotidSequences(value, "");
-		sequences.initializeModifiedAcidArrayList();
-		sequences.initializeModifiedAcidHashmap();
-		
+		BasePair.initializeNucleicAcidList();
 		if (NucleotidSequences.checkSequence(value)){
-
 			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*")){
 				needComplementaryInput = true;
 			}

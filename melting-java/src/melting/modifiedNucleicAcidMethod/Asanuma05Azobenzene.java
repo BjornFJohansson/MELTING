@@ -57,13 +57,14 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences modified = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
+		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
+		
 		if (environment.getHybridization().equals("dnadna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
 		}
 
-		if (modified.calculateNumberOfTerminal('X', ' ') > 0){
+		if (modified.calculateNumberOfTerminal("X", " ", pos1, pos2) > 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
 			isApplicable = false;
@@ -78,13 +79,14 @@ public class Asanuma05Azobenzene extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		if (this.collector.getAzobenzeneValue(newSequences.getSequence(),newSequences.getComplementary()) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence() + "/" + newSequences.getComplementary()+ 
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
+		if (this.collector.getAzobenzeneValue(newSequences.getSequence(pos1,pos2),newSequences.getComplementary(pos1,pos2)) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2)+ 
 			" are missing. Check the azobenzene parameters.");
 			return true;
 		}
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){

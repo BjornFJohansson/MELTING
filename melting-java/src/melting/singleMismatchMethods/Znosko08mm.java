@@ -30,9 +30,10 @@ public class Znosko08mm extends ZnoskoMethod {
 		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
+
+		NucleotidSequences mismatch = environment.getSequences().getEquivalentSequences("rna");
 		
-		NucleotidSequences mismatch = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2));
-		if (mismatch.calculateNumberOfTerminal('G', 'U') == 0){
+		if (mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2) == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Znosco (2008)" +
 			"are originally established for single mismatches with GU nearest neighbors.");
 			isApplicable = false;
@@ -47,14 +48,14 @@ public class Znosko08mm extends ZnoskoMethod {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Znosco et al. (2008) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 }

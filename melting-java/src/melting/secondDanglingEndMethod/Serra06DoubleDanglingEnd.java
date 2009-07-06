@@ -3,8 +3,10 @@
 
 package melting.secondDanglingEndMethod;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import melting.BasePair;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -30,12 +32,12 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for double dangling end is from Serra et al. (2006) :");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		result = calculateThermodynamicsWithoutSecondDanglingEnd(newSequences, pos1, pos2, result);
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
@@ -80,7 +82,8 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
 		
@@ -114,7 +117,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 			}
 		}
 
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 
 }

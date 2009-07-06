@@ -38,24 +38,24 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop model is from Santalucia (2004) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy);
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEntropy);
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(0), newSequences.getComplementaryNNPair(0));
-		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(newSequences.getDuplexLength() - 2), newSequences.getComplementaryNNPair(newSequences.getDuplexLength() - 2));
+		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos1), newSequences.getComplementaryNNPair(pos1));
+		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos2 - 2), newSequences.getComplementaryNNPair(pos2 - 2));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "Right terminal mismatch : " + sequences.getSequenceNNPair(pos1) + "/" + sequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
-		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + sequences.getSequenceNNPair(pos2 - 1) + "/" + sequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "Right terminal mismatch : " + newSequences.getSequenceNNPair(pos1) + "/" + newSequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + newSequences.getSequenceNNPair(pos2 - 1) + "/" + newSequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
 
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy() + rightMismatch.getEnthalpy() + leftMismatch.getEnthalpy();
 		double entropy = result.getEntropy()  + rightMismatch.getEntropy() + leftMismatch.getEntropy();
 		
-		int loopLength = sequences.calculateLoopLength(pos1, pos2);
+		int loopLength = newSequences.calculateInternalLoopLength(pos1, pos2);
 		Thermodynamics internalLoop = collector.getInternalLoopValue(Integer.toString(loopLength));
 		if (internalLoop != null){
 			OptionManagement.meltingLogger.log(Level.FINE, "Internal loop of" + loopLength + " :  enthalpy = " + internalLoop.getEnthalpy() + "  entropy = " + internalLoop.getEntropy());
@@ -81,7 +81,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 			}		
 		}
 		
-		if (sequences.isAsymetricLoop(pos1, pos2)){
+		if (newSequences.isAsymetricLoop(pos1, pos2)){
 			Thermodynamics asymmetry = collector.getAsymmetry();
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
@@ -118,7 +118,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
-		if (environment.getSequences().calculateLoopLength(pos1, pos2) == 2){
+		if (environment.getSequences().calculateInternalLoopLength(pos1, pos2) == 2){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
 			isApplicable = false;
 		}
@@ -133,18 +133,18 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		
-		if (this.collector.getInternalLoopValue(Integer.toString(sequences.calculateLoopLength(pos1,pos2))) == null){
+		if (this.collector.getInternalLoopValue(Integer.toString(newSequences.calculateInternalLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("30") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for internal loop of 30 are missing. Check the internal loop parameters.");
 
 				return true;
 			}
 		}
-		if (sequences.isAsymetricLoop(pos1, pos2)){
+		if (newSequences.isAsymetricLoop(pos1, pos2)){
 			if (collector.getAsymmetry() == null) {
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for loop asymetry are missing. Check the internal loop parameters.");
 				isMissingParameters = true;

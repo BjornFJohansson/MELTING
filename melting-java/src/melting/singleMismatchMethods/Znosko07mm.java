@@ -1,7 +1,9 @@
 package melting.singleMismatchMethods;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import melting.BasePair;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
@@ -27,14 +29,14 @@ public class Znosko07mm extends ZnoskoMethod {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Znosco et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 
 }

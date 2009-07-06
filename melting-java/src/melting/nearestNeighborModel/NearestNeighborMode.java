@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.logging.Level;
 
 import melting.Environment;
-import melting.Helper;
 import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
 import melting.calculMethodInterfaces.CompletCalculMethod;
@@ -23,7 +22,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 	private RegisterCalculMethod register = new RegisterCalculMethod();
 	private PartialCalculMethod azobenzeneMethod;
 	private PartialCalculMethod CNGRepeatsMethod;
-	private PartialCalculMethod deoxyadenineMethod;
 	private PartialCalculMethod doubleDanglingEndMethod;
 	private PartialCalculMethod hydroxyadenosineMethod;
 	private PartialCalculMethod inosineMethod;
@@ -57,12 +55,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
 			
-			//if (isPositionIncrementationNecessary(pos2, currentCalculMethod)){
 				pos1 = pos2 + 1;
-			//}
-			//else {
-				//pos1 = pos2;
-			//}
 		}
 		double Tm = 0.0;
 		boolean isASaltCorrectionNecessary = true;
@@ -71,9 +64,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			if (this.cricksMethod == null){
 				this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
 			}
-
 			CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
 			ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
+
 			this.environment.setResult(resultinitiation);
 			Tm = calculateMeltingTemperature(this.environment);
 		}
@@ -144,35 +137,25 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 			
-		if (pos1 + 1 < environment.getSequences().getDuplexLength() - 1){
-			if (environment.getSequences().isModifiedAcidAfter(pos1 + 1)){
-				pos1 ++;
-			}
-		}
-		if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(pos1), environment.getSequences().getComplementary().charAt(pos1))){
+		if (environment.getSequences().getDuplex().get(pos1).isComplementaryBasePair()){
 			while (position < environment.getSequences().getDuplexLength() - 1){
 				int testPosition = position + 1;
-				if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition))){
+				if (environment.getSequences().getDuplex().get(testPosition).isComplementaryBasePair()){
 					position ++;
 				}
 				else{
 					break;
 					}
 				}
-			if (position < environment.getSequences().getDuplexLength() - 1){
-				if (environment.getSequences().isModifiedAcidAfter(position + 1)){
-					position --;
-				}
-			}
 			int [] positions = {pos1, position};
 			return positions;
 		}
 			
 		else {
-			if (environment.getSequences().isBasePairEqualsTo('G', 'U', pos1)){
+			if (environment.getSequences().getDuplex().get(pos1).isBasePairEqualTo("G", "U")){
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
-					if (environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition)){
+					if (environment.getSequences().getDuplex().get(testPosition).isBasePairEqualTo("G", "U")){
 						position ++;
 					}
 					else{
@@ -186,7 +169,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			else {
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
-					if (Helper.isComplementaryBasePair(environment.getSequences().getSequence().charAt(testPosition), environment.getSequences().getComplementary().charAt(testPosition)) == false && environment.getSequences().isBasePairEqualsTo('G', 'U', testPosition) == false){
+					if (environment.getSequences().getDuplex().get(testPosition).isBasePairEqualTo("G", "U") == false && environment.getSequences().getDuplex().get(testPosition).isComplementaryBasePair() == false){
 						position ++;
 						
 					}
@@ -194,12 +177,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 						break;
 					}
 				}
-					if (environment.getSequences().isModifiedAcidAfter(position)){
-						pos1 --;
-					}
-					else if (environment.getSequences().isModifiedAcidBefore(position)){
-						position ++;
-					}
 					int [] positions = {pos1, position};
 					return positions;
 				}
@@ -288,8 +265,8 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				return this.longBulgeLoopMethod;
 			}
 		}
-		else if (environment.getSequences().isListedModifiedAcid(positions[0], positions[1])){
-			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getSequence(positions[0], positions[1]), environment.getSequences().getComplementary(positions[0], positions[1]));
+		else if (environment.getSequences().isListedModifiedAcid(positions[0])){
+			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(positions[0]));
 			if (acidName != null){
 
 				switch (acidName) {
@@ -308,11 +285,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 						initializeHydroxyadenosineMethod();
 					}
 					return this.hydroxyadenosineMethod;
-				case L_deoxyadenine:
-					if (this.deoxyadenineMethod == null){
-						initializeDeoxyadenineMethod();
-					}
-					return this.deoxyadenineMethod;
 				case lockedAcidNucleic:
 					if (this.lockedAcidMethod == null){
 						initializeLockedAcidMethod();
@@ -342,12 +314,6 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		String optionName = OptionManagement.CNGMethod;
 		String methodName = this.environment.getOptions().get(optionName);
 		this.CNGRepeatsMethod = initializeMethod(optionName, methodName);
-	}
-	
-	private void initializeDeoxyadenineMethod(){
-		String optionName = OptionManagement.deoxyadenineMethod;
-		String methodName = this.environment.getOptions().get(optionName);
-		this.deoxyadenineMethod = initializeMethod(optionName, methodName);
 	}
 	
 	private void initializeDoubleDanglingEndMethod(){
@@ -455,13 +421,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
 				isApplicableMethod = false;
 			}
-			
-			//if (isPositionIncrementationNecessary(pos2, necessaryMethod)){
 				pos1 = pos2 + 1;
-			//}
-			//else {
-				//pos1 = pos2;
-			//}
 		}
 		return isApplicableMethod;
 	}

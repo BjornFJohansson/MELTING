@@ -32,17 +32,16 @@ public class Znosko071x2Loop extends PartialCalcul {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		NucleotidSequences internalLoop = sequences.getEquivalentSequences("rna");
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The 1 x 2 internal loop model is from Znosco et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(internalLoop.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(internalLoop.getComplementary());
-		double numberAU = internalLoop.calculateNumberOfTerminal('A', 'U');
-		double numberGU = internalLoop.calculateNumberOfTerminal('G', 'U');
+		String [] mismatch = internalLoop.getLoopFistMismatch(pos1);
+		double numberAU = internalLoop.calculateNumberOfTerminal("A", "U", pos1, pos2);
+		double numberGU = internalLoop.calculateNumberOfTerminal("G", "U", pos1, pos2);
 		
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue();
 		
@@ -52,7 +51,7 @@ public class Znosko071x2Loop extends PartialCalcul {
 		double entropy = result.getEntropy() + initiationLoop.getEntropy();
 		
 		Thermodynamics firstMismatch; 
-		if (sequences.isBasePairEqualsTo('G', 'A', pos1 + 1)){
+		if (sequences.getDuplex().get(pos1 + 1).isBasePairEqualTo("G", "A")){
 			if (this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2") == null){
 				firstMismatch = new Thermodynamics(0,0);
 			}
@@ -63,14 +62,14 @@ public class Znosko071x2Loop extends PartialCalcul {
 			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		else {
-			if (this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2") == null){
+			if (this.collector.getFirstMismatch(mismatch[0], mismatch[1], "1x2") == null){
 				firstMismatch = new Thermodynamics(0,0);
 			}
 			else {
-				firstMismatch = this.collector.getFirstMismatch(mismatch1, mismatch2, "1x2");
+				firstMismatch = this.collector.getFirstMismatch(mismatch[0], mismatch[1], "1x2");
 			}
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch " + mismatch1 + "/" + mismatch2 + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch " + mismatch[0] + "/" + mismatch[1] + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		enthalpy += firstMismatch.getEnthalpy();
 		entropy += firstMismatch.getEntropy();
@@ -134,8 +133,8 @@ public class Znosko071x2Loop extends PartialCalcul {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences internalLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2,"rna"), sequences.getComplementary(pos1, pos2, "rna"));
+
+		NucleotidSequences internalLoop = sequences.getEquivalentSequences("rna");
 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		if (this.collector.getInitiationLoopValue() == null){
@@ -144,7 +143,7 @@ public class Znosko071x2Loop extends PartialCalcul {
 			return true;
 		}
 		
-		if (internalLoop.calculateNumberOfTerminal('A', 'U') > 0){
+		if (internalLoop.calculateNumberOfTerminal("A", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
 
@@ -152,7 +151,7 @@ public class Znosko071x2Loop extends PartialCalcul {
 			}
 		}
 		
-		if (internalLoop.calculateNumberOfTerminal('G', 'U') > 0){
+		if (internalLoop.calculateNumberOfTerminal("G", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
 

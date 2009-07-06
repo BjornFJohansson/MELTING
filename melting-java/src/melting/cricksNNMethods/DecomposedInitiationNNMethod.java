@@ -8,7 +8,6 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
-import melting.exceptions.SequenceException;
 
 public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 	
@@ -18,14 +17,11 @@ public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
 		super.calculateInitiationHybridation(environment);
 		
 		NucleotidSequences sequences = environment.getSequences();
-		NucleotidSequences withoutTerminalUnpairedNucleotides = sequences.removeTerminalUnpairedNucleotides();
-		
-		if (withoutTerminalUnpairedNucleotides == null){
-			throw new SequenceException("The two sequences can't be hybridized.");
-		}
-		double numberTerminalGC = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('G', 'C');
-		double numberTerminalAT = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'T');
-		double numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
+		int [] truncatedPositions = sequences.removeTerminalUnpairedNucleotides();
+				
+		double numberTerminalGC = environment.getSequences().calculateNumberOfTerminal("G", "C", truncatedPositions[0], truncatedPositions[1]);
+		double numberTerminalAT = environment.getSequences().calculateNumberOfTerminal("A", "T", truncatedPositions[0], truncatedPositions[1]);
+		double numberTerminalAU = environment.getSequences().calculateNumberOfTerminal("A", "U", truncatedPositions[0], truncatedPositions[1]);
 		
 		double enthalpy = 0.0;
 		double entropy = 0.0;

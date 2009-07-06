@@ -42,7 +42,7 @@ public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 					"(2002) is only established for self-complementary sequences.");
 		}
 		for (int i = pos1; i <= pos2; i++){
-			if (environment.getSequences().isBasePairEqualsTo('A', '-', i) == false){
+			if (environment.getSequences().getDuplex().get(i).isBasePairEqualTo("A", "-") == false){
 				isApplicable = false;
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for long dangling end of Sugimoto et al." +
 				"(2002) is only established for sequences with poly-A dangling ends.");
@@ -54,14 +54,10 @@ public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-
-		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
 		
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the long dangling ends parameters.");
-			return true;			
+			return true;
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}

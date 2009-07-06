@@ -30,28 +30,28 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Turner et al. (1999-2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaH + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		result = super.calculateThermodynamics(newSequences, pos1, pos2, result);
 		
-		String sequenceNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence());
-		String complementaryNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary());
+		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
+
 		Thermodynamics NNValue;
 		
-		if (newSequences.isBasePairEqualsTo('G', 'U', 0) || newSequences.isBasePairEqualsTo('G', 'U', 2)){
-			NNValue = this.collector.getMismatchValue(sequenceNeighbors, complementaryNeighbors);
+		if (newSequences.getDuplex().get(pos1).isBasePairEqualTo("G", "U") || newSequences.getDuplex().get(pos1+2).isBasePairEqualTo("G", "U")){
+			NNValue = this.collector.getMismatchValue(NNNeighbors[0], NNNeighbors[1]);
 		}
 		else{
-			NNValue = this.collector.getNNvalue(sequenceNeighbors, complementaryNeighbors);
+			NNValue = this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]);
 		}
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 
-		OptionManagement.meltingLogger.log(Level.FINE, NucleotidSequences.getSingleBulgeNeighbors(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.getSingleBulgeNeighbors(sequences.getComplementary(pos1, pos2)) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, NNNeighbors[0] + "/" + NNNeighbors[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -66,17 +66,17 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		String sequenceNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getSequence());
-		String complementaryNeighbors = NucleotidSequences.getSingleBulgeNeighbors(newSequences.getComplementary());
-		if (this.collector.getNNvalue(sequenceNeighbors, complementaryNeighbors) == null && this.collector.getMismatchValue(sequenceNeighbors, complementaryNeighbors) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + sequenceNeighbors + "/" + complementaryNeighbors + " are missing. Check the single bulge loop thermodynamic parameters.");
+		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
+
+		if (this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]) == null && this.collector.getMismatchValue(NNNeighbors[0], NNNeighbors[1]) == null){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop thermodynamic parameters.");
 
 			return true;
 		}
 		
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
 	@Override

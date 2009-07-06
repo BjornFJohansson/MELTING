@@ -33,8 +33,8 @@ public class Turner06mm extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences mismatch = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Turner et al. (2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
@@ -42,10 +42,9 @@ public class Turner06mm extends PartialCalcul{
 		Thermodynamics initiationValue = this.collector.getInitiationLoopValue("2");
 		double enthalpy = result.getEnthalpy() + initiationValue.getEnthalpy();
 		double entropy = result.getEntropy() + initiationValue.getEntropy();
-		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
+		double numberAU = mismatch.calculateNumberOfTerminal("A", "U", pos1, pos2);
+		double numberGU = mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2);
+		String [] mismatchAcid = mismatch.getLoopFistMismatch(pos1);
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "initiation loop of 2 : enthalpy = " + initiationValue.getEnthalpy() + "  entropy = " + initiationValue.getEntropy());
 		
@@ -69,7 +68,7 @@ public class Turner06mm extends PartialCalcul{
 			entropy += numberGU * closingGU.getEntropy();
 		}
 		
-		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
+		if (sequences.getDuplex().get(pos1 + 1).isBasePairEqualTo("G", "G")){
 			Thermodynamics GGMismatch = this.collector.getFirstMismatch("G", "G", "1x1");
 			
 			OptionManagement.meltingLogger.log(Level.FINE, " GG mismatch bonus : enthalpy = " + GGMismatch.getEnthalpy() + "  entropy = " + GGMismatch.getEntropy());
@@ -78,7 +77,7 @@ public class Turner06mm extends PartialCalcul{
 			entropy += GGMismatch.getEntropy();
 		}
 		
-		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
+		else if (mismatchAcid[0].equals("RU") && mismatchAcid[1].equals("YU")){
 			Thermodynamics RUMismatch = this.collector.getFirstMismatch("RU", "YU", "1x1");
 			
 			OptionManagement.meltingLogger.log(Level.FINE, " RU mismatch bonus : enthalpy = " + RUMismatch.getEnthalpy() + "  entropy = " + RUMismatch.getEntropy());
@@ -114,11 +113,12 @@ public class Turner06mm extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
-		String mismatch1 = NucleotidSequences.getLoopFistMismatch(mismatch.getSequence());
-		String mismatch2 = NucleotidSequences.getLoopFistMismatch(mismatch.getComplementary());
+		NucleotidSequences mismatch = sequences.getEquivalentSequences("rna");
+		
+		double numberAU = mismatch.calculateNumberOfTerminal("A", "U", pos1, pos2);
+		double numberGU = mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2);
+		String [] mismatchAcid = mismatch.getLoopFistMismatch(pos1);
+		
 		if (this.collector.getInitiationLoopValue("2") == null){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The initiation parameters for a loop of 2 are missing. Check the single mismatch parameters.");
 			return true;
@@ -137,20 +137,20 @@ public class Turner06mm extends PartialCalcul{
 			}
 		}
 		
-		if (sequences.isBasePairEqualsTo('G', 'G', pos1 + 1)){
+		if (sequences.getDuplex().get(pos1 + 1).isBasePairEqualTo("G", "G")){
 			if (this.collector.getFirstMismatch("G", "G", "1x1") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for GG mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
-		else if (mismatch1.equals("RU") && mismatch2.equals("YU")){
+		else if (mismatchAcid[0].equals("RU") && mismatchAcid[1].equals("YU")){
 			if (this.collector.getFirstMismatch("RU", "YU", "1x1") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for RU/YU mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
-		return super.isMissingParameters(mismatch, 0, mismatch.getDuplexLength() - 1);
+		return super.isMissingParameters(mismatch, pos1, pos2);
 	}
 	
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){

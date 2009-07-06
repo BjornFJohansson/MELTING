@@ -12,7 +12,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.exceptions.MethodNotApplicableException;
-import melting.exceptions.SequenceException;
 
 public class Turner06 extends CricksNNMethod {
 	
@@ -74,14 +73,11 @@ public class Turner06 extends CricksNNMethod {
 	
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  environment.getSequences().removeTerminalUnpairedNucleotides();
-
+		int [] truncatedPositions =  environment.getSequences().removeTerminalUnpairedNucleotides();
+		
 		super.calculateInitiationHybridation(environment);
 		
-		if (withoutTerminalUnpairedNucleotides == null){
-			throw new SequenceException("The two sequences can't be hybridized.");
-		}
-		double numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
+		double numberTerminalAU = environment.getSequences().calculateNumberOfTerminal("A", "U", truncatedPositions[0], truncatedPositions[1]);
 		double enthalpy = 0.0;
 		double entropy = 0.0;
 		

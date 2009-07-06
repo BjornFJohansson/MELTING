@@ -32,9 +32,9 @@ public class Turner99_06tanmm extends PartialCalcul{
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for tandem mismatches is from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : ");
 		OptionManagement.meltingLogger.log(Level.FINE,enthalpyFormula + "(entropy formula is similar.)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
@@ -44,11 +44,11 @@ public class Turner99_06tanmm extends PartialCalcul{
 		StringBuffer closing = new StringBuffer();
 	
 		if (sequences.isSymetric(pos1, pos2)){
-			closing.append(newSequences.getSequence().charAt(0));
+			closing.append(newSequences.getSequence(pos1,pos2).charAt(0));
 			closing.append("/");
-			closing.append(newSequences.getComplementary().charAt(0));
+			closing.append(newSequences.getComplementary(pos1,pos2).charAt(0));
 			
-			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(1, newSequences.getDuplexLength() - 2), newSequences.getComplementary(1, newSequences.getDuplexLength() - 2), closing.toString());
+			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(pos1+1, pos2-1), newSequences.getComplementary(pos1+1,pos2-1), closing.toString());
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
@@ -56,13 +56,9 @@ public class Turner99_06tanmm extends PartialCalcul{
 			entropy += mismatchValue.getEntropy();
 		}
 		else {
-			String symetricSequence1 = NucleotidSequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricComplementary1 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricSequence2 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
-			String symetricComplementary2 = NucleotidSequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
-			
-			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
-			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
+
+			NucleotidSequences sequences1 = NucleotidSequences.buildSymetricSequences(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
+			NucleotidSequences sequences2 = NucleotidSequences.buildSymetricSequences(NucleotidSequences.getInversedSequence(newSequences.getComplementary(pos1,pos2)),NucleotidSequences.getInversedSequence(newSequences.getSequence(pos1,pos2)));
 
 			OptionManagement.meltingLogger.log(Level.FINE, "asymmetric tandem mismatches (other formula used): ");
 
@@ -75,14 +71,14 @@ public class Turner99_06tanmm extends PartialCalcul{
 			enthalpy += (result1.getEnthalpy() + result2.getEnthalpy()) / 2;
 			entropy += (result1.getEntropy() + result2.getEntropy()) / 2;
 			
-			if (newSequences.isTandemMismatchGGPenaltyNecessary(1)){
+			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				Thermodynamics penalty1 = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
 				OptionManagement.meltingLogger.log(Level.FINE, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
 				enthalpy += penalty1.getEnthalpy();
 				entropy += penalty1.getEntropy();
 			}
 			
-			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(1)){
+			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(pos1+1)){
 				Thermodynamics penalty2 = this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA");
 				
 				enthalpy += penalty2.getEnthalpy();
@@ -117,24 +113,21 @@ public class Turner99_06tanmm extends PartialCalcul{
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
 
-		if (newSequences.isSymetric(0, newSequences.getDuplexLength() - 1) == false){
-			String symetricSequence1 = NucleotidSequences.buildSymetricSequence(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricComplementary1 = NucleotidSequences.buildSymetricComplementary(newSequences.getSequence(), newSequences.getComplementary());
-			String symetricSequence2 = NucleotidSequences.buildSymetricSequence(NucleotidSequences.getInversedSequence(newSequences.getComplementary()),NucleotidSequences.getInversedSequence(newSequences.getSequence()));
-			String symetricComplementary2 = NucleotidSequences.buildSymetricComplementary(NucleotidSequences.getInversedSequence(newSequences.getComplementary()), NucleotidSequences.getInversedSequence(newSequences.getSequence()));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
+		if (newSequences.isSymetric(pos1,pos2) == false){
 			
-			NucleotidSequences sequences1 = new NucleotidSequences(symetricSequence1, symetricComplementary1);
-			NucleotidSequences sequences2 = new NucleotidSequences(symetricSequence2, symetricComplementary2);
+			NucleotidSequences sequences1 = NucleotidSequences.buildSymetricSequences(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
+			NucleotidSequences sequences2 = NucleotidSequences.buildSymetricSequences(NucleotidSequences.getInversedSequence(newSequences.getComplementary(pos1,pos2)),NucleotidSequences.getInversedSequence(newSequences.getSequence(pos1,pos2)));
+			
 			if (isMissingParameters(sequences1, 0, sequences1.getDuplexLength() - 1)){
 				return true;
 			}
 			if (isMissingParameters(sequences2, 0, sequences2.getDuplexLength() - 1)){
 				return true;
 			}
-			if (newSequences.isTandemMismatchGGPenaltyNecessary(1)){
+			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
 					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
 					return true;
@@ -142,7 +135,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 				
 			}
 			
-			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(1)){
+			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
 					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
 					return true;
@@ -153,17 +146,16 @@ public class Turner99_06tanmm extends PartialCalcul{
 		else{
 			StringBuffer closing = new StringBuffer();
 			
-			closing.append(newSequences.getSequence().charAt(0));
+			closing.append(newSequences.getSequence(pos1,pos2).charAt(0));
 			closing.append("/");
-			closing.append(newSequences.getComplementary().charAt(0));
-			if (this.collector.getMismatchValue(newSequences.getSequence(1, newSequences.getDuplexLength() - 2), newSequences.getComplementary(1, newSequences.getDuplexLength() - 2), closing.toString()) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(1, newSequences.getDuplexLength() - 2) + "and" + newSequences.getComplementary(1, newSequences.getDuplexLength() - 2) + " is missing. Check the tandem mismatch parameters.");
-
+			closing.append(newSequences.getComplementary(pos1,pos2).charAt(0));
+			if (this.collector.getMismatchValue(newSequences.getSequence(pos1+1, pos2-1), newSequences.getComplementary(pos1+1, pos2-1), closing.toString()) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(pos1+1, pos2-1) + "and" + newSequences.getComplementary(pos1+1, pos2-1) + " is missing. Check the tandem mismatch parameters.");
 				return true;
 			}
 		}
 		
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){

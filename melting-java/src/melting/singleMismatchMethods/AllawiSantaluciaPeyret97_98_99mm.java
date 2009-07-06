@@ -6,8 +6,10 @@
 
 package melting.singleMismatchMethods;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import melting.BasePair;
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
@@ -36,14 +38,15 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single mismatches is from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		Thermodynamics mismatchValue;
-		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+		for (int i = pos1; i < pos2; i++){
 			mismatchValue =  collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
 			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
@@ -77,15 +80,15 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-			NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
-		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
+		for (int i = pos1; i < pos2; i++){
 			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
 				return true;
 			}
 		}
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){

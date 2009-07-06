@@ -41,16 +41,17 @@ public class Freier86 extends CricksNNMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Freier et al. (1986).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 
 }

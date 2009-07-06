@@ -9,8 +9,8 @@ public class BasePair {
 	private int position;
 	private static ArrayList<String> ExistingNucleicAcids = new ArrayList<String>();
 	
-	public BasePair (){
-		initializeNucleicAcidList();
+	public BasePair (int pos){
+		this.position = pos;
 	}
 	
 	public static void initializeNucleicAcidList(){
@@ -19,14 +19,14 @@ public class BasePair {
 		ExistingNucleicAcids.add("U");
 		ExistingNucleicAcids.add("G");
 		ExistingNucleicAcids.add("C");
+		ExistingNucleicAcids.add("I");
 		ExistingNucleicAcids.add("-");
 		ExistingNucleicAcids.add("A*");
-		ExistingNucleicAcids.add("_A");
-		ExistingNucleicAcids.add("_X");
 		ExistingNucleicAcids.add("AL");
 		ExistingNucleicAcids.add("TL");
 		ExistingNucleicAcids.add("GL");
 		ExistingNucleicAcids.add("CL");
+		ExistingNucleicAcids.add("UL");
 		ExistingNucleicAcids.add("X_C");
 		ExistingNucleicAcids.add("X_T");
 	}
