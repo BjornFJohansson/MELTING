@@ -6,13 +6,14 @@ package melting.singleBulge;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import melting.NucleotidSequences;
+import Sequences.NucleotidSequences;
+
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.longBulge.Turner99_06LongBulgeLoop;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
 public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	
@@ -24,7 +25,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -36,7 +37,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		OptionManagement.meltingLogger.log(Level.FINE, formulaH + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		result = super.computeThermodynamics(newSequences, pos1, pos2, result);
 		
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 
@@ -87,8 +88,8 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		String wobbleName = options.get(OptionManagement.wobbleBaseMethod);
 		
 		RegisterMethods register = new RegisterMethods();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
-		PartialCalculMethod wobbleMethod = register.getPartialCalculMethod(OptionManagement.wobbleBaseMethod, wobbleName);
+		PatternComputationMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		PatternComputationMethod wobbleMethod = register.getPartialCalculMethod(OptionManagement.wobbleBaseMethod, wobbleName);
 
 		NNMethod.initializeFileName(crickName);
 		wobbleMethod.initializeFileName(wobbleName);

@@ -6,17 +6,19 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import Sequences.NucleotidSequences;
+
 import melting.configuration.OptionManagement;
 import melting.exceptions.FileException;
 import melting.exceptions.ThermodynamicParameterError;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
-public abstract class PartialCalcul implements PartialCalculMethod{
+public abstract class PartialCalcul implements PatternComputationMethod{
 
 	protected DataCollect collector = new DataCollect();
 	protected String fileName;
 
-	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public abstract ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
 	public DataCollect getCollector() {

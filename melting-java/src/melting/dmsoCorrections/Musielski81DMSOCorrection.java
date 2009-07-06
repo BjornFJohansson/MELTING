@@ -17,7 +17,7 @@ public class Musielski81DMSOCorrection extends DMSOCorrections {
 	
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.6 * x % DMSO";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Musielski et al.(1981) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		

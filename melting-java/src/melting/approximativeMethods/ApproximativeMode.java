@@ -8,15 +8,15 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.exceptions.NoExistingMethodException;
-import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.SodiumEquivalentMethod;
 
-public class ApproximativeMode implements CompletCalculMethod{
+public class ApproximativeMode implements MeltingComputationMethod{
 	
 	protected Environment environment;
 	protected RegisterMethods register = new RegisterMethods();
 	
-	public ThermoResult calculateThermodynamics() {
+	public ThermoResult computesThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Approximative method : ");
 		
 		return environment.getResult();
@@ -50,7 +50,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 		return true;
 	}
 
-	public void setUpVariable(HashMap<String, String> options) {
+	public void setUpVariables(HashMap<String, String> options) {
 		this.environment = new Environment(options);
 
 		if (isNaEqPossible()){
@@ -58,7 +58,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 				
 				SodiumEquivalentMethod method = this.register.getNaEqMethod(options);
 				if (method != null){
-					environment.setNa(method.getSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
+					environment.setNa(method.computeSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
 				}
 				else{
 					throw new NoExistingMethodException("There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");

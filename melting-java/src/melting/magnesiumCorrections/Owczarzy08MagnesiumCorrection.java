@@ -24,7 +24,7 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	
 	protected static String temperatureCorrection = "1 / Tm(Mg) = 1 / Tm(Na = 1M) + a +b x ln(Mg) + Fgc x (c + d x ln(Mg)) + 1 / (2 x (duplexLength - 1)) x (e + f x ln(Mg) + g x (ln(mg)))^2"; 
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 
 		double Tm = correctTemperature(environment);
 		environment.setResult(Tm);

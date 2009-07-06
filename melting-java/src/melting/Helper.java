@@ -32,7 +32,7 @@ public class Helper {
 				throw new NoExistingMethodException("There is no implemented method to compute the Na equivalent concentration.");
 			}
 			
-			NaEq = method.getSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(),environment.getDNTP());
+			NaEq = method.computeSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(),environment.getDNTP());
 		}
 		
 		return NaEq;

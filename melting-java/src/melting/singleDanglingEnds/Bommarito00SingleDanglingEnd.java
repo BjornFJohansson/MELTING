@@ -3,14 +3,12 @@
 
 package melting.singleDanglingEnds;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import melting.BasePair;
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import Sequences.NucleotidSequences;
 
 public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 	
@@ -38,7 +36,7 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -49,7 +47,7 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighor model for single dangling end is from Bommarito et al. (2000) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override

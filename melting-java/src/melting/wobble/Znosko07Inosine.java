@@ -4,8 +4,9 @@ package melting.wobble;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
@@ -24,7 +25,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -35,7 +36,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Znosco et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = super.calculateThermodynamics(inosine, pos1, pos2, result);
+		result = super.computeThermodynamics(inosine, pos1, pos2, result);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();

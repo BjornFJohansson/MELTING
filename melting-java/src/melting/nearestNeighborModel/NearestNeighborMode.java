@@ -3,8 +3,9 @@ package melting.nearestNeighborModel;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import Sequences.SpecificAcidNames;
+
 import melting.Environment;
-import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
@@ -12,31 +13,31 @@ import melting.cricksPair.CricksNNMethod;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 import melting.exceptions.SequenceException;
-import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
-public class NearestNeighborMode implements CompletCalculMethod{
+public class NearestNeighborMode implements MeltingComputationMethod{
 
 	private Environment environment;
 	private RegisterMethods register = new RegisterMethods();
-	private PartialCalculMethod azobenzeneMethod;
-	private PartialCalculMethod CNGRepeatsMethod;
-	private PartialCalculMethod doubleDanglingEndMethod;
-	private PartialCalculMethod hydroxyadenosineMethod;
-	private PartialCalculMethod inosineMethod;
-	private PartialCalculMethod internalLoopMethod;
-	private PartialCalculMethod lockedAcidMethod;
-	private PartialCalculMethod longBulgeLoopMethod;
-	private PartialCalculMethod longDanglingEndMethod;
-	private PartialCalculMethod cricksMethod;
-	private PartialCalculMethod singleBulgeLoopMethod;
-	private PartialCalculMethod singleDanglingEndMethod;
-	private PartialCalculMethod singleMismatchMethod;
-	private PartialCalculMethod tandemMismatchMethod;
-	private PartialCalculMethod wobbleMethod;
+	private PatternComputationMethod azobenzeneMethod;
+	private PatternComputationMethod CNGRepeatsMethod;
+	private PatternComputationMethod doubleDanglingEndMethod;
+	private PatternComputationMethod hydroxyadenosineMethod;
+	private PatternComputationMethod inosineMethod;
+	private PatternComputationMethod internalLoopMethod;
+	private PatternComputationMethod lockedAcidMethod;
+	private PatternComputationMethod longBulgeLoopMethod;
+	private PatternComputationMethod longDanglingEndMethod;
+	private PatternComputationMethod cricksMethod;
+	private PatternComputationMethod singleBulgeLoopMethod;
+	private PatternComputationMethod singleDanglingEndMethod;
+	private PatternComputationMethod singleMismatchMethod;
+	private PatternComputationMethod tandemMismatchMethod;
+	private PatternComputationMethod wobbleMethod;
 	
-	public ThermoResult calculateThermodynamics() {
+	public ThermoResult computesThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
 
 		analyzeSequence();
@@ -48,11 +49,11 @@ public class NearestNeighborMode implements CompletCalculMethod{
 
 			pos1 = positions[0];
 			pos2 = positions[1];
-			PartialCalculMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
+			PatternComputationMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
-			ThermoResult newResult = currentCalculMethod.calculateThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
+			ThermoResult newResult = currentCalculMethod.computeThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
 			
 				pos1 = pos2 + 1;
@@ -90,7 +91,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			if (saltCorrection == null){
 				throw new NoExistingMethodException("There is no implemented ion correction method.");
 			}
-			this.environment.setResult(saltCorrection.correctMeltingResult(this.environment));
+			this.environment.setResult(saltCorrection.correctMeltingResults(this.environment));
 			
 			if (environment.getResult().getSaltIndependentEntropy() > 0){
 				double TmInverse = 1 / this.environment.getResult().getTm() + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
@@ -123,7 +124,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		return isApplicable;
 	}
 
-	public void setUpVariable(HashMap<String, String> options) {
+	public void setUpVariables(HashMap<String, String> options) {
 		this.environment = new Environment(options);
 		
 		}
@@ -183,7 +184,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 	}
 	
-	private PartialCalculMethod getAppropriatePartialCalculMethod(int [] positions){
+	private PatternComputationMethod getAppropriatePartialCalculMethod(int [] positions){
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
 			if (environment.getSequences().isCNGPattern(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
 				if (this.CNGRepeatsMethod == null){
@@ -266,7 +267,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			}
 		}
 		else if (environment.getSequences().isListedModifiedAcid(positions[0])){
-			ModifiedAcidNucleic acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(positions[0]));
+			SpecificAcidNames acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(positions[0]));
 			if (acidName != null){
 
 				switch (acidName) {
@@ -285,7 +286,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 						initializeHydroxyadenosineMethod();
 					}
 					return this.hydroxyadenosineMethod;
-				case lockedAcidNucleic:
+				case lockedNucleicAcid:
 					if (this.lockedAcidMethod == null){
 						initializeLockedAcidMethod();
 					}
@@ -389,9 +390,9 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		String methodName = this.environment.getOptions().get(optionName);
 		this.wobbleMethod = initializeMethod(optionName, methodName);
 	}
-	private PartialCalculMethod initializeMethod(String optionName, String methodName){
+	private PatternComputationMethod initializeMethod(String optionName, String methodName){
 
-		PartialCalculMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
+		PatternComputationMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
 		if (necessaryMethod != null){
 			necessaryMethod.initializeFileName(methodName);
 			necessaryMethod.loadData(environment.getOptions());
@@ -413,7 +414,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 			int [] positions = getPositionsMotif(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
-			PartialCalculMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+			PatternComputationMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}

@@ -26,9 +26,9 @@ public class Owen69 extends ApproximativeMode{
 	private static String temperatureEquation = "Tm = 87.16 + 0.345 * percentGC + log10(Na) * (20.17 - 0.066 * percentGC)";
 	
 	@Override
-	public ThermoResult calculateThermodynamics() {
+	public ThermoResult computesThermodynamics() {
 		double percentGC = this.environment.getSequences().calculatePercentGC();
-		double Tm = super.calculateThermodynamics().getTm(); 
+		double Tm = super.computesThermodynamics().getTm(); 
 		Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
 		
 		this.environment.setResult(Tm);

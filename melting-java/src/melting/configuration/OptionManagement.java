@@ -14,11 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-import melting.BasePair;
+import Sequences.BasePair;
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
 import melting.Helper;
 import melting.MeltingFormatter;
-import melting.NucleotidSequences;
 import melting.exceptions.FileException;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;

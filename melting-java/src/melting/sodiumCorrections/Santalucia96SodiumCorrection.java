@@ -14,7 +14,7 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 12.5 x log10(Na)";
 
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Santalucia et al. (1996) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);

@@ -15,7 +15,7 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na / (1.0 + 0.7 * Na)) + 3.83";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Wetmur. (1991) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);

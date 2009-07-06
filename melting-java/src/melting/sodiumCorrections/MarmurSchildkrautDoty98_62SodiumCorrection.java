@@ -20,7 +20,7 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(Na)";
 
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);

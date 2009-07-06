@@ -2,7 +2,8 @@ package melting.wobble;
 
 import java.util.logging.Level;
 
-import melting.NucleotidSequences;
+import Sequences.NucleotidSequences;
+
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -12,7 +13,7 @@ public abstract class InosineNNMethod extends PartialCalcul{
 	
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 			 
 		double enthalpy = result.getEnthalpy();

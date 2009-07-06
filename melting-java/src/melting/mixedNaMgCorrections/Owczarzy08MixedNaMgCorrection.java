@@ -20,7 +20,7 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 
 	
 	@Override
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
 		double square = Math.log(monovalent) * Math.log(monovalent);

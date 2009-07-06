@@ -2,6 +2,8 @@ package melting;
 
 import java.util.HashMap;
 
+import Sequences.NucleotidSequences;
+
 public class DataCollect {
 	
 	private HashMap<String, Thermodynamics> data = new HashMap<String, Thermodynamics>();

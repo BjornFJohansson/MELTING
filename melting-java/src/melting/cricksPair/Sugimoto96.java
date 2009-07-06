@@ -3,14 +3,12 @@
 
 package melting.cricksPair;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import melting.BasePair;
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import Sequences.NucleotidSequences;
 
 public class Sugimoto96 extends CricksNNMethod {
 		
@@ -36,14 +34,14 @@ public class Sugimoto96 extends CricksNNMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Sugimoto et al (1996).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override

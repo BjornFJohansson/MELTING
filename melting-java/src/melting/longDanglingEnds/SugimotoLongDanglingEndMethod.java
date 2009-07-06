@@ -4,8 +4,9 @@ package melting.longDanglingEnds;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -14,7 +15,7 @@ import melting.configuration.OptionManagement;
 public abstract class SugimotoLongDanglingEndMethod extends PartialCalcul {
 
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The long dangling end model is from Sugimoto et al. (2002). (delta delta H and delta delta S)");

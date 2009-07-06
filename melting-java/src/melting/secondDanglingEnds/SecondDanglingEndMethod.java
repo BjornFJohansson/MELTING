@@ -3,20 +3,21 @@ package melting.secondDanglingEnds;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
 public abstract class SecondDanglingEndMethod extends PartialCalcul {
 
 	
 	@Override
-	public abstract ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public abstract ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result);
 	
 	@Override
@@ -91,7 +92,7 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		
 		String singleDanglingName = options.get(OptionManagement.singleDanglingEndMethod);
 		RegisterMethods register = new RegisterMethods();
-		PartialCalculMethod singleDangling = register.getPartialCalculMethod(OptionManagement.singleDanglingEndMethod, singleDanglingName);
+		PatternComputationMethod singleDangling = register.getPartialCalculMethod(OptionManagement.singleDanglingEndMethod, singleDanglingName);
 		singleDangling.initializeFileName(singleDanglingName);
 
 		String fileDoubleDangling = singleDangling.getDataFileName(singleDanglingName);

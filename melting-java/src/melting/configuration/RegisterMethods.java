@@ -43,9 +43,9 @@ import melting.longDanglingEnds.Sugimoto02RNADanglingEnd;
 import melting.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
 import melting.magnesiumCorrections.Tan06MagnesiumCorrection;
 import melting.magnesiumCorrections.Tan07MagnesiumCorrection;
-import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 import melting.methodInterfaces.SodiumEquivalentMethod;
 import melting.mixedNaMgCorrections.Owczarzy08MixedNaMgCorrection;
 import melting.mixedNaMgCorrections.Tan07MixedNaMgCorrection;
@@ -91,23 +91,23 @@ public class RegisterMethods {
 	
 	private static HashMap<String, Class<? extends SodiumEquivalentMethod>> NaEqMethod = new HashMap<String, Class<? extends SodiumEquivalentMethod>>();
 	private static HashMap<String, Class<? extends ApproximativeMode>> approximativeMethod = new HashMap<String, Class<? extends ApproximativeMode>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> cricksMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends CompletCalculMethod>> completCalculMethod = new HashMap<String, Class<? extends CompletCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> woddleMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> internalLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> singleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> doubleDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> longDangingEndMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> inosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> CNGRepeatsMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> cricksMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends MeltingComputationMethod>> completCalculMethod = new HashMap<String, Class<? extends MeltingComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> woddleMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> internalLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> singleDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> doubleDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> longDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> inosineMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> CNGRepeatsMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, Class<? extends PatternComputationMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	private static HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>>();
 	private static HashMap<String, Class<? extends CorrectionMethod>> ionCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
 	private static HashMap<String, Class<? extends CorrectionMethod>> DMSOCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
 	private static HashMap<String, Class<? extends CorrectionMethod>> formamideCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
@@ -311,17 +311,17 @@ public class RegisterMethods {
 
 	}
 	
-	private HashMap<String , Class<? extends PartialCalculMethod>> getPartialCalculMethodHashMap(String optionName){
+	private HashMap<String , Class<? extends PatternComputationMethod>> getPartialCalculMethodHashMap(String optionName){
 		if (PartialCalculMethods.get(optionName) == null){
 			throw new NoExistingMethodException("No method is implemented for the option " + optionName + ".");
 		}
 		return PartialCalculMethods.get(optionName);
 	}
 	
-	public PartialCalculMethod getPartialCalculMethod(String optionName, String methodName){
+	public PatternComputationMethod getPartialCalculMethod(String optionName, String methodName){
 		
 		if (methodName != null){
-			PartialCalculMethod method;
+			PatternComputationMethod method;
 			try {
 				if (Helper.useOtherDataFile(methodName)){
 					methodName = Helper.getOptionMethodName(methodName);
@@ -445,14 +445,14 @@ public class RegisterMethods {
 		}
 	}
 	
-	public CompletCalculMethod getCompletCalculMethod(HashMap<String, String> optionSet){
+	public MeltingComputationMethod getCompletCalculMethod(HashMap<String, String> optionSet){
 		
 		String methodName = optionSet.get(OptionManagement.globalMethod);
 		if (methodName == null){
 			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.globalMethod + ".");
 		}
 	
-		CompletCalculMethod method = null;
+		MeltingComputationMethod method = null;
 
 			if (completCalculMethod.get(methodName) == null){
 				int thres = Integer.parseInt(optionSet.get(OptionManagement.threshold));
@@ -468,7 +468,7 @@ public class RegisterMethods {
 							throw new NoExistingMethodException("We don't know the method " + methodName);
 						}
 						method = approximativeMethod.get(methodName).newInstance();
-						method.setUpVariable(optionSet);
+						method.setUpVariables(optionSet);
 					} catch (InstantiationException e) {
 						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
 					} catch (IllegalAccessException e) {
@@ -479,7 +479,7 @@ public class RegisterMethods {
 
 					method = new NearestNeighborMode();
 					
-					method.setUpVariable(optionSet);
+					method.setUpVariables(optionSet);
 				}
 			}
 			else if (methodName.equals("A")){
@@ -490,7 +490,7 @@ public class RegisterMethods {
 						throw new NoExistingMethodException("We don't know the method " + methodName);
 					}
 					method = approximativeMethod.get(methodName).newInstance();
-					method.setUpVariable(optionSet);
+					method.setUpVariables(optionSet);
 				} catch (InstantiationException e) {
 					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
 				} catch (IllegalAccessException e) {
@@ -500,7 +500,7 @@ public class RegisterMethods {
 			else {
 				method = new NearestNeighborMode();
 				
-				method.setUpVariable(optionSet);
+				method.setUpVariables(optionSet);
 			}
 			if (method.isApplicable() && method != null) {
 
@@ -539,7 +539,7 @@ public class RegisterMethods {
 				throw new NoExistingMethodException("There is no implemented DMSO correction.");
 			}
 			else if (DMSOCorrection.isApplicable(environment)){
-				environment.setResult(DMSOCorrection.correctMeltingResult(environment));
+				environment.setResult(DMSOCorrection.correctMeltingResults(environment));
 			}
 			else {
 				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
@@ -552,7 +552,7 @@ public class RegisterMethods {
 				throw new NoExistingMethodException("There is no implemented formamide correction.");
 			}
 			else if (formamideCorrection.isApplicable(environment)){
-				environment.setResult(formamideCorrection.correctMeltingResult(environment));
+				environment.setResult(formamideCorrection.correctMeltingResults(environment));
 			}
 			else {
 				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");

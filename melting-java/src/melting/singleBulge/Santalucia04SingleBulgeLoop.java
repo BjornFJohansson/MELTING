@@ -6,13 +6,14 @@ package melting.singleBulge;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import melting.NucleotidSequences;
+import Sequences.NucleotidSequences;
+
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.longBulge.Santalucia04LongBulgeLoop;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
 public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	
@@ -29,7 +30,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -40,7 +41,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		result = super.computeThermodynamics(newSequences, pos1, pos2, result);
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 		
 		Thermodynamics NNValue = this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]);
@@ -80,7 +81,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		
 		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterMethods register = new RegisterMethods();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		PatternComputationMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
 		NNMethod.initializeFileName(crickName);
 
 		String NNfile = NNMethod.getDataFileName(crickName);

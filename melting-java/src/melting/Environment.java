@@ -2,6 +2,8 @@ package melting;
 
 import java.util.HashMap;
 
+import Sequences.NucleotidSequences;
+
 import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
 
@@ -46,7 +48,7 @@ public class Environment {
 		}
 
 		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		this.sequences.initializeModifiedAcidHashmap();
+		NucleotidSequences.initializeModifiedAcidHashmap();
 		
 		this.result = new ThermoResult(0,0,0);
 

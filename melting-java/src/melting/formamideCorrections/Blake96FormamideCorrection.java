@@ -14,7 +14,7 @@ public class Blake96FormamideCorrection implements CorrectionMethod{
 
 	private static String temperatureCorrection = "Tm (x mol formamide) = Tm(0 mole formamide) + (0.453 * Fgc - 2.88) * x mole formamide";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		double Fgc = environment.getSequences().calculatePercentGC() / 100.0;
 		double Tm = environment.getResult().getTm() + (0.453 * Fgc - 2.88) * environment.getFormamide();
 		

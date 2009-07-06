@@ -11,8 +11,8 @@ import melting.configuration.OptionManagement;
 public abstract class Wetmur91 extends ApproximativeMode{
 	
 	@Override
-	public ThermoResult calculateThermodynamics() {
-		ThermoResult result = super.calculateThermodynamics();
+	public ThermoResult computesThermodynamics() {
+		ThermoResult result = super.computesThermodynamics();
 		OptionManagement.meltingLogger.log(Level.FINE, " from Wetmur (1991)");
 		
 		return result;

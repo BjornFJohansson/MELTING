@@ -15,8 +15,8 @@ public class Santalucia98 extends ApproximativeMode{
 	private static String temperatureEquation = "Tm = 77.1 + 11.7 * log10(Na) + 0.41 * PercentGC - 528 / duplexLength.";
 
 	@Override
-	public ThermoResult calculateThermodynamics() {
-		double Tm = super.calculateThermodynamics().getTm(); 
+	public ThermoResult computesThermodynamics() {
+		double Tm = super.computesThermodynamics().getTm(); 
 		Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528.0 / (double)this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);

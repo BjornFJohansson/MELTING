@@ -3,14 +3,12 @@
 
 package melting.singleBulge;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import melting.BasePair;
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import Sequences.NucleotidSequences;
 
 public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	
@@ -39,7 +37,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -50,7 +48,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Serra et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
