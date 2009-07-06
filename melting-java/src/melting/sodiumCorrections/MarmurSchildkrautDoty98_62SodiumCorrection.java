@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.CorrectionMethod;
 
 public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
 	

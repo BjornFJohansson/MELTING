@@ -11,7 +11,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Turner99_06LongBulgeLoop;
 
 public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
@@ -86,18 +85,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		String crickName = options.get(OptionManagement.NNMethod);
 		String wobbleName = options.get(OptionManagement.wobbleBaseMethod);
 		
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
-		PartialCalculMethod wobbleMethod = register.getPartialCalculMethod(OptionManagement.wobbleBaseMethod, wobbleName);
-
-		NNMethod.initializeFileName(crickName);
-		wobbleMethod.initializeFileName(wobbleName);
 		
-		String NNfile = NNMethod.getDataFileName(crickName);
-		String wobbleFile = wobbleMethod.getDataFileName(wobbleName);
-		
-		loadFile(NNfile, this.collector);
-		loadFile(wobbleFile, this.collector);
 	}
 
 }

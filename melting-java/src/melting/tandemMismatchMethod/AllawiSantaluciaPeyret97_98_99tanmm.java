@@ -19,7 +19,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 	
@@ -98,12 +97,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PartialCalcul{
 		super.loadData(options);
 		
 		String singleMismatchName = options.get(OptionManagement.singleMismatchMethod);
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
-		singleMismatch.initializeFileName(singleMismatchName);
-		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);
 		
-		loadFile(fileSingleMismatch, this.collector);
 	}
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){

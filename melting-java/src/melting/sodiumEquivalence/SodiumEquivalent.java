@@ -3,8 +3,8 @@ package melting.sodiumEquivalence;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.SodiumEquivalentMethod;
 
 public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 
