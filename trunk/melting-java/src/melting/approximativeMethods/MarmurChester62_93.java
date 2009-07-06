@@ -22,8 +22,8 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	private String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - parameter / duplexLength.";
 	
 	@Override
-	public ThermoResult calculateThermodynamics() {
-		double Tm = super.calculateThermodynamics().getTm();
+	public ThermoResult computesThermodynamics() {
+		double Tm = super.computesThermodynamics().getTm();
 		
 		Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / (double)this.environment.getSequences().getDuplexLength();
 		
@@ -64,10 +64,10 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	}
 	
 	@Override
-	public void setUpVariable(HashMap<String, String> options) {
+	public void setUpVariables(HashMap<String, String> options) {
 		String method = options.get(OptionManagement.approximativeMode);
 		
-		super.setUpVariable(options);
+		super.setUpVariables(options);
 		if (method.equals("che93corr")){
 			parameter = 535;
 		}

@@ -3,8 +3,9 @@ package melting.longDanglingEnds;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
@@ -34,7 +35,7 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -43,7 +44,7 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override

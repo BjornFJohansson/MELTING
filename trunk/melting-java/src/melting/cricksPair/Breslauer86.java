@@ -5,8 +5,9 @@ package melting.cricksPair;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
@@ -34,14 +35,14 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Breslauer86 et al (1986).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override

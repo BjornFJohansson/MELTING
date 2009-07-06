@@ -16,7 +16,7 @@ public class Owczarzy04SodiumCorrection20 implements CorrectionMethod {
 	
 	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (3.85 x Fgc - 6.18) x 1 / 100000 x ln(Na)";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (20) is from Owczarzy et al. (2004) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);

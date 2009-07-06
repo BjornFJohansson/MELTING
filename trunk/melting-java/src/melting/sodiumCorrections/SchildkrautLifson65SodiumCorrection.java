@@ -16,7 +16,7 @@ public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 
 	private static String temperatureCorrection = "	Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na)";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Schildkraut Lifson. (1965) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);

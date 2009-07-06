@@ -1,10 +1,9 @@
 package melting.singleMismatch;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import melting.BasePair;
-import melting.NucleotidSequences;
+import Sequences.NucleotidSequences;
+
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
@@ -24,7 +23,7 @@ public class Znosko07mm extends ZnoskoMethod {
 	}
 
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -36,7 +35,7 @@ public class Znosko07mm extends ZnoskoMethod {
 		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
 
 }

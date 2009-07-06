@@ -21,7 +21,7 @@ public class FormamideLinearMethod implements CorrectionMethod{
 	
 	private static String temperatureCorrection = "Tm (x % formamide) = Tm(0 % formamide) - 0.65 * x % formamide";
 	
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		double Tm = environment.getResult().getTm() - 0.65 * environment.getFormamide();
 		environment.setResult(Tm);
 		

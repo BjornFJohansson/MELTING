@@ -6,14 +6,15 @@ package melting.InternalLoops;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
 public class Santalucia04InternalLoop extends PartialCalcul{
 	
@@ -32,7 +33,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -161,7 +162,7 @@ public class Santalucia04InternalLoop extends PartialCalcul{
 
 		RegisterMethods register = new RegisterMethods();
 
-		PartialCalculMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
+		PatternComputationMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
 		singleMismatch.initializeFileName(singleMismatchName);
 		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);
 		

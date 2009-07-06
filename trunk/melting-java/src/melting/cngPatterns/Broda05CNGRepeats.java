@@ -5,8 +5,9 @@ package melting.cngPatterns;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -26,7 +27,7 @@ public class Broda05CNGRepeats extends PartialCalcul {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs model : from Broda et al. (2005). \n");

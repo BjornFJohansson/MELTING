@@ -2,7 +2,8 @@ package melting.singleBulge;
 
 import java.util.logging.Level;
 
-import melting.NucleotidSequences;
+import Sequences.NucleotidSequences;
+
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -11,7 +12,7 @@ import melting.configuration.OptionManagement;
 public abstract class GlobalSingleBulgeLoopMethod extends PartialCalcul{
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		Thermodynamics singleBulge = this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
 		double enthalpy = result.getEnthalpy() + singleBulge.getEnthalpy();

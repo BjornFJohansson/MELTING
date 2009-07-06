@@ -7,7 +7,7 @@ import melting.nearestNeighborModel.NearestNeighborMode;
 
 public abstract class EntropyCorrection implements CorrectionMethod{
 
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		double entropy = correctEntropy(environment);
 		environment.addResult(0, entropy);
 		double Tm = NearestNeighborMode.calculateMeltingTemperature(environment);

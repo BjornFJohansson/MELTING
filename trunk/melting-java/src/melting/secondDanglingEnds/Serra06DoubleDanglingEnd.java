@@ -3,14 +3,12 @@
 
 package melting.secondDanglingEnds;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import melting.BasePair;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
+import Sequences.NucleotidSequences;
 
 public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 	
@@ -26,7 +24,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = super.correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];

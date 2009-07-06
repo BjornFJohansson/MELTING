@@ -5,8 +5,9 @@ package melting.cricksPair;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
@@ -26,7 +27,7 @@ public class Sugimoto95 extends CricksNNMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model is  from Sugimoto et al (1995).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);

@@ -18,7 +18,7 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 	
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (7.95 - 3.06 x Fgc) x ln(Na)";
 
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Frank Kamenetskii et al. (1971) : "); 
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);

@@ -5,8 +5,9 @@ package melting.singleMismatch;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -27,7 +28,7 @@ public class Turner06mm extends PartialCalcul{
 		}
 	}
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];

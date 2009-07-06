@@ -13,26 +13,11 @@
  *       EMBL-EBI, neurobiology computational group,                          
 *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-package melting.methodInterfaces;
+package Sequences;
 
-import melting.Environment;
-import melting.ThermoResult;
-
-/** This interface is implemented by classes which contain methods to correct the melting temperature. It can be a temperature correction for ions, formamide, DMSO,...
+/** This enum represents the name of the specific or modified nucleic acid, which can be inosine, locked nucleic acid, hydroxyadenine and azobenzene
  * */
-public interface CorrectionMethod {
+public enum SpecificAcidNames {
 
-	/**
-	 * Check if the environment chosen by the user is a applicable with the correction model.
-	 * @param Environment environment
-	 * @return false if the correction method can't be used with the Environment object. If the environment can make the results less reliable, a warning message will appear.
-	 */
-	public boolean isApplicable(Environment environment);
-	
-	/**
-	 * This method is called to correct the computed melting temperature.
-	 * @param Environment environment
-	 * @return ThermoResult object which contains the corrected results (enthalpy, entropy and melting temperature).
-	 */
-	public ThermoResult correctMeltingResults(Environment environment);
+	inosine, lockedNucleicAcid, hydroxyadenine, azobenzene
 }

@@ -16,8 +16,8 @@ public class Ahsen01 extends ApproximativeMode{
 	private static String temperatureEquation = "Tm = 80.4 + 0.345 * percentGC + log10(Na) * (17.0 - 0.135 * percentGC) - 550 / duplexLength.";
 	
 	@Override
-	public ThermoResult calculateThermodynamics() {
-		double Tm = super.calculateThermodynamics().getTm();
+	public ThermoResult computesThermodynamics() {
+		double Tm = super.computesThermodynamics().getTm();
 		double percentGC = this.environment.getSequences().calculatePercentGC();
 		Tm = 80.4 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (17.0 - 0.135 * percentGC) - 550.0 / (double)this.environment.getSequences().getDuplexLength();
 

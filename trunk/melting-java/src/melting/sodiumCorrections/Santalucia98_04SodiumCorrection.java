@@ -56,10 +56,10 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	}
 	
 	@Override
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		environment.setNa(NaEq);
 		
-		return super.correctMeltingResult(environment);
+		return super.correctMeltingResults(environment);
 	}
 }

@@ -49,7 +49,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	}
 	
 	@Override
-	public ThermoResult correctMeltingResult(Environment environment) {
+	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction from Zhi-Jie Tan et al. (2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
@@ -57,7 +57,7 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		double NaEq = Helper.calculateNaEquivalent(environment);
 		environment.setNa(NaEq);
 		
-		return super.correctMeltingResult(environment);
+		return super.correctMeltingResults(environment);
 	}
 	
 	public static double calculateFreeEnergyPerBaseStack(Environment environment){

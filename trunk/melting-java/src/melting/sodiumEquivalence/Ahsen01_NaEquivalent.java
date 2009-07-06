@@ -15,7 +15,7 @@ public class Ahsen01_NaEquivalent extends SodiumEquivalent{
 	private static double parameter = 3.79;
 	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 3.79 x sqrt(Mg - dNTP);";
 
-	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
+	public double computeSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP) {
 		double NaEq = super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
 		

@@ -5,8 +5,9 @@ package melting.tandemMismatches;
 
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -27,7 +28,7 @@ public class Turner99_06tanmm extends PartialCalcul{
 	}
 
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -65,8 +66,8 @@ public class Turner99_06tanmm extends PartialCalcul{
 			ThermoResult result1 = new ThermoResult(0,0,0);
 			ThermoResult result2 = new ThermoResult(0,0,0);
 			
-			result1 = calculateThermodynamics(sequences1, 0, sequences1.getDuplexLength() - 1, result1);
-			result2 = calculateThermodynamics(sequences2, 0, sequences2.getDuplexLength() - 1, result2);
+			result1 = computeThermodynamics(sequences1, 0, sequences1.getDuplexLength() - 1, result1);
+			result2 = computeThermodynamics(sequences2, 0, sequences2.getDuplexLength() - 1, result2);
 
 			enthalpy += (result1.getEnthalpy() + result2.getEnthalpy()) / 2;
 			entropy += (result1.getEntropy() + result2.getEntropy()) / 2;

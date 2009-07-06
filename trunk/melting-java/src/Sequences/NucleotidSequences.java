@@ -1,26 +1,88 @@
-package melting;
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
+
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+*       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+
+package Sequences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+import melting.configuration.OptionManagement;
 import melting.exceptions.SequenceException;
 
+/** This class represents a pair of nucleic acid sequences. It encodes and decodes them, recognizes patterns 
+ * and provides general purpose sequence manipulation methods. The instance variables are :
+ * ArrayList duplex : an ArrayList containing the sorted BasePair objects.
+ * String sequence : the sequence (5'3') represented by a String.
+ * String complementary : the complementary sequence (3'5') represented by a String.
+ * NucleotidSequences rnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with RNA sequences
+ * NucleotidSequences dnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with DNA sequences
+ * HashMap modifiedAcidNames : a Map which makes a link between the encoded specific nucleic acid in the String and the matching SpecificAcidNames enum value.
+ */
 public class NucleotidSequences {
 
+	/**
+	 * ArrayList duplex : an ArrayList containing the sorted BasePair objects.
+	 */
 	private ArrayList<BasePair> duplex;
+	
+	/**
+	 * String sequence : the sequence (5'3') represented by a String.
+	 */
 	private String sequence;
+	
+	/**
+	 * String complementary : the complementary sequence (3'5') represented by a String.
+	 */
 	private String complementary;
+	
+	/**
+	 * NucleotidSequences rnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with RNA sequences
+	 * This object is initialized when a model for RNA sequences is selected by the user and the hybridisation type is dnadna
+	 */
 	private NucleotidSequences rnaEquivalent;
+	
+	/**
+	 * NucleotidSequences dnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with DNA sequences
+     * This object is initialized when a model for DNA sequences is selected by the user and the hybridisation type is rnarna
+	 */
 	private NucleotidSequences dnaEquivalent;
 	
-	private static HashMap<String, ModifiedAcidNucleic> modifiedAcidNames = new HashMap<String, ModifiedAcidNucleic>();
+	/**
+	 * HashMap modifiedAcidNames : a Map which makes a link between the encoded specific nucleic acid in the String and the matching SpecificAcidNames enum value.
+	 */
+	private static HashMap<String, SpecificAcidNames> modifiedAcidNames = new HashMap<String, SpecificAcidNames>();
 	
+	/**
+	 * Creates a NucleotidSequences object from two String.
+	 * @param String sequence : the sequence (5'3')
+	 * @param String complementary : the complementary sequence (3'5')
+	 */
 	public NucleotidSequences(String sequence, String complementary){
 		this(sequence, complementary, true);
 	}
 	
+	/**
+	 * Creates a NucleotidSequence object from two String. The sequences will be encoded if the boolean
+	 * encode is true.
+	 * @param String sequence : the sequence (5'3')
+	 * @param String complementary : the complementary sequence (3'5')
+	 * @param boolean encode : If the sequences are already encoded, it is false otherwise
+	 * the sequences must be encoded and the boolean encode is true;
+	 */
 	private NucleotidSequences(String sequence, String complementary, boolean encode) {
-		initializeModifiedAcidHashmap();
 		String [] sequences;
 		if (encode) {
 			sequences = encodeSequences(sequence, complementary);
@@ -38,6 +100,13 @@ public class NucleotidSequences {
 		this.duplex = getDuplexFrom(sequences[0], sequences[1]);
 	}
 	
+	/**
+	 * Creates a new NucleotidSequences object from a reference nucleotiDSequences object. The sequences
+	 * are converted in the hybridization type "hybridization type". the rnaEquivalent or dnaEquivalent object
+	 * of the reference NucleotidSequences object are initialized.
+	 * @param String hybridizationType : hybridization type of the duplex.
+	 * @param NucleotidSequences sequences : the reference nucleotidSequences object. 
+	 */
 	protected NucleotidSequences(String hybridizationType, NucleotidSequences sequences){
 		this.sequence = convertSequence(sequences.sequence, hybridizationType);
 		this.complementary = convertSequence(sequences.complementary, hybridizationType);
@@ -51,6 +120,12 @@ public class NucleotidSequences {
 		}
 	}
 	
+	/**
+	 * This method is called when the same NucleotidSequences is required but with the sequences converted in the new
+	 * hybridization type "hybridizationType"
+	 * @param String hybridizationType : the new hybridization type of the sequences
+	 * @return the initialized object rnaEquivalent if the hybridization type is "rna" or the initialized object dnaEquivalent if the hybridization type is "dna"
+	 */
 	public NucleotidSequences getEquivalentSequences(String hybridizationType) {
 		if (hybridizationType.equals("dna")) {
 			if (dnaEquivalent == null){
@@ -67,6 +142,12 @@ public class NucleotidSequences {
 		throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
 	}
 	
+	/**
+	 * This method is called to get the ArrayList duplex of the NucleotidSequences object.
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @return the ArrayList duplex of the NucleotiSequences object.
+	 */
 	public static ArrayList<BasePair> getDuplexFrom(String sequence, String complementary){
 		ArrayList<BasePair> duplex = new ArrayList<BasePair>();
 		int pos = 0;
@@ -78,6 +159,12 @@ public class NucleotidSequences {
 		return duplex;
 	}
 	
+	/**
+	 * This method is called to get the nucleic acid at the position "pos" in the sequence "sequence"
+	 * @param String sequence : represents one of the sequence or a substring of the sequence
+	 * @param int pos : The nucleic acid position in the sequence
+	 * @return String nucleic acid at the position "pos" in the String sequence.
+	 */
 	private static String getNucleicAcid(String sequence, int pos){
 		ArrayList<String> possibleNucleicAcids = new ArrayList<String>();
 		String acid = null;
@@ -105,6 +192,12 @@ public class NucleotidSequences {
 		return acid;
 	}
 	
+	/**
+	 * encodes the complementary String of the object NucleotidSequences
+	 * @param String sequence : the sequence (5'3')
+	 * @param StringBuffer comp : the complementary sequence (3'5') to encode
+	 * @return the encoded complementary String
+	 */
 	private String encodeComplementary(String sequence, StringBuffer comp){
 		int pos = 0;
 		while (pos < sequence.length()){
@@ -133,6 +226,12 @@ public class NucleotidSequences {
 		return comp.toString();
 	}
 	
+	/**
+	 * encodes the sequence String of the object NucleotidSequences
+	 * @param String complementary : the complementary sequence (3'5')
+	 * @param StringBuffer seq : the sequence (5'3') to encode
+	 * @return the encoded sequence String
+	 */
 	private String encodeSequence(String complementary, StringBuffer seq){
 		int pos = 0;
 		
@@ -162,6 +261,12 @@ public class NucleotidSequences {
 		return seq.toString();
 	}
 	
+	/**
+	 * encodes the String sequence and complementary of the NucleotidSequences object.
+	 * @param String sequence : the sequence (5'3')
+	 * @param String complementary : the complementary sequence (3'5')
+	 * @return a String [] object which contains the encoded String sequence and complementary of the NucleotidSequences object
+	 */
 	public String [] encodeSequences(String sequence, String complementary){
 		StringBuffer seq = new StringBuffer();
 		StringBuffer comp = new StringBuffer();
@@ -173,6 +278,12 @@ public class NucleotidSequences {
 		return sequences;
 	}
 	
+	/**
+	 * removes the unnecessary "-" in the String sequence and complementary of the NucleotidSequences object
+	 * @param String sequence : the sequence (5'3')
+	 * @param String complementary : the complementary sequence (3'5')
+	 * @return a String [] object which contains the String sequence and complementary without unnecessary gaps ("-")
+	 */
 	public String [] correctSequences( String sequence, String complementary){
 		StringBuffer correctedSequence = new StringBuffer(sequence.length());
 		StringBuffer correctedComplementary = new StringBuffer(complementary.length());
@@ -190,6 +301,11 @@ public class NucleotidSequences {
 		return sequences;
 	}
 	
+	/**
+	 * decodes the String "sequence".
+	 * @param String sequence
+	 * @return the decoded String "sequence".
+	 */
 	private static String decodeSequence(String sequence){
 		
 		String newSequence = sequence.replaceAll("X_[TC]", "X").replaceAll(" ", "");
@@ -197,6 +313,12 @@ public class NucleotidSequences {
 		return newSequence;
 	}
 	
+	/**
+	 * decodes the String sequence and complementary of the NucleotidSequences object.
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @return a String [] object containing the decoded String sequence and complementary of the NucleotidSequences object.
+	 */
 	public static String [] decodeSequences(String sequence, String complementary){
 		StringBuffer seq = new StringBuffer();
 		StringBuffer comp = new StringBuffer();
@@ -208,6 +330,13 @@ public class NucleotidSequences {
 		return sequences;
 	}
 	
+	/**
+	 * This method is called to get the BasePair object from the String sequence and complementary at the position pos in the duplex 
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @param int pos : position in the sequence where is the base pair.
+	 * @return BasePair object which represents the nucleic acid base pair at the position pos in the duplex
+	 */
 	private static BasePair getBasePair(String sequence, String complementary, int pos){
 		BasePair acid = new BasePair(pos);
 		
@@ -228,17 +357,27 @@ public class NucleotidSequences {
 		return acid;
 	}
 	
+	/**
+	 * initializes the HasMap modifiedAcidNames of the NucleotiSequences class.
+	 */
 	public static void initializeModifiedAcidHashmap(){
-		modifiedAcidNames.put("I", ModifiedAcidNucleic.inosine);
-		modifiedAcidNames.put("AL", ModifiedAcidNucleic.lockedAcidNucleic);
-		modifiedAcidNames.put("TL", ModifiedAcidNucleic.lockedAcidNucleic);
-		modifiedAcidNames.put("CL", ModifiedAcidNucleic.lockedAcidNucleic);
-		modifiedAcidNames.put("GL", ModifiedAcidNucleic.lockedAcidNucleic);
-		modifiedAcidNames.put("A*", ModifiedAcidNucleic.hydroxyadenine);
-		modifiedAcidNames.put("X_C", ModifiedAcidNucleic.azobenzene);
-		modifiedAcidNames.put("X_T", ModifiedAcidNucleic.azobenzene);
+		modifiedAcidNames.put("I", SpecificAcidNames.inosine);
+		modifiedAcidNames.put("AL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("TL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("CL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("GL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("A*", SpecificAcidNames.hydroxyadenine);
+		modifiedAcidNames.put("X_C", SpecificAcidNames.azobenzene);
+		modifiedAcidNames.put("X_T", SpecificAcidNames.azobenzene);
 	}
 	
+	/**
+	 * This method is called when we want to get the complementary String of the NucleotidSequences object with the
+	 * type of hybridization "hybridization".
+	 * @param String sequence
+	 * @param String hybridization : type of hybridization
+	 * @return String which represents the complementary sequence (3'5') with the specified nature.(rna, dna)
+	 */
 	public static String getComplementarySequence(String sequence, String hybridization){
 		StringBuffer complementary = new StringBuffer(sequence.length());
 		for (int i = 0; i < sequence.length(); i++){
@@ -285,12 +424,18 @@ public class NucleotidSequences {
 		return complementary.toString();
 	}
 	
+	/**
+	 * Check if the String sequence is composed of nucleic acids known by MELTING.
+	 * @param String sequence
+	 * @return false if one of the nucleic acids is not known by MELTING. (not registered in the ArrayList existingNucleicAcids of the
+	 * BasePair class).
+	 */
 	public static boolean checkSequence(String sequence){
 		
 		int position = 0;
 		
 		if (sequence.length() == 0){
-			throw new SequenceException("The sequence must be entered with the option -S.");
+			throw new SequenceException("The sequence must be entered with the option " + OptionManagement.sequence);
 		}
 		while (position < sequence.length()){
 			String acid = getNucleicAcid(sequence, position);
@@ -303,10 +448,18 @@ public class NucleotidSequences {
 		return true;
 	}
 	
+	/**
+	 * This method is called to get the length of the ArrayList duplex of the NucleotidSequences object.
+	 * @return int length which represents the length of the nucleic acid duplex.
+	 */
 	public int getDuplexLength(){
 		return duplex.size();
 	}
 	
+	/**
+	 * This method is called
+	 * @return
+	 */
 	public String getSequence() {
 		return getSequence(0, getDuplexLength() - 1);
 	}
@@ -562,7 +715,7 @@ public class NucleotidSequences {
 		return duplex;
 	}
 
-	public static HashMap<String, ModifiedAcidNucleic> getModifiedAcidNames() {
+	public static HashMap<String, SpecificAcidNames> getModifiedAcidNames() {
 		return modifiedAcidNames;
 	}
 
@@ -862,7 +1015,7 @@ public class NucleotidSequences {
 			}
 			else if (pair.getBottomAcid().equals("-")){
 				numberGapComplementary ++;
-				if (pair.isWatsonCrickTopBase() == false){
+				if (pair.isFrequentNucleicAcidTopBase() == false){
 					return false;
 				}
 			}
@@ -890,7 +1043,7 @@ public class NucleotidSequences {
 	
 	public boolean isMismatchPair(int pos){
 		BasePair pair = duplex.get(pos);
-		if (pair.isComplementaryBasePair() == false && pair.isWatsonCrickBottomBase() && pair.isWatsonCrickTopBase()){
+		if (pair.isComplementaryBasePair() == false && pair.isWatsonCrickBottomBase() && pair.isFrequentNucleicAcidTopBase()){
 			return true;
 		}
 		return false;
@@ -906,7 +1059,7 @@ public class NucleotidSequences {
 		for (int i = pos1; i <= pos2; i++){
 			BasePair pair = duplex.get(i);
 			if (isMismatchPair(i) == false){
-				if (pair.isUnpaired() == false || (pair.isUnpaired() && (pair.isWatsonCrickBottomBase() == false && pair.isWatsonCrickTopBase() == false))){
+				if (pair.isUnpaired() == false || (pair.isUnpaired() && (pair.isWatsonCrickBottomBase() == false && pair.isFrequentNucleicAcidTopBase() == false))){
 					return false;
 				}
 				else if (pair.isUnpaired() && pair.getTopAcid().equals("-")){
@@ -944,7 +1097,7 @@ public class NucleotidSequences {
 			}
 			else if (pair.getBottomAcid().equals("-")){
 				numberGapComplementary ++;
-				if (pair.isWatsonCrickTopBase() == false){
+				if (pair.isFrequentNucleicAcidTopBase() == false){
 					return false;
 				}
 			}
@@ -968,8 +1121,8 @@ public class NucleotidSequences {
 		return true;
 	}
 	
-	public ModifiedAcidNucleic getModifiedAcidName(BasePair pair){
-		ModifiedAcidNucleic name;	
+	public SpecificAcidNames getModifiedAcidName(BasePair pair){
+		SpecificAcidNames name;	
 
 		if (pair != null && modifiedAcidNames.containsKey(pair.getTopAcid())){
 			name = modifiedAcidNames.get(pair.getTopAcid());

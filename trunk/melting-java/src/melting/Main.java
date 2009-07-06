@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
 
 public class Main {
@@ -30,8 +30,8 @@ public class Main {
 
 				Environment environment = optionManager.createEnvironment(args);
 				RegisterMethods register = new RegisterMethods();
-				CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
-				ThermoResult results = calculMethod.calculateThermodynamics();
+				MeltingComputationMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
+				ThermoResult results = calculMethod.computesThermodynamics();
 				environment.setResult(results);
 
 				results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);

@@ -6,14 +6,15 @@ package melting.specificAcids;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import Sequences.NucleotidSequences;
+
 import melting.Environment;
-import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.PartialCalculMethod;
+import melting.methodInterfaces.PatternComputationMethod;
 
 public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	
@@ -29,7 +30,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 	}
 	
 	@Override
-	public ThermoResult calculateThermodynamics(NucleotidSequences sequences,
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
@@ -162,7 +163,7 @@ public class Sugimoto01Hydroxyadenine extends PartialCalcul{
 		
 		String crickName = options.get(OptionManagement.NNMethod);
 		RegisterMethods register = new RegisterMethods();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
+		PatternComputationMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
 		NNMethod.initializeFileName(crickName);
 
 		String NNfile = NNMethod.getDataFileName(crickName);
