@@ -10,7 +10,6 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
-import melting.exceptions.SequenceException;
 
 public class Santalucia96 extends GlobalInitiationNNMethod {
 	
@@ -38,18 +37,14 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 
-		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "dna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "dna"));
-		
+		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("dna");
 		super.calculateInitiationHybridation(environment);
 
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
-				
-		if (withoutTerminalUnpairedNucleotides == null){
-			throw new SequenceException("The two sequences can't be hybridized.");
-		}
+		int [] truncatedPositions =  newSequences.removeTerminalUnpairedNucleotides();
+		
 		double enthalpy = 0.0;
 		double entropy = 0.0;
-		double number5AT = withoutTerminalUnpairedNucleotides.getNumberTerminal5AT();
+		double number5AT = newSequences.getNumberTerminal5TA(truncatedPositions[0], truncatedPositions[1]);
 		
 		if (number5AT > 0) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
@@ -58,7 +53,6 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 			enthalpy += number5AT * terminal5AT.getEnthalpy();
 			entropy += number5AT * terminal5AT.getEntropy();
 		}
-		
 		environment.addResult(enthalpy, entropy);
 		return environment.getResult();
 	}
@@ -68,16 +62,17 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Santalucia et al (1996).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+				
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 }

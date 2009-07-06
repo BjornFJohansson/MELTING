@@ -4,8 +4,10 @@
 
 package melting.singleDanglingEndMethod;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import melting.BasePair;
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
@@ -42,12 +44,12 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single dangling end is from Serra et al. (2006, 2008) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
@@ -57,8 +59,9 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 
 }

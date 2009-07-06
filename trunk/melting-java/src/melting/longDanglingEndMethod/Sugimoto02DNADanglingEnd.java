@@ -41,9 +41,9 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
@@ -53,7 +53,8 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 }

@@ -31,9 +31,10 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		double enthalpy = result.getEnthalpy() + mismatchValue.getEnthalpy() + NNNeighboringValue.getEnthalpy();
 		double entropy = result.getEntropy() + mismatchValue.getEntropy() + NNNeighboringValue.getEntropy();
 		
-		NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		double numberAU = mismatch.calculateNumberOfTerminal('A', 'U');
-		double numberGU = mismatch.calculateNumberOfTerminal('G', 'U');
+		NucleotidSequences mismatch = sequences.getEquivalentSequences("rna");
+		
+		double numberAU = mismatch.calculateNumberOfTerminal("A", "U", pos1, pos2);
+		double numberGU = mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2);
 		
 		if (numberAU > 0){
 			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
@@ -77,9 +78,9 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-			NucleotidSequences mismatch = new NucleotidSequences(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-			
-			if (mismatch.calculateNumberOfTerminal('A', 'U') > 0){
+		NucleotidSequences mismatch = sequences.getEquivalentSequences("rna");
+		
+			if (mismatch.calculateNumberOfTerminal("A", "U", pos1, pos2) > 0){
 				if (this.collector.getClosureValue("A", "U") == null){
 				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
 
@@ -87,14 +88,14 @@ public abstract class ZnoskoMethod extends PartialCalcul{
 				}
 			}
 			
-			if (mismatch.calculateNumberOfTerminal('G', 'U') > 0){
+			if (mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2) > 0){
 				if (this.collector.getClosureValue("G", "U") == null){
 					OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
 
 					return true;
 				}
 			}
-		return super.isMissingParameters(mismatch, 0, mismatch.getDuplexLength() - 1);
+		return super.isMissingParameters(mismatch, pos1, pos2);
 	}
 
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){

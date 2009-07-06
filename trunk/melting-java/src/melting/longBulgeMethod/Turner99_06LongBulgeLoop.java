@@ -37,9 +37,9 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
-		
-		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		
+
+		NucleotidSequences bulgeLoop = sequences.getEquivalentSequences("rna");
+				
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop model is from Turner et al. (1999, 2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy + " (entropy formula is similar)");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
@@ -65,8 +65,8 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		}
 		
 		if (isClosingPenaltyNecessary()){
-			double numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
-			double numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+			double numberAU = bulgeLoop.calculateNumberOfTerminal("A", "U", pos1, pos2);
+			double numberGU = bulgeLoop.calculateNumberOfTerminal("G", "U", pos1, pos2);
 			if (numberAU > 0){
 				Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 				
@@ -110,10 +110,11 @@ public class Turner99_06LongBulgeLoop extends PartialCalcul{
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
+
+		NucleotidSequences bulgeLoop = sequences.getEquivalentSequences("rna");
 		
-		NucleotidSequences bulgeLoop = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		double numberAU = bulgeLoop.calculateNumberOfTerminal('A', 'U');
-		double numberGU = bulgeLoop.calculateNumberOfTerminal('G', 'U');
+		double numberAU = bulgeLoop.calculateNumberOfTerminal("A", "U", pos1, pos2);
+		double numberGU = bulgeLoop.calculateNumberOfTerminal("G", "U", pos1, pos2);
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		
 		if (numberAU > 0){

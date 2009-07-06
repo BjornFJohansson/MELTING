@@ -30,16 +30,16 @@ public class Znosko07Inosine extends InosineNNMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences inosine = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Znosco et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		result = super.calculateThermodynamics(inosine, 0, inosine.getDuplexLength() - 1, result);
+		result = super.calculateThermodynamics(inosine, pos1, pos2, result);
 		
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
-		double numberIU = inosine.calculateNumberOfTerminal('I', 'U');
+		double numberIU = inosine.calculateNumberOfTerminal("I", "U", pos1, pos2);
 		
 		if ((pos1 == 0 || pos2 == sequences.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
@@ -57,8 +57,8 @@ public class Znosko07Inosine extends InosineNNMethod {
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
-		NucleotidSequences inosine = new NucleotidSequences(environment.getSequences().getSequence(pos1, pos2, "rna"), environment.getSequences().getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences inosine = environment.getSequences().getEquivalentSequences("rna");
+		
 		if (environment.getHybridization().equals("rnarna") == false) {
 			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
 					"Znosco (2007) are established for RNA sequences.");
@@ -67,7 +67,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
 		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
-			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.isBasePairEqualsTo('I', 'U', i) == false){
+			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.getDuplex().get(i).isBasePairEqualTo("I", "U") == false){
 				isApplicable = false;
 				OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco" +
 						"(2007) are only established for IU base pairs.");
@@ -84,8 +84,9 @@ public class Znosko07Inosine extends InosineNNMethod {
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences inosine = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		double numberIU = inosine.calculateNumberOfTerminal('I', 'U');
+		NucleotidSequences inosine = sequences.getEquivalentSequences("rna");
+		
+		double numberIU = inosine.calculateNumberOfTerminal("I", "U", pos1, pos2);
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0){
 			if (this.collector.getTerminal("per_I/U") == null){

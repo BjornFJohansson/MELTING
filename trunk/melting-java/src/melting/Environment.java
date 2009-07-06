@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
-import melting.exceptions.SequenceException;
 
 public class Environment {
 
@@ -47,15 +46,7 @@ public class Environment {
 		}
 
 		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		this.sequences.initializeModifiedAcidArrayList();
 		this.sequences.initializeModifiedAcidHashmap();
-		this.sequences.correctSequences();
-		this.sequences.encodeSequence();
-		this.sequences.encodeComplementary();
-			
-		if (this.sequences.getSequence().length() != this.sequences.getComplementary().length()){
-			throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
-		}
 		
 		this.result = new ThermoResult(0,0,0);
 

@@ -6,7 +6,6 @@ package melting.wobbleNNMethod;
 import java.util.logging.Level;
 
 import melting.Environment;
-import melting.Helper;
 import melting.NucleotidSequences;
 import melting.PartialCalcul;
 import melting.ThermoResult;
@@ -33,8 +32,8 @@ public class Turner99Wobble extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequence = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-
+		NucleotidSequences newSequence = sequences.getEquivalentSequences("rna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Turner et al. (1999) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
@@ -44,16 +43,16 @@ public class Turner99Wobble extends PartialCalcul{
 		Thermodynamics mismatchValue;
 		String closing = "not_G/C";
 		
-		if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence().equals("GGUC") && newSequence.getComplementary().equals("CUGG")){
+		if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence(pos1,pos2).equals("GGUC") && newSequence.getComplementary(pos1,pos2).equals("CUGG")){
 			closing = "G/C";
-			mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(), newSequence.getComplementary(), closing);
-			OptionManagement.meltingLogger.log(Level.FINE, newSequence.getSequence() + "/" + newSequence.getComplementary() + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(pos1, pos2), newSequence.getComplementary(pos1, pos2), closing);
+			OptionManagement.meltingLogger.log(Level.FINE, newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy(); 
 		}
 		else{
-			for (int i = 0; i < newSequence.getDuplexLength() - 1; i++){
+			for (int i = pos1; i < pos2; i++){
 				if (newSequence.getSequenceNNPair(i).equals("GU") && newSequence.getComplementaryNNPair(i).equals("UG")){
 					mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i), closing);
 				}
@@ -90,18 +89,19 @@ public class Turner99Wobble extends PartialCalcul{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
 		String closing = "not_G/C";
 		
-		if (newSequences.getDuplexLength() - 1 == 4 && newSequences.getSequence().equals("GGUC") && newSequences.getComplementary().equals("CUGG")){
+		if (pos2-pos1 == 4 && newSequences.getSequence(pos1, pos2).equals("GGUC") && newSequences.getComplementary(pos1, pos2).equals("CUGG")){
 			closing = "G/C";
-			if (this.collector.getMismatchValue(newSequences.getSequence(), newSequences.getComplementary(), closing) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for " + newSequences.getSequence() + "/" + newSequences.getComplementary() + " is missing. Check the parameters for wobble base pairs.");
+			if (this.collector.getMismatchValue(newSequences.getSequence(pos1, pos2), newSequences.getComplementary(pos1, pos2), closing) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for " + newSequences.getSequence(pos1, pos2) + "/" + newSequences.getComplementary(pos1, pos2) + " is missing. Check the parameters for wobble base pairs.");
 				return true;
 			}
-			return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+			return super.isMissingParameters(newSequences, pos1, pos2);
 		}
-		for (int i = 0; i < newSequences.getDuplexLength() - 1; i++){
+		for (int i = pos1; i < pos2; i++){
 			if (newSequences.getSequenceNNPair(i).equals("GU") && newSequences.getComplementaryNNPair(i).equals("UG")){
 				if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i), closing) == null){
 					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
@@ -115,18 +115,18 @@ public class Turner99Wobble extends PartialCalcul{
 				}
 			}
 		}
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
 	private int[] correctPositions(int pos1, int pos2, int duplexLength, NucleotidSequences sequences){
 
 		if (pos1 > 0){
-			if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos1 - 1), sequences.getComplementary().charAt(pos1 - 1))){
+			if (sequences.getDuplex().get(pos1 - 1).isComplementaryBasePair()){
 				pos1 --;
 			}
 		}
 		if (pos2 < duplexLength - 1){
-			if (Helper.isComplementaryBasePair(sequences.getSequence().charAt(pos2 + 1), sequences.getComplementary().charAt(pos2 + 1))){
+			if (sequences.getDuplex().get(pos2 + 1).isComplementaryBasePair()){
 				pos2 ++;
 			}
 		}

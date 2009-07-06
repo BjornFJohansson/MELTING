@@ -52,7 +52,6 @@ import melting.longDanglingEndMethod.Sugimoto02RNADanglingEnd;
 import melting.modifiedNucleicAcidMethod.Asanuma05Azobenzene;
 import melting.modifiedNucleicAcidMethod.McTigue04LockedAcid;
 import melting.modifiedNucleicAcidMethod.Sugimoto01Hydroxyadenine;
-import melting.modifiedNucleicAcidMethod.Sugimoto05Deoxyadenosine;
 import melting.nearestNeighborModel.NearestNeighborMode;
 import melting.secondDanglingEndMethod.Serra05DoubleDanglingEnd;
 import melting.secondDanglingEndMethod.Serra06DoubleDanglingEnd;
@@ -108,7 +107,6 @@ public class RegisterCalculMethod {
 	private static HashMap<String, Class<? extends PartialCalculMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, Class<? extends PartialCalculMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, Class<? extends PartialCalculMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
-	private static HashMap<String, Class<? extends PartialCalculMethod>> deoxyadenosineMethod = new HashMap<String, Class<? extends PartialCalculMethod>>();
 	private static HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PartialCalculMethod>>>();
 	private static HashMap<String, Class<? extends CorrectionMethod>> ionCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
 	private static HashMap<String, Class<? extends CorrectionMethod>> DMSOCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
@@ -132,7 +130,6 @@ public class RegisterCalculMethod {
 		initializeCNGRepeatsMethods();
 		initializeInosineMethods();
 		initializeAzobenzeneMethods();
-		initializeDeoxyadenosineMethods();
 		initializeHydroxyadenosineMethods();
 		initializeLockedAcidMethods();
 		
@@ -257,10 +254,6 @@ public class RegisterCalculMethod {
 		hydroxyadenosineMethod.put("sug01", Sugimoto01Hydroxyadenine.class);
 	}
 	
-	private void initializeDeoxyadenosineMethods(){
-		deoxyadenosineMethod.put("sug05", Sugimoto05Deoxyadenosine.class);
-	}
-	
 	private void initializeIonCorrectionMethod(){
 		ionCorrection.put("ahs01", Ahsen01SodiumCorrection.class);
 		ionCorrection.put("kam71", FrankKamenetskii71SodiumCorrection.class);
@@ -302,7 +295,6 @@ public class RegisterCalculMethod {
 	private void initializePartialCalculMethods(){
 		PartialCalculMethods.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
 		PartialCalculMethods.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
-		PartialCalculMethods.put(OptionManagement.deoxyadenineMethod, deoxyadenosineMethod);
 		PartialCalculMethods.put(OptionManagement.doubleDanglingEndMethod, doubleDangingEndMethod);
 		PartialCalculMethods.put(OptionManagement.hydroxyadenineMethod, hydroxyadenosineMethod);
 		PartialCalculMethods.put(OptionManagement.inosineMethod, inosineMethod);

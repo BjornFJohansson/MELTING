@@ -38,16 +38,17 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 			int pos1, int pos2, ThermoResult result) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Breslauer86 et al (1986).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
 		
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+				
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+				
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 }

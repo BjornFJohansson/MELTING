@@ -3,8 +3,10 @@
 
 package melting.wobbleNNMethod;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import melting.BasePair;
 import melting.Environment;
 import melting.NucleotidSequences;
 import melting.ThermoResult;
@@ -42,12 +44,12 @@ public class Santalucia05Inosine extends InosineNNMethod{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
-
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Santalucia et al. (2005) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
@@ -57,9 +59,9 @@ public class Santalucia05Inosine extends InosineNNMethod{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "dna"), sequences.getComplementary(pos1, pos2, "dna"));
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
 }

@@ -27,9 +27,8 @@ public class Main {
 			try {
 				NumberFormat format = NumberFormat.getInstance(); 
 				format.setMaximumFractionDigits(2);
-				
-				Environment environment = optionManager.createEnvironment(args);
 
+				Environment environment = optionManager.createEnvironment(args);
 				RegisterCalculMethod register = new RegisterCalculMethod();
 				CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
 				ThermoResult results = calculMethod.calculateThermodynamics();

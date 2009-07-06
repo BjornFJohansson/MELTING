@@ -10,7 +10,6 @@ import melting.NucleotidSequences;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
-import melting.exceptions.SequenceException;
 
 public class Xia98 extends CricksNNMethod {
 	
@@ -38,17 +37,13 @@ public class Xia98 extends CricksNNMethod {
 	@Override
 	public ThermoResult calculateInitiationHybridation(Environment environment){
 
-		NucleotidSequences newSequences = new NucleotidSequences(environment.getSequences().getSequence(0, environment.getSequences().getDuplexLength() - 1, "rna"), environment.getSequences().getComplementary(0, environment.getSequences().getDuplexLength() - 1, "rna"));
-
+		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("rna");
+		
 		super.calculateInitiationHybridation(environment);
 
-		NucleotidSequences withoutTerminalUnpairedNucleotides =  newSequences.removeTerminalUnpairedNucleotides();
+		int [] truncatedPositions = newSequences.removeTerminalUnpairedNucleotides();
 		
-		if (withoutTerminalUnpairedNucleotides == null){
-			throw new SequenceException("The two sequences can't be hybridized.");
-		}
-		
-		double numberTerminalAU = withoutTerminalUnpairedNucleotides.calculateNumberOfTerminal('A', 'U');
+		double numberTerminalAU = newSequences.calculateNumberOfTerminal("A", "U", truncatedPositions[0], truncatedPositions[1]);
 		double enthalpy = 0.0;
 		double entropy = 0.0;
 		
@@ -72,16 +67,16 @@ public class Xia98 extends CricksNNMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Xia (1998).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		
-		return super.calculateThermodynamics(newSequences, 0, newSequences.getDuplexLength() - 1, result);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+				
+		return super.calculateThermodynamics(newSequences, pos1, pos2, result);
 	}
 	
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		NucleotidSequences newSequences = new NucleotidSequences(sequences.getSequence(pos1, pos2, "rna"), sequences.getComplementary(pos1, pos2, "rna"));
-		return super.isMissingParameters(newSequences, 0, newSequences.getDuplexLength() - 1);
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
+		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 }
