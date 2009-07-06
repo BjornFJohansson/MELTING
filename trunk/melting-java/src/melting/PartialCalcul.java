@@ -6,10 +6,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
 import melting.exceptions.FileException;
 import melting.exceptions.ThermodynamicParameterError;
+import melting.methodInterfaces.PartialCalculMethod;
 
 public abstract class PartialCalcul implements PartialCalculMethod{
 

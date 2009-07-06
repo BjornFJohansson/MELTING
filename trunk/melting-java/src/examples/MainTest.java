@@ -15,9 +15,9 @@ import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
+import melting.configuration.RegisterMethods;
+import melting.methodInterfaces.CompletCalculMethod;
 
 public class MainTest {
 
@@ -46,7 +46,7 @@ public class MainTest {
 			
 			Environment environment = optionManager.createEnvironment(args);
 
-			RegisterCalculMethod register = new RegisterCalculMethod();
+			RegisterMethods register = new RegisterMethods();
 			CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
 			ThermoResult results = calculMethod.calculateThermodynamics();
 			environment.setResult(results);

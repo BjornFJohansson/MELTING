@@ -10,8 +10,8 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.CorrectionMethods.EntropyCorrection;
 import melting.configuration.OptionManagement;
+import melting.correctionMethods.EntropyCorrection;
 
 public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 

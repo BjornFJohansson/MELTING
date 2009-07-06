@@ -11,7 +11,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 import melting.longBulgeMethod.Santalucia04LongBulgeLoop;
 
 public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
@@ -78,14 +77,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	public void loadData(HashMap<String, String> options) {
 		super.loadData(options);
 		
-		String crickName = options.get(OptionManagement.NNMethod);
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
-		NNMethod.initializeFileName(crickName);
-
-		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(NNfile, this.collector);
 	}
 }

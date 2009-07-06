@@ -4,9 +4,9 @@ package melting;
 import java.text.NumberFormat;
 import java.util.logging.Level;
 
-import melting.calculMethodInterfaces.CompletCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
+import melting.configuration.RegisterMethods;
+import melting.methodInterfaces.CompletCalculMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
 
 public class Main {
@@ -29,7 +29,7 @@ public class Main {
 				format.setMaximumFractionDigits(2);
 
 				Environment environment = optionManager.createEnvironment(args);
-				RegisterCalculMethod register = new RegisterCalculMethod();
+				RegisterMethods register = new RegisterMethods();
 				CompletCalculMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
 				ThermoResult results = calculMethod.calculateThermodynamics();
 				environment.setResult(results);

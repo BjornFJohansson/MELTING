@@ -10,8 +10,8 @@ import java.util.logging.Level;
 
 import melting.Environment;
 import melting.Helper;
-import melting.CorrectionMethods.EntropyCorrection;
 import melting.configuration.OptionManagement;
+import melting.correctionMethods.EntropyCorrection;
 
 public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	

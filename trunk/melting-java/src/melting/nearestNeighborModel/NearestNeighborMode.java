@@ -6,20 +6,20 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.ModifiedAcidNucleic;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.CorrectionMethod;
-import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
-import melting.cricksNNMethods.CricksNNMethod;
+import melting.configuration.RegisterMethods;
+import melting.cricksPair.CricksNNMethod;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 import melting.exceptions.SequenceException;
+import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.PartialCalculMethod;
 
 public class NearestNeighborMode implements CompletCalculMethod{
 
 	private Environment environment;
-	private RegisterCalculMethod register = new RegisterCalculMethod();
+	private RegisterMethods register = new RegisterMethods();
 	private PartialCalculMethod azobenzeneMethod;
 	private PartialCalculMethod CNGRepeatsMethod;
 	private PartialCalculMethod doubleDanglingEndMethod;
@@ -100,7 +100,7 @@ public class NearestNeighborMode implements CompletCalculMethod{
 		return this.environment.getResult();
 	}
 
-	public RegisterCalculMethod getRegister() {
+	public RegisterMethods getRegister() {
 		return register;
 	}
 

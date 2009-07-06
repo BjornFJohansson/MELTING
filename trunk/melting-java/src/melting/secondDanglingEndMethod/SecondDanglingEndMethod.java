@@ -10,7 +10,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
 public abstract class SecondDanglingEndMethod extends PartialCalcul {
 
@@ -90,14 +89,9 @@ public abstract class SecondDanglingEndMethod extends PartialCalcul {
 		super.loadData(options);
 		
 		String singleDanglingName = options.get(OptionManagement.singleDanglingEndMethod);
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod singleDangling = register.getPartialCalculMethod(OptionManagement.singleDanglingEndMethod, singleDanglingName);
-		singleDangling.initializeFileName(singleDanglingName);
-
-		String fileDoubleDangling = singleDangling.getDataFileName(singleDanglingName);
 		
 		
-		loadFile(fileDoubleDangling, this.collector);
+		
 	}
 
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){

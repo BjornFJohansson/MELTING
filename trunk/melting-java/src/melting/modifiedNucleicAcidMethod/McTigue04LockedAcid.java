@@ -13,7 +13,6 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.calculMethodInterfaces.PartialCalculMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
 
 public class McTigue04LockedAcid extends PartialCalcul{
 		
@@ -131,14 +130,9 @@ public class McTigue04LockedAcid extends PartialCalcul{
 		super.loadData(options);
 		
 		String crickName = options.get(OptionManagement.NNMethod);
-		RegisterCalculMethod register = new RegisterCalculMethod();
-		PartialCalculMethod NNMethod = register.getPartialCalculMethod(OptionManagement.NNMethod, crickName);
-		NNMethod.initializeFileName(crickName);
 
-		String NNfile = NNMethod.getDataFileName(crickName);
 		
 		
-		loadFile(NNfile, this.collector);
 	}
 	
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){

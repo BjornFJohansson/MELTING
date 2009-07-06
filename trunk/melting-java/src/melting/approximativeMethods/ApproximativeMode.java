@@ -5,16 +5,16 @@ import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.CompletCalculMethod;
-import melting.calculMethodInterfaces.SodiumEquivalentMethod;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterCalculMethod;
+import melting.configuration.RegisterMethods;
 import melting.exceptions.NoExistingMethodException;
+import melting.methodInterfaces.CompletCalculMethod;
+import melting.methodInterfaces.SodiumEquivalentMethod;
 
 public class ApproximativeMode implements CompletCalculMethod{
 	
 	protected Environment environment;
-	protected RegisterCalculMethod register = new RegisterCalculMethod();
+	protected RegisterMethods register = new RegisterMethods();
 	
 	public ThermoResult calculateThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Approximative method : ");
@@ -22,7 +22,7 @@ public class ApproximativeMode implements CompletCalculMethod{
 		return environment.getResult();
 	}
 	
-	public RegisterCalculMethod getRegister() {
+	public RegisterMethods getRegister() {
 		return register;
 	}
 

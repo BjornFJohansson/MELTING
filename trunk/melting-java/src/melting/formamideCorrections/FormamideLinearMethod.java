@@ -14,8 +14,8 @@ import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
-import melting.calculMethodInterfaces.CorrectionMethod;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.CorrectionMethod;
 
 public class FormamideLinearMethod implements CorrectionMethod{
 	
