@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-import Sequences.BasePair;
-import Sequences.NucleotidSequences;
 
 import melting.Environment;
 import melting.Helper;
@@ -23,6 +21,8 @@ import melting.MeltingFormatter;
 import melting.exceptions.FileException;
 import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
+import melting.sequences.BasePair;
+import melting.sequences.NucleotidSequences;
 
 public class OptionManagement {
 	
@@ -69,7 +69,7 @@ public class OptionManagement {
 	private static final ArrayList<String> registerEnvironmentOptions = new ArrayList<String>();
 	
 	private static final String version = "5";
-	public static String dataPathwayValue = "src/melting/Data";
+	public static String dataPathwayValue = "src/Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	
@@ -307,10 +307,10 @@ public class OptionManagement {
 			buffer.close();
 	
 		} catch (FileNotFoundException e) {
-			throw new FileException("The help file doesn't exist. Check if the melting help file is src/melting/help.txt");
+			throw new FileException("The help file doesn't exist. Check if the melting help file is src/melting/help.txt", e);
 		}
 		catch (IOException e) {
-			throw new FileException("The help file can't be read or can't be closed. Check src/melting/help.txt.");
+			throw new FileException("The help file can't be read or can't be closed. Check src/melting/help.txt.", e);
 		}
 		
 	}
@@ -379,7 +379,7 @@ public class OptionManagement {
 			}
 			
 		} catch (NumberFormatException e) {
-			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.");
+			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.", e);
 		}
 		
 		String value = optionSet.get(sequence).toUpperCase();
@@ -418,6 +418,7 @@ public class OptionManagement {
 				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 				optionSet.put(complementarySequence, seq2);
 			}
+
 		}
 		return true;
 	}
@@ -442,7 +443,7 @@ public class OptionManagement {
 					throw new OptionSyntaxError("All the concentrations must be positive.");
 				}
 			} catch (NumberFormatException e) {
-				throw new OptionSyntaxError("All the concentrations must be a numeric value.");
+				throw new OptionSyntaxError("All the concentrations must be a numeric value.", e);
 			}
 		}		
 		return true;
@@ -553,9 +554,9 @@ public class OptionManagement {
 								meltingLogger.addHandler(fileHandler);
 								
 							} catch (SecurityException e) {
-								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile, e);
 							} catch (IOException e) {
-								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile);
+								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile, e);
 							}
 						}
 						else{

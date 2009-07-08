@@ -27,7 +27,7 @@ public class Owen69 extends ApproximativeMode{
 	
 	@Override
 	public ThermoResult computesThermodynamics() {
-		double percentGC = this.environment.getSequences().calculatePercentGC();
+		double percentGC = this.environment.getSequences().computesPercentGC();
 		double Tm = super.computesThermodynamics().getTm(); 
 		Tm = 87.16 + 0.345 * percentGC + Math.log10(this.environment.getNa()) * (20.17 - 0.066 * percentGC);
 		
@@ -43,7 +43,7 @@ public class Owen69 extends ApproximativeMode{
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		
-		if (environment.getSequences().getPercentMismatching() != 0){
+		if (environment.getSequences().computesPercentMismatching() != 0){
 			isApplicable = false;
 		}
 		

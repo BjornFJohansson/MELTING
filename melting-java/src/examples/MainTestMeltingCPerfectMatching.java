@@ -27,23 +27,23 @@ public class MainTestMeltingCPerfectMatching {
 		
 		Properties DNARNASequences = MainTest.loadSequencesTest("src/melting/test/DNARNADuplexes.txt");
 				
-		System.out.print("\n\n Sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
 
 		MainTest.displayResultsMeltingC(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0004");
 		
-		System.out.print("\n\n Sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
 
 		MainTest.displayResultsMeltingCSelfComplementary(DNASelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0001");
 
-		System.out.print("\n\n Sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
 		
 		MainTest.displayResultsMeltingC(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0002");
 
-		System.out.print("\n\n Sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
 		
 		MainTest.displayResultsMeltingCSelfComplementary(RNASelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0001");
 
-		System.out.print("\n\n Sequences \t TmExp \t sug95a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t sug95a.nn \n");
 
 		MainTest.displayResultsMeltingC(DNARNASequences, DNARNAmethods, "rnadna", "1", "0.0001");
 

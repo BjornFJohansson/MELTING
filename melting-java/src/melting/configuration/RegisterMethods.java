@@ -5,9 +5,6 @@ import java.util.HashMap;
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.InternalLoops.Santalucia04InternalLoop;
-import melting.InternalLoops.Turner06InternalLoop;
-import melting.InternalLoops.Znosko071x2Loop;
 import melting.approximativeMethods.Ahsen01;
 import melting.approximativeMethods.ApproximativeMode;
 import melting.approximativeMethods.MarmurChester62_93;
@@ -17,75 +14,78 @@ import melting.approximativeMethods.Santalucia98;
 import melting.approximativeMethods.WetmurDNA91;
 import melting.approximativeMethods.WetmurDNARNA91;
 import melting.approximativeMethods.WetmurRNA91;
-import melting.cngPatterns.Broda05CNGRepeats;
-import melting.cricksPair.AllawiSantalucia97;
-import melting.cricksPair.Breslauer86;
-import melting.cricksPair.Freier86;
-import melting.cricksPair.Santalucia04;
-import melting.cricksPair.Santalucia96;
-import melting.cricksPair.Sugimoto95;
-import melting.cricksPair.Sugimoto96;
-import melting.cricksPair.Tanaka04;
-import melting.cricksPair.Turner06;
-import melting.cricksPair.Xia98;
-import melting.dmsoCorrections.Ahsen01DMSOCorrection;
-import melting.dmsoCorrections.Cullen76DMSOCorrection;
-import melting.dmsoCorrections.Escara80DMSOCorrection;
-import melting.dmsoCorrections.Musielski81DMSOCorrection;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
-import melting.formamideCorrections.Blake96FormamideCorrection;
-import melting.formamideCorrections.FormamideLinearMethod;
-import melting.longBulge.Santalucia04LongBulgeLoop;
-import melting.longBulge.Turner99_06LongBulgeLoop;
-import melting.longDanglingEnds.Sugimoto02DNADanglingEnd;
-import melting.longDanglingEnds.Sugimoto02RNADanglingEnd;
-import melting.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
-import melting.magnesiumCorrections.Tan06MagnesiumCorrection;
-import melting.magnesiumCorrections.Tan07MagnesiumCorrection;
+import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
+import melting.ionCorrection.magnesiumCorrections.Tan06MagnesiumCorrection;
+import melting.ionCorrection.magnesiumCorrections.Tan07MagnesiumCorrection;
+import melting.ionCorrection.mixedNaMgCorrections.Owczarzy08MixedNaMgCorrection;
+import melting.ionCorrection.mixedNaMgCorrections.Tan07MixedNaMgCorrection;
+import melting.ionCorrection.sodiumCorrections.Ahsen01SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.FrankKamenetskii71SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.MarmurSchildkrautDoty98_62SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection19;
+import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection20;
+import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection21;
+import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection22;
+import melting.ionCorrection.sodiumCorrections.Santalucia96SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.Santalucia98_04SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.SchildkrautLifson65SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.Tan06SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.Tan07SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.Wetmur91SodiumCorrection;
+import melting.ionCorrection.sodiumEquivalence.Ahsen01_NaEquivalent;
+import melting.ionCorrection.sodiumEquivalence.Mitsuhashi96NaEquivalent;
+import melting.ionCorrection.sodiumEquivalence.Peyret00_NaEquivalent;
 import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.methodInterfaces.SodiumEquivalentMethod;
-import melting.mixedNaMgCorrections.Owczarzy08MixedNaMgCorrection;
-import melting.mixedNaMgCorrections.Tan07MixedNaMgCorrection;
 import melting.nearestNeighborModel.NearestNeighborMode;
-import melting.secondDanglingEnds.Serra05DoubleDanglingEnd;
-import melting.secondDanglingEnds.Serra06DoubleDanglingEnd;
-import melting.singleBulge.Santalucia04SingleBulgeLoop;
-import melting.singleBulge.Serra07SingleBulgeLoop;
-import melting.singleBulge.Tanaka04SingleBulgeLoop;
-import melting.singleBulge.Turner99_06SingleBulgeLoop;
-import melting.singleDanglingEnds.Bommarito00SingleDanglingEnd;
-import melting.singleDanglingEnds.Serra06_08SingleDanglingEnd;
-import melting.singleMismatch.AllawiSantaluciaPeyret97_98_99mm;
-import melting.singleMismatch.Turner06mm;
-import melting.singleMismatch.Znosko07mm;
-import melting.singleMismatch.Znosko08mm;
-import melting.sodiumCorrections.Ahsen01SodiumCorrection;
-import melting.sodiumCorrections.FrankKamenetskii71SodiumCorrection;
-import melting.sodiumCorrections.MarmurSchildkrautDoty98_62SodiumCorrection;
-import melting.sodiumCorrections.Owczarzy04SodiumCorrection19;
-import melting.sodiumCorrections.Owczarzy04SodiumCorrection20;
-import melting.sodiumCorrections.Owczarzy04SodiumCorrection21;
-import melting.sodiumCorrections.Owczarzy04SodiumCorrection22;
-import melting.sodiumCorrections.Santalucia96SodiumCorrection;
-import melting.sodiumCorrections.Santalucia98_04SodiumCorrection;
-import melting.sodiumCorrections.SchildkrautLifson65SodiumCorrection;
-import melting.sodiumCorrections.Tan06SodiumCorrection;
-import melting.sodiumCorrections.Tan07SodiumCorrection;
-import melting.sodiumCorrections.Wetmur91SodiumCorrection;
-import melting.sodiumEquivalence.Ahsen01_NaEquivalent;
-import melting.sodiumEquivalence.Mitsuhashi96NaEquivalent;
-import melting.sodiumEquivalence.Peyret00_NaEquivalent;
-import melting.specificAcids.Asanuma05Azobenzene;
-import melting.specificAcids.McTigue04LockedAcid;
-import melting.specificAcids.Sugimoto01Hydroxyadenine;
-import melting.tandemMismatches.AllawiSantaluciaPeyret97_98_99tanmm;
-import melting.tandemMismatches.Turner99_06tanmm;
-import melting.wobble.Santalucia05Inosine;
-import melting.wobble.Turner99Wobble;
-import melting.wobble.Znosko07Inosine;
+import melting.otherCorrections.dmsoCorrections.Ahsen01DMSOCorrection;
+import melting.otherCorrections.dmsoCorrections.Cullen76DMSOCorrection;
+import melting.otherCorrections.dmsoCorrections.Escara80DMSOCorrection;
+import melting.otherCorrections.dmsoCorrections.Musielski81DMSOCorrection;
+import melting.otherCorrections.formamideCorrections.Blake96FormamideCorrection;
+import melting.otherCorrections.formamideCorrections.FormamideLinearMethod;
+import melting.patternModels.InternalLoops.Santalucia04InternalLoop;
+import melting.patternModels.InternalLoops.Turner06InternalLoop;
+import melting.patternModels.InternalLoops.Znosko071x2Loop;
+import melting.patternModels.cngPatterns.Broda05CNGRepeats;
+import melting.patternModels.cricksPair.AllawiSantalucia97;
+import melting.patternModels.cricksPair.Breslauer86;
+import melting.patternModels.cricksPair.Freier86;
+import melting.patternModels.cricksPair.Santalucia04;
+import melting.patternModels.cricksPair.Santalucia96;
+import melting.patternModels.cricksPair.Sugimoto95;
+import melting.patternModels.cricksPair.Sugimoto96;
+import melting.patternModels.cricksPair.Tanaka04;
+import melting.patternModels.cricksPair.Turner06;
+import melting.patternModels.cricksPair.Xia98;
+import melting.patternModels.longBulge.Santalucia04LongBulgeLoop;
+import melting.patternModels.longBulge.Turner99_06LongBulgeLoop;
+import melting.patternModels.longDanglingEnds.Sugimoto02DNADanglingEnd;
+import melting.patternModels.longDanglingEnds.Sugimoto02RNADanglingEnd;
+import melting.patternModels.secondDanglingEnds.Serra05DoubleDanglingEnd;
+import melting.patternModels.secondDanglingEnds.Serra06DoubleDanglingEnd;
+import melting.patternModels.singleBulge.Santalucia04SingleBulgeLoop;
+import melting.patternModels.singleBulge.Serra07SingleBulgeLoop;
+import melting.patternModels.singleBulge.Tanaka04SingleBulgeLoop;
+import melting.patternModels.singleBulge.Turner99_06SingleBulgeLoop;
+import melting.patternModels.singleDanglingEnds.Bommarito00SingleDanglingEnd;
+import melting.patternModels.singleDanglingEnds.Serra06_08SingleDanglingEnd;
+import melting.patternModels.singleMismatch.AllawiSantaluciaPeyret97_98_99mm;
+import melting.patternModels.singleMismatch.Turner06mm;
+import melting.patternModels.singleMismatch.Znosko07mm;
+import melting.patternModels.singleMismatch.Znosko08mm;
+import melting.patternModels.specificAcids.Asanuma05Azobenzene;
+import melting.patternModels.specificAcids.McTigue04LockedAcid;
+import melting.patternModels.specificAcids.Sugimoto01Hydroxyadenine;
+import melting.patternModels.tandemMismatches.AllawiSantaluciaPeyret97_98_99tanmm;
+import melting.patternModels.tandemMismatches.Turner99_06tanmm;
+import melting.patternModels.wobble.Santalucia05Inosine;
+import melting.patternModels.wobble.Turner99Wobble;
+import melting.patternModels.wobble.Znosko07Inosine;
 
 public class RegisterMethods {
 	
@@ -333,9 +333,9 @@ public class RegisterMethods {
 				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
 				return method;
 			} catch (InstantiationException e) {
-				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName);
+				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName, e);
 			} catch (IllegalAccessException e) {
-				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName);
+				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName, e);
 			}
 		}
 		return null;
@@ -360,9 +360,9 @@ public class RegisterMethods {
 				throw new MethodNotApplicableException("The sodium equivalent method (option " + OptionManagement.NaEquivalentMethod + ") is not applicable with this environment.");
 			}
 		} catch (InstantiationException e) {
-			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod);
+			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
 		} catch (IllegalAccessException e) {
-			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod);
+			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
 		}
 	}
 	
@@ -386,9 +386,9 @@ public class RegisterMethods {
 					throw new MethodNotApplicableException("The ion correction method (option " + OptionManagement.ionCorrection + ") is not applicable with this environment.");
 				}
 			} catch (InstantiationException e) {
-				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
+				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 			} catch (IllegalAccessException e) {
-				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
+				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 			}
 		}
 		else{
@@ -470,9 +470,9 @@ public class RegisterMethods {
 						method = approximativeMethod.get(methodName).newInstance();
 						method.setUpVariables(optionSet);
 					} catch (InstantiationException e) {
-						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 					} catch (IllegalAccessException e) {
-						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 					}
 				}
 				else {
@@ -492,9 +492,9 @@ public class RegisterMethods {
 					method = approximativeMethod.get(methodName).newInstance();
 					method.setUpVariables(optionSet);
 				} catch (InstantiationException e) {
-					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 				} catch (IllegalAccessException e) {
-					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode);
+					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 				}
 			}
 			else {
@@ -525,9 +525,9 @@ public class RegisterMethods {
 			return method;
 			
 		} catch (InstantiationException e) {
-			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
+			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 		} catch (IllegalAccessException e) {
-			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection);
+			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 		}
 	}
 	

@@ -29,7 +29,7 @@ public class ApproximativeMode implements MeltingComputationMethod{
 	public boolean isApplicable() {
 		boolean isApplicable = true;
 		
-		if (environment.getSequences().getPercentMismatching() != 0){
+		if (environment.getSequences().computesPercentMismatching() != 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The approximative mode formulas" +
 					"cannot properly account for the presence of mismatches" +
 					" and unpaired nucleotides.");

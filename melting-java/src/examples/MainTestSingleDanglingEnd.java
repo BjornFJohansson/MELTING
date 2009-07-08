@@ -11,7 +11,7 @@ public class MainTestSingleDanglingEnd {
 		
 		Properties DNASingleDanglingEnd = MainTest.loadSequencesTest("src/melting/test/DNASingleDanglingEndSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t bom00 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t bom00 \n");
 
 		MainTest.displayResults(DNASingleDanglingEnd, DNASingleDanglingEndMethods, "dnadna", "Na=1", "0.0001", "-sinDE");
 		
@@ -20,7 +20,7 @@ public class MainTestSingleDanglingEnd {
 		
 		Properties RNASingleDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNASingleDanglingEndSequences.txt");
 
-		System.out.print("\n\n Sequences \t TmExp \t ser08 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ser08 \n");
 
 		MainTest.displayResults(RNASingleDanglingEnd, RNASingleDanglingEndMethods, "rnarna", "Na=1", "0.0001", "-sinDE");
 

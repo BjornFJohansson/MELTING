@@ -11,7 +11,7 @@ public class MainTestAzobenzene {
 
 		Properties azobenzeneSequences = MainTest.loadSequencesTest("src/melting/test/azobenzeneSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t asa05 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t asa05 \n");
 
 		MainTest.displayResults(azobenzeneSequences, azobenzeneMethods, "dnadna", "Na=1", "0.000002", "-azo");
 	}

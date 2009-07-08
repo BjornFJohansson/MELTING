@@ -34,7 +34,7 @@ public class FileReader {
 				map.putAll(dataHandler.getMap());
 				return map;
 			} catch (IOException e) {
-				throw new FileException("One of the file containing the thermodynamic parameters can't be parsed.");
+				throw new FileException("One of the file containing the thermodynamic parameters can't be parsed.", e);
 			}
 		}
 	}

@@ -22,7 +22,7 @@ public class MainTestDNASodiumCorrections {
 		sodiumMethods.add("wet91");
 
 		Properties DNASequences = MainTest.loadSequencesTest("src/melting/test/DNASodiumTestValues.txt");
-		System.out.print("\n\n Sequences \t TmExp \t ash01 \t kam71 \t marschdot \t owc1904 \t owc2004 \t owc2104 \t owc2204 \t san96 \t san04 \t schlif \t tanna06 \t wet91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ash01 \t kam71 \t marschdot \t owc1904 \t owc2004 \t owc2104 \t owc2204 \t san96 \t san04 \t schlif \t tanna06 \t wet91 \n");
 		MainTest.displayResultsSodium(DNASequences, sodiumMethods, "dnadna", "0.000002", "-ion");
 	}
 

@@ -36,27 +36,27 @@ public class MainTestPerfectMatching{
 		
 		Properties mRNASequences = MainTest.loadSequencesTest("src/melting/test/2OMethylRNADuplexes.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
 
 		MainTest.displayResults(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0004", "-nn");
 		
-		System.out.print("\n\n Sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
 
 		MainTest.displayResults(DNASelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0001", "-nn");
 
-		System.out.print("\n\n Sequences \t TmExp \t fre86 \t xia98 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t fre86 \t xia98 \n");
 		
 		MainTest.displayResults(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0002", "-nn");
 
-		System.out.print("\n\n Sequences \t TmExp \t fre86 \t xia98 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t fre86 \t xia98 \n");
 		
 		MainTest.displayResults(RNASelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0001", "-nn");
 
-		System.out.print("\n\n Sequences \t TmExp \t sug95 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t sug95 \n");
 
 		MainTest.displayResults(DNARNASequences, DNARNAmethods, "rnadna", "Na=1", "0.0001", "-nn");
 
-		System.out.print("\n\n Sequences \t TmExp \t tur06 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t tur06 \n");
 		
 		MainTest.displayResults(mRNASequences, mRNAmethods, "mrnarna", "Na=0.1", "0.0001", "-nn");
 	}

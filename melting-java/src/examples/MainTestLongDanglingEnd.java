@@ -12,7 +12,7 @@ public class MainTestLongDanglingEnd {
 
 		Properties DNALongDanglingEnd = MainTest.loadSequencesTest("src/melting/test/DNALongDanglingEndSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t sugdna02 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t sugdna02 \n");
 
 		MainTest.displayResultsLongDanglingEnd(DNALongDanglingEnd, DNALongDanglingEndMethods, "dnadna", "Na=1", "0.0001", "-lonDE");
 		
@@ -21,7 +21,7 @@ public class MainTestLongDanglingEnd {
 
 		Properties RNALongDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNALongDanglingEndSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t sugrna02 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t sugrna02 \n");
 
 		MainTest.displayResultsLongDanglingEnd(RNALongDanglingEnd, RNALongDanglingEndMethods, "rnarna", "Na=1", "0.0001", "-lonDE");
 	}

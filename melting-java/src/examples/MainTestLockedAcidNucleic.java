@@ -11,7 +11,7 @@ public class MainTestLockedAcidNucleic {
 
 		Properties lockedAcidNucleicSequences = MainTest.loadSequencesTest("src/melting/test/lockedAcidNucleicSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t mct04 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t mct04 \n");
 
 		MainTest.displayResults(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000005", "-lck");
 	}

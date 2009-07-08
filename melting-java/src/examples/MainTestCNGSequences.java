@@ -12,7 +12,7 @@ public class MainTestCNGSequences {
 		
 		Properties CNGSequences = MainTest.loadSequencesTest("src/melting/test/CNGSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t bro05 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t bro05 \n");
 
 		MainTest.displayResultsSelf(CNGSequences, CNGmethods, "rnarna", "Na=1", "0.0001", "-CNG");
 	}

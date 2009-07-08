@@ -11,7 +11,7 @@ public class MainTestHydroxyadenine {
 
 		Properties hydroxyadenineSequences = MainTest.loadSequencesTest("src/melting/test/hydroxyadenineSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t sug01 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t sug01 \n");
 
 		MainTest.displayResultsWithComplementarySequence(hydroxyadenineSequences, hydroxyadenineMethods, "dnadna", "Na=1", "0.0001", "-ha");
 	}

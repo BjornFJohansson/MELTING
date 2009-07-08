@@ -2,7 +2,8 @@ package melting;
 
 import java.util.HashMap;
 
-import Sequences.NucleotidSequences;
+import melting.sequences.NucleotidSequences;
+
 
 public class DataCollect {
 	
@@ -143,7 +144,7 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getHydroxyadenosineValue(String seq1, String seq2){
-		String sens = NucleotidSequences.getSens(seq1, seq2);
+		String sens = NucleotidSequences.getDanglingSens(seq1, seq2);
 
 		String [] sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
@@ -172,7 +173,7 @@ public class DataCollect {
 	}
 	
 	public Thermodynamics getDanglingValue(String seq1, String seq2){
-		String sens = NucleotidSequences.getSens(seq1, seq2);
+		String sens = NucleotidSequences.getDanglingSens(seq1, seq2);
 		seq1 = seq1.replaceAll("-", "");
 		seq2 = seq2.replaceAll("-", "");
 		Thermodynamics s = data.get("dangling"+seq1+"/"+seq2+"sens"+sens);

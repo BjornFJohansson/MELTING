@@ -12,7 +12,7 @@ public class MainTestSecondDanglingEnd {
 
 		Properties secondDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNASecondDanglingEndSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t ser05 \t ser06 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ser05 \t ser06 \n");
 
 		MainTest.displayResults(secondDanglingEnd, secondDanglingEndMethods, "rnarna", "Na=1", "0.0001", "-secDE");
 	}

@@ -11,7 +11,7 @@ public class MainTestInosineBasePairs {
 		
 		Properties DNAInosineSequences = MainTest.loadSequencesTest("src/melting/test/DNAInosineSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t san05 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t san05 \n");
 
 		MainTest.displayResultsWithComplementarySequence(DNAInosineSequences, DNAInosineMethods, "dnadna", "Na=1", "0.0001", "-ino");
 		
@@ -20,7 +20,7 @@ public class MainTestInosineBasePairs {
 		
 		Properties RNAInosineSequences = MainTest.loadSequencesTest("src/melting/test/RNAInosineSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t zno07 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t zno07 \n");
 
 		MainTest.displayResultsWithComplementarySequence(RNAInosineSequences, RNAInosineMethods, "rnarna", "Na=1", "0.0001", "-ino");
 		

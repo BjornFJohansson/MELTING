@@ -1,5 +1,7 @@
 package melting;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -12,10 +14,9 @@ public class MeltingFormatter extends Formatter {
 		
 		if (record.getLevel().equals(Level.WARNING) || record.getLevel().equals(Level.SEVERE)){
 			if (record.getThrown() != null) {
-				message.append("EXCEPTION : ");
-				message.append(record.getMessage());
-				
-				//record.getThrown().printStackTrace(message);
+				StringWriter writer = new StringWriter();
+				record.getThrown().printStackTrace(new PrintWriter(writer));
+				message.append(writer);
 				message.append("\n");
 			}
 			message.append(record.getLevel() + " : " + record.getMessage() + "\n");
