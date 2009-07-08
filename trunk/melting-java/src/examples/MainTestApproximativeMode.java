@@ -21,13 +21,13 @@ public class MainTestApproximativeMode {
 		ArrayList<String> DNARNAmethods = new ArrayList<String>();
 		DNARNAmethods.add("wetdnarna91");
 		
-		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNANoSelfComplementary.txt");
-		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNASelfComplementary.txt");
+		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNANoSelfComplementary.txt");
+		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNASelfComplementary.txt");
 	
-		Properties RNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/RNANoSelfComplementary.txt");
-		Properties RNASelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/RNASelfComplementary.txt"); 
+		Properties RNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/RNANoSelfComplementary.txt");
+		Properties RNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/RNASelfComplementary.txt"); 
 		
-		Properties DNARNASequences = MainTest.loadSequencesTest("src/melting/test/DNARNADuplexes.txt");
+		Properties DNARNASequences = MainTest.loadSequencesTest("src/examples/test/DNARNADuplexes.txt");
 				
 		System.out.print("\n\n melting.sequences \t TmExp \t ahs01 \t che93 \t che93corr \t shdot \t ow69 \t san98 \t wetdna91 \n");
 

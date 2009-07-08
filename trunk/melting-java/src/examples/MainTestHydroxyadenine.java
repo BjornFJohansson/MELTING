@@ -9,7 +9,7 @@ public class MainTestHydroxyadenine {
 		ArrayList<String> hydroxyadenineMethods = new ArrayList<String>();
 		hydroxyadenineMethods.add("sug01");
 
-		Properties hydroxyadenineSequences = MainTest.loadSequencesTest("src/melting/test/hydroxyadenineSequences.txt");
+		Properties hydroxyadenineSequences = MainTest.loadSequencesTest("src/examples/test/hydroxyadenineSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t sug01 \n");
 

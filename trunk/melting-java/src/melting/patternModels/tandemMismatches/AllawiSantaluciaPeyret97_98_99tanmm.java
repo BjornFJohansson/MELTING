@@ -51,7 +51,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		for (int i = pos1; i < pos2; i++){
 			mismatchValue = this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(pos1 + i) + "/" + sequences.getComplementaryNNPair(pos1 + i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
+			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
 
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();

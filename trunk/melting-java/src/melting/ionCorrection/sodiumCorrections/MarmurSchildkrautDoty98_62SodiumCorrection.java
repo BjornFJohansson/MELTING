@@ -25,7 +25,7 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
 		
 		double Tm = environment.getResult().getTm() + (8.75 - 2.83 * Fgc) * Math.log(NaEq);
@@ -36,7 +36,7 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;

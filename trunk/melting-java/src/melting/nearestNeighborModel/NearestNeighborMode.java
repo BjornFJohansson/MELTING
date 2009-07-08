@@ -239,7 +239,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				}
 				return this.singleMismatchMethod;
 			}
-			else if (positions[1] - positions[0] + 1 == 2 && this.environment.getSequences().isGapInSequence(positions[0], positions[1])){
+			else if (positions[1] - positions[0] + 1 == 2 && this.environment.getSequences().isNoGapInSequence(positions[0], positions[1])){
 				if (this.tandemMismatchMethod == null){
 					initializeTandemMismatchMethod();
 				}
@@ -266,7 +266,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				return this.longBulgeLoopMethod;
 			}
 		}
-		else if (environment.getSequences().isRegisteredModifiedAcid(positions[0])){
+		else if (environment.getSequences().isRegisteredNucleicAcid(positions[0])){
 			SpecificAcidNames acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(positions[0]));
 			if (acidName != null){
 

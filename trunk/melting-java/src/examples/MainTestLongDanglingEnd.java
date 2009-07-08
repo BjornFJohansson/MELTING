@@ -10,7 +10,7 @@ public class MainTestLongDanglingEnd {
 		ArrayList<String> DNALongDanglingEndMethods = new ArrayList<String>();
 		DNALongDanglingEndMethods.add("sugdna02");
 
-		Properties DNALongDanglingEnd = MainTest.loadSequencesTest("src/melting/test/DNALongDanglingEndSequences.txt");
+		Properties DNALongDanglingEnd = MainTest.loadSequencesTest("src/examples/test/DNALongDanglingEndSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t sugdna02 \n");
 
@@ -19,7 +19,7 @@ public class MainTestLongDanglingEnd {
 		ArrayList<String> RNALongDanglingEndMethods = new ArrayList<String>();
 		RNALongDanglingEndMethods.add("sugrna02");
 
-		Properties RNALongDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNALongDanglingEndSequences.txt");
+		Properties RNALongDanglingEnd = MainTest.loadSequencesTest("src/examples/test/RNALongDanglingEndSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t sugrna02 \n");
 

@@ -324,7 +324,7 @@ public class RegisterMethods {
 			PatternComputationMethod method;
 			try {
 				if (Helper.useOtherDataFile(methodName)){
-					methodName = Helper.getOptionMethodName(methodName);
+					methodName = Helper.extractsOptionMethodName(methodName);
 
 				}
 				if (getPartialCalculMethodHashMap(optionName).get(methodName) == null){

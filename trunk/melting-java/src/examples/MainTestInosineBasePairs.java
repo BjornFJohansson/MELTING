@@ -9,7 +9,7 @@ public class MainTestInosineBasePairs {
 		ArrayList<String> DNAInosineMethods = new ArrayList<String>();
 		DNAInosineMethods.add("san05");
 		
-		Properties DNAInosineSequences = MainTest.loadSequencesTest("src/melting/test/DNAInosineSequences.txt");
+		Properties DNAInosineSequences = MainTest.loadSequencesTest("src/examples/test/DNAInosineSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t san05 \n");
 
@@ -18,7 +18,7 @@ public class MainTestInosineBasePairs {
 		ArrayList<String> RNAInosineMethods = new ArrayList<String>();
 		RNAInosineMethods.add("zno07");
 		
-		Properties RNAInosineSequences = MainTest.loadSequencesTest("src/melting/test/RNAInosineSequences.txt");
+		Properties RNAInosineSequences = MainTest.loadSequencesTest("src/examples/test/RNAInosineSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t zno07 \n");
 

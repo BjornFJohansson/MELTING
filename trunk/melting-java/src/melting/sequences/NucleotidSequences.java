@@ -125,7 +125,7 @@ public class NucleotidSequences {
 		}
 	}
 	
-	// methods
+	// public methods
 	
 	/**
 	 * This method is called when the same NucleotidSequences is required but with the sequences converted in the new
@@ -148,156 +148,6 @@ public class NucleotidSequences {
 			return rnaEquivalent;
 		}
 		throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
-	}
-	
-	/**
-	 * This method is called to get the ArrayList duplex of the NucleotidSequences object.
-	 * @param String sequence : sequence (5'3')
-	 * @param String complementary : complementary sequence (3'5')
-	 * @return the ArrayList duplex of the NucleotiSequences object.
-	 */
-	public static ArrayList<BasePair> getDuplexFrom(String sequence, String complementary){
-		ArrayList<BasePair> duplex = new ArrayList<BasePair>();
-		int pos = 0;
-		while (pos < sequence.length()){
-			BasePair pair = getBasePair(sequence, complementary, pos);
-			duplex.add(pair);
-			pos += pair.getLengthAcid();
-		}
-		return duplex;
-	}
-	
-	/**
-	 * Creates an ArrayList which contains a list of nucleic acids String from the existingNucleicAcids ArrayList of the BasePair class
-	 * Each nucleic acid String can match the first nucleic acid of the seq String. 
-	 * @param String seq
-	 * @return an ArrayList containing the existing nucleic acids which can match the first nucleic acid of the seq String.
-	 * If the ArrayList size is null and there is no existing nucleic acid which can match the first nucleic acid of the seq String,
-	 * a SequenceException is thrown.
-	 */
-	private static ArrayList<String> getListMatchingNucleicAcids(String seq) {
-		ArrayList<String> possibleNucleicAcids = new ArrayList<String>();
-
-		for (int i = 0; i < BasePair.getExistingNucleicAcids().size(); i++){
-			if (seq.startsWith(BasePair.getExistingNucleicAcids().get(i))){
-				possibleNucleicAcids.add(BasePair.getExistingNucleicAcids().get(i));
-			}
-		}
-		
-		if (possibleNucleicAcids.size() == 0 && seq.charAt(0) != ' '){
-			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options and the sequence: " + seq);
-		}
-		
-		return possibleNucleicAcids;
-	}
-	
-	/**
-	 * extracts the longer nucleic acid String from an ArrayList.
-	 * @param ArrayList possibleNucleicAcids : listing all the existing nucleic acids which can match the nucleic acid we want to extract 
-	 * from a String 
-	 * @return the longer nucleic acid String of the ArrayList possibleNucleicAcids.
-	 */
-	private static String extractNucleicAcidFrom(ArrayList<String> possibleNucleicAcids){
-		int lengthAcid = 0;
-		String acid = null;
-		
-		for (int i = 0; i < possibleNucleicAcids.size() ; i++){
-			if (possibleNucleicAcids.get(i).length() > lengthAcid){
-				lengthAcid = possibleNucleicAcids.get(i).length();
-				acid = possibleNucleicAcids.get(i);
-			}
-		}
-		
-		return acid;
-	}
-	
-	/**
-	 * This method is called to get the nucleic acid at the position "pos" in the sequence "sequence"
-	 * @param String sequence : represents one of the sequence or a substring of the sequence
-	 * @param int pos : The nucleic acid position in the sequence
-	 * @return nucleic acid String at the position "pos" in the sequence String. If the nucleic acid
-	 * is not known or registered, this method return null.
-	 */
-	private static String getNucleicAcid(String sequence, int pos){
-		String seq = sequence.substring(pos);
-		ArrayList<String> possibleNucleicAcids = getListMatchingNucleicAcids(seq);
-		
-		if (possibleNucleicAcids.size() == 0){
-			return null;
-		}
-		else {
-			String acid = extractNucleicAcidFrom(possibleNucleicAcids);
-			return acid;
-		}	
-	}
-	
-	/**
-	 * encodes the complementary String of the object NucleotidSequences
-	 * @param String sequence : the sequence (5'3')
-	 * @param StringBuffer comp : the complementary sequence (3'5') to encode
-	 * @return the encoded complementary String
-	 */
-	private String encodeComplementary(String sequence, StringBuffer comp){
-		int pos = 0;
-		while (pos < sequence.length()){
-			String acid = getNucleicAcid(sequence, pos);
-			if (acid != null){
-				if (acid.equals("X_T") || acid.equals("X_C")){
-					comp.insert(pos," ");
-					comp.insert(pos + 1, " ");
-					comp.insert(pos + 2, " ");
-				}
-				else if (acid.length() > 1){
-					if (acid.charAt(1) == 'L'){
-						comp.insert(pos + 1," ");
-					}
-					else if(acid.equals("A*")){
-						comp.insert(pos + 1," ");
-					}
-				}
-				pos += acid.length();
-			}
-			else {
-				pos ++;
-			}
-		}	
-		
-		return comp.toString();
-	}
-	
-	/**
-	 * encodes the sequence String of the object NucleotidSequences
-	 * @param String complementary : the complementary sequence (3'5')
-	 * @param StringBuffer seq : the sequence (5'3') to encode
-	 * @return the encoded sequence String
-	 */
-	private String encodeSequence(String complementary, StringBuffer seq){
-		int pos = 0;
-		
-		while (pos < complementary.length()){
-			String acid = getNucleicAcid(complementary, pos);
-			if (acid != null){
-				if (acid.equals("X_T") || acid.equals("X_C")){
-					seq.insert(pos," ");
-					seq.insert(pos + 1, " ");
-					seq.insert(pos + 2, " ");
-				}
-				else if (acid.length() > 1){
-					if (acid.charAt(1) == 'L'){
-						seq.insert(pos + 1," ");
-					}
-					else if (acid.equals("A*")){
-						seq.insert(pos + 1," ");
-					}
-				}
-				pos += acid.length();
-			}
-			else{
-				pos ++;
-			}
-		}	
-		
-		return seq.toString();
 	}
 	
 	/**
@@ -340,864 +190,6 @@ public class NucleotidSequences {
 		return sequences;
 	}
 	
-	/**
-	 * decodes the String "sequence".
-	 * @param String sequence
-	 * @return the decoded String "sequence".
-	 */
-	private static String decodeSequence(String sequence){
-		
-		String newSequence = sequence.replaceAll("X_[TC]", "X").replaceAll(" ", "");
-
-		return newSequence;
-	}
-	
-	/**
-	 * decodes the String sequence and complementary of the NucleotidSequences object.
-	 * @param String sequence : sequence (5'3')
-	 * @param String complementary : complementary sequence (3'5')
-	 * @return a String [] object containing the decoded String sequence and complementary of the NucleotidSequences object.
-	 */
-	public static String [] decodeSequences(String sequence, String complementary){
-		StringBuffer seq = new StringBuffer();
-		StringBuffer comp = new StringBuffer();
-
-		seq.append(sequence);
-		comp.append(complementary);
-
-		String [] sequences = {decodeSequence(sequence), decodeSequence(complementary)};
-		return sequences;
-	}
-	
-	/**
-	 * This method is called to get the BasePair object from the String sequence and complementary at the position pos in the duplex 
-	 * @param String sequence : sequence (5'3')
-	 * @param String complementary : complementary sequence (3'5')
-	 * @param int pos : position in the sequence where is the base pair.
-	 * @return BasePair object which represents the nucleic acid base pair at the position pos in the duplex
-	 * If neither the nucleic acid from the sequence (5'3') nor the nucleic acid from the complementary sequence (3'5')
-	 * is known (acid1 == null and acid2 == null), a SequenceException is thrown.
-	 */
-	private static BasePair getBasePair(String sequence, String complementary, int pos){
-		BasePair acid = new BasePair(pos);
-		
-		String acid1 = getNucleicAcid(sequence, pos);
-		String acid2 = getNucleicAcid(complementary, pos);
-		if (acid1 == null && acid2 == null){
-			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options.");
-		}
-		else if (acid1 == null){
-			acid1 = sequence.substring(pos, pos + acid2.length());
-		}
-		else if (acid2 == null){
-			acid2 = complementary.substring(pos, pos + acid1.length());
-		}
-		acid.setTopAcid(acid1);
-		acid.setBottomAcid(acid2);
-		
-		return acid;
-	}
-	
-	/**
-	 * initializes the HasMap modifiedAcidNames of the NucleotiSequences class.
-	 */
-	public static void initializeModifiedAcidHashmap(){
-		modifiedAcidNames.put("I", SpecificAcidNames.inosine);
-		modifiedAcidNames.put("AL", SpecificAcidNames.lockedNucleicAcid);
-		modifiedAcidNames.put("TL", SpecificAcidNames.lockedNucleicAcid);
-		modifiedAcidNames.put("CL", SpecificAcidNames.lockedNucleicAcid);
-		modifiedAcidNames.put("GL", SpecificAcidNames.lockedNucleicAcid);
-		modifiedAcidNames.put("A*", SpecificAcidNames.hydroxyadenine);
-		modifiedAcidNames.put("X_C", SpecificAcidNames.azobenzene);
-		modifiedAcidNames.put("X_T", SpecificAcidNames.azobenzene);
-	}
-	
-	/**
-	 * This method is called when we want to get the complementary String of the NucleotidSequences object with the
-	 * type of hybridization "hybridization".
-	 * @param String sequence
-	 * @param String hybridization : type of hybridization
-	 * @return String which represents the complementary sequence (3'5') with the specified nature.(rna, dna)
-	 */
-	public static String getComplementarySequence(String sequence, String hybridization){
-		StringBuffer complementary = new StringBuffer(sequence.length());
-		for (int i = 0; i < sequence.length(); i++){
-			switch(sequence.charAt(i)){
-			case 'A':
-				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
-					complementary.append('T');
-				}
-				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("rnamrna") || hybridization.equals("dnarna")){
-					complementary.append('U');
-				}
-				break;
-			case 'T':
-				if (i != 0){
-					if (sequence.charAt(i - 1) != '_'){
-						complementary.append('A');
-					}
-				}
-				else{
-					complementary.append('A');
-				}
-				break;
-			case 'C':
-				if (i != 0){
-					if (sequence.charAt(i - 1) != '_'){
-						complementary.append('G');
-					}
-				}
-				else{
-					complementary.append('G');
-				}
-				break;
-			case 'G':
-				complementary.append('C');
-				break;
-			case 'U':
-				complementary.append('A');
-				break;
-			case '-':
-				complementary.append('-');
-				break;
-			}
-		}
-		return complementary.toString();
-	}
-	
-	/**
-	 * Checks if the String sequence is composed of nucleic acids known by MELTING.
-	 * @param String sequence
-	 * @return false if one of the nucleic acids is not known by MELTING. (not registered in the ArrayList existingNucleicAcids of the
-	 * BasePair class).
-	 * If the length of the sequence String is 0, a SequenceException is thrown.
-	 */
-	public static boolean checkSequence(String sequence){
-		
-		int position = 0;
-		
-		if (sequence.length() == 0){
-			throw new SequenceException("The sequence must be entered with the option " + OptionManagement.sequence);
-		}
-		while (position < sequence.length()){
-			String acid = getNucleicAcid(sequence, position);
-			if (acid == null){
-				return false;
-			}
-			
-			position += acid.length();
-		}
-		return true;
-	}
-	
-	/**
-	 * This method is called to get the length of the ArrayList duplex of the NucleotidSequences object.
-	 * @return int length which represents the length of the nucleic acid duplex.
-	 */
-	public int getDuplexLength(){
-		return duplex.size();
-	}
-	
-	/**
-	 * This method is called to get the encoded sequence String of the NucleotidSequences object.
-	 * @return String sequence of the NucleotidSequences object.
-	 */
-	public String getSequence() {
-		return getSequence(0, getDuplexLength() - 1);
-	}
-
-	/**
-	 * This method is called to get the encoded complementary String of the NucleotidSequences object.
-	 * @return String complementary of the NucleotidSequences object.
-	 */
-	public String getComplementary() {
-		return getComplementary(0, getDuplexLength() - 1);
-	}
-	
-	/**
-	 * To check if two positions are in the duplex length range.
-	 * @param int pos1 : starting position in the duplex
-	 * @param int pos2 : ending position in the duplex
-	 * @return true if at least one of the positions is out of the duplex length range.
-	 */
-	private boolean arePositionsOutOfRange(int pos1, int pos2){
-		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * To get the positions of the nucleic acid or the subsequence in the String sequence (or String complementary).
-	 * @param int pos1 : starting position of the subsequence in the duplex
-	 * @param int pos2 : ending position of the subsequence in the duplex
-	 * @return int [] positions which contains the starting and ending positions in the sequence String
-	 * (or complementary String).
-	 */
-	private int [] convertAcidPositionsIntoStringPositions(int pos1, int pos2){
-		pos1 = this.duplex.get(pos1).getPosition();
-		pos2 = this.duplex.get(pos2).getPosition() + this.duplex.get(pos2).getLengthAcid();
-		
-		int [] positions = {pos1, pos2};
-		return positions;
-	}
-	
-	/**
-	 * This method is called to get a substring between two positions of the sequence String.
-	 * @param int pos1 : starting position of the subsequence
-	 * @param int pos2 : ending position of the subsequence
-	 * @return the sequence substring between pos1 and pos2.
-	 * If pos1 and pos2 are out of the duplex length range, a SequenceException is thrown.
-	 */
-	public String getSequence(int pos1, int pos2){
-		if (arePositionsOutOfRange(pos1, pos2)){
-			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
-		}
-		
-		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
-		pos1 = positions[0];
-		pos2 = positions[1];
-		return sequence.substring(pos1, pos2);
-	}
-	
-	/**
-	 * This method is called to get a substring between two positions of the complementary String.
-	 * @param int pos1 : starting position of the subsequence
-	 * @param int pos2 : ending position of the subsequence
-	 * @return the complementary substring between pos1 and pos2.
-	 * If pos1 and pos2 are out of the duplex length range, a SequenceException is thrown.
-	 */
-	public String getComplementary(int pos1, int pos2){
-		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
-			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
-		}
-		
-		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
-		pos1 = positions[0];
-		pos2 = positions[1];
-		return complementary.substring(pos1, pos2);
-	}
-	
-	/**
-	 * to get the two nucleic acids which are from the sequence (5'3') in the Crick's pair at the position "pos" in the duplex.
-	 * @param int pos : position of the crick's pair in the duplex.
-	 * @return a substring of the sequence String which represents the nucleic acids from the sequence (5'3') in the crick'base pair at the position
-	 * pos. 
-	 */
-	public String getSequenceNNPair(int pos){
-		return getSequence(pos, pos+1);
-	}
-	
-	/**
-	 * to get the two nucleic acids which are from the complementary sequence (3'5') in the Crick's pair at the position "pos" in the duplex.
-	 * @param int pos : position of the crick's pair in the duplex.
-	 * @return a substring of the complementary String which represents the nucleic acids from the complementary sequence (3'5') in the crick'base pair at the position
-	 * pos. 
-	 */
-	public String getComplementaryNNPair(int pos){
-		return getComplementary(pos, pos+1);
-	}
-	
-	/**
-	 * to get the two unlocked nucleic acids which are from the sequence (5'3') in the Crick's pair at the position "pos" in the duplex.
-	 * @param int pos : position of the crick's pair in the duplex.
-	 * @return a substring of the sequence String which represents the unlocked nucleic acids from the sequence (5'3') in the crick'base pair at the position
-	 * pos. 
-	 */
-	public String getSequenceNNPairUnlocked(int pos){
-		return getSequence(pos, pos+1).replace("L", "").replace(" ", "");
-	}
-	
-	/**
-	 * to get the two unlocked nucleic acids which are from the complementary sequence (3'5') in the Crick's pair at the position "pos" in the duplex.
-	 * @param int pos : position of the crick's pair in the duplex.
-	 * @return a substring of the complementary String which represents the unlocked nucleic acids from the complementary sequence (3'5') in the crick'base pair at the position
-	 * pos. 
-	 */
-	public String getComplementaryNNPairUnlocked(int pos){
-		return getComplementary(pos, pos + 1).replace("L", "").replace(" ", "");
-	}
-	
-	/**
-	 * to get the two nucleic acids from each sequence in the Crick's pair at the position "pos" in the duplex. we convert the hydroxyadenine (A*) into an adenine (A).
-	 * @param int pos : position of the crick's pair in the duplex.
-	 * @return a String [] containing the substrings which represent the nucleic acids from each sequence in the crick'base pair at the position
-	 * pos. The hydroxyadenine is replaced by an adenine.
-	 */
-	public String[] getNNPairWithoutHydroxyA(int pos) {
-		String[] pair1 = removeHydroxyA(getDuplex().get(pos).getTopAcid(), getDuplex().get(pos).getBottomAcid());
-		String[] pair2 = removeHydroxyA(getDuplex().get(pos+1).getTopAcid(), getDuplex().get(pos+1).getBottomAcid());
-		return new String[] { pair1[0] + pair2[0], pair1[1] + pair2[1] };
-	}
-	
-	/**
-	 * To convert the hydroxyadenine (A*) into an adenine (A) in the acid1 String and acid2 String.
-	 * @param String acid1 : nucleic acid String from the sequence (5'3')
-	 * @param String acid2 : nucleic acid String from the complementary sequence (3'5')
-	 * @return String [] containing the acid1 String and acid2 String with the hydroxyadenine replaced by adenine.
-	 */
-	private static String[] removeHydroxyA(String acid1, String acid2) {
-		if (acid1.equals("A*")) {
-			return new String[]{"A", "T"};
-		}
-		if (acid2.equals("A*")) {
-			return new String[]{"T", "A"};
-		}
-		return new String[]{acid1, acid2};
-	}
-	
-	/**
-	 * calculates the number of base pair (base1, base2) and (base2, base1) at the positions pos1 and pos2 in the duplex ArrayList.
-	 * @param String base1
-	 * @param String base2
-	 * @param ArrayList duplex
-	 * @param int pos1 : starting position of the subsequence in the duplex ArrayList.
-	 * @param int pos2 : ending position of the subsequence in the duplex ArrayList.
-	 * @return int number of base pairs (base1, base2) and (base2, base1) at the positions pos1 and pos2 of the duplex ArrayList.
-	 */
-	private static double calculateNumberOfTerminal(String base1, String base2, ArrayList<BasePair> duplex, int pos1, int pos2){
-		double numberOfTerminal = 0.0;
-		BasePair firstTerminalBasePair = duplex.get(pos1);
-		BasePair lastTerminalBasePair = duplex.get(pos2);
-
-		if (firstTerminalBasePair.isBasePairEqualTo(base1, base2)){
-			numberOfTerminal++;
-		}
-		
-		if (lastTerminalBasePair.isBasePairEqualTo(base1, base2)){
-			numberOfTerminal++;
-		}
-		return numberOfTerminal;	
-	}
-	
-	/**
-	 * calculates the number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
-	 * @param String base1
-	 * @param String base2
-	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @return int number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
-	 */
-	public double calculateNumberOfTerminal(String base1, String base2, int pos1, int pos2){
-		return calculateNumberOfTerminal(base1, base2, this.duplex, pos1, pos2);
-	}
-	
-	/**
-	 * calculates the number of terminal 5'T3'A in the subduplex between pos1 and pos2
-	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @return int number of terminal 5'T3'A in the subduplex between pos1 and pos2. 5'A/3'T means that at the position
-	 * pos1, the base pair is (T,A) and at the position pos2, the base pair is (A,T).
-	 */
-	public double getNumberTerminal5TA(int pos1, int pos2){
-		double number5TA = 0;
-		BasePair firstTerminalBasePair = duplex.get(pos1);
-		BasePair lastTerminalBasePair = duplex.get(pos2);
-		
-		if (firstTerminalBasePair.isBasePairStrictlyEqualTo("T", "A")){
-			number5TA ++;
-		}
-		if (lastTerminalBasePair.isBasePairStrictlyEqualTo("A", "T")){
-			number5TA ++;
-		}
-		return number5TA;
-	}
-	
-	/**
-	 * find the real starting and ending positions of the duplex. The real starting and ending positions
-	 * of the duplex are the first and last positions in the duplex where the nucleic acids are paired.
-	 * @return int [] containing the first and last positions in the duplex where the nucleic acids are paired.
-	 */
-	public int [] removeTerminalUnpairedNucleotides(){
-		int indexStart = 0;
-		while (indexStart <= getDuplexLength() - 1){
-			BasePair pair = duplex.get(indexStart);
-			if (pair.isUnpaired()){
-				indexStart ++;
-			}
-			else {
-				break;
-			}
-		}
-
-		if (indexStart >= getDuplexLength() - 1){
-			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
-		}
-		
-		int indexEnd = getDuplexLength() - 1;
-		while (indexEnd >= 0){
-			BasePair pair = duplex.get(getDuplexLength() - indexEnd - 1);
-			if (pair.isUnpaired()){
-				indexEnd --;
-			}
-			else {
-				break;
-			}
-		}
-		if (indexEnd <= 0){
-			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
-		}
-		int [] positions = {indexStart, indexEnd};
-		return positions;
-	}
-	
-	/**
-	 * To check if the base pair at the position pos in the duplex is (base1, base2) or (base2, base1).
-	 * @param String base1
-	 * @param String base2
-	 * @param int pos : position of the base pair in the duplex
-	 * @return true if the tuple (TopAcid, BottomAcid) of the BasePair object at the position pos in the duplex ArrayList
-	 * is (base1, base2) or (base2, base1).
-	 */
-	public boolean isBasePair(String base1, String base2, int pos){
-		BasePair pair = duplex.get(pos);
-		if (pair.isBasePairEqualTo(base1, base2)){
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * this method is called to get the sens of the dangling end for the sequences seq1 and seq2
-	 * @param String seq1 : String terminal pattern of the sequence (5'3')
-	 * @param String seq2 : String terminal pattern of the complementary sequence (3'5')
-	 * @return String "5" if the dangling end (the unpaired nucleic acid) is a 5' dangling end and String "3"
-	 * if the dangling end is a 3' dangling end.
-	 * If both seq1 and seq2 contain "-", or if neither the sequence seq1 nor the sequence seq2 contains dangling ends 
-	 * (or gaps for the complementary sequence), a SequenceException is thrown.
-	 */
-	public static String getDanglingSens(String seq1, String seq2){
-		if (seq1.length() == 0){
-			return "3";
-		}
-		else if (seq2.length() == 0){
-			return "5";
-		}
-		else if (seq2.charAt(0) == '-'){
-			return "5";
-		}
-		else if (seq1.charAt(0) == '-'){
-			return "3";
-		}
-		else if (seq2.charAt(seq2.length() - 1) == '-'){
-			return "3";
-		}
-		else if (seq1.charAt(seq1.length() - 1) == '-'){
-			return "5";
-		}
-		else if (seq1.contains("-") == false && seq2.contains("-") == false){
-			throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
-		}
-		throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
-	}
-	
-	/**
-	 * To get the orientation of the subsequence sequence.
-	 * @param String sequence : a substring of sequence String or complementary String.
-	 * @param int pos1 : the starting position of the substring in the sequence String or complementary String
-	 * @param int pos2 : the ending position of the substring in the sequence String or complementary String
-	 * @return String "5'3'" if the substring sequence is a substring of the sequence (5'3') or String "3'5'"
-	 * if the substring sequence is a substring of the complementary sequence (3'5').
-	 * If the substring is neither a substring of the sequence, nor a substring of the complementary sequence
-	 * a SequenceException is thrown.
-	 */
-	public String getSequenceSens(String sequence, int pos1, int pos2){
-		if (sequence.equals(getSequence(pos1, pos2))){
-			return "5'3'";
-		}
-		else if (sequence.equals(getComplementary(pos1, pos2))){
-			return "3'5'";
-		}
-		else {
-			throw new SequenceException("We don't recognize the sequence " + getSequence(pos1, pos2));
-		}
-	}
-	
-	/**
-	 * computes the percentage of GC base pairs in the duplex of the NucleotidSeqences object.
-	 * @return double percentage of GC base pairs in the duplex.
-	 */
-	public double computesPercentGC(){
-		double numberGC = 0.0;
-		
-		for (int i = 0; i < getDuplexLength();i++){
-			BasePair pair = duplex.get(i);
-			if (pair.isBasePairEqualTo("G", "C")){
-				numberGC++;
-			}
-		}
-		
-		return numberGC / (double)getDuplexLength() * 100.0;
-	}
-	
-	/**
-	 * Computes the percentage of mismatching base pairs in the duplex of the NucleotidSequences object
-	 * @return double percentage of mismatching base pairs in the duplex
-	 */
-	public double computesPercentMismatching(){
-		double numberMismatching = 0.0;
-	
-		for (int i = 0; i < getDuplexLength();i++){
-			BasePair pair = duplex.get(i);
-			if (pair.isComplementaryBasePair() == false){
-				numberMismatching++;
-			}
-		}
-		return numberMismatching / (double)getDuplexLength() * 100.0;
-	}
-	
-	/**
-	 * To check if there is at least one GC base pair in the duplex of the NucleotidSequences object.
-	 * @return true if at least one GC base pair exists in the duplex.
-	 */
-	public boolean isOneGCBasePair(){
-		for (int i = 0; i < getDuplexLength();i++){
-			BasePair pair = duplex.get(i);
-			if (pair.isBasePairEqualTo("G", "C")){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * converts a sequence String into a new type (hybridizationType) of sequence.
-	 * @param String sequence : sequence to convert in a new type. ("dna" or "rna")
-	 * @param String hybridizationType : type of the sequence ("dna" or "rna")
-	 * @return String converted sequence. if the hybridizationType String is "rna", the 
-	 * sequence String is converted into a RNA sequence and if the hybridizationType String 
-	 * is "dna", the sequence String is converted into a RNA sequence. 
-	 * If the hybridizationType String is neither "rna", nor "dna", a SequenceException is thrown.
-	 */
-	private String convertSequence(String sequence, String hybridizationType){
-		char acidToRemplace;
-		char remplacingAcid;
-		
-		if (hybridizationType.equals("dna")){
-			remplacingAcid = 'T';
-			acidToRemplace = 'U';
-		}
-		else if (hybridizationType.equals("rna")) {
-			remplacingAcid = 'U';
-			acidToRemplace = 'T';
-		}
-		else {
-			throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
-		}
-		
-		String newSequence = sequence.replace(acidToRemplace, remplacingAcid);
-
-		return newSequence;
-	}
-	
-	/**
-	 * This method is called to get a substring of the sequence String between the positions pos1 and pos2 in the duplex.
-	 * This substring is converted in the type precised by the hybridizationType String.
-	 * @param int pos1 : starting position of the subsequence
-	 * @param int pos2 : ending position of the subsequence
-	 * @param hybridizationType : type of sequence ("dna" or "rna")
-	 * @return substring of the sequence String between pos1 and pos2 in the new type precised by the hybridizationType String
-	 */
-	public String getSequence(int pos1, int pos2, String hybridizationType){
-		
-		return convertSequence(getSequence(pos1, pos2), hybridizationType);
-	}
-	
-	/**
-	 * This method is called to get a substring of the complementary String between the positions pos1 and pos2 in the duplex.
-	 * This substring is converted in the type precised by the hybridizationType String.
-	 * @param int pos1 : starting position of the subsequence
-	 * @param int pos2 : ending position of the subsequence
-	 * @param hybridizationType : type of sequence ("dna" or "rna")
-	 * @return substring of the complementary String between pos1 and pos2 in the new type precised by the hybridizationType String
-	 */
-	public String getComplementary(int pos1, int pos2, String hybridizationType){
-		return convertSequence(getComplementary(pos1, pos2), hybridizationType);
-	}
-
-	/**
-	 * computes the number of nucleic acids in the internal loop between the positions pos1 + 1 and
-	 * pos2 - 1 in the duplex ArrayList of the NucleotidSequences object.
-	 * @param int pos1 : position preceding the starting position of the internal loop
-	 * @param int pos2 : position following the ending position of the internal loop
-	 * @return int number nucleic acids in the internal loop at the positions pos1 + 1 : pos2 - 1 in the duplex ArrayList.
-	 */
-	public int computesInternalLoopLength (int pos1, int pos2){
-		int loop = 2 * (pos2 - pos1 - 1);
-		
-		for (int i = pos1 + 1; i <= pos2 - 1; i++){
-			BasePair pair = duplex.get(i);
-			if (pair.isUnpaired()){
-				loop--;
-			}
-			if (pair.isUnpaired()){
-				loop--;
-			}
-		}
-		return loop;
-	}
-
-	/**
-	 * This method is called to get the duplex ArrayList of the NucleotidSequences object.
-	 * @return the duplex ArrayList containing BasePair objects.
-	 */
-	public ArrayList<BasePair> getDuplex() {
-		return duplex;
-	}
-
-	/**
-	 * This method is called to get the modifiedAcidNames HashMap of the NucleotidSequences class.
-	 * @return the public static modifiedAcidNames HashMap of the NucleotidSequences class.
-	 */
-	public static HashMap<String, SpecificAcidNames> getModifiedAcidNames() {
-		return modifiedAcidNames;
-	}
-
-	/**
-	 * to check if the internal loop between the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList
-	 * is asymetric. An internal loop is asymetric if one of the strands contains gap(s). 
-	 * @param int pos1 : position preceding the starting position of the internal loop
-	 * @param int pos2 : position following the ending position of the internal loop
-	 * @return true if the internal loop between the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList is asymetric.
-	 */
-	public boolean isAsymetricInternalLoop(int pos1, int pos2){
-		
-		for (int i= pos1 + 1; i <= pos2 - 1; i++){
-			BasePair pair = duplex.get(i);
-			if (pair.isUnpaired()){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * converts a sequence String in a String composed of purine and pyrimidine.
-	 * A and G are purines (represented by "R" in the new sequence String), C, T and U are
-	 * pyrimidines (represented by "Y" in the new sequence String)
-	 * @param String sequence to convert in purine-pyrimidine sequence.
-	 * @return the new sequence String converted into a String composed of purines ("R") and pyrimidines ("Y").
-	 * If the sequence String is not only composed of - (gap), A, T, U, G and C, a SequenceExceptions is thrown.
-	 */
-	public static String convertToPyr_Pur(String sequence){
-		StringBuffer newSeq = new StringBuffer(sequence.length());
-		for (int i = 0; i <= sequence.length() - 1; i++){
-			switch (sequence.charAt(i)) {
-			case 'A':
-				newSeq.append('R');
-				break;
-			case 'G':
-				newSeq.append('R');
-				break;
-			case 'U':
-				newSeq.append('Y');
-				break;
-			case 'T':
-				newSeq.append('Y');
-				break;
-			case 'C':
-				newSeq.append('Y');
-				break;
-			case '-':
-				newSeq.append('-');
-				break;
-			default:
-				throw new SequenceException("There are non watson crick bases in the sequence.");
-			}
-		}
-		return newSeq.toString();
-	}
-	
-	/**
-	 * gives the type of the internal loop at the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList of the NucleotidSequences object.
-	 * @param int pos1 : position preceding the starting position of the internal loop
-	 * @param int pos2 : position following the ending position of the internal loop
-	 * @return String type of the internal loop at the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList.
-	 * The type of the internal loop is determined by the number of nucleic acids from the sequence String which are included in the internaql loop
-	 * and the number of nucleic acids from the complementary String which are included in the internaql loop
-	 * Ex of type of internal loop : "1x2", "2x3", "4x4", ....
-	 */
-	public String getInternalLoopType(int pos1, int pos2){
-		if (isAsymetricInternalLoop(pos1, pos2)){
-			int internalLoopSize1 = 0;
-			int internalLoopSize2 = 0;
-			for (int i = pos1 + 1; i <= pos2 - 1; i++ ){
-				BasePair pair = duplex.get(i);
-				if (pair.getTopAcid().equals("-") == false){
-					internalLoopSize1 ++;
-				}
-				
-				if (pair.getBottomAcid().equals("-") == false){
-					internalLoopSize2 ++;
-				}
-			}
-			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
-				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
-			}
-			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3 && internalLoopSize2 != 1) || (internalLoopSize2 == 2 && internalLoopSize1 != 3 && internalLoopSize1 != 1)){
-				return "others_non_2x2";
-			}
-			else {
-				return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
-			}
-		}
-		else{
-			String internalLoopSize = Integer.toString(pos2 - pos1 - 1);
-			return internalLoopSize + "x" + internalLoopSize;
-		}
-	}
-
-	/**
-	 * This method is called to get the first mismatch of the internal loop at the positions pos1 + 1 and pos2 - 1 
-	 * in the duplex ArrayList of the NucleotidSequences object. 
-	 * @param int pos1 : the position preceding the internal loop. 
-	 * @return String [] containing the first Crick's pair of the internal loop at the positions pos1 + 1 and pos2 - 1.
-	 * The nucleic acids in the first base pair of the crick's pair are converted into purine or pyrimidine.
-	 * this returned String [] contains the nucleic acids from the sequence String (5'3') and the nucleic acids from
-	 * the complementary String (3'5').
-	 * Ex : 
-	 * internal loop : (ATTGCC, TGCGCG)
-	 * The first Crick's pair in the loop : (AT, TG)
-	 * The first msimatch in the loop : (T, G) 
-	 * String [] first mismatch => {RT, YG}
-	 */
-	public String [] getLoopFistMismatch(int pos1){
-		String mismatch1 = convertToPyr_Pur(duplex.get(pos1).getTopAcid()) + duplex.get(pos1 + 1).getTopAcid();
-		String mismatch2 = convertToPyr_Pur(duplex.get(pos1).getBottomAcid()) + duplex.get(pos1 + 1).getBottomAcid();
-		String [] firstMismatch = {mismatch1, mismatch2};
-		return firstMismatch;
-	}
-	
-	/**
-	 * This method is called to get the base pairs adjacent to the single bulge loop (unpaired nucleic acid) at the position pos1 in the duplex ArrayList
-	 * @param int pos1 : position preceding the unpaired nucleic acid in the single bulge loop. 
-	 * @return String [] containing the nucleic acids adjacent to the bulge loop from the sequence String (5'3')
-	 * and the nucleic acids adjacent to the bulge loop from the complementary String (5'3')
-	 */
-	public String [] getSingleBulgeNeighbors(int pos1){
-		String NNPair1 = duplex.get(pos1).getTopAcid() + duplex.get(pos1 + 2).getTopAcid();
-		String NNPair2 = duplex.get(pos1).getBottomAcid() + duplex.get(pos1 + 2).getBottomAcid();
-		String [] NNPair = {NNPair1, NNPair2};
-		return NNPair;
-	}
-	
-	/**
-	 * removes the dangling ends and terminal gaps in the String sequence.
-	 * @param String sequence : the sequence with dangling ends and gaps to remove
-	 * @return String sequence without dangling ends and terminal gaps.
-	 * If the new sequence String has a length inferior or equal to 0, a SequenceException is thrown.
-	 */
-	private static String removeDanglingEnds(String sequence){
-		StringBuffer newSequence = new StringBuffer();
-		newSequence.append(sequence);
-		int startIndex = 0;
-		
-		while (startIndex <= sequence.length() - 1){
-			if (sequence.charAt(startIndex) == '-'){
-				newSequence.deleteCharAt(0);
-				newSequence.deleteCharAt(newSequence.toString().length() - 1);
-				startIndex ++;
-			}
-			else{
-				break;
-			}
-		}
-		
-		int endIndex = sequence.length() - 1;
-		while (endIndex >=0){
-			if (sequence.charAt(endIndex) == '-'){
-				newSequence.deleteCharAt(newSequence.toString().length() - 1);
-				newSequence.deleteCharAt(0);
-				endIndex --;
-			}
-			else{
-				break;
-			}
-		}
-		
-		if (newSequence.toString().length() == 0){
-			throw new SequenceException("No hybridization is possible with this sequence "+ sequence +". Check the sequences");
-		}
-		return newSequence.toString();
-	}
-	
-	/**
-	 * To check if a sequence String is self complementary. A self complementary sequence is a 
-	 * sequence which can get bound or hybridized to itself.
-	 * @param String sequence
-	 * @return true if the sequence String is self complementary.
-	 */
-	public static boolean isSelfComplementarySequence(String sequence){
-		String seq = removeDanglingEnds(sequence);
-		BasePair pair = new BasePair(0);
-
-		for (int i = 0; i < seq.length() - 1; i++){
-			pair.setTopAcid(seq.substring(i, i + 1));
-			pair.setBottomAcid(seq.substring(seq.length() - i - 1, seq.length() - i));
-			
-			if (pair.isComplementaryBasePair() == false){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * To check if the String sequence and String complementary are symmetric between the positions pos1 and pos2
-	 * in the duplex ArrayList of the NucleotidSequences object. The two sequences are symmetric if the inverse of one of them
-	 * is equal to the other.
-	 * @param int pos1 : starting position of the subduplex in the duplex ArrayList of NucleotidSequences object.
-	 * @param int pos2 : ending position of the subduplex in the duplex ArrayList of NucleotidSequences object.
-	 * @return true if the String sequence and the String complementary are symmetric between the positions pos1 and pos2
-	 * in the duplex.
-	 */
-	public boolean isSymmetric(int pos1, int pos2){
-		for (int i = pos1; i < pos2; i++){
-			if (duplex.get(i).getTopAcid() != duplex.get(pos2 - pos1 - i).getBottomAcid()){
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * creates a NucleotidSequences object with two symmetric sequences String created from the
-	 * seq1 String an seq2 String.
-	 * @param String seq1 : sequence (5'3')
-	 * @param String seq2 : complementary sequence (3'5')
-	 * @return NucleotidSequences object whith the sequence String symmetric to the complementary String.
-	 */
-	public static NucleotidSequences buildSymetricSequences(String seq1, String seq2){
-		StringBuffer symetricSequence = new StringBuffer(seq1.length());
-		
-		symetricSequence.append(seq1.substring(0, 2));
-		symetricSequence.append(seq2.substring(1, 2));
-		symetricSequence.append(seq2.substring(0,1));
-	
-		StringBuffer symetricComplementary = new StringBuffer(seq1.length());
-		
-		symetricComplementary.append(seq2.substring(0, 2));
-		symetricComplementary.append(seq1.substring(1, 2));
-		symetricComplementary.append(seq1.substring(0, 1));
-		
-		return new NucleotidSequences(symetricSequence.toString(), symetricComplementary.toString());
-	}
-	
-	/**
-	 * creates the inverse String of the sequence String
-	 * @param String sequence to inverse
-	 * @return String which is the inverse of the sequence String
-	 */
-	public static String getInversedSequence(String sequence){
-		StringBuffer newSequence = new StringBuffer(sequence.length());
-
-		for (int i = 0; i < sequence.length(); i++){
-
-			newSequence.append(sequence.charAt(sequence.length() - i - 1)); 
-		}
-		return newSequence.toString();
-	}
-
 	/**
 	 * This method is called to get the complementary sequence to the sequence String between the positions pos1 and pos2. 
 	 * @param String sequence : substring of one of the sequences (sequence 5'3' or the complementary 3'5')
@@ -1461,7 +453,7 @@ public class NucleotidSequences {
 	 * @param int pos : position of the nucleic acid in the duplex
 	 * @return true if the two nucleic acids are known by MELTING. 
 	 */
-	public boolean isRegisteredModifiedAcid(int pos){
+	public boolean isRegisteredNucleicAcid(int pos){
 		if (pos > getDuplexLength() - 1 || pos < 0){
 			return false;
 		}
@@ -1472,6 +464,11 @@ public class NucleotidSequences {
 		return true;
 	}
 	
+	/**
+	 * This method is called to get the name of a specific nucleic acid in the base pair (BasePair object).
+	 * @param BasePair pair
+	 * @return the SpecificAcidNames enum which represents the name of the specific nucleic acid in the base pair.
+	 */
 	public SpecificAcidNames getModifiedAcidName(BasePair pair){
 		SpecificAcidNames name;	
 
@@ -1480,13 +477,18 @@ public class NucleotidSequences {
 			return name;
 		}
 		
-		if (pair != null && modifiedAcidNames.containsKey(pair.getBottomAcid())){
+		else if (pair != null && modifiedAcidNames.containsKey(pair.getBottomAcid())){
 			name = modifiedAcidNames.get(pair.getBottomAcid());
 			return name;
 		}
 		return null;
 	}
 	
+	/**
+	 * to check if there is at least one pyrimidine in the base pair at the position pos of the duplex ArrayList.
+	 * @param int pos : position of the base pair in the duplex
+	 * @return true if the TopAcid String is a pyrimidine ("C", "T" or "U") or if the BottomAcid String is a pyrimidine.
+	 */
 	public boolean isAPyrimidineInThePosition(int pos){
 		BasePair pair = duplex.get(pos);
 		if (pair.isTopBasePyrimidine() || pair.isBottomBasePyrimidine()){
@@ -1495,6 +497,11 @@ public class NucleotidSequences {
 		return false;
 	}
 	
+	/**
+	 * To check if there is a GG base pair adjacent to a AA base pair or a base pair containing a pyrimidine ("C", "T" or "U"). 
+	 * @param int pos : position of the Crick' pair in the duplex
+	 * @return true if there is a GG base pair adjacent to a AA base pair or a base pair containing a pyrimidine ("C", "T" or "U").
+	 */
 	public boolean isTandemMismatchGGPenaltyNecessary(int pos){
 		BasePair pair = duplex.get(pos);
 		BasePair secondpair = null;
@@ -1513,6 +520,13 @@ public class NucleotidSequences {
 		return false;
 	}
 	
+	/**
+	 * to check if there is an AG or GA base pair adjacent to an UC or CU base pair or a CC base pair
+	 * adjacent to an AA base pair.
+	 * @param int pos : positions of the Crick's pair in the duplex
+	 * @return true if there is an AG or GA base pair adjacent to an UC or CU base pair or a CC base pair
+	 * adjacent to an AA base pair. 
+	 */
 	public boolean isTandemMismatchDeltaPPenaltyNecessary(int pos){
 		BasePair pair = duplex.get(pos);
 		BasePair secondpair = null;
@@ -1537,10 +551,1030 @@ public class NucleotidSequences {
 		return false;
 	}
 
-	public boolean isGapInSequence(int pos1, int pos2){
+	/**
+	 * to chack if there is no gap (an unpaired nucleic acid) in the duplex between theb positions pos1 and pos2
+	 * @param int pos1 : starting position of the subsequence in the duplex
+	 * @param int pos2 : ending position of the subsequence in the duplex
+	 * @return false if one of the sequences composing the duplex contains at least one gap ("-") between the positions pos1 and pos2 
+	 */
+	public boolean isNoGapInSequence(int pos1, int pos2){
 		if (getSequence(pos1, pos2).contains("-") || getComplementary(pos1, pos2).contains("-")){
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * To check if the String sequence and String complementary are symmetric between the positions pos1 and pos2
+	 * in the duplex ArrayList of the NucleotidSequences object. The two sequences are symmetric if the inverse of one of them
+	 * is equal to the other.
+	 * @param int pos1 : starting position of the subduplex in the duplex ArrayList of NucleotidSequences object.
+	 * @param int pos2 : ending position of the subduplex in the duplex ArrayList of NucleotidSequences object.
+	 * @return true if the String sequence and the String complementary are symmetric between the positions pos1 and pos2
+	 * in the duplex.
+	 */
+	public boolean isSymmetric(int pos1, int pos2){
+		for (int i = pos1; i < pos2; i++){
+			if (duplex.get(i).getTopAcid() != duplex.get(pos2 - pos1 - i).getBottomAcid()){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * gives the type of the internal loop at the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList of the NucleotidSequences object.
+	 * @param int pos1 : position preceding the starting position of the internal loop
+	 * @param int pos2 : position following the ending position of the internal loop
+	 * @return String type of the internal loop at the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList.
+	 * The type of the internal loop is determined by the number of nucleic acids from the sequence String which are included in the internaql loop
+	 * and the number of nucleic acids from the complementary String which are included in the internaql loop
+	 * Ex of type of internal loop : "1x2", "2x3", "4x4", ....
+	 */
+	public String getInternalLoopType(int pos1, int pos2){
+		if (isAsymetricInternalLoop(pos1, pos2)){
+			int internalLoopSize1 = 0;
+			int internalLoopSize2 = 0;
+			for (int i = pos1 + 1; i <= pos2 - 1; i++ ){
+				BasePair pair = duplex.get(i);
+				if (pair.getTopAcid().equals("-") == false){
+					internalLoopSize1 ++;
+				}
+				
+				if (pair.getBottomAcid().equals("-") == false){
+					internalLoopSize2 ++;
+				}
+			}
+			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
+				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
+			}
+			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3 && internalLoopSize2 != 1) || (internalLoopSize2 == 2 && internalLoopSize1 != 3 && internalLoopSize1 != 1)){
+				return "others_non_2x2";
+			}
+			else {
+				return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
+			}
+		}
+		else{
+			String internalLoopSize = Integer.toString(pos2 - pos1 - 1);
+			return internalLoopSize + "x" + internalLoopSize;
+		}
+	}
+
+	/**
+	 * This method is called to get the first mismatch of the internal loop at the positions pos1 + 1 and pos2 - 1 
+	 * in the duplex ArrayList of the NucleotidSequences object. 
+	 * @param int pos1 : the position preceding the internal loop. 
+	 * @return String [] containing the first Crick's pair of the internal loop at the positions pos1 + 1 and pos2 - 1.
+	 * The nucleic acids in the first base pair of the crick's pair are converted into purine or pyrimidine.
+	 * this returned String [] contains the nucleic acids from the sequence String (5'3') and the nucleic acids from
+	 * the complementary String (3'5').
+	 * Ex : 
+	 * internal loop : (ATTGCC, TGCGCG)
+	 * The first Crick's pair in the loop : (AT, TG)
+	 * The first msimatch in the loop : (T, G) 
+	 * String [] first mismatch => {RT, YG}
+	 */
+	public String [] getLoopFistMismatch(int pos1){
+		String mismatch1 = convertToPyr_Pur(duplex.get(pos1).getTopAcid()) + duplex.get(pos1 + 1).getTopAcid();
+		String mismatch2 = convertToPyr_Pur(duplex.get(pos1).getBottomAcid()) + duplex.get(pos1 + 1).getBottomAcid();
+		String [] firstMismatch = {mismatch1, mismatch2};
+		return firstMismatch;
+	}
+	
+	/**
+	 * This method is called to get the base pairs adjacent to the single bulge loop (unpaired nucleic acid) at the position pos1 in the duplex ArrayList
+	 * @param int pos1 : position preceding the unpaired nucleic acid in the single bulge loop. 
+	 * @return String [] containing the nucleic acids adjacent to the bulge loop from the sequence String (5'3')
+	 * and the nucleic acids adjacent to the bulge loop from the complementary String (5'3')
+	 */
+	public String [] getSingleBulgeNeighbors(int pos1){
+		String NNPair1 = duplex.get(pos1).getTopAcid() + duplex.get(pos1 + 2).getTopAcid();
+		String NNPair2 = duplex.get(pos1).getBottomAcid() + duplex.get(pos1 + 2).getBottomAcid();
+		String [] NNPair = {NNPair1, NNPair2};
+		return NNPair;
+	}
+	
+	/**
+	 * to check if the internal loop between the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList
+	 * is asymetric. An internal loop is asymetric if one of the strands contains gap(s). 
+	 * @param int pos1 : position preceding the starting position of the internal loop
+	 * @param int pos2 : position following the ending position of the internal loop
+	 * @return true if the internal loop between the positions pos1 + 1 and pos2 - 1 in the duplex ArrayList is asymetric.
+	 */
+	public boolean isAsymetricInternalLoop(int pos1, int pos2){
+		
+		for (int i= pos1 + 1; i <= pos2 - 1; i++){
+			BasePair pair = duplex.get(i);
+			if (pair.isUnpaired()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method is called to get a substring of the sequence String between the positions pos1 and pos2 in the duplex.
+	 * This substring is converted in the type precised by the hybridizationType String.
+	 * @param int pos1 : starting position of the subsequence
+	 * @param int pos2 : ending position of the subsequence
+	 * @param hybridizationType : type of sequence ("dna" or "rna")
+	 * @return substring of the sequence String between pos1 and pos2 in the new type precised by the hybridizationType String
+	 */
+	public String getSequence(int pos1, int pos2, String hybridizationType){
+		
+		return convertSequence(getSequence(pos1, pos2), hybridizationType);
+	}
+	
+	/**
+	 * This method is called to get a substring of the complementary String between the positions pos1 and pos2 in the duplex.
+	 * This substring is converted in the type precised by the hybridizationType String.
+	 * @param int pos1 : starting position of the subsequence
+	 * @param int pos2 : ending position of the subsequence
+	 * @param hybridizationType : type of sequence ("dna" or "rna")
+	 * @return substring of the complementary String between pos1 and pos2 in the new type precised by the hybridizationType String
+	 */
+	public String getComplementary(int pos1, int pos2, String hybridizationType){
+		return convertSequence(getComplementary(pos1, pos2), hybridizationType);
+	}
+
+	/**
+	 * computes the number of nucleic acids in the internal loop between the positions pos1 + 1 and
+	 * pos2 - 1 in the duplex ArrayList of the NucleotidSequences object.
+	 * @param int pos1 : position preceding the starting position of the internal loop
+	 * @param int pos2 : position following the ending position of the internal loop
+	 * @return int number nucleic acids in the internal loop at the positions pos1 + 1 : pos2 - 1 in the duplex ArrayList.
+	 */
+	public int computesInternalLoopLength (int pos1, int pos2){
+		int loop = 2 * (pos2 - pos1 - 1);
+		
+		for (int i = pos1 + 1; i <= pos2 - 1; i++){
+			BasePair pair = duplex.get(i);
+			if (pair.isUnpaired()){
+				loop--;
+			}
+			if (pair.isUnpaired()){
+				loop--;
+			}
+		}
+		return loop;
+	}
+
+	/**
+	 * This method is called to get the duplex ArrayList of the NucleotidSequences object.
+	 * @return the duplex ArrayList containing BasePair objects.
+	 */
+	public ArrayList<BasePair> getDuplex() {
+		return duplex;
+	}
+	
+	/**
+	 * To get the orientation of the subsequence sequence.
+	 * @param String sequence : a substring of sequence String or complementary String.
+	 * @param int pos1 : the starting position of the substring in the sequence String or complementary String
+	 * @param int pos2 : the ending position of the substring in the sequence String or complementary String
+	 * @return String "5'3'" if the substring sequence is a substring of the sequence (5'3') or String "3'5'"
+	 * if the substring sequence is a substring of the complementary sequence (3'5').
+	 * If the substring is neither a substring of the sequence, nor a substring of the complementary sequence
+	 * a SequenceException is thrown.
+	 */
+	public String getSequenceSens(String sequence, int pos1, int pos2){
+		if (sequence.equals(getSequence(pos1, pos2))){
+			return "5'3'";
+		}
+		else if (sequence.equals(getComplementary(pos1, pos2))){
+			return "3'5'";
+		}
+		else {
+			throw new SequenceException("We don't recognize the sequence " + getSequence(pos1, pos2));
+		}
+	}
+	
+	/**
+	 * computes the percentage of GC base pairs in the duplex of the NucleotidSeqences object.
+	 * @return double percentage of GC base pairs in the duplex.
+	 */
+	public double computesPercentGC(){
+		double numberGC = 0.0;
+		
+		for (int i = 0; i < getDuplexLength();i++){
+			BasePair pair = duplex.get(i);
+			if (pair.isBasePairEqualTo("G", "C")){
+				numberGC++;
+			}
+		}
+		
+		return numberGC / (double)getDuplexLength() * 100.0;
+	}
+	
+	/**
+	 * Computes the percentage of mismatching base pairs in the duplex of the NucleotidSequences object
+	 * @return double percentage of mismatching base pairs in the duplex
+	 */
+	public double computesPercentMismatching(){
+		double numberMismatching = 0.0;
+	
+		for (int i = 0; i < getDuplexLength();i++){
+			BasePair pair = duplex.get(i);
+			if (pair.isComplementaryBasePair() == false){
+				numberMismatching++;
+			}
+		}
+		return numberMismatching / (double)getDuplexLength() * 100.0;
+	}
+	
+	/**
+	 * To check if there is at least one GC base pair in the duplex of the NucleotidSequences object.
+	 * @return true if at least one GC base pair exists in the duplex.
+	 */
+	public boolean isOneGCBasePair(){
+		for (int i = 0; i < getDuplexLength();i++){
+			BasePair pair = duplex.get(i);
+			if (pair.isBasePairEqualTo("G", "C")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * This method is called to get the length of the ArrayList duplex of the NucleotidSequences object.
+	 * @return int length which represents the length of the nucleic acid duplex.
+	 */
+	public int getDuplexLength(){
+		return duplex.size();
+	}
+	
+	/**
+	 * This method is called to get the encoded sequence String of the NucleotidSequences object.
+	 * @return String sequence of the NucleotidSequences object.
+	 */
+	public String getSequence() {
+		return getSequence(0, getDuplexLength() - 1);
+	}
+
+	/**
+	 * This method is called to get the encoded complementary String of the NucleotidSequences object.
+	 * @return String complementary of the NucleotidSequences object.
+	 */
+	public String getComplementary() {
+		return getComplementary(0, getDuplexLength() - 1);
+	}
+	
+	/**
+	 * This method is called to get a substring between two positions of the sequence String.
+	 * @param int pos1 : starting position of the subsequence
+	 * @param int pos2 : ending position of the subsequence
+	 * @return the sequence substring between pos1 and pos2.
+	 * If pos1 and pos2 are out of the duplex length range, a SequenceException is thrown.
+	 */
+	public String getSequence(int pos1, int pos2){
+		if (arePositionsOutOfRange(pos1, pos2)){
+			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
+		}
+		
+		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
+		pos1 = positions[0];
+		pos2 = positions[1];
+		return sequence.substring(pos1, pos2);
+	}
+	
+	/**
+	 * This method is called to get a substring between two positions of the complementary String.
+	 * @param int pos1 : starting position of the subsequence
+	 * @param int pos2 : ending position of the subsequence
+	 * @return the complementary substring between pos1 and pos2.
+	 * If pos1 and pos2 are out of the duplex length range, a SequenceException is thrown.
+	 */
+	public String getComplementary(int pos1, int pos2){
+		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
+			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
+		}
+		
+		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
+		pos1 = positions[0];
+		pos2 = positions[1];
+		return complementary.substring(pos1, pos2);
+	}
+	
+	/**
+	 * to get the two nucleic acids which are from the sequence (5'3') in the Crick's pair at the position "pos" in the duplex.
+	 * @param int pos : position of the crick's pair in the duplex.
+	 * @return a substring of the sequence String which represents the nucleic acids from the sequence (5'3') in the crick'base pair at the position
+	 * pos. 
+	 */
+	public String getSequenceNNPair(int pos){
+		return getSequence(pos, pos+1);
+	}
+	
+	/**
+	 * to get the two nucleic acids which are from the complementary sequence (3'5') in the Crick's pair at the position "pos" in the duplex.
+	 * @param int pos : position of the crick's pair in the duplex.
+	 * @return a substring of the complementary String which represents the nucleic acids from the complementary sequence (3'5') in the crick'base pair at the position
+	 * pos. 
+	 */
+	public String getComplementaryNNPair(int pos){
+		return getComplementary(pos, pos+1);
+	}
+	
+	/**
+	 * to get the two unlocked nucleic acids which are from the sequence (5'3') in the Crick's pair at the position "pos" in the duplex.
+	 * @param int pos : position of the crick's pair in the duplex.
+	 * @return a substring of the sequence String which represents the unlocked nucleic acids from the sequence (5'3') in the crick'base pair at the position
+	 * pos. 
+	 */
+	public String getSequenceNNPairUnlocked(int pos){
+		return getSequence(pos, pos+1).replace("L", "").replace(" ", "");
+	}
+	
+	/**
+	 * to get the two unlocked nucleic acids which are from the complementary sequence (3'5') in the Crick's pair at the position "pos" in the duplex.
+	 * @param int pos : position of the crick's pair in the duplex.
+	 * @return a substring of the complementary String which represents the unlocked nucleic acids from the complementary sequence (3'5') in the crick'base pair at the position
+	 * pos. 
+	 */
+	public String getComplementaryNNPairUnlocked(int pos){
+		return getComplementary(pos, pos + 1).replace("L", "").replace(" ", "");
+	}
+	
+	/**
+	 * to get the two nucleic acids from each sequence in the Crick's pair at the position "pos" in the duplex. we convert the hydroxyadenine (A*) into an adenine (A).
+	 * @param int pos : position of the crick's pair in the duplex.
+	 * @return a String [] containing the substrings which represent the nucleic acids from each sequence in the crick'base pair at the position
+	 * pos. The hydroxyadenine is replaced by an adenine.
+	 */
+	public String[] getNNPairWithoutHydroxyA(int pos) {
+		String[] pair1 = removeHydroxyA(getDuplex().get(pos).getTopAcid(), getDuplex().get(pos).getBottomAcid());
+		String[] pair2 = removeHydroxyA(getDuplex().get(pos+1).getTopAcid(), getDuplex().get(pos+1).getBottomAcid());
+		return new String[] { pair1[0] + pair2[0], pair1[1] + pair2[1] };
+	}
+	
+	/**
+	 * calculates the number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
+	 * @param String base1
+	 * @param String base2
+	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
+	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
+	 * @return int number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
+	 */
+	public double calculateNumberOfTerminal(String base1, String base2, int pos1, int pos2){
+		return calculateNumberOfTerminal(base1, base2, this.duplex, pos1, pos2);
+	}
+	
+	/**
+	 * calculates the number of terminal 5'T3'A in the subduplex between pos1 and pos2
+	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
+	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
+	 * @return int number of terminal 5'T3'A in the subduplex between pos1 and pos2. 5'A/3'T means that at the position
+	 * pos1, the base pair is (T,A) and at the position pos2, the base pair is (A,T).
+	 */
+	public double getNumberTerminal5TA(int pos1, int pos2){
+		double number5TA = 0;
+		BasePair firstTerminalBasePair = duplex.get(pos1);
+		BasePair lastTerminalBasePair = duplex.get(pos2);
+		
+		if (firstTerminalBasePair.isBasePairStrictlyEqualTo("T", "A")){
+			number5TA ++;
+		}
+		if (lastTerminalBasePair.isBasePairStrictlyEqualTo("A", "T")){
+			number5TA ++;
+		}
+		return number5TA;
+	}
+	
+	/**
+	 * find the real starting and ending positions of the duplex. The real starting and ending positions
+	 * of the duplex are the first and last positions in the duplex where the nucleic acids are paired.
+	 * @return int [] containing the first and last positions in the duplex where the nucleic acids are paired.
+	 */
+	public int [] removeTerminalUnpairedNucleotides(){
+		int indexStart = 0;
+		while (indexStart <= getDuplexLength() - 1){
+			BasePair pair = duplex.get(indexStart);
+			if (pair.isUnpaired()){
+				indexStart ++;
+			}
+			else {
+				break;
+			}
+		}
+
+		if (indexStart >= getDuplexLength() - 1){
+			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
+		}
+		
+		int indexEnd = getDuplexLength() - 1;
+		while (indexEnd >= 0){
+			BasePair pair = duplex.get(getDuplexLength() - indexEnd - 1);
+			if (pair.isUnpaired()){
+				indexEnd --;
+			}
+			else {
+				break;
+			}
+		}
+		if (indexEnd <= 0){
+			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
+		}
+		int [] positions = {indexStart, indexEnd};
+		return positions;
+	}
+	
+	/**
+	 * To check if the base pair at the position pos in the duplex is (base1, base2) or (base2, base1).
+	 * @param String base1
+	 * @param String base2
+	 * @param int pos : position of the base pair in the duplex
+	 * @return true if the tuple (TopAcid, BottomAcid) of the BasePair object at the position pos in the duplex ArrayList
+	 * is (base1, base2) or (base2, base1).
+	 */
+	public boolean isBasePair(String base1, String base2, int pos){
+		BasePair pair = duplex.get(pos);
+		if (pair.isBasePairEqualTo(base1, base2)){
+			return true;
+		}
+		return false;
+	}
+	
+	// private methods
+	
+	/**
+	 * encodes the complementary String of the object NucleotidSequences
+	 * @param String sequence : the sequence (5'3')
+	 * @param StringBuffer comp : the complementary sequence (3'5') to encode
+	 * @return the encoded complementary String
+	 */
+	private String encodeComplementary(String sequence, StringBuffer comp){
+		int pos = 0;
+		while (pos < sequence.length()){
+			String acid = getNucleicAcid(sequence, pos);
+			if (acid != null){
+				if (acid.equals("X_T") || acid.equals("X_C")){
+					comp.insert(pos," ");
+					comp.insert(pos + 1, " ");
+					comp.insert(pos + 2, " ");
+				}
+				else if (acid.length() > 1){
+					if (acid.charAt(1) == 'L'){
+						comp.insert(pos + 1," ");
+					}
+					else if(acid.equals("A*")){
+						comp.insert(pos + 1," ");
+					}
+				}
+				pos += acid.length();
+			}
+			else {
+				pos ++;
+			}
+		}	
+		
+		return comp.toString();
+	}
+	
+	/**
+	 * encodes the sequence String of the object NucleotidSequences
+	 * @param String complementary : the complementary sequence (3'5')
+	 * @param StringBuffer seq : the sequence (5'3') to encode
+	 * @return the encoded sequence String
+	 */
+	private String encodeSequence(String complementary, StringBuffer seq){
+		int pos = 0;
+		
+		while (pos < complementary.length()){
+			String acid = getNucleicAcid(complementary, pos);
+			if (acid != null){
+				if (acid.equals("X_T") || acid.equals("X_C")){
+					seq.insert(pos," ");
+					seq.insert(pos + 1, " ");
+					seq.insert(pos + 2, " ");
+				}
+				else if (acid.length() > 1){
+					if (acid.charAt(1) == 'L'){
+						seq.insert(pos + 1," ");
+					}
+					else if (acid.equals("A*")){
+						seq.insert(pos + 1," ");
+					}
+				}
+				pos += acid.length();
+			}
+			else{
+				pos ++;
+			}
+		}	
+		
+		return seq.toString();
+	}
+	
+	/**
+	 * To check if two positions are in the duplex length range.
+	 * @param int pos1 : starting position in the duplex
+	 * @param int pos2 : ending position in the duplex
+	 * @return true if at least one of the positions is out of the duplex length range.
+	 */
+	private boolean arePositionsOutOfRange(int pos1, int pos2){
+		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * To get the positions of the nucleic acid or the subsequence in the String sequence (or String complementary).
+	 * @param int pos1 : starting position of the subsequence in the duplex
+	 * @param int pos2 : ending position of the subsequence in the duplex
+	 * @return int [] positions which contains the starting and ending positions in the sequence String
+	 * (or complementary String).
+	 */
+	private int [] convertAcidPositionsIntoStringPositions(int pos1, int pos2){
+		pos1 = this.duplex.get(pos1).getPosition();
+		pos2 = this.duplex.get(pos2).getPosition() + this.duplex.get(pos2).getLengthAcid();
+		
+		int [] positions = {pos1, pos2};
+		return positions;
+	}
+	
+	/**
+	 * converts a sequence String into a new type (hybridizationType) of sequence.
+	 * @param String sequence : sequence to convert in a new type. ("dna" or "rna")
+	 * @param String hybridizationType : type of the sequence ("dna" or "rna")
+	 * @return String converted sequence. if the hybridizationType String is "rna", the 
+	 * sequence String is converted into a RNA sequence and if the hybridizationType String 
+	 * is "dna", the sequence String is converted into a RNA sequence. 
+	 * If the hybridizationType String is neither "rna", nor "dna", a SequenceException is thrown.
+	 */
+	private String convertSequence(String sequence, String hybridizationType){
+		char acidToRemplace;
+		char remplacingAcid;
+		
+		if (hybridizationType.equals("dna")){
+			remplacingAcid = 'T';
+			acidToRemplace = 'U';
+		}
+		else if (hybridizationType.equals("rna")) {
+			remplacingAcid = 'U';
+			acidToRemplace = 'T';
+		}
+		else {
+			throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
+		}
+		
+		String newSequence = sequence.replace(acidToRemplace, remplacingAcid);
+
+		return newSequence;
+	}
+
+	// public static methods
+	
+	/**
+	 * This method is called to get the ArrayList duplex of the NucleotidSequences object.
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @return the ArrayList duplex of the NucleotiSequences object.
+	 */
+	public static ArrayList<BasePair> getDuplexFrom(String sequence, String complementary){
+		ArrayList<BasePair> duplex = new ArrayList<BasePair>();
+		int pos = 0;
+		while (pos < sequence.length()){
+			BasePair pair = getBasePair(sequence, complementary, pos);
+			duplex.add(pair);
+			pos += pair.getLengthAcid();
+		}
+		return duplex;
+	}
+	
+	/**
+	 * decodes the String sequence and complementary of the NucleotidSequences object.
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @return a String [] object containing the decoded String sequence and complementary of the NucleotidSequences object.
+	 */
+	public static String [] decodeSequences(String sequence, String complementary){
+		StringBuffer seq = new StringBuffer();
+		StringBuffer comp = new StringBuffer();
+
+		seq.append(sequence);
+		comp.append(complementary);
+
+		String [] sequences = {decodeSequence(sequence), decodeSequence(complementary)};
+		return sequences;
+	}
+	
+	/**
+	 * creates a NucleotidSequences object with two symmetric sequences String created from the
+	 * seq1 String an seq2 String.
+	 * @param String seq1 : sequence (5'3')
+	 * @param String seq2 : complementary sequence (3'5')
+	 * @return NucleotidSequences object whith the sequence String symmetric to the complementary String.
+	 */
+	public static NucleotidSequences buildSymetricSequences(String seq1, String seq2){
+		StringBuffer symetricSequence = new StringBuffer(seq1.length());
+		
+		symetricSequence.append(seq1.substring(0, 2));
+		symetricSequence.append(seq2.substring(1, 2));
+		symetricSequence.append(seq2.substring(0,1));
+	
+		StringBuffer symetricComplementary = new StringBuffer(seq1.length());
+		
+		symetricComplementary.append(seq2.substring(0, 2));
+		symetricComplementary.append(seq1.substring(1, 2));
+		symetricComplementary.append(seq1.substring(0, 1));
+		
+		return new NucleotidSequences(symetricSequence.toString(), symetricComplementary.toString());
+	}
+	
+	/**
+	 * creates the inverse String of the sequence String
+	 * @param String sequence to inverse
+	 * @return String which is the inverse of the sequence String
+	 */
+	public static String getInversedSequence(String sequence){
+		StringBuffer newSequence = new StringBuffer(sequence.length());
+
+		for (int i = 0; i < sequence.length(); i++){
+
+			newSequence.append(sequence.charAt(sequence.length() - i - 1)); 
+		}
+		return newSequence.toString();
+	}
+	
+	/**
+	 * To check if a sequence String is self complementary. A self complementary sequence is a 
+	 * sequence which can get bound or hybridized to itself.
+	 * @param String sequence
+	 * @return true if the sequence String is self complementary.
+	 */
+	public static boolean isSelfComplementarySequence(String sequence){
+		String seq = removeDanglingEnds(sequence);
+		BasePair pair = new BasePair(0);
+
+		for (int i = 0; i < seq.length() - 1; i++){
+			pair.setTopAcid(seq.substring(i, i + 1));
+			pair.setBottomAcid(seq.substring(seq.length() - i - 1, seq.length() - i));
+			
+			if (pair.isComplementaryBasePair() == false){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * converts a sequence String in a String composed of purine and pyrimidine.
+	 * A and G are purines (represented by "R" in the new sequence String), C, T and U are
+	 * pyrimidines (represented by "Y" in the new sequence String)
+	 * @param String sequence to convert in purine-pyrimidine sequence.
+	 * @return the new sequence String converted into a String composed of purines ("R") and pyrimidines ("Y").
+	 * If the sequence String is not only composed of - (gap), A, T, U, G and C, a SequenceExceptions is thrown.
+	 */
+	public static String convertToPyr_Pur(String sequence){
+		StringBuffer newSeq = new StringBuffer(sequence.length());
+		for (int i = 0; i <= sequence.length() - 1; i++){
+			switch (sequence.charAt(i)) {
+			case 'A':
+				newSeq.append('R');
+				break;
+			case 'G':
+				newSeq.append('R');
+				break;
+			case 'U':
+				newSeq.append('Y');
+				break;
+			case 'T':
+				newSeq.append('Y');
+				break;
+			case 'C':
+				newSeq.append('Y');
+				break;
+			case '-':
+				newSeq.append('-');
+				break;
+			default:
+				throw new SequenceException("There are non watson crick bases in the sequence.");
+			}
+		}
+		return newSeq.toString();
+	}
+	
+	/**
+	 * This method is called to get the modifiedAcidNames HashMap of the NucleotidSequences class.
+	 * @return the public static modifiedAcidNames HashMap of the NucleotidSequences class.
+	 */
+	public static HashMap<String, SpecificAcidNames> getModifiedAcidNames() {
+		return modifiedAcidNames;
+	}
+	
+	/**
+	 * initializes the HasMap modifiedAcidNames of the NucleotiSequences class.
+	 */
+	public static void initializeModifiedAcidHashmap(){
+		modifiedAcidNames.put("I", SpecificAcidNames.inosine);
+		modifiedAcidNames.put("AL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("TL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("CL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("GL", SpecificAcidNames.lockedNucleicAcid);
+		modifiedAcidNames.put("A*", SpecificAcidNames.hydroxyadenine);
+		modifiedAcidNames.put("X_C", SpecificAcidNames.azobenzene);
+		modifiedAcidNames.put("X_T", SpecificAcidNames.azobenzene);
+	}
+	
+	/**
+	 * This method is called when we want to get the complementary String of the NucleotidSequences object with the
+	 * type of hybridization "hybridization".
+	 * @param String sequence
+	 * @param String hybridization : type of hybridization
+	 * @return String which represents the complementary sequence (3'5') with the specified nature.(rna, dna)
+	 */
+	public static String getComplementarySequence(String sequence, String hybridization){
+		StringBuffer complementary = new StringBuffer(sequence.length());
+		for (int i = 0; i < sequence.length(); i++){
+			switch(sequence.charAt(i)){
+			case 'A':
+				if (hybridization.equals("dnadna") || hybridization.equals("rnadna")){
+					complementary.append('T');
+				}
+				else if (hybridization.equals("rnarna") || hybridization.equals("mrnarna") || hybridization.equals("rnamrna") || hybridization.equals("dnarna")){
+					complementary.append('U');
+				}
+				break;
+			case 'T':
+				if (i != 0){
+					if (sequence.charAt(i - 1) != '_'){
+						complementary.append('A');
+					}
+				}
+				else{
+					complementary.append('A');
+				}
+				break;
+			case 'C':
+				if (i != 0){
+					if (sequence.charAt(i - 1) != '_'){
+						complementary.append('G');
+					}
+				}
+				else{
+					complementary.append('G');
+				}
+				break;
+			case 'G':
+				complementary.append('C');
+				break;
+			case 'U':
+				complementary.append('A');
+				break;
+			case '-':
+				complementary.append('-');
+				break;
+			}
+		}
+		return complementary.toString();
+	}
+	
+	/**
+	 * Checks if the String sequence is composed of nucleic acids known by MELTING.
+	 * @param String sequence
+	 * @return false if one of the nucleic acids is not known by MELTING. (not registered in the ArrayList existingNucleicAcids of the
+	 * BasePair class).
+	 * If the length of the sequence String is 0, a SequenceException is thrown.
+	 */
+	public static boolean checkSequence(String sequence){
+		
+		int position = 0;
+		
+		if (sequence.length() == 0){
+			throw new SequenceException("The sequence must be entered with the option " + OptionManagement.sequence);
+		}
+		while (position < sequence.length()){
+			String acid = getNucleicAcid(sequence, position);
+			if (acid == null){
+				return false;
+			}
+			
+			position += acid.length();
+		}
+		return true;
+	}
+	
+	/**
+	 * this method is called to get the sens of the dangling end for the sequences seq1 and seq2
+	 * @param String seq1 : String terminal pattern of the sequence (5'3')
+	 * @param String seq2 : String terminal pattern of the complementary sequence (3'5')
+	 * @return String "5" if the dangling end (the unpaired nucleic acid) is a 5' dangling end and String "3"
+	 * if the dangling end is a 3' dangling end.
+	 * If both seq1 and seq2 contain "-", or if neither the sequence seq1 nor the sequence seq2 contains dangling ends 
+	 * (or gaps for the complementary sequence), a SequenceException is thrown.
+	 */
+	public static String getDanglingSens(String seq1, String seq2){
+		if (seq1.length() == 0){
+			return "3";
+		}
+		else if (seq2.length() == 0){
+			return "5";
+		}
+		else if (seq2.charAt(0) == '-'){
+			return "5";
+		}
+		else if (seq1.charAt(0) == '-'){
+			return "3";
+		}
+		else if (seq2.charAt(seq2.length() - 1) == '-'){
+			return "3";
+		}
+		else if (seq1.charAt(seq1.length() - 1) == '-'){
+			return "5";
+		}
+		else if (seq1.contains("-") == false && seq2.contains("-") == false){
+			throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
+		}
+		throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
+	}
+	
+	// private static methods
+	
+	/**
+	 * Creates an ArrayList which contains a list of nucleic acids String from the existingNucleicAcids ArrayList of the BasePair class
+	 * Each nucleic acid String can match the first nucleic acid of the seq String. 
+	 * @param String seq
+	 * @return an ArrayList containing the existing nucleic acids which can match the first nucleic acid of the seq String.
+	 * If the ArrayList size is null and there is no existing nucleic acid which can match the first nucleic acid of the seq String,
+	 * a SequenceException is thrown.
+	 */
+	private static ArrayList<String> getListMatchingNucleicAcids(String seq) {
+		ArrayList<String> possibleNucleicAcids = new ArrayList<String>();
+
+		for (int i = 0; i < BasePair.getExistingNucleicAcids().size(); i++){
+			if (seq.startsWith(BasePair.getExistingNucleicAcids().get(i))){
+				possibleNucleicAcids.add(BasePair.getExistingNucleicAcids().get(i));
+			}
+		}
+		
+		if (possibleNucleicAcids.size() == 0 && seq.charAt(0) != ' '){
+			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options and the sequence: " + seq);
+		}
+		
+		return possibleNucleicAcids;
+	}
+	
+	/**
+	 * extracts the longer nucleic acid String from an ArrayList.
+	 * @param ArrayList possibleNucleicAcids : listing all the existing nucleic acids which can match the nucleic acid we want to extract 
+	 * from a String 
+	 * @return the longer nucleic acid String of the ArrayList possibleNucleicAcids.
+	 */
+	private static String extractNucleicAcidFrom(ArrayList<String> possibleNucleicAcids){
+		int lengthAcid = 0;
+		String acid = null;
+		
+		for (int i = 0; i < possibleNucleicAcids.size() ; i++){
+			if (possibleNucleicAcids.get(i).length() > lengthAcid){
+				lengthAcid = possibleNucleicAcids.get(i).length();
+				acid = possibleNucleicAcids.get(i);
+			}
+		}
+		
+		return acid;
+	}
+	
+	/**
+	 * This method is called to get the nucleic acid at the position "pos" in the sequence "sequence"
+	 * @param String sequence : represents one of the sequence or a substring of the sequence
+	 * @param int pos : The nucleic acid position in the sequence
+	 * @return nucleic acid String at the position "pos" in the sequence String. If the nucleic acid
+	 * is not known or registered, this method return null.
+	 */
+	private static String getNucleicAcid(String sequence, int pos){
+		String seq = sequence.substring(pos);
+		ArrayList<String> possibleNucleicAcids = getListMatchingNucleicAcids(seq);
+		
+		if (possibleNucleicAcids.size() == 0){
+			return null;
+		}
+		else {
+			String acid = extractNucleicAcidFrom(possibleNucleicAcids);
+			return acid;
+		}	
+	}
+	
+	/**
+	 * decodes the String "sequence".
+	 * @param String sequence
+	 * @return the decoded String "sequence".
+	 */
+	private static String decodeSequence(String sequence){
+		
+		String newSequence = sequence.replaceAll("X_[TC]", "X").replaceAll(" ", "");
+
+		return newSequence;
+	}
+	
+	/**
+	 * removes the dangling ends and terminal gaps in the String sequence.
+	 * @param String sequence : the sequence with dangling ends and gaps to remove
+	 * @return String sequence without dangling ends and terminal gaps.
+	 * If the new sequence String has a length inferior or equal to 0, a SequenceException is thrown.
+	 */
+	private static String removeDanglingEnds(String sequence){
+		StringBuffer newSequence = new StringBuffer();
+		newSequence.append(sequence);
+		int startIndex = 0;
+		
+		while (startIndex <= sequence.length() - 1){
+			if (sequence.charAt(startIndex) == '-'){
+				newSequence.deleteCharAt(0);
+				newSequence.deleteCharAt(newSequence.toString().length() - 1);
+				startIndex ++;
+			}
+			else{
+				break;
+			}
+		}
+		
+		int endIndex = sequence.length() - 1;
+		while (endIndex >=0){
+			if (sequence.charAt(endIndex) == '-'){
+				newSequence.deleteCharAt(newSequence.toString().length() - 1);
+				newSequence.deleteCharAt(0);
+				endIndex --;
+			}
+			else{
+				break;
+			}
+		}
+		
+		if (newSequence.toString().length() == 0){
+			throw new SequenceException("No hybridization is possible with this sequence "+ sequence +". Check the sequences");
+		}
+		return newSequence.toString();
+	}
+	
+	/**
+	 * This method is called to get the BasePair object from the String sequence and complementary at the position pos in the duplex 
+	 * @param String sequence : sequence (5'3')
+	 * @param String complementary : complementary sequence (3'5')
+	 * @param int pos : position in the sequence where is the base pair.
+	 * @return BasePair object which represents the nucleic acid base pair at the position pos in the duplex
+	 * If neither the nucleic acid from the sequence (5'3') nor the nucleic acid from the complementary sequence (3'5')
+	 * is known (acid1 == null and acid2 == null), a SequenceException is thrown.
+	 */
+	private static BasePair getBasePair(String sequence, String complementary, int pos){
+		BasePair acid = new BasePair(pos);
+		
+		String acid1 = getNucleicAcid(sequence, pos);
+		String acid2 = getNucleicAcid(complementary, pos);
+		if (acid1 == null && acid2 == null){
+			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options.");
+		}
+		else if (acid1 == null){
+			acid1 = sequence.substring(pos, pos + acid2.length());
+		}
+		else if (acid2 == null){
+			acid2 = complementary.substring(pos, pos + acid1.length());
+		}
+		acid.setTopAcid(acid1);
+		acid.setBottomAcid(acid2);
+		
+		return acid;
+	}
+	
+	/**
+	 * To convert the hydroxyadenine (A*) into an adenine (A) in the acid1 String and acid2 String.
+	 * @param String acid1 : nucleic acid String from the sequence (5'3')
+	 * @param String acid2 : nucleic acid String from the complementary sequence (3'5')
+	 * @return String [] containing the acid1 String and acid2 String with the hydroxyadenine replaced by adenine.
+	 */
+	private static String[] removeHydroxyA(String acid1, String acid2) {
+		if (acid1.equals("A*")) {
+			return new String[]{"A", "T"};
+		}
+		if (acid2.equals("A*")) {
+			return new String[]{"T", "A"};
+		}
+		return new String[]{acid1, acid2};
+	}
+	
+	/**
+	 * calculates the number of base pair (base1, base2) and (base2, base1) at the positions pos1 and pos2 in the duplex ArrayList.
+	 * @param String base1
+	 * @param String base2
+	 * @param ArrayList duplex
+	 * @param int pos1 : starting position of the subsequence in the duplex ArrayList.
+	 * @param int pos2 : ending position of the subsequence in the duplex ArrayList.
+	 * @return int number of base pairs (base1, base2) and (base2, base1) at the positions pos1 and pos2 of the duplex ArrayList.
+	 */
+	private static double calculateNumberOfTerminal(String base1, String base2, ArrayList<BasePair> duplex, int pos1, int pos2){
+		double numberOfTerminal = 0.0;
+		BasePair firstTerminalBasePair = duplex.get(pos1);
+		BasePair lastTerminalBasePair = duplex.get(pos2);
+
+		if (firstTerminalBasePair.isBasePairEqualTo(base1, base2)){
+			numberOfTerminal++;
+		}
+		
+		if (lastTerminalBasePair.isBasePairEqualTo(base1, base2)){
+			numberOfTerminal++;
+		}
+		return numberOfTerminal;	
 	}
 }

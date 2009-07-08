@@ -10,7 +10,7 @@ public class MainTestSecondDanglingEnd {
 		secondDanglingEndMethods.add("ser05");
 		secondDanglingEndMethods.add("ser06");
 
-		Properties secondDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNASecondDanglingEndSequences.txt");
+		Properties secondDanglingEnd = MainTest.loadSequencesTest("src/examples/test/RNASecondDanglingEndSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t ser05 \t ser06 \n");
 

@@ -21,7 +21,7 @@ public class Owczarzy04SodiumCorrection22 implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (22) is from Owczarzy et al. (2004) : "); 
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 		
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
 		double square = Math.log(NaEq) * Math.log(NaEq);
 		double TmInverse = 1.0 / (environment.getResult().getTm() + 273.15) + (4.29 * Fgc - 3.95) * 1.0 / 100000.0 * Math.log(NaEq) + 9.40 * 1.0 / 1000000.0 * square;
@@ -31,7 +31,7 @@ public class Owczarzy04SodiumCorrection22 implements CorrectionMethod {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be strictly positive.");

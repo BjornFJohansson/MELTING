@@ -9,7 +9,7 @@ public class MainTestTandemMismatches {
 		ArrayList<String> DNATandemMismatchesMethods = new ArrayList<String>();
 		DNATandemMismatchesMethods.add("allsanpey");
 		
-		Properties DNATandemMismatches = MainTest.loadSequencesTest("src/melting/test/DNATandemMismatchesSequences.txt");
+		Properties DNATandemMismatches = MainTest.loadSequencesTest("src/examples/test/DNATandemMismatchesSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t allsanpey \n");
 
@@ -18,7 +18,7 @@ public class MainTestTandemMismatches {
 		ArrayList<String> RNATandemMismatchesMethods = new ArrayList<String>();
 		RNATandemMismatchesMethods.add("tur06");
 		
-		Properties RNATandemMismatches = MainTest.loadSequencesTest("src/melting/test/RNATandemMismatchesSequences.txt");
+		Properties RNATandemMismatches = MainTest.loadSequencesTest("src/examples/test/RNATandemMismatchesSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t tur06 \n");
 

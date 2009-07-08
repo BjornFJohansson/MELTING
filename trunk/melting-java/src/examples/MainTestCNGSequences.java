@@ -10,7 +10,7 @@ public class MainTestCNGSequences {
 		ArrayList<String> CNGmethods = new ArrayList<String>();
 		CNGmethods.add("bro05");
 		
-		Properties CNGSequences = MainTest.loadSequencesTest("src/melting/test/CNGSequences.txt");
+		Properties CNGSequences = MainTest.loadSequencesTest("src/examples/test/CNGSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t bro05 \n");
 

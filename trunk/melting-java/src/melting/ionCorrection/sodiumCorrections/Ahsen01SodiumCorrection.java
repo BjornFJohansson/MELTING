@@ -20,7 +20,7 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium concentration must be strictly positive.");

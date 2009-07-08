@@ -23,7 +23,7 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Frank Kamenetskii et al. (1971) : "); 
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
 		
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
 		
 		double Tm = environment.getResult().getTm() + (7.95 - 3.06 * Fgc) * Math.log(NaEq);
@@ -34,7 +34,7 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;

@@ -1,3 +1,18 @@
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
+
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+*       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+
 package melting;
 
 import java.util.HashMap;
@@ -7,17 +22,74 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the environment of the sequences for which we want to know the melting temperature.
+ * It contains the sequences, the different ions and agents in the solution, the information about the sequences...
+ * Instance variables :
+ * HashMap<String, Double> concentrations : ion and agent concentrations
+ * double oligomerConcentration : oligomer concentration (in excess)
+ * int factor : correction factor of the oligomer concentration
+ * boolean IsSelfComplementarity
+ * String Hybridization : type of hybridization
+ * NucleotidSequences sequences : contains the sequences
+ * ThermoResult result : contains the results of Melting
+ * HashMap<String, String> options : contains the options (default options and options entered by the user)
+ */
 public class Environment {
 
+	// Instance variables
+	
+	/**
+	 * HashMap<String, Double> concentrations : contains the different ion and agent concentrations
+	 */
 	private HashMap<String, Double> concentrations = new HashMap<String, Double>();
-	private double nucleotides;
+	
+	/**
+	 * double oligomerConcentration : oligomer concentration (concentration of the strand in excess if one
+	 * strand is in excess).
+	 */
+	private double oligomerConcentration;
+	
+	/**
+	 * int factor : correction factor for the oligomer concentration. It is 1 if the sequences are
+	 * self complementary or if the one strand is in excess and 4 otherwise
+	 */
 	private int factor;
+	
+	/**
+	 * boolean IsSelfComplementarity : informs if the sequences are self complementary.
+	 */
 	private boolean IsSelfComplementarity = false;
+	
+	/**
+	 * String Hybridization : type of hybridization
+	 */
 	private String Hybridization;
+	
+	/**
+	 * NucleotidSequences sequences : contains the sequence (5'3'), the complementary sequence (3'5') and the duplex
+	 */
 	private NucleotidSequences sequences;
+	
+	/**
+	 * ThermoResult result : contains the results. (computed enthalpy, entropy and melting temperature)
+	 */
 	private ThermoResult result;
+	
+	/**
+	 * HashMap<String, String> options : contains the options (default options and options entered by the user)
+	 */
 	private HashMap<String, String> options = new HashMap<String, String>();
 	
+	// Environment constructor
+	
+	/**
+	 * creates an Environment object from the different options (default options and options entered by the user).
+	 * Initializes the different instance variables of the Environment object.
+	 * If the options HashMap is null, an OptionSyntaxError is thrown.
+	 * If all the required ion concentrations (Na, Mg, K, Tris) are 0, an OptionSyntaxError is thrown.
+	 * @param HashMap<String, String> options : contains the options (default options and options entered by the user)
+	 */
 	public Environment(HashMap<String, String> options){
 		this.options = options;
 
@@ -31,7 +103,7 @@ public class Environment {
 			throw new OptionSyntaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
 		}
 		
-		this.nucleotides = Double.parseDouble(options.get(OptionManagement.nucleotides));
+		this.oligomerConcentration = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization).toLowerCase();
 		
 		if (options.get(OptionManagement.selfComplementarity).equals("true")){
@@ -54,51 +126,102 @@ public class Environment {
 
 	}
 	
+	// public methods
+	
+	/**
+	 * sorts the sequences in function of the type of hybridization : In case of DNA/RNA type of hybridization, the sequence (5'3') must be a DNA sequence
+	 * and the complementary sequence (3'5') a RNA sequence. In case of mRNA/RNA type of hybridization, the sequence (5'3') must be a mRNA sequence
+	 * and the complementary sequence (3'5') a RNA sequence.
+	 * Then creates the sequences NucleotidSequences of the Environment object.
+	 * @param String hybridization : type of hybridization. Precise the nature of each sequence (DNA, RNA or mRNA)
+	 * @param String firstSequence : sequence (5'3')
+	 * @param String secondSequence : complementary sequence (3'5')
+	 */
 	public void sortSquences(String hybridization, String firstSequence, String secondSequence){
 		if (hybridization.equals("rnadna") || hybridization.equals("rnamrna")){
-			this.sequences = new NucleotidSequences(secondSequence, firstSequence);
+			this.sequences = new NucleotidSequences(NucleotidSequences.getInversedSequence(secondSequence), NucleotidSequences.getInversedSequence(firstSequence));
 		}
 		else {
 			this.sequences = new NucleotidSequences(firstSequence, secondSequence);
 		}
 	}
 
+	/**
+	 * This method is called to get the int factor of the Environment object.
+	 * @return int factor of the Environment object.
+	 */
 	public int getFactor() {
 		return factor;
 	}
 	
+	/**
+	 * changes the int factor value of the Environment object
+	 * @param int factor : new factor value
+	 */
 	public void setFactor(int factor) {
 		this.factor = factor;
 	}
 
+	/**
+	 * This method is called to get the ThermoResult of the Environment object.
+	 * @return ThermoResult result of the Environment object.
+	 */
 	public ThermoResult getResult() {
 		return result;
 	}
 
+	/**
+	 * This method is called to get the sequences NucleotidSequences of the Environment object.
+	 * @return NucleotidSequences sequences of the Environment object.
+	 */
 	public NucleotidSequences getSequences() {
 		return sequences;
 	}
 
+	/**
+	 * This method is called to get the oligomerConcentration double of the Environment object.
+	 * @return double oligomerConcentration of the Environment object.
+	 */
 	public double getNucleotides() {
-		return nucleotides;
+		return oligomerConcentration;
 	}
 	
+	/**
+	 * To check if the sequences are self complementary.
+	 * @return true if the sequences are self complementary.
+	 */
 	public boolean isSelfComplementarity() {
 		return IsSelfComplementarity;
 	}
 	
+	/**
+	 * changes the boolean value of the isSelfComplementarity boolean.
+	 * @param boolean b
+	 */
 	public void setSelfComplementarity(boolean b){
 		this.IsSelfComplementarity = b;
 	}
 	
+	/**
+	 * This method is called to get the hybridization String of the Environment object.
+	 * @return String hybridization of the Environment object. (represents the type of hybridization)
+	 */
 	public String getHybridization() {
 		return Hybridization;
 	}
 	
+	/**
+	 * This method is called to get the HashMap options of the Environment object.
+	 * @return HashMap options of the Environment object.
+	 */
 	public HashMap<String, String> getOptions() {
 		return options;
 	}
 	
+	/**
+	 * This method is called to get the sodium concentration.
+	 * @return double Na corresponding to the sodium concentration.
+	 */
 	public double getNa() {
 		if (concentrations.containsKey("Na")){
 			return concentrations.get("Na");
@@ -106,6 +229,10 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * This method is called to get the magnesium concentration.
+	 * @return double Mg corresponding to the magnesium concentration.
+	 */
 	public double getMg() {
 		if (concentrations.containsKey("Mg")){
 			return concentrations.get("Mg");
@@ -113,10 +240,18 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * changes the magnesium concentration in the environment
+	 * @param double Mg : new magnesium concentration
+	 */
 	public void setMg(double Mg){
 		this.concentrations.put("Mg", Mg);
 	}
 	
+	/**
+	 * This method is called to get the Tris buffer concentration.
+	 * @return double Tris corresponding to the Tris buffer concentration.
+	 */
 	public double getTris() {
 		if (concentrations.containsKey("Tris")){
 			return concentrations.get("Tris");
@@ -124,6 +259,10 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * This method is called to get the potassium concentration.
+	 * @return double K corresponding to the potassium concentration.
+	 */
 	public double getK() {
 		if (concentrations.containsKey("K")){
 			return concentrations.get("K");
@@ -131,10 +270,18 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * This method is called to get the concentrations HashMap of the Environment object.
+	 * @return HashMap concentrations of the Environment object. (contains the different ion and agent concentrations)
+	 */
 	public HashMap<String, Double> getConcentrations(){
 		return this.concentrations;
 	}
 	
+	/**
+	 * This method is called to get the DMSO concentration.
+	 * @return double DMSO corresponding to the DMSO concentration.
+	 */
 	public double getDMSO() {
 		if (concentrations.containsKey("DMSO")){
 			return concentrations.get("DMSO");
@@ -142,6 +289,10 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * This method is called to get the formamide concentration.
+	 * @return double formamide corresponding to the formamide concentration.
+	 */
 	public double getFormamide() {
 		if (concentrations.containsKey("formamide")){
 			return concentrations.get("formamide");
@@ -149,23 +300,45 @@ public class Environment {
 		return 0;
 	}
 	
+	/**
+	 * changes the sodium concentration in the environment
+	 * @param double Na : new sodium concentration
+	 */
 	public void setNa(double na) {
 		concentrations.put("Na", na);
 	}
 	
+	/**
+	 * increments the ThermoResult enthalpy and ThermoResult entropy of the Environment object
+	 * with the specified double enthalpy and double entropy.  
+	 * @param double enthalpy : enthalpy incrementation value
+	 * @param double entropy : entropy incrementation value
+	 */
 	public void addResult(double enthalpy, double entropy){
 		this.result.setEnthalpy(this.result.getEnthalpy() + enthalpy);
 		this.result.setEntropy(this.result.getEntropy() + entropy);
 	}
 	
+	/**
+	 * changes the melting temperature of the ThermoResult object.
+	 * @param double temperature : new melting temperature
+	 */
 	public void setResult(double temperature){
 		this.result.setTm(temperature);
 	}
 	
+	/**
+	 * changes the result ThermoResult of the Environment object.
+	 * @param ThermoResult result : new ThermoResult object.
+	 */
 	public void setResult(ThermoResult result){
 		this.result=result;
 	}
 
+	/**
+	 * This method is called to get the dNTP concentration.
+	 * @return double dNTP corresponding to the dNTP concentration.
+	 */
 	public double getDNTP() {
 		if (concentrations.containsKey("dNTP")){
 			return concentrations.get("dNTP");
@@ -173,6 +346,11 @@ public class Environment {
 		return 0;
 	}
 	
+	// private methods
+	
+	/**
+	 * initializes the concentrations HashMap of the Environment object.
+	 */
 	private void initializeConcentrations(){
 		String [] solution = this.options.get(OptionManagement.solutioncomposition).split(":");
 		
@@ -182,6 +360,11 @@ public class Environment {
 		}
 	}
 	
+	/**
+	 * to check if there is at least one of the required ion concentrations (Na, Mg, Tris or K)
+	 * @return true if at least one of the following ion concentrations : Na, Mg, K or Tris concentration 
+	 * is strictly superior to 0.
+	 */
 	private boolean isRequiredConcentrations(){
 		double Na = 0;
 		double Mg = 0;

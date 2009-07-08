@@ -26,15 +26,15 @@ public class MainTestPerfectMatching{
 		ArrayList<String> mRNAmethods = new ArrayList<String>();
 		mRNAmethods.add("tur06");
 
-		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNANoSelfComplementary.txt");
-		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/DNASelfComplementary.txt");
+		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNANoSelfComplementary.txt");
+		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNASelfComplementary.txt");
 	
-		Properties RNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/RNANoSelfComplementary.txt");
-		Properties RNASelfComplementarySequences = MainTest.loadSequencesTest("src/melting/test/RNASelfComplementary.txt"); 
+		Properties RNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/RNANoSelfComplementary.txt");
+		Properties RNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/RNASelfComplementary.txt"); 
 		
-		Properties DNARNASequences = MainTest.loadSequencesTest("src/melting/test/DNARNADuplexes.txt");
+		Properties DNARNASequences = MainTest.loadSequencesTest("src/examples/test/DNARNADuplexes.txt");
 		
-		Properties mRNASequences = MainTest.loadSequencesTest("src/melting/test/2OMethylRNADuplexes.txt");
+		Properties mRNASequences = MainTest.loadSequencesTest("src/examples/test/2OMethylRNADuplexes.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t all97 \t bre86 \t san04 \t san96 \t sug96 \t tan04 \n");
 
