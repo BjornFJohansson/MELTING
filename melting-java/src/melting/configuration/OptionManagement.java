@@ -69,7 +69,7 @@ public class OptionManagement {
 	private static final ArrayList<String> registerEnvironmentOptions = new ArrayList<String>();
 	
 	private static final String version = "5";
-	public static String dataPathwayValue = "src/Data";
+	public static String dataPathwayValue = "Data";
 	private static int thresholdValue = 60;
 	private static int factorValue = 4;
 	
