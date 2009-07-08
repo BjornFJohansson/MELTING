@@ -55,7 +55,7 @@ public abstract class PatternComputation implements PatternComputationMethod{
 
 		File dataFile = new File(OptionManagement.dataPathwayValue + "/" + name);
 		try {
-			collector.setData(FileReader.readFile(dataFile, collector.getData()));
+			collector.addData(FileReader.readFile(dataFile));
 
 		} catch (ParserConfigurationException e) {
 			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.", e);
@@ -70,7 +70,7 @@ public abstract class PatternComputation implements PatternComputationMethod{
 	
 	public void initializeFileName(String methodName){
 		if (Helper.useOtherDataFile(methodName)){
-			this.fileName = Helper.getOptionFileName(methodName);
+			this.fileName = Helper.extractsOptionFileName(methodName);
 		}
 		else{
 			this.fileName = null;

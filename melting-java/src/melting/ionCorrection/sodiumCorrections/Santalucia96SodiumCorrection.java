@@ -19,7 +19,7 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Santalucia et al. (1996) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
 
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		double Tm = environment.getResult().getTm() + 12.5 * Math.log10(NaEq);
 		environment.setResult(Tm);
@@ -29,7 +29,7 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;

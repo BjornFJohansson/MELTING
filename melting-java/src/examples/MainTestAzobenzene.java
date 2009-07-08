@@ -9,7 +9,7 @@ public class MainTestAzobenzene {
 		ArrayList<String> azobenzeneMethods = new ArrayList<String>();
 		azobenzeneMethods.add("asa05");
 
-		Properties azobenzeneSequences = MainTest.loadSequencesTest("src/melting/test/azobenzeneSequences.txt");
+		Properties azobenzeneSequences = MainTest.loadSequencesTest("src/examples/test/azobenzeneSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t asa05 \n");
 

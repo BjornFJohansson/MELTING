@@ -9,7 +9,7 @@ public class MainTestSingleDanglingEnd {
 		ArrayList<String> DNASingleDanglingEndMethods = new ArrayList<String>();
 		DNASingleDanglingEndMethods.add("bom00");
 		
-		Properties DNASingleDanglingEnd = MainTest.loadSequencesTest("src/melting/test/DNASingleDanglingEndSequences.txt");
+		Properties DNASingleDanglingEnd = MainTest.loadSequencesTest("src/examples/test/DNASingleDanglingEndSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t bom00 \n");
 
@@ -18,7 +18,7 @@ public class MainTestSingleDanglingEnd {
 		ArrayList<String> RNASingleDanglingEndMethods = new ArrayList<String>();
 		RNASingleDanglingEndMethods.add("ser08");
 		
-		Properties RNASingleDanglingEnd = MainTest.loadSequencesTest("src/melting/test/RNASingleDanglingEndSequences.txt");
+		Properties RNASingleDanglingEnd = MainTest.loadSequencesTest("src/examples/test/RNASingleDanglingEndSequences.txt");
 
 		System.out.print("\n\n melting.sequences \t TmExp \t ser08 \n");
 

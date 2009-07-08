@@ -10,7 +10,7 @@ public class MainTestInternalLoop {
 		RNAInternalLoopMethods.add("tur06");
 		RNAInternalLoopMethods.add("zno07");
 
-		Properties internalLoopSequences = MainTest.loadSequencesTest("src/melting/test/RNAInternalLoopSequences.txt");
+		Properties internalLoopSequences = MainTest.loadSequencesTest("src/examples/test/RNAInternalLoopSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t tur06 \t zno07 \n");
 

@@ -10,7 +10,7 @@ public class MainTestSingleBulgeLoops {
 		DNASingleBulgeMethods.add("san04");
 		DNASingleBulgeMethods.add("tan04");
 
-		Properties DNAsingleBulgeLoop = MainTest.loadSequencesTest("src/melting/test/DNASingleBulgeLoopSequences.txt");
+		Properties DNAsingleBulgeLoop = MainTest.loadSequencesTest("src/examples/test/DNASingleBulgeLoopSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t san04 \t tan04 \n");
 
@@ -20,7 +20,7 @@ public class MainTestSingleBulgeLoops {
 		RNASingleBulgeMethods.add("ser07");
 		RNASingleBulgeMethods.add("tur06");
 
-		Properties RNAsingleBulgeLoop = MainTest.loadSequencesTest("src/melting/test/RNASingleBulgeLoopSequences.txt");
+		Properties RNAsingleBulgeLoop = MainTest.loadSequencesTest("src/examples/test/RNASingleBulgeLoopSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t ser07 \t tur06 \n");
 

@@ -22,7 +22,7 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
@@ -54,7 +54,7 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction from Zhi-Jie Tan et al. (2007) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		environment.setNa(NaEq);
 		
 		return super.correctMeltingResults(environment);

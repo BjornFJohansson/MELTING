@@ -21,7 +21,7 @@ public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Schildkraut Lifson. (1965) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		double Tm = environment.getResult().getTm() + 16.6 * Math.log10(NaEq);
 		environment.setResult(Tm);
@@ -31,7 +31,7 @@ public class SchildkrautLifson65SodiumCorrection implements CorrectionMethod{
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
-		double NaEq = Helper.calculateNaEquivalent(environment);
+		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
 			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
 			isApplicable = false;

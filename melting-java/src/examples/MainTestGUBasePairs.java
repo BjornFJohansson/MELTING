@@ -9,7 +9,7 @@ public class MainTestGUBasePairs {
 		ArrayList<String> GUmethods = new ArrayList<String>();
 		GUmethods.add("tur99");
 		
-		Properties GUSequences = MainTest.loadSequencesTest("src/melting/test/RNAGUSequences.txt");
+		Properties GUSequences = MainTest.loadSequencesTest("src/examples/test/RNAGUSequences.txt");
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t tur99 \n");
 

@@ -590,7 +590,7 @@ public class OptionManagement {
 							}
 						}
 						else if (isAValue(value)){
-							if (Helper.useOtherDataFile(value) && Helper.getOptionMethodName(value).length() == 0){
+							if (Helper.useOtherDataFile(value) && Helper.extractsOptionMethodName(value).length() == 0){
 								String newValue = optionSet.get(option) + value;
 								optionSet.put(option, newValue);
 							}
