@@ -11,7 +11,7 @@ public class MainTestGUBasePairs {
 		
 		Properties GUSequences = MainTest.loadSequencesTest("src/melting/test/RNAGUSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t tur99 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t tur99 \n");
 
 		MainTest.displayResultsWithComplementarySequence(GUSequences, GUmethods, "rnarna", "Na=1", "0.0001", "-GU");
 		

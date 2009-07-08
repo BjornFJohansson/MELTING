@@ -29,23 +29,23 @@ public class MainTestApproximativeMode {
 		
 		Properties DNARNASequences = MainTest.loadSequencesTest("src/melting/test/DNARNADuplexes.txt");
 				
-		System.out.print("\n\n Sequences \t TmExp \t ahs01 \t che93 \t che93corr \t shdot \t ow69 \t san98 \t wetdna91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ahs01 \t che93 \t che93corr \t shdot \t ow69 \t san98 \t wetdna91 \n");
 
 		MainTest.displayResults(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0004", "-am");
 		
-		System.out.print("\n\n Sequences \t TmExp \t ahs01 \t che93 \t che93corr \t shdot \t ow69 \t san98 \t wetdna91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ahs01 \t che93 \t che93corr \t shdot \t ow69 \t san98 \t wetdna91 \n");
 
 		MainTest.displayResults(DNASelfComplementarySequences, DNAmethods, "dnadna", "Na=1", "0.0001", "-am");
 
-		System.out.print("\n\n Sequences \t TmExp \t wetrna91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t wetrna91 \n");
 		
 		MainTest.displayResults(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0002", "-am");
 
-		System.out.print("\n\n Sequences \t TmExp \t wetrna91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t wetrna91 \n");
 		
 		MainTest.displayResults(RNASelfComplementarySequences, RNAmethods, "rnarna", "Na=1", "0.0001", "-am");
 
-		System.out.print("\n\n Sequences \t TmExp \t wetrna91 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t wetrna91 \n");
 
 		MainTest.displayResults(DNARNASequences, DNARNAmethods, "rnadna", "Na=1", "0.0001", "-am");
 	}

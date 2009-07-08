@@ -3,19 +3,19 @@ package melting.nearestNeighborModel;
 import java.util.HashMap;
 import java.util.logging.Level;
 
-import Sequences.SpecificAcidNames;
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
-import melting.cricksPair.CricksNNMethod;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 import melting.exceptions.SequenceException;
 import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
 import melting.methodInterfaces.PatternComputationMethod;
+import melting.patternModels.cricksPair.CricksNNMethod;
+import melting.sequences.SpecificAcidNames;
 
 public class NearestNeighborMode implements MeltingComputationMethod{
 
@@ -266,7 +266,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				return this.longBulgeLoopMethod;
 			}
 		}
-		else if (environment.getSequences().isListedModifiedAcid(positions[0])){
+		else if (environment.getSequences().isRegisteredModifiedAcid(positions[0])){
 			SpecificAcidNames acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(positions[0]));
 			if (acidName != null){
 

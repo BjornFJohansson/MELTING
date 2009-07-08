@@ -17,7 +17,7 @@ public class Santalucia98 extends ApproximativeMode{
 	@Override
 	public ThermoResult computesThermodynamics() {
 		double Tm = super.computesThermodynamics().getTm(); 
-		Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().calculatePercentGC() - 528.0 / (double)this.environment.getSequences().getDuplexLength();
+		Tm = 77.1 + 11.7 * Math.log10(this.environment.getNa()) + 0.41 * this.environment.getSequences().computesPercentGC() - 528.0 / (double)this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 		
@@ -31,7 +31,7 @@ public class Santalucia98 extends ApproximativeMode{
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		
-		if (environment.getSequences().getPercentMismatching() != 0){
+		if (environment.getSequences().computesPercentMismatching() != 0){
 			isApplicable = false;
 		}
 		

@@ -11,8 +11,8 @@ public class WetmurDNA91 extends Wetmur91 {
 	
 	@Override
 	public ThermoResult computesThermodynamics() {
-		double percentGC = this.environment.getSequences().calculatePercentGC();
-		double percentMismatching = this.environment.getSequences().getPercentMismatching();
+		double percentGC = this.environment.getSequences().computesPercentGC();
+		double percentMismatching = this.environment.getSequences().computesPercentMismatching();
 		double duplexLength = (double)this.environment.getSequences().getDuplexLength();
 		double Tm = super.computesThermodynamics().getTm(); 
 		

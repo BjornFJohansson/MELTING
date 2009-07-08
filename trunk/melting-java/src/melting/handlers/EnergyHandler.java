@@ -40,7 +40,7 @@ public class EnergyHandler extends NodeHandler{
 				hasEnergy = true;
 			}
 		} catch (NumberFormatException e2) {
-			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.");
+			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.", e2);
 		}
 		if (hasEnergy){
 			completedNode();

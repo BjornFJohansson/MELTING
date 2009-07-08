@@ -25,7 +25,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	public ThermoResult computesThermodynamics() {
 		double Tm = super.computesThermodynamics().getTm();
 		
-		Tm = 69.3 + 0.41 * this.environment.getSequences().calculatePercentGC() - parameter / (double)this.environment.getSequences().getDuplexLength();
+		Tm = 69.3 + 0.41 * this.environment.getSequences().computesPercentGC() - parameter / (double)this.environment.getSequences().getDuplexLength();
 		
 		this.environment.setResult(Tm);
 		
@@ -40,7 +40,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	public boolean isApplicable() {
 		boolean isApplicable = super.isApplicable();
 		
-		if (environment.getSequences().getPercentMismatching() != 0){
+		if (environment.getSequences().computesPercentMismatching() != 0){
 			isApplicable = false;
 		}
 		

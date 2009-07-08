@@ -17,11 +17,11 @@ package melting.methodInterfaces;
 
 import java.util.HashMap;
 
-import Sequences.NucleotidSequences;
 
 import melting.DataCollect;
 import melting.Environment;
 import melting.ThermoResult;
+import melting.sequences.NucleotidSequences;
 
 /** This interface is implemented by classes which contain a method or model to compute the pattern enthalpy and entropy.
  * */

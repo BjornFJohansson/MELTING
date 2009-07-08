@@ -12,7 +12,7 @@ public class MainTestSingleBulgeLoops {
 
 		Properties DNAsingleBulgeLoop = MainTest.loadSequencesTest("src/melting/test/DNASingleBulgeLoopSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t san04 \t tan04 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t san04 \t tan04 \n");
 
 		MainTest.displayResultsWithComplementarySequence(DNAsingleBulgeLoop, DNASingleBulgeMethods, "dnadna", "Na=1", "0.0001", "-sinBU");
 		
@@ -22,7 +22,7 @@ public class MainTestSingleBulgeLoops {
 
 		Properties RNAsingleBulgeLoop = MainTest.loadSequencesTest("src/melting/test/RNASingleBulgeLoopSequences.txt");
 		
-		System.out.print("\n\n Sequences \t TmExp \t ser07 \t tur06 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t ser07 \t tur06 \n");
 
 		MainTest.displayResultsWithComplementarySequence(RNAsingleBulgeLoop, RNASingleBulgeMethods, "rnarna", "Na=1", "0.0001", "-sinBU");
 	}
