@@ -85,7 +85,7 @@ public class Environment {
 	
 	/**
 	 * creates an Environment object from the different options (default options and options entered by the user).
-	 * Initializes the different instance variables of the Environment object.
+	 * initialises the different instance variables of the Environment object.
 	 * If the options HashMap is null, an OptionSyntaxError is thrown.
 	 * If all the required ion concentrations (Na, Mg, K, Tris) are 0, an OptionSyntaxError is thrown.
 	 * @param HashMap<String, String> options : contains the options (default options and options entered by the user)
@@ -97,7 +97,7 @@ public class Environment {
 			throw new OptionSyntaxError("Some required options are missing. Read the manual for further informations or see the option " + OptionManagement.meltingHelp);
 		}
 				
-		initializeConcentrations();
+		initialiseConcentrations();
 		
 		if (isRequiredConcentrations() == false){
 			throw new OptionSyntaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
@@ -120,7 +120,7 @@ public class Environment {
 		}
 
 		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		NucleotidSequences.initializeModifiedAcidHashmap();
+		NucleotidSequences.initialiseModifiedAcidHashmap();
 		
 		this.result = new ThermoResult(0,0,0);
 
@@ -349,9 +349,9 @@ public class Environment {
 	// private methods
 	
 	/**
-	 * initializes the concentrations HashMap of the Environment object.
+	 * initialises the concentrations HashMap of the Environment object.
 	 */
-	private void initializeConcentrations(){
+	private void initialiseConcentrations(){
 		String [] solution = this.options.get(OptionManagement.solutioncomposition).split(":");
 		
 		for (int i = 0; i < solution.length; i++){

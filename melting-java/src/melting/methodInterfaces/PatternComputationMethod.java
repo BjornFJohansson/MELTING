@@ -90,6 +90,6 @@ public interface PatternComputationMethod {
 	 * otherwise the default file name of the model is used.
 	 * @param String methodName : method or model name entered by the user.
 	 */
-	public void initializeFileName(String methodName);
+	public void initialiseFileName(String methodName);
 	
 }

@@ -1,24 +1,67 @@
-package melting.handlers;
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
 
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+ *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+
+package melting.handlers;
 
 import melting.exceptions.ThermodynamicParameterError;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * This class represents a Handler to parse the enthalpy or entropy nodes in the xml files. It
+ * extends the NodeHandler class
+ */
 public class EnergyHandler extends NodeHandler{
 
-	private double energy;
-	private boolean hasEnergy = false;
-	private StringBuilder stringenergy = new StringBuilder();
+	// Instance variables
 	
+	/**
+	 * energy value for the enthalpy or entropy node. (cal/mol)
+	 */
+	private double energy;
+	
+	/**
+	 * boolean hasEnergy : informs if an enthalpy or entropy node contains a proper energy value
+	 */
+	private boolean hasEnergy = false;
+	
+	/**
+	 * StringBuilder stringEnergy : stocks the energy String value.
+	 */
+	private StringBuilder stringEnergy = new StringBuilder();
+	
+	// public methods
+	
+	/**
+	 * This method is called to get the energy double of the EnergyHandler object.
+	 * @return the energy double of the EnergyHandler object.
+	 */
 	public double getEnergy() {
 		return energy;
 	}
 	
+	/**
+	 * This method is called to get the hasEnergy boolean of the EnergyHandler object.
+	 * @return the energy double of the EnergyHandler object.
+	 */
 	public boolean getHasEnergy(){
 		return hasEnergy;
 	}
+	
+	// Inherited methods
 
 	@Override
 	public void startElement(String uri, String localName, String name,
@@ -28,15 +71,15 @@ public class EnergyHandler extends NodeHandler{
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		String e = new String(ch,start,length);
-		stringenergy.append(e);
+		stringEnergy.append(e);
 	}
 	
 	@Override
 	public void endElement(String uri, String localName, String name)
 	throws SAXException {
 		try {
-			if (stringenergy.length() != 0){
-				energy = Double.parseDouble(stringenergy.toString());
+			if (stringEnergy.length() != 0){
+				energy = Double.parseDouble(stringEnergy.toString());
 				hasEnergy = true;
 			}
 		} catch (NumberFormatException e2) {
