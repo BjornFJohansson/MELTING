@@ -319,9 +319,9 @@ public class BasePair {
 	// Public static methods
 	
 	/**
-	 * initializes the ArrayList existingNucleicAcids of the BasePair class.
+	 * initialises the ArrayList existingNucleicAcids of the BasePair class.
 	 */
-	public static void initializeNucleicAcidList(){
+	public static void initialiseNucleicAcidList(){
 		existingNucleicAcids.add("A");
 		existingNucleicAcids.add("T");
 		existingNucleicAcids.add("U");

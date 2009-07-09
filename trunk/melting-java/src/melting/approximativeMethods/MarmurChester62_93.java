@@ -1,11 +1,17 @@
-/* Marmur J, Doty P, "Determination of the base composition of 
-	 * deoxyribonucleic acid from its thermal denaturation temperature", 
-	 * 1962, Journal of molecular biology, 5, 109-118.
-	 * 
-	 * Chester N, Marshak DR, "dimethyl sulfoxide-mediated primer Tm reduction : 
-	 * a method for analyzing the role of renaturation temperature in the polymerase 
-	 * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
-	 */
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
+
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+*       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
 package melting.approximativeMethods;
 
@@ -16,10 +22,32 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.exceptions.NoExistingMethodException;
 
+/**
+ * This class represents the model che93. It extends the ApproximativeMode class
+ * 
+ * Marmur J, Doty P, "Determination of the base composition of 
+ * deoxyribonucleic acid from its thermal denaturation temperature", 
+ * 1962, Journal of molecular biology, 5, 109-118.
+ * 
+ * Chester N, Marshak DR, "dimethyl sulfoxide-mediated primer Tm reduction : 
+ * a method for analyzing the role of renaturation temperature in the polymerase 
+ * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
+ */
 public class MarmurChester62_93 extends ApproximativeMode{
 	
+	// Instance variables
+	
+	/**
+	 * double parameter. This parameter changes if we use the model che93corr.
+	 */
 	private double parameter;
+	
+	/**
+	 * temperature formula
+	 */
 	private String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - parameter / duplexLength.";
+	
+	// public methods
 	
 	@Override
 	public ThermoResult computesThermodynamics() {
@@ -59,11 +87,6 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	}
 	
 	@Override
-	protected boolean isNaEqPossible(){
-		return false;
-	}
-	
-	@Override
 	public void setUpVariables(HashMap<String, String> options) {
 		String method = options.get(OptionManagement.approximativeMode);
 		
@@ -78,6 +101,13 @@ public class MarmurChester62_93 extends ApproximativeMode{
 			throw new NoExistingMethodException("The two possible methods for Marmur and Chester, 1962-1993 are MarmurChester62_93_corr and MarmurChester62_93." +
 					"The formula is the same but one factor value change : 535 or 650.");
 		}
+	}
+	
+	// protected method
+	
+	@Override
+	protected boolean isNaEqPossible(){
+		return false;
 	}
 
 }

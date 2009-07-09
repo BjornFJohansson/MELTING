@@ -1,4 +1,17 @@
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
 
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+ *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 /*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
 	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
 	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
@@ -25,8 +38,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999tanmm.xml";
 	
 	@Override
-	public void initializeFileName(String methodName){
-		super.initializeFileName(methodName);
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
 		
 		if (this.fileName == null){
 			this.fileName = defaultFileName;
@@ -98,8 +111,8 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		
 		String singleMismatchName = options.get(OptionManagement.singleMismatchMethod);
 		RegisterMethods register = new RegisterMethods();
-		PatternComputationMethod singleMismatch = register.getPartialCalculMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
-		singleMismatch.initializeFileName(singleMismatchName);
+		PatternComputationMethod singleMismatch = register.getPatternComputationMethod(OptionManagement.singleMismatchMethod, singleMismatchName);
+		singleMismatch.initialiseFileName(singleMismatchName);
 		String fileSingleMismatch = singleMismatch.getDataFileName(singleMismatchName);
 		
 		loadFile(fileSingleMismatch, this.collector);

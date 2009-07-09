@@ -25,12 +25,12 @@ public class Thermodynamics {
 	// Instance variables
 	
 	/**
-	 * protected double enthalpy : the enthalpy value (delta H). (initialized from a file containing the thermodynamic parameters)
+	 * protected double enthalpy : the enthalpy value (delta H). (initialised from a file containing the thermodynamic parameters)
 	 */
 	protected double enthalpy;
 	
 	/**
-	 * protected double entropy : the entropy value (delta S). (initialized from a file containing the thermodynamic parameters)
+	 * protected double entropy : the entropy value (delta S). (initialised from a file containing the thermodynamic parameters)
 	 */
 	protected double entropy;
 	

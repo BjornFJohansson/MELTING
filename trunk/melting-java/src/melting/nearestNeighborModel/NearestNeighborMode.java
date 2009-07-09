@@ -1,3 +1,18 @@
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
+
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+*       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+
 package melting.nearestNeighborModel;
 
 import java.util.HashMap;
@@ -17,25 +32,100 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.cricksPair.CricksNNMethod;
 import melting.sequences.SpecificAcidNames;
 
+/**
+ * This class represents the nearest neighbor model. It implements the MelitngComputationMethod Interface
+ */
 public class NearestNeighborMode implements MeltingComputationMethod{
 
+	// Instance variables
+	
+	/**
+	 * environment containing the sequences, ion and agent concentrations and the options (default options and
+	 * options entered by the user)
+	 */
 	private Environment environment;
+	
+	/**
+	 * RegisterMethods register : registers all the pattern computation methods implemented by Melting
+	 */
 	private RegisterMethods register = new RegisterMethods();
+	
+	/**
+	 * PatternComputationMethod azobenzeneMethod : represents the model for azobenzene
+	 */
 	private PatternComputationMethod azobenzeneMethod;
+	
+	/**
+	 * PatternComputationMethod CNGRepeatsMethod : represents the model for CNG repeats
+	 */
 	private PatternComputationMethod CNGRepeatsMethod;
+	
+	/**
+	 * PatternComputationMethod doubleDanglingEndMethod : represents the model for double dangling end
+	 */
 	private PatternComputationMethod doubleDanglingEndMethod;
+	
+	/**
+	 * PatternComputationMethod hydroxyadenosineMethod : represents the model for hydroxyadenine
+	 */
 	private PatternComputationMethod hydroxyadenosineMethod;
+	
+	/**
+	 * PatternComputationMethod inosineMethod : represents the model for inosine
+	 */
 	private PatternComputationMethod inosineMethod;
+	
+	/**
+	 * PatternComputationMethod internalLoopMethod : represents the model for internal loop
+	 */
 	private PatternComputationMethod internalLoopMethod;
+	
+	/**
+	 * PatternComputationMethod lockedAcidMethod : represents the model for locked acid nucleic
+	 */
 	private PatternComputationMethod lockedAcidMethod;
+	
+	/**
+	 * PatternComputationMethod longBulgeLoopMethod : represents the model for long bulge loop 
+	 */
 	private PatternComputationMethod longBulgeLoopMethod;
+	
+	/**
+	 * PatternComputationMethod longDanglingEndMethod : represents the model for long dangling end 
+	 */
 	private PatternComputationMethod longDanglingEndMethod;
+	
+	/**
+	 * PatternComputationMethod cricksMethod : represents the model for crick's pair 
+	 */
 	private PatternComputationMethod cricksMethod;
+	
+	/**
+	 * PatternComputationMethod singleBulgeLoopMethod : represents the model for single bulge loop 
+	 */
 	private PatternComputationMethod singleBulgeLoopMethod;
+	
+	/**
+	 * PatternComputationMethod singleDanglingEndMethod : represents the model for single dangling end
+	 */
 	private PatternComputationMethod singleDanglingEndMethod;
+	
+	/**
+	 * PatternComputationMethod singleMismatchMethod : represents the model for single mismatch
+	 */
 	private PatternComputationMethod singleMismatchMethod;
+	
+	/**
+	 * PatternComputationMethod tandemMismatchMethod : represents the model for tandem mismatches
+	 */
 	private PatternComputationMethod tandemMismatchMethod;
+	
+	/**
+	 * PatternComputationMethod wobbleMethod : represents the model for GU base pair
+	 */
 	private PatternComputationMethod wobbleMethod;
+	
+	// MeltingComputationMethod interface implementation
 	
 	public ThermoResult computesThermodynamics() {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
@@ -43,13 +133,15 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		analyzeSequence();
 		int pos1 = 0; 
 		int pos2 = 0;
+		
+		// computes the enthalpy and entropy when Na = 1M
 
 		while (pos2 < this.environment.getSequences().getDuplexLength() - 1){
-			int [] positions = getPositionsMotif(pos1);
+			int [] positions = getPositionsPattern(pos1);
 
 			pos1 = positions[0];
 			pos2 = positions[1];
-			PatternComputationMethod currentCalculMethod = getAppropriatePartialCalculMethod(positions);
+			PatternComputationMethod currentCalculMethod = getAppropriatePatternModel(positions);
 			if (currentCalculMethod == null){
 				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
@@ -61,29 +153,34 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		double Tm = 0.0;
 		boolean isASaltCorrectionNecessary = true;
 		
+		// computes the initiation enthalpy and entropy (there is no initiation enthalpy and entropy if the sequence is composed of CNG repeats)
+		// computes the Tm(Na = 1M)
+		
 		if (this.CNGRepeatsMethod == null){
 			if (this.cricksMethod == null){
-				this.cricksMethod = initializeMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
+				this.cricksMethod = initialiseMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
 			}
 			CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
 			ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
 
 			this.environment.setResult(resultinitiation);
-			Tm = calculateMeltingTemperature(this.environment);
+			Tm = computesMeltingTemperature(this.environment);
 		}
 		else {
 			int CNGRepeats = (this.environment.getSequences().getDuplexLength() - 2) / 3;
 			if (CNGRepeats > 4){
-				Tm = calculateHairpinTemperature(this.environment);
+				Tm = computesHairpinTemperature(this.environment);
 				
 				isASaltCorrectionNecessary = false;
 			}
 			else{
-				Tm = calculateMeltingTemperature(this.environment);
+				Tm = computesMeltingTemperature(this.environment);
 
 			}
 		}
 		this.environment.setResult(Tm);
+		
+		// if a salt correction is necessary, a temperature correction is applied
 		
 		if (isASaltCorrectionNecessary){
 			CorrectionMethod saltCorrection = register.getIonCorrectionMethod(this.environment);
@@ -99,10 +196,6 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			}
 		}
 		return this.environment.getResult();
-	}
-
-	public RegisterMethods getRegister() {
-		return register;
 	}
 
 	public boolean isApplicable() {
@@ -129,7 +222,19 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		
 		}
 	
-	private int [] getPositionsMotif(int pos1){
+	public RegisterMethods getRegister() {
+		return register;
+	}
+	
+	// private methods
+	
+	/**
+	 * This method is called to determine the terminal position of a pattern (perfectly matching sequences or not perfectly matching sequences)
+	 * from the position pos1 in the duplex
+	 * @param int pos1 : starting position of a pattern in the duplex.
+	 * @return int [] which contains the positions of the pattern in the duplex. ('pos1' is the starting position of the pattern in the duplex)
+	 */
+	private int [] getPositionsPattern(int pos1){
 		int position = pos1;
 		if (pos1 == 0){
 			if(environment.getSequences().isCNGPattern(0, this.environment.getSequences().getSequence().length() - 1) && this.environment.isSelfComplementarity()){			
@@ -184,30 +289,39 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			}
 	}
 	
-	private PatternComputationMethod getAppropriatePartialCalculMethod(int [] positions){
+	/**
+	 * defines which method is appropriate to compute the energy of the pattern at the positions 'positions' in the duplex. 
+	 * @param int [] positions : contains the positions of a pattern in the duplex
+	 * @return the appropriate PatternComputationMethod to compute the energy of the pattern at the positions 'positions' in the duplex.
+	 * If no appropriate PatternComputationMethod exists to compute the energy of the pattern at the positions 'positions' in the duplex,
+	 * it returns null.
+	 * If there is a terminal mismatch in the duplex, a SequenceException is thrown.
+	 * If a nucleic acid is unknown, a SequenceException is thrown.
+	 */
+	private PatternComputationMethod getAppropriatePatternModel(int [] positions){
 		if (positions[0] == 0 || positions[1] == environment.getSequences().getDuplexLength() - 1){
 			if (environment.getSequences().isCNGPattern(positions[0], positions[1]) && this.environment.isSelfComplementarity()){
 				if (this.CNGRepeatsMethod == null){
-					initializeCNGRepeatsMethod();
+					initialiseCNGRepeatsMethod();
 				}
 				return this.CNGRepeatsMethod;
 			}
 			else if (environment.getSequences().isDanglingEnd(positions[0], positions[1])){
 				if (positions[1] - positions[0] + 1 == 1){
 					if (this.singleDanglingEndMethod == null){
-						initializeSingleDanglingEndMethod();
+						initialiseSingleDanglingEndMethod();
 					}
 					return this.singleDanglingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 == 2){
 					if (this.doubleDanglingEndMethod == null){
-						initializeDoubleDanglingEndMethod();
+						initialiseDoubleDanglingEndMethod();
 					}
 					return this.doubleDanglingEndMethod;
 				}
 				else if (positions[1] - positions[0] + 1 > 2){
 					if (this.longDanglingEndMethod == null){
-						initializeLongDanglingEndMethod();
+						initialiseLongDanglingEndMethod();
 					}
 					return this.longDanglingEndMethod;
 				}
@@ -221,33 +335,33 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
 			if (this.cricksMethod == null){
-				initializeCrickMethod();
+				initialiseCrickMethod();
 			}
 			return this.cricksMethod;
 		}
 		
 		else if (environment.getSequences().isGUSequences(positions[0], positions[1])){
 			if (this.wobbleMethod == null){
-				initializeWobbleMethod();
+				initialiseWobbleMethod();
 			}
 			return this.wobbleMethod;
 		}
 		else if (environment.getSequences().isMismatch(positions[0], positions[1])){
 			if (positions[1] - positions[0] + 1 == 1){
 				if (this.singleMismatchMethod == null){
-					initializeSingleMismatchMethod();
+					initialiseSingleMismatchMethod();
 				}
 				return this.singleMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 == 2 && this.environment.getSequences().isNoGapInSequence(positions[0], positions[1])){
 				if (this.tandemMismatchMethod == null){
-					initializeTandemMismatchMethod();
+					initialiseTandemMismatchMethod();
 				}
 				return this.tandemMismatchMethod;
 			}
 			else if (positions[1] - positions[0] + 1 >= 2){
 				if (this.internalLoopMethod == null){
-					initializeInternalLoopMethod();
+					initialiseInternalLoopMethod();
 				}
 				return this.internalLoopMethod;
 			}
@@ -255,13 +369,13 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		else if (environment.getSequences().isBulgeLoop(positions[0], positions[1])){
 			if (positions[1] - positions[0] + 1 == 1){
 				if (this.singleBulgeLoopMethod == null){
-					initializeSingleBulgeLoopMethod();
+					initialiseSingleBulgeLoopMethod();
 				}
 				return this.singleBulgeLoopMethod;
 			}
 			else if (positions[1] - positions[0] + 1 >= 2){
 				if (this.longBulgeLoopMethod == null){
-					initializeLongBulgeLoopMethod();
+					initialiseLongBulgeLoopMethod();
 				}
 				return this.longBulgeLoopMethod;
 			}
@@ -273,22 +387,22 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				switch (acidName) {
 				case inosine:
 					if (this.inosineMethod == null){
-						initializeInosineMethod();
+						initialiseInosineMethod();
 					}
 					return this.inosineMethod;
 				case azobenzene:
 					if (this.azobenzeneMethod == null){
-						initializeAzobenzeneMethod();
+						initialiseAzobenzeneMethod();
 					}
 					return this.azobenzeneMethod;
 				case hydroxyadenine:
 					if (this.hydroxyadenosineMethod == null){
-						initializeHydroxyadenosineMethod();
+						initialiseHydroxyadenosineMethod();
 					}
 					return this.hydroxyadenosineMethod;
 				case lockedNucleicAcid:
 					if (this.lockedAcidMethod == null){
-						initializeLockedAcidMethod();
+						initialiseLockedAcidMethod();
 					}
 					return this.lockedAcidMethod;
 				default:
@@ -299,102 +413,156 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		return null;
 	}
 	
-	private void initializeCrickMethod(){
+	/**
+	 * initialises the crickMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseCrickMethod(){
 		String optionName = OptionManagement.NNMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.cricksMethod = initializeMethod(optionName, methodName);
+		this.cricksMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeAzobenzeneMethod(){
+	/**
+	 * initialises the azobenzeneMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseAzobenzeneMethod(){
 		String optionName = OptionManagement.azobenzeneMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.azobenzeneMethod = initializeMethod(optionName, methodName);
+		this.azobenzeneMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeCNGRepeatsMethod(){
+	/**
+	 * initialises the CNGRepeatsMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseCNGRepeatsMethod(){
 		String optionName = OptionManagement.CNGMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.CNGRepeatsMethod = initializeMethod(optionName, methodName);
+		this.CNGRepeatsMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeDoubleDanglingEndMethod(){
+	/**
+	 * initialises the doubleDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseDoubleDanglingEndMethod(){
 		String optionName = OptionManagement.doubleDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.doubleDanglingEndMethod = initializeMethod(optionName, methodName);
+		this.doubleDanglingEndMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeHydroxyadenosineMethod(){
+	/**
+	 * initialises the hydroxyadenosineMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseHydroxyadenosineMethod(){
 		String optionName = OptionManagement.hydroxyadenineMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.hydroxyadenosineMethod = initializeMethod(optionName, methodName);
+		this.hydroxyadenosineMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeInosineMethod(){
+	/**
+	 * initialises the inosineMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseInosineMethod(){
 		String optionName = OptionManagement.inosineMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.inosineMethod = initializeMethod(optionName, methodName);
+		this.inosineMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeInternalLoopMethod(){
+	/**
+	 * initialises the internalLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseInternalLoopMethod(){
 		String optionName = OptionManagement.internalLoopMethod;
 		String methodName = this.environment.getOptions().get(optionName);
 
-		this.internalLoopMethod = initializeMethod(optionName, methodName);
+		this.internalLoopMethod = initialiseMethod(optionName, methodName);
 
 	}
 	
-	private void initializeLockedAcidMethod(){
+	/**
+	 * initialises the lockedAcidMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseLockedAcidMethod(){
 		String optionName = OptionManagement.lockedAcidMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.lockedAcidMethod = initializeMethod(optionName, methodName);
+		this.lockedAcidMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeLongBulgeLoopMethod(){
+	/**
+	 * initialises the longBulgeLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseLongBulgeLoopMethod(){
 		String optionName = OptionManagement.longBulgeLoopMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.longBulgeLoopMethod = initializeMethod(optionName, methodName);
+		this.longBulgeLoopMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeLongDanglingEndMethod(){
+	/**
+	 * initialises the longDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseLongDanglingEndMethod(){
 		String optionName = OptionManagement.longDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.longDanglingEndMethod = initializeMethod(optionName, methodName);
+		this.longDanglingEndMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeSingleBulgeLoopMethod(){
+	/**
+	 * initialises the singleBulgeLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseSingleBulgeLoopMethod(){
 		String optionName = OptionManagement.singleBulgeLoopMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.singleBulgeLoopMethod = initializeMethod(optionName, methodName);
+		this.singleBulgeLoopMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeSingleDanglingEndMethod(){
+	/**
+	 * initialises the singleDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseSingleDanglingEndMethod(){
 		String optionName = OptionManagement.singleDanglingEndMethod;
 		String methodName = this.environment.getOptions().get(optionName);
 
-		this.singleDanglingEndMethod = initializeMethod(optionName, methodName);
+		this.singleDanglingEndMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeSingleMismatchMethod(){
+	/**
+	 * initialises the singleMismatchMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseSingleMismatchMethod(){
 		String optionName = OptionManagement.singleMismatchMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.singleMismatchMethod = initializeMethod(optionName, methodName);
+		this.singleMismatchMethod = initialiseMethod(optionName, methodName);
 	}
 	
-	private void initializeTandemMismatchMethod(){
+	/**
+	 * initialises the tandemMismatchMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseTandemMismatchMethod(){
 		String optionName = OptionManagement.tandemMismatchMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.tandemMismatchMethod = initializeMethod(optionName, methodName);
+		this.tandemMismatchMethod = initialiseMethod(optionName, methodName);
 	}
-	private void initializeWobbleMethod(){
+	
+	/**
+	 * initialises the wobbleMethod PatternComputationMethod of the NearestNeighborMode object.
+	 */
+	private void initialiseWobbleMethod(){
 		String optionName = OptionManagement.wobbleBaseMethod;
 		String methodName = this.environment.getOptions().get(optionName);
-		this.wobbleMethod = initializeMethod(optionName, methodName);
+		this.wobbleMethod = initialiseMethod(optionName, methodName);
 	}
-	private PatternComputationMethod initializeMethod(String optionName, String methodName){
+	
+	/**
+	 * initialises the PatternComputationMethod object which represents the model 'methodName' entered
+	 * with the option 'optionName'
+	 * @param String optionName : option name
+	 * @param String methodName : method or model name
+	 * @return the initialised PatternComputationMethod object.
+	 */
+	private PatternComputationMethod initialiseMethod(String optionName, String methodName){
 
-		PatternComputationMethod necessaryMethod = register.getPartialCalculMethod(optionName, methodName);
+		PatternComputationMethod necessaryMethod = register.getPatternComputationMethod(optionName, methodName);
 		if (necessaryMethod != null){
-			necessaryMethod.initializeFileName(methodName);
+			necessaryMethod.initialiseFileName(methodName);
 			necessaryMethod.loadData(environment.getOptions());
 
 		}
@@ -405,16 +573,23 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		return necessaryMethod;
 	}
 	
+	/**
+	 * to check if all the necessary methods and models to compute the enthalpy, entropy and melting temperature of the duplex
+	 * are applicable.
+	 * @return true if all the necessary methods and models to compute the enthalpy, entropy and melting temperature of the duplex
+	 * are applicable.
+	 * If one necessary method or model doesn't exist, a NoExistingMethodException is thrown
+	 */
 	private boolean checkIfMethodsAreApplicable(){
 		int pos1 = 0;
 		int pos2 = 0;
 		boolean isApplicableMethod = true;
 		while (pos2 + 1 <= environment.getSequences().getDuplexLength() - 1){
 
-			int [] positions = getPositionsMotif(pos1);
+			int [] positions = getPositionsPattern(pos1);
 			pos1 = positions[0];
 			pos2 = positions[1];
-			PatternComputationMethod necessaryMethod = getAppropriatePartialCalculMethod(positions);
+			PatternComputationMethod necessaryMethod = getAppropriatePatternModel(positions);
 			if (necessaryMethod == null){
 				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}
@@ -427,19 +602,37 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		return isApplicableMethod;
 	}
 	
+	/**
+	 * analyzes the sequences. Check all the necessary methods and models to compute the enthalpy, entropy and melting temperature of the duplex
+	 * are applicable.
+	 * If one of the methods or models is not applicable, a MethodNotApplicableException is thrown.
+	 */
 	private void analyzeSequence(){
 		if (checkIfMethodsAreApplicable() == false){
 			throw new MethodNotApplicableException("we cannot compute the melting because one method is not applicable. Check the sequences.");
 		}
 	}
-	public static double calculateHairpinTemperature(Environment environment){
+	
+	// public static methods
+
+	/**
+	 * computes the melting temperature of a hairpin loop (when there is more than 4 CNG repeats in a sequence)
+	 * @param Environment environment
+	 * @return double melting temperature of a hairpin loop for the Environment 'environment'.
+	 */
+	public static double computesHairpinTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / environment.getResult().getEntropy() - 273.15;
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / delta - 273.15");
 		
 		return Tm;
 	}
 	
-	public static double calculateMeltingTemperature(Environment environment){
+	/**
+	 * computes the melting temperature for for the Environment 'environment'.
+	 * @param Environment environment
+	 * @return double melting temperature for for the Environment 'environment'.
+	 */
+	public static double computesMeltingTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / (delta S + 1.99 x ln([nucleotides] / F)) - 273.15");
 		return Tm;

@@ -1,3 +1,18 @@
+/* This program is free software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation; either version 2 of the 
+ * License, or (at your option) any later version
+                                
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+ * Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License along with this program; if not, 
+ * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
+
+ *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       EMBL-EBI, neurobiology computational group,                          
+*       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+
 package melting.configuration;
 
 import java.util.HashMap;
@@ -87,73 +102,183 @@ import melting.patternModels.wobble.Santalucia05Inosine;
 import melting.patternModels.wobble.Turner99Wobble;
 import melting.patternModels.wobble.Znosko07Inosine;
 
+/**
+ * This class registers all the methods and models implemented by Melting.
+ */
 public class RegisterMethods {
 	
+	// Instance variables
+	
+	/**
+	 * HasMap NaEqMethod : contains all the methods for sodium equivalence.
+	 */
 	private static HashMap<String, Class<? extends SodiumEquivalentMethod>> NaEqMethod = new HashMap<String, Class<? extends SodiumEquivalentMethod>>();
+	
+	/**
+	 * HasMap approximativeMethod : contains all the methods for approximative computation.
+	 */
 	private static HashMap<String, Class<? extends ApproximativeMode>> approximativeMethod = new HashMap<String, Class<? extends ApproximativeMode>>();
+	
+	/**
+	 * HasMap cricksMethod : contains all the methods for Crick's pair computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> cricksMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, Class<? extends MeltingComputationMethod>> completCalculMethod = new HashMap<String, Class<? extends MeltingComputationMethod>>();
+	
+	/**
+	 * HasMap meltingComputationMethods : contains all the methods for enthalpy, entropy and melting temperature computation.
+	 */
+	private static HashMap<String, Class<? extends MeltingComputationMethod>> meltingComputationMethods = new HashMap<String, Class<? extends MeltingComputationMethod>>();
+	
+	/**
+	 * HasMap singleMismatchMethod : contains all the methods for single mismatch computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> singleMismatchMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap tandemMismatchMethod : contains all the methods for tandem mismatches computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> tandemMismatchMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, Class<? extends PatternComputationMethod>> woddleMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap wobbleMethod : contains all the methods for GU base pair computation.
+	 */
+	private static HashMap<String, Class<? extends PatternComputationMethod>> wobbleMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap internalLoopMethod : contains all the methods for internal loop computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> internalLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap singleBulgeLoopMethod : contains all the methods for single bulge loop computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> singleBulgeLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap longBulgeLoopMethod : contains all the methods for long bulge loop computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> longBulgeLoopMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, Class<? extends PatternComputationMethod>> singleDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, Class<? extends PatternComputationMethod>> doubleDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, Class<? extends PatternComputationMethod>> longDangingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap singleDanglingEndMethod : contains all the methods for single dangling end computation.
+	 */
+	private static HashMap<String, Class<? extends PatternComputationMethod>> singleDanglingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap doubleDanglingEndMethod : contains all the methods for double dangling end computation.
+	 */
+	private static HashMap<String, Class<? extends PatternComputationMethod>> doubleDanglingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap longDanglingEndMethod : contains all the methods for long dangling end computation.
+	 */
+	private static HashMap<String, Class<? extends PatternComputationMethod>> longDanglingEndMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap inosineMethod : contains all the methods for inosine computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> inosineMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap CNGRepeatsMethod : contains all the methods for CNG repeats computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> CNGRepeatsMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap azobenzeneMethod : contains all the methods for azobenzene computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> azobenzeneMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap lockedAcidMethod : contains all the methods for locked nucleic acid computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+	
+	/**
+	 * HasMap hydroxyadenosineMethod : contains all the methods for hydroxyadenine computation.
+	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> hydroxyadenosineMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
-	private static HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>> PartialCalculMethods = new HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>>();
+	
+	/**
+	 * HasMap PatternModel : contains all the methods for the different pattern computation.
+	 */
+	private static HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>> PatternModel = new HashMap<String, HashMap<String, Class<? extends PatternComputationMethod>>>();
+	
+	/**
+	 * HasMap ionCorrection : contains all the methods for the ion correction.
+	 */
 	private static HashMap<String, Class<? extends CorrectionMethod>> ionCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	
+	/**
+	 * HasMap DMSOCorrection : contains all the methods for the DMSO correction.
+	 */
 	private static HashMap<String, Class<? extends CorrectionMethod>> DMSOCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	
+	/**
+	 * HasMap formamideCorrection : contains all the methods for the formamide correction.
+	 */
 	private static HashMap<String, Class<? extends CorrectionMethod>> formamideCorrection = new HashMap<String, Class<? extends CorrectionMethod>>();
+	
+	/**
+	 * HasMap otherCorrection : contains all the methods for the temperature correction.
+	 */
 	private static HashMap<String, HashMap<String, Class<? extends CorrectionMethod>>> otherCorrection = new HashMap<String, HashMap<String, Class<? extends CorrectionMethod>>>();
 
+	// RegisterMethods constructor
+	
+	/**
+	 * creates a RegisterMethods object with the different initialised HasMaps.
+	 */
 	public RegisterMethods(){
-		initializeApproximativeMethods();
-		initializeCompletCalculMethods();
-		initializeCricksMethods();
-		initializeNaEqMethods();
-		initializeSingleMismatchMethods();
-		initializeTandemMismatchMethods();
-		initializeWoddleMismatchMethods();
-		initializeInternalLoopMethods();
-		initializeSingleBulgeLoopMethods();
-		initializeLongBulgeLoopMethods();
-		initializeSingleDanglingEndMethods();
-		initializeDoubleDanglingEndMethods();
-		initializeLongDanglingEndMethods();
-		initializeCNGRepeatsMethods();
-		initializeInosineMethods();
-		initializeAzobenzeneMethods();
-		initializeHydroxyadenosineMethods();
-		initializeLockedAcidMethods();
-		
-		initializePartialCalculMethods();
-		
-		initializeIonCorrectionMethod();
-		initializeDMSOCorrectionMethod();
-		initializeFormamideCorrectionMethod();
-		initializeOtherCorrectionMethod();
+		initialiseApproximativeMethods();
+		initialiseMeltingComputationMethods();
+		initialiseCricksMethods();
+		initialiseNaEqMethods();
+		initialiseSingleMismatchMethods();
+		initialiseTandemMismatchMethods();
+		initialiseWobbleMismatchMethods();
+		initialiseInternalLoopMethods();
+		initialiseSingleBulgeLoopMethods();
+		initialiseLongBulgeLoopMethods();
+		initialiseSingleDanglingEndMethods();
+		initialiseDoubleDanglingEndMethods();
+		initialiseLongDanglingEndMethods();
+		initialiseCNGRepeatsMethods();
+		initialiseInosineMethods();
+		initialiseAzobenzeneMethods();
+		initialiseHydroxyadenosineMethods();
+		initialiseLockedAcidMethods();
+		initialisePatternModels();
+		initialiseIonCorrectionMethod();
+		initialiseDMSOCorrectionMethod();
+		initialiseFormamideCorrectionMethod();
+		initialiseOtherCorrectionMethod();
 	}
 	
-	private void initializeNaEqMethods(){
+	// private methods
+	
+	/**
+	 * initialises the NaEqMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseNaEqMethods(){
 		NaEqMethod.put("ahs01", Ahsen01_NaEquivalent.class);
 		NaEqMethod.put("pey00", Peyret00_NaEquivalent.class);
 		NaEqMethod.put("mit96", Mitsuhashi96NaEquivalent.class);
 	}
 	
-	private void initializeCompletCalculMethods(){
-		completCalculMethod.put("A", ApproximativeMode.class);
-		completCalculMethod.put("NN", NearestNeighborMode.class);
-		completCalculMethod.put("def", null);
+	/**
+	 * initialises the meltingComputationMethods HashMap of the RegisterMethods object.
+	 */
+	private void initialiseMeltingComputationMethods(){
+		meltingComputationMethods.put("A", ApproximativeMode.class);
+		meltingComputationMethods.put("NN", NearestNeighborMode.class);
+		meltingComputationMethods.put("def", null);
 	}
 	
-	private void initializeApproximativeMethods(){
+	/**
+	 * initialises the approximativeMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseApproximativeMethods(){
 		approximativeMethod.put("ahs01", Ahsen01.class);
 		approximativeMethod.put("che93", MarmurChester62_93.class);//650
 		approximativeMethod.put("che93corr", MarmurChester62_93.class);//535
@@ -165,7 +290,10 @@ public class RegisterMethods {
 		approximativeMethod.put("wetdnarna91", WetmurDNARNA91.class);
 	}
 	
-	private void initializeCricksMethods(){
+	/**
+	 * initialises the cricksMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseCricksMethods(){
 		cricksMethod.put("all97", AllawiSantalucia97.class);
 		cricksMethod.put("bre86", Breslauer86.class);
 		cricksMethod.put("fre86", Freier86.class);
@@ -178,29 +306,44 @@ public class RegisterMethods {
 		cricksMethod.put("xia98", Xia98.class);
 	}
 	
-	private void initializeSingleMismatchMethods(){
+	/**
+	 * initialises the singleMismatchMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseSingleMismatchMethods(){
 		singleMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99mm.class);
 		singleMismatchMethod.put("zno07", Znosko07mm.class);
 		singleMismatchMethod.put("zno08", Znosko08mm.class);
 		singleMismatchMethod.put("tur06", Turner06mm.class);
 	}
 	
-	private void initializeTandemMismatchMethods(){
+	/**
+	 * initialises the tandemMismatchMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseTandemMismatchMethods(){
 		tandemMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99tanmm.class);
 		tandemMismatchMethod.put("tur06", Turner99_06tanmm.class);
 	}
 	
-	private void initializeWoddleMismatchMethods(){
-		woddleMethod.put("tur99", Turner99Wobble.class);
+	/**
+	 * initialises the wobbleMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseWobbleMismatchMethods(){
+		wobbleMethod.put("tur99", Turner99Wobble.class);
 	}
 	
-	private void initializeInternalLoopMethods(){
+	/**
+	 * initialises the internalLoopMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseInternalLoopMethods(){
 		internalLoopMethod.put("tur06", Turner06InternalLoop.class);
 		internalLoopMethod.put("san04", Santalucia04InternalLoop.class);
 		internalLoopMethod.put("zno07", Znosko071x2Loop.class);
 	}
 	
-	private void initializeSingleBulgeLoopMethods(){
+	/**
+	 * initialises the singleBulgeLoopMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseSingleBulgeLoopMethods(){
 		singleBulgeLoopMethod.put("tur06", Turner99_06SingleBulgeLoop.class);
 		singleBulgeLoopMethod.put("san04", Santalucia04SingleBulgeLoop.class);
 		singleBulgeLoopMethod.put("ser07", Serra07SingleBulgeLoop.class);
@@ -208,53 +351,83 @@ public class RegisterMethods {
 
 	}
 	
-	private void initializeLongBulgeLoopMethods(){
+	/**
+	 * initialises the longBulgeLoopMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseLongBulgeLoopMethods(){
 		longBulgeLoopMethod.put("tur06", Turner99_06LongBulgeLoop.class);
 		longBulgeLoopMethod.put("san04", Santalucia04LongBulgeLoop.class);
 	}
 	
-	private void initializeSingleDanglingEndMethods(){
-		singleDangingEndMethod.put("bom00", Bommarito00SingleDanglingEnd.class);
-		singleDangingEndMethod.put("ser08", Serra06_08SingleDanglingEnd.class);
-		singleDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
-		singleDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
+	/**
+	 * initialises the singleDanglingEndMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseSingleDanglingEndMethods(){
+		singleDanglingEndMethod.put("bom00", Bommarito00SingleDanglingEnd.class);
+		singleDanglingEndMethod.put("ser08", Serra06_08SingleDanglingEnd.class);
+		singleDanglingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		singleDanglingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 	}
 	
-	private void initializeDoubleDanglingEndMethods(){
-		doubleDangingEndMethod.put("ser05", Serra05DoubleDanglingEnd.class);
-		doubleDangingEndMethod.put("ser06", Serra06DoubleDanglingEnd.class);
-		doubleDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
-		doubleDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
+	/**
+	 * initialises the doubleDanglingEndMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseDoubleDanglingEndMethods(){
+		doubleDanglingEndMethod.put("ser05", Serra05DoubleDanglingEnd.class);
+		doubleDanglingEndMethod.put("ser06", Serra06DoubleDanglingEnd.class);
+		doubleDanglingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		doubleDanglingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 
 	}
 	
-	private void initializeLongDanglingEndMethods(){
-		longDangingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
-		longDangingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
+	/**
+	 * initialises the longDanglingEndMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseLongDanglingEndMethods(){
+		longDanglingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
+		longDanglingEndMethod.put("sugrna02", Sugimoto02RNADanglingEnd.class);
 	}
 	
-	private void initializeCNGRepeatsMethods(){
+	/**
+	 * initialises the CNGRepeatsMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseCNGRepeatsMethods(){
 		CNGRepeatsMethod.put("bro05", Broda05CNGRepeats.class);
 	}
 	
-	private void initializeInosineMethods(){
+	/**
+	 * initialises the inosineMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseInosineMethods(){
 		inosineMethod.put("san05", Santalucia05Inosine.class);
 		inosineMethod.put("zno07", Znosko07Inosine.class);
 	}
 	
-	private void initializeAzobenzeneMethods(){
+	/**
+	 * initialises the azobenzeneMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseAzobenzeneMethods(){
 		azobenzeneMethod.put("asa05", Asanuma05Azobenzene.class);
 	}
 	
-	private void initializeLockedAcidMethods(){
+	/**
+	 * initialises the lockedAcidMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseLockedAcidMethods(){
 		lockedAcidMethod.put("mct04", McTigue04LockedAcid.class);
 	}
 	
-	private void initializeHydroxyadenosineMethods(){
+	/**
+	 * initialises the hydroxyadenineMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseHydroxyadenosineMethods(){
 		hydroxyadenosineMethod.put("sug01", Sugimoto01Hydroxyadenine.class);
 	}
 	
-	private void initializeIonCorrectionMethod(){
+	/**
+	 * initialises the ionCorrectionMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseIonCorrectionMethod(){
 		ionCorrection.put("ahs01", Ahsen01SodiumCorrection.class);
 		ionCorrection.put("kam71", FrankKamenetskii71SodiumCorrection.class);
 		ionCorrection.put("marschdot", MarmurSchildkrautDoty98_62SodiumCorrection.class);
@@ -275,50 +448,84 @@ public class RegisterMethods {
 		ionCorrection.put("tanmix07", Tan07MixedNaMgCorrection.class);
 	}
 	
-	private void initializeDMSOCorrectionMethod(){
+	/**
+	 * initialises the DMSOCorrectionMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseDMSOCorrectionMethod(){
 		DMSOCorrection.put("ahs01", Ahsen01DMSOCorrection.class);
 		DMSOCorrection.put("cul76", Cullen76DMSOCorrection.class);
 		DMSOCorrection.put("esc80", Escara80DMSOCorrection.class);
 		DMSOCorrection.put("mus81", Musielski81DMSOCorrection.class);
 	}
 	
-	private void initializeFormamideCorrectionMethod(){
+	/**
+	 * initialises the formamideCorrectionMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseFormamideCorrectionMethod(){
 		formamideCorrection.put("lincorr", FormamideLinearMethod.class);
 		formamideCorrection.put("bla96", Blake96FormamideCorrection.class);
 	}
 	
-	private void initializeOtherCorrectionMethod(){
+	/**
+	 * initialises the otherCorrectionMethod HashMap of the RegisterMethods object.
+	 */
+	private void initialiseOtherCorrectionMethod(){
 		otherCorrection.put(OptionManagement.DMSOCorrection, DMSOCorrection);
 		otherCorrection.put(OptionManagement.formamideCorrection, formamideCorrection);
 	}
 	
-	private void initializePartialCalculMethods(){
-		PartialCalculMethods.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
-		PartialCalculMethods.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
-		PartialCalculMethods.put(OptionManagement.doubleDanglingEndMethod, doubleDangingEndMethod);
-		PartialCalculMethods.put(OptionManagement.hydroxyadenineMethod, hydroxyadenosineMethod);
-		PartialCalculMethods.put(OptionManagement.inosineMethod, inosineMethod);
-		PartialCalculMethods.put(OptionManagement.internalLoopMethod, internalLoopMethod);
-		PartialCalculMethods.put(OptionManagement.lockedAcidMethod, lockedAcidMethod);
-		PartialCalculMethods.put(OptionManagement.longBulgeLoopMethod, longBulgeLoopMethod);
-		PartialCalculMethods.put(OptionManagement.longDanglingEndMethod, longDangingEndMethod);
-		PartialCalculMethods.put(OptionManagement.NNMethod, cricksMethod);
-		PartialCalculMethods.put(OptionManagement.singleBulgeLoopMethod, singleBulgeLoopMethod);
-		PartialCalculMethods.put(OptionManagement.singleDanglingEndMethod, singleDangingEndMethod);
-		PartialCalculMethods.put(OptionManagement.singleMismatchMethod, singleMismatchMethod);
-		PartialCalculMethods.put(OptionManagement.tandemMismatchMethod, tandemMismatchMethod);
-		PartialCalculMethods.put(OptionManagement.wobbleBaseMethod, woddleMethod);
+	/**
+	 * initialises the patternModels HashMap of the RegisterMethods object.
+	 */
+	private void initialisePatternModels(){
+		PatternModel.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
+		PatternModel.put(OptionManagement.CNGMethod, CNGRepeatsMethod);
+		PatternModel.put(OptionManagement.doubleDanglingEndMethod, doubleDanglingEndMethod);
+		PatternModel.put(OptionManagement.hydroxyadenineMethod, hydroxyadenosineMethod);
+		PatternModel.put(OptionManagement.inosineMethod, inosineMethod);
+		PatternModel.put(OptionManagement.internalLoopMethod, internalLoopMethod);
+		PatternModel.put(OptionManagement.lockedAcidMethod, lockedAcidMethod);
+		PatternModel.put(OptionManagement.longBulgeLoopMethod, longBulgeLoopMethod);
+		PatternModel.put(OptionManagement.longDanglingEndMethod, longDanglingEndMethod);
+		PatternModel.put(OptionManagement.NNMethod, cricksMethod);
+		PatternModel.put(OptionManagement.singleBulgeLoopMethod, singleBulgeLoopMethod);
+		PatternModel.put(OptionManagement.singleDanglingEndMethod, singleDanglingEndMethod);
+		PatternModel.put(OptionManagement.singleMismatchMethod, singleMismatchMethod);
+		PatternModel.put(OptionManagement.tandemMismatchMethod, tandemMismatchMethod);
+		PatternModel.put(OptionManagement.wobbleBaseMethod, wobbleMethod);
 
 	}
 	
+	/**
+	 * This method is called to get the appropriate HashMap of the RegisterMethods object. It registers all
+	 * the possible method names for the model 'optionName'.
+	 * @param String optionName : method or model name
+	 * @return the appropriate HashMap of the RegisterMethods object. It registers all
+	 * the possible method names for the model 'optionName'.
+	 * If the option name doesn't exist, a NoExistingMethodException is thrown.
+	 * Ex : "-nn" => it is a crick's pair model => return the cricksMethod HasMap of the RegisteredMethods object.
+	 */
 	private HashMap<String , Class<? extends PatternComputationMethod>> getPartialCalculMethodHashMap(String optionName){
-		if (PartialCalculMethods.get(optionName) == null){
+		if (PatternModel.get(optionName) == null){
 			throw new NoExistingMethodException("No method is implemented for the option " + optionName + ".");
 		}
-		return PartialCalculMethods.get(optionName);
+		return PatternModel.get(optionName);
 	}
 	
-	public PatternComputationMethod getPartialCalculMethod(String optionName, String methodName){
+	// public methods
+	
+	/**
+	 * This method is called to get the PatternComputationMethod object which represents the method 'methodName'
+	 * entered with the option 'optionName'.
+	 * @param String optionName : option name
+	 * @param String methodName : method or model name
+	 * @return PatternComputationMethod object which represents the method 'methodName'
+	 * entered with the option 'optionName'.
+	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
+	 * a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 */
+	public PatternComputationMethod getPatternComputationMethod(String optionName, String methodName){
 		
 		if (methodName != null){
 			PatternComputationMethod method;
@@ -341,6 +548,18 @@ public class RegisterMethods {
 		return null;
 	}
 	
+	/**
+	 * This method is called to get the SodiumEquivalentMethod object which represents the method or model
+	 * for the sodium equivalence in the HashMap 'optionSet'.
+	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
+	 * @return SodiumEquivalentMethod object which represents the method or model
+	 * for the sodium equivalence in the HashMap 'optionSet'.
+	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
+	 * a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If the method is not applicable with the options present in 'optionSet', a MethodNotApplicableException
+
+	 */
 	public SodiumEquivalentMethod getNaEqMethod (HashMap<String, String> optionSet){
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
 		
@@ -366,6 +585,18 @@ public class RegisterMethods {
 		}
 	}
 	
+	/**
+	 * This method is called to get the CorrectionMethod object which represents the method or model
+	 * used for the ion correction in the environment 'environment'.
+	 * If no ion correction method is specified by the user, the ion correction will be selected
+	 * depending on the algorithm from Owczarzy et al. (2008)
+	 * @param Environment environment
+	 * @return CorrectionMethod object which represents the method or model
+	 * used for the ion correction in the environment 'environment'.
+	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
+	 * a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 */
 	public CorrectionMethod getIonCorrectionMethod (Environment environment){
 		if (environment.getOptions().containsKey(OptionManagement.ionCorrection)){
 			String methodName = environment.getOptions().get(OptionManagement.ionCorrection);
@@ -445,7 +676,18 @@ public class RegisterMethods {
 		}
 	}
 	
-	public MeltingComputationMethod getCompletCalculMethod(HashMap<String, String> optionSet){
+	/**
+	 * This method is called to get the MeltingComputationMethod object which represents the method or model
+	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
+	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
+	 * @return MeltingComputationMethod object which represents the method or model
+	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
+	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
+	 * a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If the method is not applicable with the options present in 'optionSet', a MethodNotApplicableException
+	 */
+	public MeltingComputationMethod getMeltingComputationMethod(HashMap<String, String> optionSet){
 		
 		String methodName = optionSet.get(OptionManagement.globalMethod);
 		if (methodName == null){
@@ -454,7 +696,7 @@ public class RegisterMethods {
 	
 		MeltingComputationMethod method = null;
 
-			if (completCalculMethod.get(methodName) == null){
+			if (meltingComputationMethods.get(methodName) == null){
 				int thres = Integer.parseInt(optionSet.get(OptionManagement.threshold));
 				String seq = optionSet.get(OptionManagement.sequence);
 				String seq2 = optionSet.get(OptionManagement.complementarySequence);
@@ -511,6 +753,17 @@ public class RegisterMethods {
 			}
 	}
 	
+	/**
+	 * This method is called to get the CorrectionMethod object which represents the method 'methodName'
+	 * entered with the option 'optionName'.
+	 * @param String optionName : option name
+	 * @param String methodName : method or model name
+	 * @return CorrectionMethod object which represents the method 'methodName'
+	 * entered with the option 'optionName'.
+	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
+	 * a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 */
 	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
 		
 		if (methodName == null){
@@ -531,6 +784,11 @@ public class RegisterMethods {
 		}
 	}
 	
+	/**
+	 * corrects the melting temperature if other agents are present in the solution (formamide, DMSO, ...)
+	 * @param Environment environment
+	 * @return ThermoResult which contains the corrected melting temperature.
+	 */
 	public ThermoResult computeOtherMeltingCorrections(Environment environment){
 		if (environment.getDMSO() > 0){
 			CorrectionMethod DMSOCorrection = getCorrectionMethod(OptionManagement.DMSOCorrection, environment.getOptions().get(OptionManagement.DMSOCorrection));

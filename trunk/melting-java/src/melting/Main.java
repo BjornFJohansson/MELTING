@@ -43,7 +43,7 @@ public class Main {
 
 			Environment environment = optionManager.createEnvironment(args);
 			RegisterMethods register = new RegisterMethods();
-			MeltingComputationMethod calculMethod = register.getCompletCalculMethod(environment.getOptions());
+			MeltingComputationMethod calculMethod = register.getMeltingComputationMethod(environment.getOptions());
 			ThermoResult results = calculMethod.computesThermodynamics();
 			environment.setResult(results);
 

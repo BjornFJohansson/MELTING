@@ -214,7 +214,13 @@ public class DataCollect {
 	// => methods to extract the thermodynamic parameters for the dangling end models. (single, second and long dangling ends)
 
 	/**
-	 * 
+	 * to get the Thermodynamics object containing the parameters for the dangling end present in the duplex
+	 * composed of seq1 and seq2 with the specified sens.
+	 * @param String seq1 : sequence (5'3').
+	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param String sens : sens of the dangling end 
+	 * @return Thermodynamics object containing the parameters for the dangling end present in the duplex
+	 * composed of seq1 and seq2 with the specified sens. 
 	 */
 	public Thermodynamics getSecondDanglingValue(String seq1, String seq2, String sens){
 		seq1 = seq1.replaceAll("-", "");
@@ -227,6 +233,14 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the dangling end present in the duplex
+	 * composed of seq1 and seq2.
+	 * @param String seq1 : sequence (5'3').
+	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @return Thermodynamics object containing the parameters for the dangling end present in the duplex
+	 * composed of seq1 and seq2. 
+	 */
 	public Thermodynamics getDanglingValue(String seq1, String seq2){
 		String sens = NucleotidSequences.getDanglingSens(seq1, seq2);
 		seq1 = seq1.replaceAll("-", "");
@@ -239,6 +253,16 @@ public class DataCollect {
 		return s;
 	}
 	
+	// => methods to extract the thermodynamic parameters for the mismatch models. (single mismatch, tandem mismatches, internal loops)
+	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the mismatch(es) present in the duplex
+	 * composed of seq1 and seq2.
+	 * @param String seq1 : sequence (5'3').
+	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @return Thermodynamics object containing the parameters for the mismatch(es) present in the duplex
+	 * composed of seq1 and seq2. 
+	 */
 	public Thermodynamics getMismatchValue(String seq1, String seq2){
 		Thermodynamics s = data.get("mismatch"+seq1+"/"+seq2);
 		if (s == null){
@@ -247,21 +271,41 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for an internal loop with a specified size.
+	 * @param String size : size of the internal loop.
+	 * @return Thermodynamics object containing the parameters for an internal loop with a specified size
+	 */
 	public Thermodynamics getInternalLoopValue(String size){
 		Thermodynamics s = data.get("mismatch"+"size"+size);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the initiation of an internal loop with a specified size.
+	 * @param String size : size of the internal loop.
+	 * @return Thermodynamics object containing the parameters for the initiation of an internal loop with a specified size
+	 */
 	public Thermodynamics getInitiationLoopValue(String size){
 		Thermodynamics s = data.get("mismatch"+"initiation"+"size"+size);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the initiation of an internal loop.
+	 * @return Thermodynamics object containing the parameters for the initiation of an internal loop
+	 */
 	public Thermodynamics getInitiationLoopValue(){
 		Thermodynamics s = data.get("mismatch"+"initiation");
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the mismatching base pair (base1, base2).
+	 * @param string base1 : from the sequence (5'3')
+	 * @param string base2 : from the complementary sequence (3'5')
+	 * @return Thermodynamics object containing the parameters for the mismatching base pair (base1, base2).
+	 */
 	public Thermodynamics getMismatchParameterValue(String base1, String base2){
 		Thermodynamics s = data.get("parameters"+base1+"/"+base2);
 		if (s == null){
@@ -270,11 +314,26 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the base pair (base1, base2) next to the mismatching base pair.
+	 * @param string base1 : from the sequence (5'3')
+	 * @param string base2 : from the complementary sequence (3'5')
+	 * @return Thermodynamics object containing the parameters for the base pair (base1, base2) next to the mismatching base pair.
+	 */
 	public Thermodynamics getClosureValue(String base1, String base2){
 		Thermodynamics s = data.get("closure"+"per_"+base1 + "/" + base2);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the the duplex composed of seq1 and seq2 with the
+	 * specified type of closing base pairs.
+	 * @param String seq1 : from the sequence (5'3')
+	 * @param String seq2 : from the complementary sequence (3'5')
+	 * @param closing : type of the base pair next to the mismatching base pair..
+	 * @return Thermodynamics object containing the parameters for the the duplex composed of seq1 and seq2 with the
+	 * specified type of closing base pairs.
+	 */
 	public Thermodynamics getMismatchValue(String seq1, String seq2, String closing){
 		Thermodynamics s = data.get("mismatch" + seq1+"/"+seq2 + "close" + closing);
 		if (s == null){
@@ -283,16 +342,32 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the penalty of type 'type'.
+	 * @param String type : type of the penalty
+	 * @return Thermodynamics object containing the penalty of type 'type'.
+	 */
 	public Thermodynamics getPenalty(String type){
 		Thermodynamics s = data.get("penalty" + type);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the internal loop asymmetry.
+	 * @return Thermodynamics object containing the parameters for the internal loop asymmetry.
+	 */
 	public Thermodynamics getAsymmetry(){
 		Thermodynamics s = data.get("asymetry");
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the first non canonical pair in the internal loop.
+	 * @param String seq1 : from the sequence (5'3')
+	 * @param String seq2 : from the complementary sequence (3'5')
+	 * @param String loop : type of internal loop.
+	 * @return Thermodynamics object containing the parameters for the first non canonical pair in the internal loop.
+	 */
 	public Thermodynamics getFirstMismatch(String seq1, String seq2, String loop){
 		Thermodynamics s = data.get("mismatch"+"first_non_canonical_pair"+"loop"+loop+seq1+"/"+seq2);
 		if (s == null){
@@ -301,11 +376,28 @@ public class DataCollect {
 		return s;
 	}
 	
+	// => methods to extract the thermodynamic parameters for the hairpin loop models. (not implemented yet)
+	
+	/**
+	 * to get the Thermodynamics object containing the parameters for a Hairpin loop of size 'size'.
+	 * @param String size : size of the hairpin loop.
+	 * @return Thermodynamics object containing the parameters for a Hairpin loop of size 'size'.
+	 */
 	public Thermodynamics getHairpinLoopvalue(String size){
 		Thermodynamics s = data.get("hairpin"+size);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for a Hairpin loop 'seqLoop' preceded
+	 * by the base 'base1' and followed by the base 'lastBase'.
+	 * @param String base1 : base preceding the hairpin loop. (from the sequence (5'3'))
+	 * @param String lastBase : base following the hairpin loop. (from the sequence (5'3')) 
+	 * @param String seqLoop : hairpin loop sequence.
+	 * @param String type : type of hairpin loop
+	 * @return Thermodynamics object containing the parameters for a Hairpin loop 'seqLoop' preceded
+	 * by the base 'base1' and followed by the base 'lastBase'.
+	 */
 	public Thermodynamics getBonus(String base1, String lastBase, String seqLoop, String type){
 		Thermodynamics s = data.get("bonus"+type+base1+seqLoop+"/"+lastBase);
 		if (s == null){
@@ -314,11 +406,27 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for a penalty of type 'type'
+	 * for the specified parameter.
+	 * @param String type : type of penalty
+	 * @param String parameter
+	 * @return Thermodynamics object containing the parameters for a penalty of type 'type'
+	 * for the specified parameter.
+	 */
 	public Thermodynamics getPenalty(String type, String parameter){
 		Thermodynamics s = data.get("penalty"+type+"parameter"+parameter);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the terminal mismatching base pair (seq1, seq2)
+	 * of a hairpin loop.
+	 * @param String seq1 : (5'3') orientation
+	 * @param String seq2 : (3'5') orientation
+	 * @return Thermodynamics object containing the parameters for the terminal mismatching base pair (seq1, seq2)
+	 * of a hairpin loop.
+	 */
 	public Thermodynamics getTerminalMismatchvalue(String seq1, String seq2){
 		Thermodynamics s = data.get("hairpin"+"terminal_mismatch"+seq1+"/"+seq2);
 		if (s == null){
@@ -327,11 +435,28 @@ public class DataCollect {
 		return s;
 	}
 	
+	// => methods to extract the thermodynamic parameters for the CNG models.
+
+	/**
+	 * to get the Thermodynamics object containing the parameters for the CNG pattern 'seq1'. 'repeats'
+	 * is the number of CNG repeats in the sequence.
+	 * @param String repeats : number of CNG repeats in the sequence.
+	 * @param String seq1 : CNG pattern (5'3')
+	 * @return Thermodynamics object containing the parameters for the CNG pattern 'seq1'.
+	 */
 	public Thermodynamics getCNGvalue(String repeats, String seq1){
 		Thermodynamics s = data.get("CNG"+"repeats"+repeats+seq1);
 		return s;
 	}
 	
+	// => methods to extract the thermodynamic parameters for the bulge loop models. (single and long bulge loops)
+
+	/**
+	 * to get the Thermodynamics object containing the parameters for the single bulge (seq1, seq2).
+	 * @param String seq1 : from the sequence (5'3')
+	 * @param String seq2 : from the complementary sequence (3'5')
+	 * @return Thermodynamics object containing the parameters for the single bulge (seq1, seq2).
+	 */
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
 		String sequence1 =seq1.replace("-", "");
 		String sequence2 =seq2.replace("-", "");
@@ -343,11 +468,21 @@ public class DataCollect {
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for a bulge loop of size 'size'.
+	 * @param String size : size of the bulge loop
+	 * @return Thermodynamics object containing the parameters for a bulge loop of size 'size'.
+	 */
 	public Thermodynamics getBulgeLoopvalue(String size){
 		Thermodynamics s = data.get("bulge"+"size"+size);
 		return s;
 	}
 	
+	/**
+	 * to get the Thermodynamics object containing the parameters for the initiation of a bulge loop of size 'size'.
+	 * @param String size : size of the bulge loop
+	 * @return Thermodynamics object containing the parameters for the initiation of a bulge loop of size 'size'.
+	 */
 	public Thermodynamics getInitiationBulgevalue(String size){
 		Thermodynamics s = data.get("bulge"+"initiation"+"size"+size);
 		return s;

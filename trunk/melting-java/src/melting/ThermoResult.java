@@ -38,7 +38,7 @@ public class ThermoResult extends Thermodynamics{
 	// ThermoResult constructor
 	
 	/**
-	 * creates a ThermoResult object initialized with the double enthalpy, double entropy and double Tm.
+	 * creates a ThermoResult object initialised with the double enthalpy, double entropy and double Tm.
 	 * @param double enthalpy : the enthalpy value
 	 * @param double entropy : the entropy value
 	 * @param double Tm : the melting temperature

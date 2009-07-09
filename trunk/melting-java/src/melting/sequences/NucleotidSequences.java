@@ -52,13 +52,13 @@ public class NucleotidSequences {
 	
 	/**
 	 * NucleotidSequences rnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with RNA sequences
-	 * This object is initialized when a model for RNA sequences is selected by the user and the hybridisation type is dnadna
+	 * This object is initialised when a model for RNA sequences is selected by the user and the hybridisation type is dnadna
 	 */
 	private NucleotidSequences rnaEquivalent;
 	
 	/**
 	 * NucleotidSequences dnaEquivalent : the NucleotidSequences object which represents this NucleotidSequences object with DNA sequences
-     * This object is initialized when a model for DNA sequences is selected by the user and the hybridisation type is rnarna
+     * This object is initialised when a model for DNA sequences is selected by the user and the hybridisation type is rnarna
 	 */
 	private NucleotidSequences dnaEquivalent;
 	
@@ -108,7 +108,7 @@ public class NucleotidSequences {
 	/**
 	 * Creates a new NucleotidSequences object from a reference nucleotiDSequences object. The sequences
 	 * are converted in the hybridization type "hybridization type". the rnaEquivalent or dnaEquivalent object
-	 * of the reference NucleotidSequences object are initialized.
+	 * of the reference NucleotidSequences object are initialised.
 	 * @param String hybridizationType : hybridization type of the duplex.
 	 * @param NucleotidSequences sequences : the reference nucleotidSequences object. 
 	 */
@@ -131,7 +131,7 @@ public class NucleotidSequences {
 	 * This method is called when the same NucleotidSequences is required but with the sequences converted in the new
 	 * hybridization type "hybridizationType"
 	 * @param String hybridizationType : the new hybridization type of the sequences
-	 * @return the initialized object rnaEquivalent if the hybridization type is "rna" or the initialized object dnaEquivalent if the hybridization type is "dna".
+	 * @return the initialised object rnaEquivalent if the hybridization type is "rna" or the initialised object dnaEquivalent if the hybridization type is "dna".
 	 * If the String hybridization is neither "dna" nor "rna", a SequenceException is thrown.
 	 */
 	public NucleotidSequences getEquivalentSequences(String hybridizationType) {
@@ -1266,9 +1266,9 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * initializes the HasMap modifiedAcidNames of the NucleotiSequences class.
+	 * initialises the HasMap modifiedAcidNames of the NucleotiSequences class.
 	 */
-	public static void initializeModifiedAcidHashmap(){
+	public static void initialiseModifiedAcidHashmap(){
 		modifiedAcidNames.put("I", SpecificAcidNames.inosine);
 		modifiedAcidNames.put("AL", SpecificAcidNames.lockedNucleicAcid);
 		modifiedAcidNames.put("TL", SpecificAcidNames.lockedNucleicAcid);
