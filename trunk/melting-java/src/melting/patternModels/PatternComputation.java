@@ -33,18 +33,25 @@ import melting.exceptions.ThermodynamicParameterError;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the different pattern models. It implements the PatternComputationMethod interface.
+ */
 public abstract class PatternComputation implements PatternComputationMethod{
 
+	// Instance variables
+	
+	/**
+	 * DataCollect collector : contains the data HasMap with the thermodynamic parameters for the pattern computation.
+	 */
 	protected DataCollect collector = new DataCollect();
+	
+	/**
+	 * String fileName : name of the xml file containing the thermodynamic parameters.
+	 */
 	protected String fileName;
 
-	public abstract ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result);
+	// PatternComputationMethod interface implementation
 	
-	public DataCollect getCollector() {
-		return this.collector;
-	}
-
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		NucleotidSequences sequences = environment.getSequences();
@@ -56,11 +63,18 @@ public abstract class PatternComputation implements PatternComputationMethod{
 		return true;
 	}
 	
+	public abstract ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result);
+	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		return false;
 	}
-
+	
+	public DataCollect getCollector() {
+		return this.collector;
+	}
+	
 	public void loadData(HashMap<String, String> options){
 
 		loadFile(this.fileName, this.collector);
@@ -92,6 +106,12 @@ public abstract class PatternComputation implements PatternComputationMethod{
 		}
 	}
 		
+	// public static method
+	
+	/**
+	 * This method is called to get the HasMap of the DataCollect object containing the thermodynamic parameters
+	 * @return HasMap of the DataCollect object containing the thermodynamic parameters for this pattern.
+	 */
 	public static String getData(){
 		return null;
 	}

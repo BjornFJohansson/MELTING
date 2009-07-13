@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*McTigue et al.(2004). Biochemistry 43 : 5388-5405 */
-
 package melting.patternModels.specificAcids;
 
 import java.util.HashMap;
@@ -30,51 +28,21 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the locked nucleic acid (AL, GL, CL or TL) model mct04. It extends the PatternComputation class.
+ * 
+ * McTigue et al.(2004). Biochemistry 43 : 5388-5405
+ */
 public class McTigue04LockedAcid extends PatternComputation{
-		
+	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for locked nucleic acid
+	 */
 	public static String defaultFileName = "McTigue2004lockedmn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The locked acid nuceic model is from McTigue et al. (2004) (delta delta H and delta delta S): ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-
-		result = calculateThermodynamicsNoModifiedAcid(newSequences, pos1, pos2, result);
-		double enthalpy = result.getEnthalpy();
-		double entropy = result.getEntropy();
-		
-		Thermodynamics lockedAcidValue;
-		
-		for (int i = pos1; i < pos2; i++){
-			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
-
-			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
-
-			enthalpy += lockedAcidValue.getEnthalpy();
-			entropy += lockedAcidValue.getEntropy();
-		}
-		
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		
-		return result;
-	}
+	// PatternComputationMethod interface implementation
 
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -97,6 +65,39 @@ public class McTigue04LockedAcid extends PatternComputation{
 		}
 		
 		return isApplicable;
+	}
+	
+	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The locked acid nuceic model is from McTigue et al. (2004) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
+		result = computeThermodynamicsWithoutLockedNucleicAcid(newSequences, pos1, pos2, result);
+		double enthalpy = result.getEnthalpy();
+		double entropy = result.getEntropy();
+		
+		Thermodynamics lockedAcidValue;
+		
+		for (int i = pos1; i < pos2; i++){
+			lockedAcidValue = this.collector.getLockedAcidValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
+
+			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : incremented enthalpy = " + lockedAcidValue.getEnthalpy() + "  incremented entropy = " + lockedAcidValue.getEntropy());
+
+			enthalpy += lockedAcidValue.getEnthalpy();
+			entropy += lockedAcidValue.getEntropy();
+		}
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		return result;
 	}
 
 	@Override
@@ -121,8 +122,43 @@ public class McTigue04LockedAcid extends PatternComputation{
 		
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
+	
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		String crickName = options.get(OptionManagement.NNMethod);
+		RegisterMethods register = new RegisterMethods();
+		PatternComputationMethod NNMethod = register.getPatternComputationMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initialiseFileName(crickName);
 
-	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
+		String NNfile = NNMethod.getDataFileName(crickName);
+		
+		
+		loadFile(NNfile, this.collector);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private methods
+
+	/**
+	 * computes the enthalpy and entropy of the crick's pairs composing the pattern as if it was no
+	 * locked nucleic acid in the duplex.
+	 * @param NucleotidSequence sequences : contains the sequences and the duplex
+	 * @param int pos1 : starting position of the pattern
+	 * @param int pos2 : ending position of the pattern
+	 * @param ThermoResult result : contains the current enthalpy, entropy and melting temperature for this NulceotidSequences.
+	 * @return ThermoResult result : contains the computed enthalpy and entropy.
+	 */
+	private ThermoResult computeThermodynamicsWithoutLockedNucleicAcid(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
@@ -141,21 +177,15 @@ public class McTigue04LockedAcid extends PatternComputation{
 		return result;
 	}
 	
-	@Override
-	public void loadData(HashMap<String, String> options) {
-		super.loadData(options);
-		
-		String crickName = options.get(OptionManagement.NNMethod);
-		RegisterMethods register = new RegisterMethods();
-		PatternComputationMethod NNMethod = register.getPatternComputationMethod(OptionManagement.NNMethod, crickName);
-		NNMethod.initialiseFileName(crickName);
-
-		String NNfile = NNMethod.getDataFileName(crickName);
-		
-		
-		loadFile(NNfile, this.collector);
-	}
-	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

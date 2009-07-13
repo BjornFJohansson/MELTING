@@ -161,7 +161,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				this.cricksMethod = initialiseMethod(OptionManagement.NNMethod, this.environment.getOptions().get(OptionManagement.NNMethod));
 			}
 			CricksNNMethod initiationMethod = (CricksNNMethod)this.cricksMethod;
-			ThermoResult resultinitiation = initiationMethod.calculateInitiationHybridation(this.environment);
+			ThermoResult resultinitiation = initiationMethod.computesHybridizationInitiation(this.environment);
 
 			this.environment.setResult(resultinitiation);
 			Tm = computesMeltingTemperature(this.environment);

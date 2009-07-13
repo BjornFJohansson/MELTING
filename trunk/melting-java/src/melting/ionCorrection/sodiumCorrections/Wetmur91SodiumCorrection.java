@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
-	1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -26,9 +23,34 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
 
+/**
+ * This class represents the sodium correction model wet91. It implements the CorrectionMethod interface.
+ * 
+ * James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
+ * 1991, Critical reviews in biochemistry and molecular biology, 26, 227-259
+ */
 public class Wetmur91SodiumCorrection implements CorrectionMethod{
 	
+	// Instance variables
+	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction.
+	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na / (1.0 + 0.7 * Na)) + 3.83";
+	
+	// CorrectionMethod interface implementation
+
+	public boolean isApplicable(Environment environment) {
+		boolean isApplicable = true;
+		double NaEq = Helper.computesNaEquivalent(environment);
+		
+		if (NaEq == 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Wetmur (1991) is applicable for " +
+					"strictky positive sodium concentrations.");
+			isApplicable = false;
+		}
+		return isApplicable;
+	}
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
@@ -41,18 +63,6 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 		environment.setResult(Tm);
 		
 		return environment.getResult();
-	}
-
-	public boolean isApplicable(Environment environment) {
-		boolean isApplicable = true;
-		double NaEq = Helper.computesNaEquivalent(environment);
-		
-		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Wetmur (1991) is applicable for " +
-					"strictky positive sodium concentrations.");
-			isApplicable = false;
-		}
-		return isApplicable;
 	}
 	
 }

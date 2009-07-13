@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different nearest neighbor parameters with Melting 4.2.
+ */
 public class MainTestMeltingCPerfectMatching {
 
 	public static void main(String[] args) {

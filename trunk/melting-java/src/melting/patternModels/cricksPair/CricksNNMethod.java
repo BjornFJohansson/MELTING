@@ -25,8 +25,14 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the NN nearest neighbor model (adds the thermodynamic energy (enthalpy and entropy) for each Crick's pair composing the duplex). 
+ * It extends the PatternComputation class.
+ */
 public abstract class CricksNNMethod extends PatternComputation{
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -48,7 +54,25 @@ public abstract class CricksNNMethod extends PatternComputation{
 		return result;
 	}
 	
-	public ThermoResult calculateInitiationHybridation(Environment environment){
+	@Override
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
+
+		for (int i = pos1; i <= pos2 - 1; i++){
+			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// public method
+	
+	/**
+	 * computes the enthalpy and entropy for the duplex initiation with the Environment 'environment'.
+	 * @param Environment environment
+	 * @return ThermoResult containing the enthalpy and entropy which contain the duplex initiation penalty.
+	 */
+	public ThermoResult computesHybridizationInitiation(Environment environment){
 		double enthalpy = 0.0;
 		double entropy = 0.0;
 
@@ -74,16 +98,5 @@ public abstract class CricksNNMethod extends PatternComputation{
 		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
-	}
-	
-	@Override
-	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
-
-		for (int i = pos1; i <= pos2 - 1; i++){
-			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

@@ -13,13 +13,9 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 */
-
 package melting.patternModels.tandemMismatches;
 
 import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -28,18 +24,41 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the tandem mismatches model tur06. It extends the PatternComputation class.
+ * 
+ * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+ * 
+ * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940
+ */
 public class Turner99_06tanmm extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for tandem mismatches
+	 */
 	public static String defaultFileName = "Turner1999_2006tanmm.xml";
+	
+	/**
+	 * String enthalpyFormula : enthalpy formula
+	 */
 	private static String enthalpyFormula = "delta H(5'PXYS/3'QWZT) = (H(5'PXWQ/3'QWXP) + H(5'TZYS/3'SYZT)) / 2 + penalty1( = H(GG pair adjacent to an AA or any non canonical pair with a pyrimidine) + penalty2 (= H(AG or GA pair adjacent to UC,CU or CC pairs or with a UU pair adjacent to a AA.))";
 
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+
+		if (environment.getHybridization().equals("rnarna") == false){
+			
+			OptionManagement.meltingLogger.log(Level.WARNING, "the tandem mismatch parameters of " +
+					"Turner (1999-2006) are originally established " +
+					"for RNA sequences.");
 		}
+		
+		return super.isApplicable(environment, pos1, pos2);
 	}
 
 	@Override
@@ -108,21 +127,6 @@ public class Turner99_06tanmm extends PatternComputation{
 		return result;
 		}
 
-
-	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-
-		if (environment.getHybridization().equals("rnarna") == false){
-			
-			OptionManagement.meltingLogger.log(Level.WARNING, "the tandem mismatch parameters of " +
-					"Turner (1999-2006) are originally established " +
-					"for RNA sequences.");
-		}
-		
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
@@ -174,6 +178,26 @@ public class Turner99_06tanmm extends PatternComputation{
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

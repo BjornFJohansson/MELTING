@@ -13,11 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
-	 * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465*/
-	
-	/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -28,9 +23,24 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
+/**
+ * This class represents the sodium correction model san04. It extends the EntropyCorrection class.
+ * 
+ * John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
+ * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465
+ * 
+ * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
+ */
 public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 
+	// Instance variables
+	
+	/**
+	 * String entropyCorrection : formula for the entropy correction.
+	 */
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(Na)";
+
+	// CorrectionMethod interface implementation
 
 	@Override
 	public boolean isApplicable(Environment environment) {
@@ -59,6 +69,16 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	}
 	
 	@Override
+	public ThermoResult correctMeltingResults(Environment environment) {
+		double NaEq = Helper.computesNaEquivalent(environment);
+		environment.setNa(NaEq);
+		
+		return super.correctMeltingResults(environment);
+	}
+	
+	// Inherited method
+	
+	@Override
 	protected double correctEntropy(Environment environment){
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n he sodium correction is from Santalucia et al. (1998) : ");
@@ -68,13 +88,5 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		double entropy = 0.368 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log(Na);
 		
 		return entropy;
-	}
-	
-	@Override
-	public ThermoResult correctMeltingResults(Environment environment) {
-		double NaEq = Helper.computesNaEquivalent(environment);
-		environment.setNa(NaEq);
-		
-		return super.correctMeltingResults(environment);
 	}
 }

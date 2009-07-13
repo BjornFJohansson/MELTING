@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
-	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
-	 * */
-
 package melting.ionCorrection.magnesiumCorrections;
 
 import java.util.logging.Level;
@@ -27,15 +23,29 @@ import melting.correctionMethods.EntropyCorrection;
 
 /**
  * This class represents the magnesium correction model tanmg06. It extends the EntropyCorrection class.
+ * 
+ *  Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
+ * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
  */
 public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	
 	// Instance variables
 
+	/**
+	 * String entropyCorrection : formula for the entropy correction
+	 */
 	protected static String entropyCorrection = "delta S(Mg) = delta S(Na = 1M) - 3.22 x (duplexLength - 1) x g"; 
+	
 	protected static String aFormula = "a2 = 0.02 x ln(Mg) + 0.0068 x ln(Mg)^2";
+	
 	protected static String bFormula = "b2 = 1.18 x ln(Mg) + 0.344 * ln(Mg)^2";
+	
+	/**
+	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
+	 */
 	protected static String gFormula = "g2 = a2 + b2 / (duplexLength^2)";
+	
+	// CorrectionMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment) {
@@ -62,18 +72,27 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	// Inherited method
+	
 	@Override
 	protected double correctEntropy(Environment environment){
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2006) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
 
-		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1) * calculateFreeEnergyPerBaseStack(environment);
+		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1) * computeFreeEnergyPerBaseStack(environment);
 		
 		return entropy;
 	}
 	
-	public static double calculateFreeEnergyPerBaseStack(Environment environment){
+	// public static method
+
+	/**
+	 * represents the function associated with the electrostatic folding free energy per base stack.
+	 * @param Environment environment
+	 * @return double g2 which represents the result of the function associated with the electrostatic folding free energy per base stack.
+	 */
+	public static double computeFreeEnergyPerBaseStack(Environment environment){
 		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
 		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
 		OptionManagement.meltingLogger.log(Level.FINE, aFormula);

@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different GU base pair methods.
+ */
 public class MainTestGUBasePairs {
 
 	public static void main(String[] args) {

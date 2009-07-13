@@ -13,11 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
-	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
-	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
-	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
-	 * */
 package melting.otherCorrections.dmsoCorrections;
 
 import java.util.logging.Level;
@@ -25,13 +20,28 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
-import melting.correctionMethods.DMSOCorrections;
+import melting.correctionMethods.DNADMSOCorrections;
 
-public class Ahsen01DMSOCorrection extends DMSOCorrections {
+/**
+ * This class represents the DMSO correction model ahs01. It extends the DNADMSOCorrections class.
+ * 
+ *  Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
+ * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
+ * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
+ * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
+ */
+public class Ahsen01DMSOCorrection extends DNADMSOCorrections {
 
+	// Instance variables
+	
 	private static double parameter = 0.75;
 	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction
+	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.75 * x % DMSO";
+	
+	// CorrectionMethod interface implementation
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Ahsen et al. (2001) : ");

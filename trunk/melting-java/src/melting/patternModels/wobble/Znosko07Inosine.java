@@ -15,10 +15,7 @@
 
 package melting.patternModels.wobble;
 
-/*Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 */
-
 import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -26,17 +23,43 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the inosine model zno07. It extends the InosineNNMethod class.
+ * 
+ * Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634
+ */
 public class Znosko07Inosine extends InosineNNMethod {
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for inosine
+	 */
 	public static String defaultFileName = "Znosko2007inomn.xml";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		NucleotidSequences inosine = environment.getSequences().getEquivalentSequences("rna");
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		if (environment.getHybridization().equals("rnarna") == false) {
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
+					"Znosco (2007) are established for RNA sequences.");
+		
 		}
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
+			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.getDuplex().get(i).isBasePairEqualTo("I", "U") == false){
+				isApplicable = false;
+				OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco" +
+						"(2007) are only established for IU base pairs.");
+				break;
+			}
+		}
+		return isApplicable;
 	}
 	
 	@Override
@@ -71,29 +94,6 @@ public class Znosko07Inosine extends InosineNNMethod {
 	}
 	
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		NucleotidSequences inosine = environment.getSequences().getEquivalentSequences("rna");
-		
-		if (environment.getHybridization().equals("rnarna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
-					"Znosco (2007) are established for RNA sequences.");
-		
-		}
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-
-		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
-			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.getDuplex().get(i).isBasePairEqualTo("I", "U") == false){
-				isApplicable = false;
-				OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco" +
-						"(2007) are only established for IU base pairs.");
-				break;
-			}
-		}
-		return isApplicable;
-	}
-	
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -111,6 +111,15 @@ public class Znosko07Inosine extends InosineNNMethod {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
 }

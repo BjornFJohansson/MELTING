@@ -18,7 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
-
+/**
+ * This class exists to test the different nearest neighbor methods.
+ */
 public class MainTestPerfectMatching{
 
 	public static void main(String[] args) {

@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -26,19 +23,22 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model fre86. It extends the CricksNNMethod class.
+ * 
+ * Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377
+ */
 public class Freier86 extends CricksNNMethod {
-		
+	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Freier1986nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -69,5 +69,13 @@ public class Freier86 extends CricksNNMethod {
 		
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
-
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

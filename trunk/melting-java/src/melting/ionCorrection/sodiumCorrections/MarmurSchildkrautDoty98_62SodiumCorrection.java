@@ -13,14 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
-	 * Nucleic Acids Res. 26, 3323-3332 and corrigendum.
-	 * 
-	 *  Marmur, J., and Doty, P. (1962) Determination of the base
-	 *  composition of deoxyribonucleic acid from its thermal denaturation
-	 *  temperature, J. Mol. Biol. 5, 109-118.
-	 * */
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -31,23 +23,26 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
 
+/**
+ * This class represents the sodium correction model marschdot. It implements the CorrectionMethod interface.
+ * 
+ * Blake, R. D., and Delcourt, S. G. (1998) Thermal stability of DNA,
+ * Nucleic Acids Res. 26, 3323-3332 and corrigendum.
+ * 
+ *  Marmur, J., and Doty, P. (1962) Determination of the base
+ *  composition of deoxyribonucleic acid from its thermal denaturation
+ *  temperature, J. Mol. Biol. 5, 109-118.
+ */
 public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
 	
+	// Instance variables
+	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction.
+	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(Na)";
 
-	public ThermoResult correctMeltingResults(Environment environment) {
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
-
-		double NaEq = Helper.computesNaEquivalent(environment);
-		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
-		
-		double Tm = environment.getResult().getTm() + (8.75 - 2.83 * Fgc) * Math.log(NaEq);
-		environment.setResult(Tm);
-		
-		return environment.getResult();
-	}
+	// CorrectionMethod interface implementation
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
@@ -69,6 +64,19 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 		
 		return isApplicable;
 	}
+	
+	public ThermoResult correctMeltingResults(Environment environment) {
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
 
+		double NaEq = Helper.computesNaEquivalent(environment);
+		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
+		
+		double Tm = environment.getResult().getTm() + (8.75 - 2.83 * Fgc) * Math.log(NaEq);
+		environment.setResult(Tm);
+		
+		return environment.getResult();
+	}
 
 }

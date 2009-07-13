@@ -12,15 +12,11 @@
  *       Marine Dumousseau and Nicolas Lenovere                                                   
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
-
-/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
 	
 package melting.patternModels.singleBulge;
 
 import java.util.HashMap;
 import java.util.logging.Level;
-
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -30,15 +26,24 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.longBulge.Turner99_06LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single bulge loop model tur06. It extends the Turner99_06LongBulgeLoop class.
+ * 
+ * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
+ * 
+ * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.
+ */
 public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 	
+	// Instance variables
+	
+	/**
+	 * StringBuffer formulaH : the enthalpy formula
+	 */
 	private static String formulaH = "delat H = H(bulge of 1 initiation) + H(NN intervening)";
 	
-	@Override
-	protected boolean isClosingPenaltyNecessary(){
-		return false;
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -114,6 +119,13 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		
 		loadFile(NNfile, this.collector);
 		loadFile(wobbleFile, this.collector);
+	}
+	
+	// Inherited method.
+	
+	@Override
+	protected boolean isClosingPenaltyNecessary(){
+		return false;
 	}
 
 }

@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344
-	REF: Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 */
-
 package melting.patternModels.singleDanglingEnds;
 
 import java.util.logging.Level;
@@ -25,19 +22,24 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single dangling end model ser08. It extends the SingleDanglingEndMethod class.
+ * 
+ * Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 
+ * 
+ * Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 
+ */
 public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single dangling end
+	 */
 	public static String defaultFileName = "Serra2006_2008de.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
@@ -76,4 +78,12 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

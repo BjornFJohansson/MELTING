@@ -25,9 +25,32 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single mismatch model from Znosco et al, 2007, 2008. It extends the PatternComputation class.
+ */
 public abstract class ZnoskoMethod extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	protected static String formulaEnthalpy = "delat H = H(single mismatch N/N) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(NNN intervening)";
+	
+	// PatternComputationMethod interface implementation
+
+	@Override
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		if (environment.getHybridization().equals("rnarna") == false){
+
+			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
+					"Znosco et al. are originally established " +
+					"for RNA duplexes.");
+		}
+		
+		return super.isApplicable(environment, pos1, pos2);
+	}
 	
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
@@ -74,19 +97,6 @@ public abstract class ZnoskoMethod extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		if (environment.getHybridization().equals("rnarna") == false){
-
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
-					"Znosco et al. are originally established " +
-					"for RNA duplexes.");
-		}
-		
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -113,6 +123,17 @@ public abstract class ZnoskoMethod extends PatternComputation{
 		return super.isMissingParameters(mismatch, pos1, pos2);
 	}
 
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

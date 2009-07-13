@@ -25,7 +25,7 @@ import melting.methodInterfaces.CorrectionMethod;
 /**
  * This class represents the DMSO correction. It implements the CorrectionMethod interface.
  */
-public abstract class DMSOCorrections implements CorrectionMethod{
+public abstract class DNADMSOCorrections implements CorrectionMethod{
 	
 	// CorrectionMethod interface implementation
 	

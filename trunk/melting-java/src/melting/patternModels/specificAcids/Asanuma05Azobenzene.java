@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36 */
-
 package melting.patternModels.specificAcids;
 
 import java.util.logging.Level;
@@ -27,17 +25,44 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the azobenzene (X_C or X_T) model asa05. It extends the PatternComputation class.
+ * 
+ * Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36
+ */
 public class Asanuma05Azobenzene extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for azobenzene
+	 */
 	public static String defaultFileName = "Asanuma2005azobenmn.xml";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
+		
+		if (environment.getHybridization().equals("dnadna") == false) {
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
+					"Asanuma (2005) are established for DNA sequences.");
 		}
+
+		if (modified.calculateNumberOfTerminal("X", " ", pos1, pos2) > 0){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
+					"Asanuma (2005) are not established for terminal benzenes.");
+			isApplicable = false;
+		}
+		return isApplicable;
 	}
 	
 	@Override
@@ -64,30 +89,6 @@ public class Asanuma05Azobenzene extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-
-		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
-		
-		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
-					"Asanuma (2005) are established for DNA sequences.");
-		}
-
-		if (modified.calculateNumberOfTerminal("X", " ", pos1, pos2) > 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
-					"Asanuma (2005) are not established for terminal benzenes.");
-			isApplicable = false;
-		}
-		return isApplicable;
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -103,7 +104,27 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		}
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
-
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

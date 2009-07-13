@@ -13,23 +13,33 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
-	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
-	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
-	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
-	 * */
-
 package melting.ionCorrection.sodiumEquivalence;
 
 import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 
+/**
+ * This class represents the model for a sodium equivalence ahs01. It extends the SodiumEquivalent class.
+ * 
+ * Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
+ * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
+ * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
+ * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
+ */
 public class Ahsen01_NaEquivalent extends SodiumEquivalent{
 	
+	// Instance variables
+	
 	private static double parameter = 3.79;
+	
+	/**
+	 * String NaCorrection : formula to compute a sodium equivalence.
+	 */
 	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 3.79 x sqrt(Mg - dNTP);";
 
+	// SodiumEquivalentMethod interface implementation
+	
 	public double computeSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP) {
 		double NaEq = super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);

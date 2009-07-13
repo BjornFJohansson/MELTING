@@ -28,13 +28,13 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the second dangling end model. It extends the PatternComputation class.
+ */
 public abstract class SecondDanglingEndMethod extends PatternComputation {
 
-	
-	@Override
-	public abstract ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result);
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
@@ -58,27 +58,12 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		return isApplicable;
 	}
 	
-	public ThermoResult calculateThermodynamicsWithoutSecondDanglingEnd(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
-		
-		Thermodynamics danglingValue;
-		if (gapSequence.charAt(0) == '-'){
-			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2));
+	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result){
+		result = computesThermodynamicsSingleDanglingEnd(sequences, pos1, pos2, result);
 
-		}
-		else{
-			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1));
-		}
-		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
-		double entropy = result.getEntropy() + danglingValue.getEntropy();
-		
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
-
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		
-		return result;
+		return 	result;	
 	}
 	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
@@ -115,7 +100,18 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		
 		loadFile(fileDoubleDangling, this.collector);
 	}
-
+	
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;
@@ -125,5 +121,39 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		}
 		int [] positions = {pos1, pos2};
 		return positions;
+	}
+	
+	// private method
+
+	/**
+	 * computes the enthalpy and entropy of the first dangling end as if the pattern was a single
+	 * dangling end.
+	 * @param NucleotidSequence sequences : contains the sequences and the duplex
+	 * @param int pos1 : starting position of the pattern
+	 * @param int pos2 : ending position of the pattern
+	 * @param ThermoResult result : contains the current enthalpy, entropy and melting temperature for this NulceotidSequences.
+	 * @return ThermoResult result : contains the computed enthalpy and entropy.
+	 */
+	private ThermoResult computesThermodynamicsSingleDanglingEnd(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
+		
+		Thermodynamics danglingValue;
+		if (gapSequence.charAt(0) == '-'){
+			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2));
+
+		}
+		else{
+			danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1));
+		}
+		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
+		double entropy = result.getEntropy() + danglingValue.getEntropy();
+		
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		return result;
 	}
 }

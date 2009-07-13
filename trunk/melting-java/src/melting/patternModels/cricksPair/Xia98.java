@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Xia et al (1998) Biochemistry 37: 14719-14735 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -27,19 +24,22 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model xia98. It extends the CricksNNMethod class.
+ * 
+ * Xia et al (1998) Biochemistry 37: 14719-14735
+ */
 public class Xia98 extends CricksNNMethod {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Xia1998nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -51,11 +51,41 @@ public class Xia98 extends CricksNNMethod {
 	}
 	
 	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Xia (1998).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+				
+		return super.computeThermodynamics(newSequences, pos1, pos2, result);
+	}
+	
+	@Override
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
+		
+		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// Inherited method
+	
+	@Override
+	public ThermoResult computesHybridizationInitiation(Environment environment){
 
 		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("rna");
 		
-		super.calculateInitiationHybridation(environment);
+		super.computesHybridizationInitiation(environment);
 
 		int [] truncatedPositions = newSequences.removeTerminalUnpairedNucleotides();
 		
@@ -75,24 +105,5 @@ public class Xia98 extends CricksNNMethod {
 		environment.addResult(enthalpy, entropy);
 		
 		return environment.getResult();
-	}
-
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Xia (1998).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-
-		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
-				
-		return super.computeThermodynamics(newSequences, pos1, pos2, result);
-	}
-	
-	@Override
-	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
-			int pos2) {
-		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
-		
-		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 }

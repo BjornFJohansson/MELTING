@@ -21,16 +21,12 @@ import java.util.logging.Level;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.SodiumEquivalentMethod;
 
+/**
+ * This class represents the methods to compute a sodium equivalence. It implements the SodiumEquivalentMethod interface.
+ */
 public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 
-	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
-			double dNTP, double b) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Other cations than Na+ are present in the solution, we can use a sodium equivalence : "); 
-		
-		double NaEq = Na + K + Tris / 2 + b * Math.sqrt(Mg - dNTP);
-		
-		return NaEq;
-	}
+	// SodiumEquivalentMethod interface implementation
 
 	public boolean isApplicable(HashMap<String, String> options) {
 		String hybridization = options.get(OptionManagement.hybridization);
@@ -40,5 +36,26 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 					"concentration are established for DNA duplexes.");
 		}
 		return true;
+	}
+	
+	// public method
+	
+	/**
+	 * This method is called to get a sodium equivalent concentration when other cations are present.
+	 * @param double Na : sodium concentration
+	 * @param double Mg : magnesium concentration
+	 * @param double K : potassium concentration
+	 * @param double Tris : Tris buffer concentration
+	 * @param double dNTP : dNTP concentration
+	 * @param double b : a formula parameter depending on the model.
+	 * @return double NaEq : the sodium equivalent concentration which takes in account the other cation concentrations.
+	 */
+	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,
+			double dNTP, double b) {
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Other cations than Na+ are present in the solution, we can use a sodium equivalence : "); 
+		
+		double NaEq = Na + K + Tris / 2 + b * Math.sqrt(Mg - dNTP);
+		
+		return NaEq;
 	}
 }

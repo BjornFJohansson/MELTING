@@ -14,8 +14,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -27,19 +25,22 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model san04. It extends the CricksNNMethod class.
+ * 
+ * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
+ */
 public class Santalucia04 extends CricksNNMethod {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Santalucia2004nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -48,34 +49,6 @@ public class Santalucia04 extends CricksNNMethod {
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
-	}
-	
-	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
-
-		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("dna");
-		
-		int [] truncatedPositions = newSequences.removeTerminalUnpairedNucleotides();
-
-		super.calculateInitiationHybridation(environment);
-
-		double numberTerminalAT = newSequences.calculateNumberOfTerminal("A", "T", truncatedPositions[0], truncatedPositions[1]);
-		double enthalpy = 0.0;
-		double entropy = 0.0;
-		
-		if (numberTerminalAT != 0){
-			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
-			
-			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
-			
-			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
-			entropy += numberTerminalAT * terminalAT.getEntropy();
-		}
-		
-		environment.addResult(enthalpy, entropy);
-		
-		return environment.getResult();
-		
 	}
 	
 	@Override
@@ -95,6 +68,45 @@ public class Santalucia04 extends CricksNNMethod {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// Inherited method
+
+	@Override
+	public ThermoResult computesHybridizationInitiation(Environment environment){
+
+		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("dna");
+		
+		int [] truncatedPositions = newSequences.removeTerminalUnpairedNucleotides();
+
+		super.computesHybridizationInitiation(environment);
+
+		double numberTerminalAT = newSequences.calculateNumberOfTerminal("A", "T", truncatedPositions[0], truncatedPositions[1]);
+		double enthalpy = 0.0;
+		double entropy = 0.0;
+		
+		if (numberTerminalAT != 0){
+			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
+			
+			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
+			
+			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
+			entropy += numberTerminalAT * terminalAT.getEntropy();
+		}
+		
+		environment.addResult(enthalpy, entropy);
+		
+		return environment.getResult();
+		
 	}
 
 }

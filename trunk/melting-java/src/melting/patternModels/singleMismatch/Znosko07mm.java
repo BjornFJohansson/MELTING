@@ -22,20 +22,21 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single mismatch model zno07. It extends the ZnoskoMethod class.
+ * 
+ * Brent M Znosko et al (2007). Biochemistry 46: 13425-13436.
+ */
 public class Znosko07mm extends ZnoskoMethod {
-
-	/*REF: Brent M Znosko et al (2007). Biochemistry 46: 13425-13436.*/
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single mismatch
+	 */
 	public static String defaultFileName = "Znosko2007mm.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
@@ -52,5 +53,15 @@ public class Znosko07mm extends ZnoskoMethod {
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+
 
 }

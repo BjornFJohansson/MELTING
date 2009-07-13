@@ -23,18 +23,20 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the long dangling end model sugrna02 (for long poly A only). It extends the SugimotoLongDanglingEndMethod class.
+ */
 public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for long dangling end
+	 * (just long poly A)
+	 */
 	public static String defaultFileName = "Sugimoto2002longrde.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -72,5 +74,14 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 }

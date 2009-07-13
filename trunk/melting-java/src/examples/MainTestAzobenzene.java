@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different azobenzene methods.
+ */
 public class MainTestAzobenzene {
 
 	public static void main(String[] args) {

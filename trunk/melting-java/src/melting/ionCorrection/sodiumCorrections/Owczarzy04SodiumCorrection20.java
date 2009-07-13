@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
-	 * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
-	 * Biochemistry, 2004, 43, 3537-3554.*/
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -27,23 +23,23 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
 
+/**
+ * This class represents the sodium correction model owc2004. It implements the CorrectionMethod interface.
+ * 
+ * Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. Behlke and Joseph 
+ * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
+ * Biochemistry, 2004, 43, 3537-3554.
+ */
 public class Owczarzy04SodiumCorrection20 implements CorrectionMethod {
 	
+	// Instance variables
+	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction.
+	 */
 	private static String temperatureCorrection = "1 / Tm(Na) = 1 / Tm(Na = 1M) + (3.85 x Fgc - 6.18) x 1 / 100000 x ln(Na)";
 	
-	public ThermoResult correctMeltingResults(Environment environment) {
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (20) is from Owczarzy et al. (2004) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
-		
-		double NaEq = Helper.computesNaEquivalent(environment);
-		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
-		
-		double TmInverse = 1.0 / (environment.getResult().getTm() + 273.15) + (3.85 * Fgc - 6.18) * 1 / 100000 * Math.log(NaEq);
-		environment.setResult((1.0 / TmInverse) - 273.15);
-		
-		return environment.getResult();
-	}
+	// CorrectionMethod interface implementation
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
@@ -62,4 +58,19 @@ public class Owczarzy04SodiumCorrection20 implements CorrectionMethod {
 		
 		return isApplicable;
 	}
+	
+	public ThermoResult correctMeltingResults(Environment environment) {
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (20) is from Owczarzy et al. (2004) : ");
+		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		
+		double NaEq = Helper.computesNaEquivalent(environment);
+		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
+		
+		double TmInverse = 1.0 / (environment.getResult().getTm() + 273.15) + (3.85 * Fgc - 6.18) * 1 / 100000 * Math.log(NaEq);
+		environment.setResult((1.0 / TmInverse) - 273.15);
+		
+		return environment.getResult();
+	}
+
 }

@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*REF: Broda et al (2005). Biochemistry 44: 10873-10882.*/
-
 package melting.patternModels.cngPatterns;
 
 import java.util.logging.Level;
@@ -28,39 +25,21 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the CNG repeats model bro05. It extends the PatternComputation class.
+ * 
+ * Broda et al (2005). Biochemistry 44: 10873-10882.
+ */
 public class Broda05CNGRepeats extends PatternComputation {	
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for CNG repeats
+	 */
 	public static String defaultFileName = "Broda2005CNG.xml";
 
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs model : from Broda et al. (2005). \n");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-
-		int repeats = (pos2 - pos1 - 1) / 3;
-		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3,"rna"));
-		double enthalpy = result.getEnthalpy() + CNGValue.getEnthalpy();
-		double entropy = result.getEntropy() + CNGValue.getEntropy();			
-		
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "motif (" + sequences.getSequence(pos1 + 1, pos1 + 3) + ")" + repeats + " : " + "enthalpy = " + CNGValue.getEnthalpy() + "  entropy = " + CNGValue.getEntropy());
-		
-		return result;
-	}
-	
+	// PatternComputationMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -87,6 +66,26 @@ public class Broda05CNGRepeats extends PatternComputation {
 	}
 	
 	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs model : from Broda et al. (2005). \n");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
+		int repeats = (pos2 - pos1 - 1) / 3;
+		Thermodynamics CNGValue = this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3,"rna"));
+		double enthalpy = result.getEnthalpy() + CNGValue.getEnthalpy();
+		double entropy = result.getEntropy() + CNGValue.getEntropy();			
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "motif (" + sequences.getSequence(pos1 + 1, pos1 + 3) + ")" + repeats + " : " + "enthalpy = " + CNGValue.getEnthalpy() + "  entropy = " + CNGValue.getEntropy());
+		
+		return result;
+	}
+	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int repeats = (sequences.getDuplexLength() - 2) / 3;
@@ -96,4 +95,13 @@ public class Broda05CNGRepeats extends PatternComputation {
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

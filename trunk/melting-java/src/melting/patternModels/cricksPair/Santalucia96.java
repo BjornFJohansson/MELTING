@@ -14,8 +14,6 @@
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
 
-/*SantaLucia et al.(1996). Biochemistry 35 : 3555-3562*/                    
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -27,19 +25,22 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
-public class Santalucia96 extends GlobalInitiationNNMethod {
+/**
+ * This class represents the nearest neighbor model san96. It extends the GlobalInitiation class.
+ * 
+ * SantaLucia et al.(1996). Biochemistry 35 : 3555-3562
+ */
+public class Santalucia96 extends GlobalInitiation {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Santalucia1996nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -48,29 +49,6 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
-	}
-	
-	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
-
-		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("dna");
-		super.calculateInitiationHybridation(environment);
-
-		int [] truncatedPositions =  newSequences.removeTerminalUnpairedNucleotides();
-		
-		double enthalpy = 0.0;
-		double entropy = 0.0;
-		double number5AT = newSequences.getNumberTerminal5TA(truncatedPositions[0], truncatedPositions[1]);
-		
-		if (number5AT > 0) {
-			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
-			OptionManagement.meltingLogger.log(Level.FINE,number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
-			
-			enthalpy += number5AT * terminal5AT.getEnthalpy();
-			entropy += number5AT * terminal5AT.getEntropy();
-		}
-		environment.addResult(enthalpy, entropy);
-		return environment.getResult();
 	}
 	
 	@Override
@@ -90,5 +68,39 @@ public class Santalucia96 extends GlobalInitiationNNMethod {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// Inherited method
+	
+	@Override
+	public ThermoResult computesHybridizationInitiation(Environment environment){
+
+		NucleotidSequences newSequences = environment.getSequences().getEquivalentSequences("dna");
+		super.computesHybridizationInitiation(environment);
+
+		int [] truncatedPositions =  newSequences.removeTerminalUnpairedNucleotides();
+		
+		double enthalpy = 0.0;
+		double entropy = 0.0;
+		double number5AT = newSequences.getNumberTerminal5TA(truncatedPositions[0], truncatedPositions[1]);
+		
+		if (number5AT > 0) {
+			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
+			OptionManagement.meltingLogger.log(Level.FINE,number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
+			
+			enthalpy += number5AT * terminal5AT.getEnthalpy();
+			entropy += number5AT * terminal5AT.getEntropy();
+		}
+		environment.addResult(enthalpy, entropy);
+		return environment.getResult();
 	}
 }

@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Musielski H., Mann W, Laue R, Michel S, "Influence of dimethylsulfoxide
-	 * on transcription by bacteriophage T3-induced RNA polymerase.", Z allg Microbiol 1981; 21, 447-456.
-	 * */
-
 package melting.otherCorrections.dmsoCorrections;
 
 import java.util.logging.Level;
@@ -24,14 +20,27 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
-import melting.correctionMethods.DMSOCorrections;
+import melting.correctionMethods.DNADMSOCorrections;
 
-public class Musielski81DMSOCorrection extends DMSOCorrections {
+/**
+ * This class represents the DMSO correction model mus81. It extends the DNADMSOCorrections class.
+ * 
+ * Musielski H., Mann W, Laue R, Michel S, "Influence of dimethylsulfoxide
+ * on transcription by bacteriophage T3-induced RNA polymerase.", Z allg Microbiol 1981; 21, 447-456.
+ */
+public class Musielski81DMSOCorrection extends DNADMSOCorrections {
+
+	// Instance variables
 
 	private static double parameter = 0.6;
 	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction
+	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.6 * x % DMSO";
 	
+	// CorrectionMethod interface implementation
+
 	public ThermoResult correctMeltingResults(Environment environment) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Musielski et al.(1981) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
