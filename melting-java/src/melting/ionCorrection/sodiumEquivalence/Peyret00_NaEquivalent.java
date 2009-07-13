@@ -13,21 +13,31 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Peyret N., 2000, "Prediction of nucleic acid hybridization : parameters and algorithms."
-	 * Ph.D Thesis, Section .5.4.2, 128, Wayne State University, Detroit, MI.
-	 * */
-
 package melting.ionCorrection.sodiumEquivalence;
 
 import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 
+/**
+ * This class represents the model for a sodium equivalence pey00. It extends the SodiumEquivalent class.
+ * 
+ * Peyret N., 2000, "Prediction of nucleic acid hybridization : parameters and algorithms."
+ * Ph.D Thesis, Section .5.4.2, 128, Wayne State University, Detroit, MI.
+ */
 public class Peyret00_NaEquivalent extends SodiumEquivalent{
 	
+	// Instance variables
+
 	private static double parameter = 3.3;
-	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 3.3 x sqrt(Mg - dNTP);";
 	
+	/**
+	 * String NaCorrection : formula to compute a sodium equivalence.
+	 */
+	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 3.3 x sqrt(Mg - dNTP)";
+	
+	// SodiumEquivalentMethod interface implementation
+
 	public double computeSodiumEquivalent(double Na, double Mg, double K,
 			double Tris, double dNTP) {
 		

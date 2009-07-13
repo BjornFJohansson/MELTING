@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
 package melting.patternModels.singleBulge;
 
 import java.util.HashMap;
@@ -29,10 +27,26 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.longBulge.Santalucia04LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single bulge loop model san04. It extends the Santalucia04LongBulgeLoop class.
+ * 
+ * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
+ */
 public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	
+	// Instance variables
+	
+	/**
+	 * StringBuffer formulaH : the enthalpy formula
+	 */
 	private static StringBuffer formulaH = new StringBuffer();
+	
+	/**
+	 * StringBuffer formulaS : the entropy formula
+	 */
 	private static StringBuffer formulaS = new StringBuffer();
+	
+	// Santalucia04SingleBulgeLoop constructor
 	
 	public Santalucia04SingleBulgeLoop(){
 
@@ -43,6 +57,8 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		formulaS.append(" + S(intervening NN)");
 	}
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {

@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -26,18 +23,21 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
-public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
+/**
+ * This class represents the nearest neighbor model all97. It extends the DecomposedInitiation class.
+ * 
+ * Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594
+ */
+public class AllawiSantalucia97 extends DecomposedInitiation {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "AllawiSantalucia1997nn.xml";
 
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
@@ -69,4 +69,12 @@ public class AllawiSantalucia97 extends DecomposedInitiationNNMethod {
 		return super.isMissingParameters(newSequences,pos1, pos2);
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

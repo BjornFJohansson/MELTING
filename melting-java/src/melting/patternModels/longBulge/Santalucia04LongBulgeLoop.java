@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
 package melting.patternModels.longBulge;
 
 import java.util.logging.Level;
@@ -28,22 +25,45 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the long bulge loop model san04. It extends the PatternComputation class.
+ * 
+ * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
+ */
 public class Santalucia04LongBulgeLoop extends PatternComputation{
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for long bulge loop
+	 */
 	public static String defaultFileName = "Santalucia2004longbulge.xml";
 	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	protected static String formulaEnthalpy = "delat H = number AT closing x H(closing AT penalty)";
+	
+	/**
+	 * String formulaEntropy : entropy formula
+	 */
 	protected static String formulaEntropy = "delat S = number AT closing x S(closing AT penalty) + S(bulge loop of n)";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+
+		if (environment.getHybridization().equals("dnadna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
+					"Santalucia (2004) are originally established " +
+					"for DNA sequences.");
 		}
+		
+		return super.isApplicable(environment, pos1, pos2);
 	}
-	
+
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -93,19 +113,6 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-
-		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
-					"Santalucia (2004) are originally established " +
-					"for DNA sequences.");
-		}
-		
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -133,6 +140,26 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 		return isMissingParameters;
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

@@ -14,8 +14,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -26,18 +24,21 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
-public class Tanaka04 extends DecomposedInitiationNNMethod {
+/**
+ * This class represents the nearest neighbor model tan04. It extends the DecomposedInitiation class.
+ * 
+ * Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 
+ */
+public class Tanaka04 extends DecomposedInitiation {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Tanaka2004nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
@@ -67,5 +68,14 @@ public class Tanaka04 extends DecomposedInitiationNNMethod {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 }

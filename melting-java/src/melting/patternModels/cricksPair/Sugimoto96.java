@@ -11,10 +11,7 @@
 
  *       Marine Dumousseau and Nicolas Lenovere                                                   
  *       EMBL-EBI, neurobiology computational group,                          
- *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
-
-
-/*Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505*/ 
+ *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */ 
 
 package melting.patternModels.cricksPair;
 
@@ -25,19 +22,22 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model sug96. It extends the CricksNNMethod class.
+ * 
+ * Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505
+ */
 public class Sugimoto96 extends CricksNNMethod {
 		
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Sugimoto1996nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -65,5 +65,14 @@ public class Sugimoto96 extends CricksNNMethod {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 }

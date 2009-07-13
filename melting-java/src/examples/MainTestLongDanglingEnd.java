@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different long dangling end methods.
+ */
 public class MainTestLongDanglingEnd {
 
 	public static void main(String[] args) {

@@ -24,12 +24,20 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
-public abstract class DecomposedInitiationNNMethod extends CricksNNMethod {
+/**
+ * This class represents one model to compute the initiation enthalpy and entropy.
+ * The duplex initiation is computed by the addition of an initiation penalty for the first
+ * base pair of the duplex and an initiation penalty for the last base pair of the duplex.
+ * It extends the CricksNNMethod class.
+ */
+public abstract class DecomposedInitiation extends CricksNNMethod {
 	
+	// inherited method
+
 	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
+	public ThermoResult computesHybridizationInitiation(Environment environment){
 		
-		super.calculateInitiationHybridation(environment);
+		super.computesHybridizationInitiation(environment);
 		
 		NucleotidSequences sequences = environment.getSequences();
 		int [] truncatedPositions = sequences.removeTerminalUnpairedNucleotides();

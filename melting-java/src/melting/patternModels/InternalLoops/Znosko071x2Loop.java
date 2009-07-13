@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*REF: Brent M Znosko et al (2007). Biochemistry 46: 14715-14724. */
-
 package melting.patternModels.InternalLoops;
 
 import java.util.logging.Level;
@@ -28,18 +25,52 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the 1x2 internal loop model zno07. It extends the PatternComputation class.
+ * 
+ *  Brent M Znosko et al (2007). Biochemistry 46: 14715-14724.
+ */
 public class Znosko071x2Loop extends PatternComputation {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for internal loop
+	 */
 	public static String defaultFileName = "Znosko20071x2loop.xml";
+	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	private static String formulaEnthalpy = "delat H = H(first mismath) + H(initiation 1x2 loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
+
+		if (environment.getHybridization().equals("rnarna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
+					"Znosco et al. (2007) are originally established " +
+					"for RNA sequences.");
+			
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		if (loopType.equals("1x2") == false && loopType.equals("2x1") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +
+					"established only for 1x2 internal loop.");
+			
+			isApplicable = false;
+		}
+		
+		return isApplicable;
 	}
 	
 	@Override
@@ -115,32 +146,14 @@ public class Znosko071x2Loop extends PatternComputation {
 		
 		return result;
 	}
-
+	
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
 		
-		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
-
-		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
-					"Znosco et al. (2007) are originally established " +
-					"for RNA sequences.");
-			
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
 		}
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		if (loopType.equals("1x2") == false && loopType.equals("2x1") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +
-					"established only for 1x2 internal loop.");
-			
-			isApplicable = false;
-		}
-		
-		return isApplicable;
 	}
 
 	@Override
@@ -176,7 +189,18 @@ public class Znosko071x2Loop extends PatternComputation {
 		}
 		return isMissingParameters;
 	}
+	
+	// private method
 
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

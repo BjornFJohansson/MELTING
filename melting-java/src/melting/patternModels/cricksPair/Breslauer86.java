@@ -14,8 +14,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* (1986). Proc Natl Acad Sci USA 83 : 3746-3750 */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -26,19 +24,22 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
-public class Breslauer86 extends GlobalInitiationNNMethod{
+/**
+ * This class represents the nearest neighbor model bre86. It extends the GlobalInitiation class.
+ * 
+ * Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 
+ */
+public class Breslauer86 extends GlobalInitiation{
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Breslauer1986nn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
@@ -66,5 +67,14 @@ public class Breslauer86 extends GlobalInitiationNNMethod{
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 }

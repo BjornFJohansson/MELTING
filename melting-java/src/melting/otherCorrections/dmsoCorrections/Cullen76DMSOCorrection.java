@@ -13,11 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/* Cullen Br, Bick Md, "Thermal denaturation of DNA from bromodeoxyuridine substitued cells."
-	 * Nucleic acids research, 1976, 3, 49-62.
-	 * */
-
 package melting.otherCorrections.dmsoCorrections;
 
 import java.util.logging.Level;
@@ -25,14 +20,27 @@ import java.util.logging.Level;
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
-import melting.correctionMethods.DMSOCorrections;
+import melting.correctionMethods.DNADMSOCorrections;
 
-public class Cullen76DMSOCorrection extends DMSOCorrections {
+/**
+ * This class represents the DMSO correction model cul76. It extends the DNADMSOCorrections class.
+ * 
+ * Cullen Br, Bick Md, "Thermal denaturation of DNA from bromodeoxyuridine substitued cells."
+ * Nucleic acids research, 1976, 3, 49-62.
+ */
+public class Cullen76DMSOCorrection extends DNADMSOCorrections {
+
+	// Instance variables
 
 	private static double parameter = 0.5;
 	
+	/**
+	 * String temperatureCorrection : formula for the temperature correction
+	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.5 * x % DMSO";
 	
+	// CorrectionMethod interface implementation
+
 	public ThermoResult correctMeltingResults(Environment environment) {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Cullen et al.(1976) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);

@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
-	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
-	 * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
-	 * */
 
 package melting.ionCorrection.magnesiumCorrections;
 
@@ -29,6 +25,9 @@ import melting.methodInterfaces.CorrectionMethod;
 
 /**
  * This class represents the magnesium correction model owc08. It implements the CorrectionMethod interface
+ * 
+ * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
+ * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
  */
 public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	

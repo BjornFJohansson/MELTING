@@ -13,21 +13,31 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Mitsuhashi M., 1996, "Technical report: Part 1. Basic requirements for designing optimal 
-	 * oligonucleotide probe sequences.", J. Clin. Lab. Anal, 10, 277-284.
-	 * */
-
 package melting.ionCorrection.sodiumEquivalence;
 
 import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 
+/**
+ * This class represents the model for a sodium equivalence mit96. It extends the SodiumEquivalent class.
+ * 
+ *  Mitsuhashi M., 1996, "Technical report: Part 1. Basic requirements for designing optimal 
+ * oligonucleotide probe sequences.", J. Clin. Lab. Anal, 10, 277-284.
+ */
 public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
 	
+	// Instance variables
+
 	private static double parameter = 4;
+	
+	/**
+	 * String NaCorrection : formula to compute a sodium equivalence.
+	 */
 	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 4 x sqrt(Mg - dNTP);";
 	
+	// SodiumEquivalentMethod interface implementation
+
 	public double computeSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP) {
 	

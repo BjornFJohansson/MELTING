@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Turner et al (2006)
- * Nucleic acids research 34: 3609-3614
- */
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -29,17 +25,36 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.MethodNotApplicableException;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model tur06. It extends the CricksNNMethod class.
+ * 
+ * Turner et al (2006) Nucleic acids research 34: 3609-3614
+ */
 public class Turner06 extends CricksNNMethod {
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Turner2006nn.xml";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+		if (environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
+			isApplicable = false;
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Turner et al. (2006)" +
+			"is established for 2-0-methyl RNA/RNA sequences.");
 		}
+		
+		if (environment.isSelfComplementarity()){
+			throw new MethodNotApplicableException ( "The thermodynamic parameters of Turner et al. (2006)" +
+					"are established for hybrid mRNA/RNA sequences.");
+		}
+		return isApplicable;
 	}
 	
 	@Override
@@ -63,7 +78,7 @@ public class Turner06 extends CricksNNMethod {
 			entropy += NNValue.getEntropy();
 		}
 		
-		entropy = getEntropy1MNa(entropy, pos1, pos2);
+		entropy = computesEntropy1MNa(entropy, pos1, pos2);
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -72,26 +87,34 @@ public class Turner06 extends CricksNNMethod {
 	}
 	
 	@Override
-	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-		if (environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
-			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Turner et al. (2006)" +
-			"is established for 2-0-methyl RNA/RNA sequences.");
+	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
+			int pos2) {
+
+		boolean isMissing = false;
+		for (int i = pos1; i <= pos2 - 1; i++){
+			if (this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+				isMissing = true;
+			}
 		}
-		
-		if (environment.isSelfComplementarity()){
-			throw new MethodNotApplicableException ( "The thermodynamic parameters of Turner et al. (2006)" +
-					"are established for hybrid mRNA/RNA sequences.");
-		}
-		return isApplicable;
+		return isMissing;
 	}
 	
 	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// Inherited method
+	
+	@Override
+	public ThermoResult computesHybridizationInitiation(Environment environment){
 		int [] truncatedPositions =  environment.getSequences().removeTerminalUnpairedNucleotides();
 		
-		super.calculateInitiationHybridation(environment);
+		super.computesHybridizationInitiation(environment);
 		
 		double numberTerminalAU = environment.getSequences().calculateNumberOfTerminal("A", "U", truncatedPositions[0], truncatedPositions[1]);
 		double enthalpy = 0.0;
@@ -111,24 +134,21 @@ public class Turner06 extends CricksNNMethod {
 		return environment.getResult();
 	}
 	
-	private double getEntropy1MNa(double entropy0_1MNa, int pos1, int pos2){
-		//sodium correction of Santalucia 1998_2004.
+	// private method
+
+	/**
+	 * computes the entropy value in 1M Na from the initial entropy value in 0.1M Na using the sodium correction of Santalucia 1998_2004.
+	 * (model san04).
+	 * @param double entropy0_1MNa : entropy value for 0.1M Na. (from the article of Turner et al 2006)
+	 * @param int pos1 : starting position of the subsequence containing the Crick's pairs.
+	 * @param int pos2 : ending position of the subsequence containing the Crick's pairs.
+	 * @return double entropy corresponding to the entropy value in 1M Na.
+	 */
+	private double computesEntropy1MNa(double entropy0_1MNa, int pos1, int pos2){
+		//
 		double entropy1MNa = entropy0_1MNa - 0.368 * (Math.abs(pos2 - pos1)) * Math.log(0.1);
 		
 		return entropy1MNa;
-	}
-
-	@Override
-	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
-			int pos2) {
-
-		boolean isMissing = false;
-		for (int i = pos1; i <= pos2 - 1; i++){
-			if (this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
-				isMissing = true;
-			}
-		}
-		return isMissing;
 	}
 
 }

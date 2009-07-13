@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Sugimoto et al. (1995). Biochemistry 34 : 11211-11216*/ 
-
 package melting.patternModels.cricksPair;
 
 import java.util.logging.Level;
@@ -28,17 +25,38 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.MethodNotApplicableException;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the nearest neighbor model sug95. It extends the CricksNNMethod class.
+ * 
+ * Sugimoto et al. (1995). Biochemistry 34 : 11211-11216
+ */
 public class Sugimoto95 extends CricksNNMethod {
 		
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
+	 */
 	public static String defaultFileName = "Sugimoto1995nn.xml";
 
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1, int pos2) {
+		boolean isApplicable = true;
+		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
+			isApplicable = false;
+			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al. (1995)" +
+					"is established for hybrid DNA/RNA sequences.");
 		}
+		
+		isApplicable = super.isApplicable(environment, pos1, pos2);
+		
+		if (environment.isSelfComplementarity()){
+			throw new MethodNotApplicableException ( "\n The thermodynamic parameters of Sugimoto et al. (1995)" +
+					"are established for hybrid DNA/RNA sequences and they can't be self complementary sequence.");
+		}
+		return isApplicable;
 	}
 	
 	@Override
@@ -65,25 +83,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		
 		return result;
 	}
-	
-	@Override
-	public boolean isApplicable(Environment environment, int pos1, int pos2) {
-		boolean isApplicable = true;
-		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
-			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al. (1995)" +
-					"is established for hybrid DNA/RNA sequences.");
-		}
-		
-		isApplicable = super.isApplicable(environment, pos1, pos2);
-		
-		if (environment.isSelfComplementarity()){
-			throw new MethodNotApplicableException ( "\n The thermodynamic parameters of Sugimoto et al. (1995)" +
-					"are established for hybrid DNA/RNA sequences and they can't be self complementary sequence.");
-		}
-		return isApplicable;
-	}
-	
+
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
@@ -95,5 +95,14 @@ public class Sugimoto95 extends CricksNNMethod {
 			}
 		}
 		return isMissing;
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 }

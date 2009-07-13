@@ -25,24 +25,13 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single dangling end model. It extends the PatternComputation class.
+ */
 public abstract class SingleDanglingEndMethod extends PatternComputation {
 	
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		
-		Thermodynamics danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
-		double entropy = result.getEntropy() + danglingValue.getEntropy();		
-			
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
-		
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		
-		return result;
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
@@ -62,6 +51,22 @@ public abstract class SingleDanglingEndMethod extends PatternComputation {
 	}
 	
 	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		
+		Thermodynamics danglingValue = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
+		double entropy = result.getEntropy() + danglingValue.getEntropy();		
+			
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+		
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		return result;
+	}
+	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 		
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
@@ -71,6 +76,17 @@ public abstract class SingleDanglingEndMethod extends PatternComputation {
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 	
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

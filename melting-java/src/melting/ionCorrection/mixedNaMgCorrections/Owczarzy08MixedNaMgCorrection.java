@@ -13,11 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
-	 * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
-	 * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
-	 * */
-
 package melting.ionCorrection.mixedNaMgCorrections;
 
 import java.util.logging.Level;
@@ -27,13 +22,25 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
 
+/**
+ * This class represents the mixed (Na,Mg) correction model owcmix08. It extends the Owczarzy08MagnesiumCorrection class.
+ * 
+ * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
+ * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
+ * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
+*/
 public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection{
 	
+	// Instance variables
+	
 	private static String aFormula = "a = -0.6 / duplexLength + 0.025 x ln(Mg) + 0.0068 x ln(Mg)^2";
+	
 	private static String dFormula = "d = ln(Mg) + 0.38 x ln(Mg)^2";
+	
 	private static String gFormula = "g = a + b / (duplexLength^2)";
 
-	
+	// CorrectionMethod interface implementation
+
 	@Override
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
@@ -50,6 +57,8 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 		return environment.getResult();
 	}
 
+	// Inherited method
+	
 	@Override
 	protected void displayVariable(){
 		OptionManagement.meltingLogger.log(Level.FINE, aFormula);

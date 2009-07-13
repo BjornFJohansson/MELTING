@@ -12,17 +12,11 @@
  *       Marine Dumousseau and Nicolas Lenovere                                                   
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
-/*REF: Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
-	REF: Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
-	REF: Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
-	REF: Peyret et al. (1999). Biochemistry 38: 3468-3477*/
 
 package melting.patternModels.tandemMismatches;
 
 import java.util.HashMap;
 import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -33,17 +27,40 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the tandem mismatches model allsanpey. It extends the PatternComputation class.
+ * 
+ * Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
+ * 
+ * Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179.
+ * 
+ * Allawi and SantaLucia (1998). Nuc Acids Res 26: 2694-2701. 
+ * 
+ * Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444.
+ * 
+ * Peyret et al. (1999). Biochemistry 38: 3468-3477
+ */
 public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for tandem mismatches
+	 */
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999tanmm.xml";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		if (environment.getHybridization().equals("dnadna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
+					"Allawi, Santalucia and Peyret are originally established " +
+					"for DNA duplexes.");
 		}
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	@Override
@@ -76,18 +93,6 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		
-		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
-					"Allawi, Santalucia and Peyret are originally established " +
-					"for DNA duplexes.");
-		}
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -117,6 +122,27 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		
 		loadFile(fileSingleMismatch, this.collector);
 	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

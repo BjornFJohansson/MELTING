@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 */
-
 package melting.patternModels.longDanglingEnds;
 
 import java.util.logging.Level;
@@ -27,27 +25,16 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the long dangling end model (for long poly A only)from Sugimoto et al. 2002. 
+ * It extends the PatternComputation class.
+ * 
+ * Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372
+ */
 public abstract class SugimotoLongDanglingEndMethod extends PatternComputation {
 
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The long dangling end model is from Sugimoto et al. (2002). (delta delta H and delta delta S)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+	// PatternComputationMethod interface implementation
 
-		Thermodynamics longDangling = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
-		double enthalpy = result.getEnthalpy() + longDangling.getEnthalpy();
-		double entropy = result.getEntropy() + longDangling.getEntropy();
-		
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + longDangling.getEnthalpy() + "  entropy = " + longDangling.getEntropy());
-
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		
-		return result;
-	}
-	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
@@ -68,6 +55,25 @@ public abstract class SugimotoLongDanglingEndMethod extends PatternComputation {
 	}
 	
 	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The long dangling end model is from Sugimoto et al. (2002). (delta delta H and delta delta S)");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
+		Thermodynamics longDangling = this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2));
+		double enthalpy = result.getEnthalpy() + longDangling.getEnthalpy();
+		double entropy = result.getEntropy() + longDangling.getEntropy();
+		
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + longDangling.getEnthalpy() + "  entropy = " + longDangling.getEntropy());
+
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+		
+		return result;
+	}
+	
+	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		
@@ -78,6 +84,17 @@ public abstract class SugimotoLongDanglingEndMethod extends PatternComputation {
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
 	
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

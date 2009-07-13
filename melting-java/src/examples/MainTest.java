@@ -34,8 +34,18 @@ import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.MeltingComputationMethod;
 
+/**
+ * This class contains the different method tests.
+ */
 public class MainTest {
 
+	// public static methods
+	
+	/**
+	 * loads the data from the file and stock them in a Properties object.
+	 * @param String fileName : name or pathway of the file containing the experimental data.
+	 * @return Properties object containing the experimental data from the file.
+	 */
 	public static Properties loadSequencesTest(String fileName){
 		
 		Properties properties = new Properties();
@@ -54,6 +64,11 @@ public class MainTest {
 		return properties;
 	}
 	
+	/**
+	 * computes the enthalpy, entropy and melting temperature with the options in the String [] args.
+	 * @param String [] args : contains the test options
+	 * @return double melting temperature.
+	 */
 	public static double getMeltingTest(String [] args){
 		OptionManagement optionManager = new OptionManagement();
 		
@@ -77,6 +92,15 @@ public class MainTest {
 		return 0.0;
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String solution : contains the different ion and agent concentrations
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResults(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -94,6 +118,14 @@ public class MainTest {
 		}
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test with different sodium concentrations.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResultsSodium(Properties properties, ArrayList<String> methodNames, String hybridization, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -112,6 +144,15 @@ public class MainTest {
 		}
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each dangling end method or model.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String solution : contains the different ion and agent concentrations
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResultsLongDanglingEnd(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -129,6 +170,16 @@ public class MainTest {
 		}
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * In the experimental data, the complementary sequence is given.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String solution : contains the different ion and agent concentrations
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResultsWithComplementarySequence(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -147,6 +198,16 @@ public class MainTest {
 		}
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * The experimental data are for self complementary sequences.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String solution : contains the different ion and agent concentrations
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResultsSelf(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides, String option){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -163,12 +224,12 @@ public class MainTest {
 			}
 		}
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(MainTest.getCMeltingResult("-SAGCGTAATT -Hdnadna -N1 -P0.004"));
 
-	}
-
+	/**
+	 * to run melting 4.2 and get the results
+	 * @param String [] args : contains test options
+	 * @return double computed melting temperature
+	 */
 	public static double getCMeltingResult(String args) {
 		String path = "/home/compneur/Desktop/meltin_c/MELTING_SOURCE/";
 		File execDir = new File(path + "BIN");
@@ -199,6 +260,14 @@ public class MainTest {
 		throw new RuntimeException("No value found");
 	}
 
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String ion : contains the different ion concentrations
+	 * @param String nucleotides : oligomer concentration
+	 */
 	public static void displayResultsMeltingC(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
@@ -216,6 +285,15 @@ public class MainTest {
 		}
 	}
 	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String solution : contains the different ion and agent concentrations
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
 	public static void displayResultsMeltingCSelfComplementary(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);

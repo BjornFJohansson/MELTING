@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267*/
-
 package melting.patternModels.wobble;
 
 import java.util.logging.Level;
@@ -25,18 +23,21 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the inosine model san05. It extends the InosineNNMethod class.
+ * 
+ * Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267
+ */
 public class Santalucia05Inosine extends InosineNNMethod{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for inosine
+	 */
 	public static String defaultFileName = "Santalucia2005inomn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -77,4 +78,12 @@ public class Santalucia05Inosine extends InosineNNMethod{
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

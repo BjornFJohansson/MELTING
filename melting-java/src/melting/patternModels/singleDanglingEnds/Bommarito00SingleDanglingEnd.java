@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 */
-
 package melting.patternModels.singleDanglingEnds;
 
 import java.util.logging.Level;
@@ -24,19 +22,22 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single dangling end model bom00. It extends the SingleDanglingEndMethod class.
+ * 
+ * Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934
+ */
 public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single dangling end
+	 */
 	public static String defaultFileName = "Bommarito2000de.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
@@ -75,6 +76,13 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 
 		return super.isMissingParameters(newSequences, pos1, pos2);
 	}
-
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
 }

@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different second dangling end methods.
+ */
 public class MainTestSecondDanglingEnd {
 
 	public static void main(String[] args) {

@@ -13,13 +13,9 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
-	REF: Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.*/ 
-
 package melting.patternModels.longBulge;
 
 import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -28,23 +24,40 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the long bulge loop model tur06. It extends the PatternComputation class.
+ * 
+ * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+ * 
+ * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.
+ */
 public class Turner99_06LongBulgeLoop extends PatternComputation{
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for long bulge loop
+	 */
 	public static String defaultFileName = "Turner1999_2006longbulge.xml";
 	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	protected static String formulaEnthalpy = "delat H = H(bulge of n initiation) + number AU closing x H(AU closing) + number GU closing x H(GU closing)";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+
+		if (environment.getHybridization().equals("rnarna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The long bulge loop parameters of " +
+					"Turner (1999-2006) are originally established " +
+					"for RNA sequences.");
 		}
-	}
-	
-	protected boolean isClosingPenaltyNecessary(){
-		return true;
+		
+		return super.isApplicable(environment, pos1, pos2);
 	}
 	
 	@Override
@@ -108,19 +121,6 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-
-		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The long bulge loop parameters of " +
-					"Turner (1999-2006) are originally established " +
-					"for RNA sequences.");
-		}
-		
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -158,6 +158,37 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 		return isMissingParameters;
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// protected method
+
+	/**
+	 * to check if a penalty for the closing base pairs is necessary.
+	 * @return true if the pattern is a single bulge loop and false if the
+	 * pattern is a long bulge loop
+	 */
+	protected boolean isClosingPenaltyNecessary(){
+		return true;
+	}
+	
+	// protected method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

@@ -14,8 +14,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
-
 package melting.patternModels.InternalLoops;
 
 import java.util.logging.Level;
@@ -28,19 +26,54 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the internal loop model tur06. It extends the PatternComputation class.
+ * 
+ * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+ */
 public class Turner06InternalLoop extends PatternComputation{
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for internal loop
+	 */
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	private static String formulaEnthalpy = "delat H = [H(first mismath) if loop length of 1 x n, n <= 2 or 2 x n, n != 2] + H(initiation loop of n) + (n1 - n2) x H(asymmetric loop) + number AU closing x H(closing AU) + number GU closing x H(closing GU)";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
+
+		if (environment.getHybridization().equals("rnarna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The internal loop parameters of " +
+					"Turner et al. (2006) are originally established " +
+					"for RNA sequences.");
 		}
+				
+		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && environment.getSequences().getDuplex().get(pos1 + 2).isBasePairEqualTo("A", "G")){
+			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Turner (2006) excluded" +
+					"3 x 3 internal loops with a middle GA pair. The middle GA pair is shown to enhance " +
+					"stability and this extra stability cannot be predicted by this nearest neighbor" +
+					"parameter set.");
+			
+			isApplicable = false;
+		}
+		
+		return isApplicable;
 	}
 	
 	@Override
@@ -170,34 +203,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		return result;
 	}
 
-	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-
-		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
-
-		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The internal loop parameters of " +
-					"Turner et al. (2006) are originally established " +
-					"for RNA sequences.");
-		}
-				
-		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && environment.getSequences().getDuplex().get(pos1 + 2).isBasePairEqualTo("A", "G")){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Turner (2006) excluded" +
-					"3 x 3 internal loops with a middle GA pair. The middle GA pair is shown to enhance " +
-					"stability and this extra stability cannot be predicted by this nearest neighbor" +
-					"parameter set.");
-			
-			isApplicable = false;
-		}
-		
-		return isApplicable;
-	}
+	
 
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
@@ -244,6 +250,26 @@ public class Turner06InternalLoop extends PatternComputation{
 		return isMissingParameters;
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

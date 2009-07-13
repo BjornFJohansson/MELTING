@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*REF: Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.*/
-
 package melting.patternModels.singleMismatch;
 
 import java.util.logging.Level;
@@ -27,20 +25,41 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single mismatch model tur06. It extends the PatternComputation class.
+ * 
+ * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
+ */
 public class Turner06mm extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single mismatch
+	 */
 	public static String defaultFileName = "Turner1999_2006longmm.xml";
 	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	private static String formulaEnthalpy = "delat H = H(loop initiation n=2) + number AU closing x H(closing AU) + number GU closing x H(closing GU) + H(bonus if GG mismatch) + H(bonus if 5'RU/3'YU)";
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+
+		if (environment.getHybridization().equals("rnarna") == false){
+
+			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
+					"Turner et al. (2006) are originally established " +
+					"for RNA sequences.");
 		}
+		
+		return super.isApplicable(environment, pos1, pos2);
 	}
+	
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -108,20 +127,6 @@ public class Turner06mm extends PatternComputation{
 	}
 
 	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-
-		if (environment.getHybridization().equals("rnarna") == false){
-
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
-					"Turner et al. (2006) are originally established " +
-					"for RNA sequences.");
-		}
-		
-		return super.isApplicable(environment, pos1, pos2);
-	}
-
-	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
@@ -168,6 +173,26 @@ public class Turner06mm extends PatternComputation{
 		return super.isMissingParameters(mismatch, pos1, pos2);
 	}
 	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

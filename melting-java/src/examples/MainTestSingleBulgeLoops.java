@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different single bulge loop methods.
+ */
 public class MainTestSingleBulgeLoops {
 
 	public static void main(String[] args) {

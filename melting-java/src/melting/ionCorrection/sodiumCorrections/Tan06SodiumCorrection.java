@@ -13,10 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
-	 * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
-	 * */
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -27,13 +23,32 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
+/**
+ * This class represents the sodium correction model tanna06. It extends the EntropyCorrection class.
+ * 
+ * Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
+ * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190.
+ */
 public class Tan06SodiumCorrection extends EntropyCorrection {
 	
+	// Instance variables
+	
+	/**
+	 * String entropyCorrection : formula for the entropy correction.
+	 */
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) - 3.22 x (duplexLength - 1) x g"; 
+	
 	private static String aFormula = "a1 = -0.07 x ln(Na) + 0.012 x ln(Mg)^2";
+	
 	private static String bFormula = "b1 = 0.013 x ln(Mg)^2";
+	
+	/**
+	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
+	 */
 	private static String gFormula = "g1 = a1 + b1 / duplexLength";
 	
+	// CorrectionMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
@@ -56,14 +71,6 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 	}
 	
 	@Override
-	protected double correctEntropy(Environment environment){
-		
-		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1.0) * calculateFreeEnergyPerBaseStack(environment);
-		
-		return entropy;
-	}
-	
-	@Override
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction from Zhi-Jie Tan et al. (2006) : ");
@@ -75,6 +82,23 @@ public class Tan06SodiumCorrection extends EntropyCorrection {
 		return super.correctMeltingResults(environment);
 	}
 	
+	// Inherited method
+	
+	@Override
+	protected double correctEntropy(Environment environment){
+		
+		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1.0) * calculateFreeEnergyPerBaseStack(environment);
+		
+		return entropy;
+	}
+	
+	// public static method
+	
+	/**
+	 * represents the function associated with the electrostatic folding free energy per base stack.
+	 * @param Environment environment
+	 * @return double g2 which represents the result of the function associated with the electrostatic folding free energy per base stack.
+	 */
 	public static double calculateFreeEnergyPerBaseStack(Environment environment){
 		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
 		OptionManagement.meltingLogger.log(Level.FINE, gFormula);

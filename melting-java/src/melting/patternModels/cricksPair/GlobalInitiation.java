@@ -22,12 +22,20 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 
-public abstract class GlobalInitiationNNMethod extends CricksNNMethod {
+/**
+ * This class represents one model to compute the initiation enthalpy and entropy.
+ * The duplex initiation is computed by the addition of either an initiation penalty for duplexes 
+ * containing at least one GC base pair or an initiation penalty for duplexes only composed of AT or AU base pairs.
+ * It extends the CricksNNMethod class.
+ */
+public abstract class GlobalInitiation extends CricksNNMethod {
+	
+	// Inherited method
 	
 	@Override
-	public ThermoResult calculateInitiationHybridation(Environment environment){
+	public ThermoResult computesHybridizationInitiation(Environment environment){
 		
-		super.calculateInitiationHybridation(environment);
+		super.computesHybridizationInitiation(environment);
 
 		double enthalpy = 0.0;
 		double entropy = 0.0;

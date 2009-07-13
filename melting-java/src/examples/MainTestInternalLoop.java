@@ -18,6 +18,9 @@ package examples;
 import java.util.ArrayList;
 import java.util.Properties;
 
+/**
+ * This class exists to test the different internal loop methods.
+ */
 public class MainTestInternalLoop {
 
 	public static void main(String[] args) {

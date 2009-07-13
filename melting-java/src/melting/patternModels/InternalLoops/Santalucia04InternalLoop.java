@@ -13,9 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
-/*Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 */
-
 package melting.patternModels.InternalLoops;
 
 import java.util.HashMap;
@@ -31,20 +28,53 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the internal loop model san04. It extends the PatternComputation class.
+ * 
+ * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 
+ */
 public class Santalucia04InternalLoop extends PatternComputation{
 	
+	// Instance variable
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for internal loop
+	 */
 	public static String defaultFileName = "Santalucia2004longmm.xml";
 	
+	/**
+	 * String formulaEnthalpy : enthalpy formula
+	 */
 	private static String formulaEnthalpy = "delat H = H(right terminal mismath) + H(left terminal mismatch) + H(asymmetric loop)";
+	
+	/**
+	 * String formulaEntropy : entropy formula
+	 */
 	private static String formulaEntropy = "delat S = S(right terminal mismath) + S(left terminal mismatch) + S(asymmetric loop) + S(loop)";
 
+	// PatternComputationMethod interface implementation
+
 	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
+	public boolean isApplicable(Environment environment, int pos1,
+			int pos2) {
+		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
 		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
+		if (environment.getHybridization().equals("dnadna") == false){
+			OptionManagement.meltingLogger.log(Level.WARNING, " the internal loop parameters of " +
+					"Santalucia (2004) are originally established " +
+					"for DNA sequences.");
 		}
+		
+		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
+
+		if (environment.getSequences().computesInternalLoopLength(pos1, pos2) == 2){
+			OptionManagement.meltingLogger.log(Level.WARNING, "The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
+			isApplicable = false;
+		}
+		
+		return isApplicable;
 	}
 	
 	@Override
@@ -118,30 +148,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		
 		return result;
 	}
-
-	@Override
-	public boolean isApplicable(Environment environment, int pos1,
-			int pos2) {
-		int [] positions = correctPositions(pos1, pos2, environment.getSequences().getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " the internal loop parameters of " +
-					"Santalucia (2004) are originally established " +
-					"for DNA sequences.");
-		}
-		
-		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
-
-		if (environment.getSequences().computesInternalLoopLength(pos1, pos2) == 2){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
-			isApplicable = false;
-		}
-		
-		return isApplicable;
-	}
-
+	
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) { 
@@ -184,11 +191,26 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		loadFile(fileSingleMismatch, this.collector);
 	}
 	
-	private double calculateGibbs (String seq1, String seq2){
-		double gibbs = Math.abs(seq1.length() - seq2.length()) * 0.3;
-		return gibbs;
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 	
+	// private method
+
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

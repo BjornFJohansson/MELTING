@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296*/
-
 package melting.patternModels.specificAcids;
 
 import java.util.HashMap;
@@ -30,43 +28,21 @@ import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the hydroxyadenine (A*) model sug01. It extends the PatternComputation class.
+ * 
+ * Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296
+ */
 public class Sugimoto01Hydroxyadenine extends PatternComputation{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for hydroxyadenine mismatch
+	 */
 	public static String defaultFileName = "Sugimoto2001hydroxyAmn.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
-	
-	@Override
-	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
-			int pos1, int pos2, ThermoResult result) {
-		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
-		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine model is from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-
-		result = calculateThermodynamicsNoModifiedAcid(newSequences, pos1, pos2, result);
-		Thermodynamics hydroxyAdenineValue = this.collector.getHydroxyadenosineValue(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
-		double enthalpy = result.getEnthalpy() + hydroxyAdenineValue.getEnthalpy();
-		double entropy = result.getEntropy() + hydroxyAdenineValue.getEntropy();
-		
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
-
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-			
-		return result;
-	}
+	// PatternComputationMethod interface implementation
 
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -117,6 +93,31 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		
 		return isApplicable;
 	}
+	
+	@Override
+	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
+			int pos1, int pos2, ThermoResult result) {
+		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+		pos1 = positions[0];
+		pos2 = positions[1];
+		
+		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine model is from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+
+		result = computeThermodynamicsWithoutHydroxyadenine(newSequences, pos1, pos2, result);
+		Thermodynamics hydroxyAdenineValue = this.collector.getHydroxyadenosineValue(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
+		double enthalpy = result.getEnthalpy() + hydroxyAdenineValue.getEnthalpy();
+		double entropy = result.getEntropy() + hydroxyAdenineValue.getEntropy();
+		
+		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
+
+		result.setEnthalpy(enthalpy);
+		result.setEntropy(entropy);
+			
+		return result;
+	}
 
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
@@ -149,7 +150,42 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		return super.isMissingParameters(newSequences, pos1, pos2);	
 	}
 	
-	private ThermoResult calculateThermodynamicsNoModifiedAcid(NucleotidSequences sequences,
+	@Override
+	public void loadData(HashMap<String, String> options) {
+		super.loadData(options);
+		
+		String crickName = options.get(OptionManagement.NNMethod);
+		RegisterMethods register = new RegisterMethods();
+		PatternComputationMethod NNMethod = register.getPatternComputationMethod(OptionManagement.NNMethod, crickName);
+		NNMethod.initialiseFileName(crickName);
+
+		String NNfile = NNMethod.getDataFileName(crickName);
+		
+		
+		loadFile(NNfile, this.collector);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
+	}
+	
+	// private method
+	
+	/**
+	 * computes the enthalpy and entropy of the crick's pairs composing the pattern as if it was no
+	 * hydroxyadenine in the duplex.
+	 * @param NucleotidSequence sequences : contains the sequences and the duplex
+	 * @param int pos1 : starting position of the pattern
+	 * @param int pos2 : ending position of the pattern
+	 * @param ThermoResult result : contains the current enthalpy, entropy and melting temperature for this NulceotidSequences.
+	 * @return ThermoResult result : contains the computed enthalpy and entropy.
+	 */
+	private ThermoResult computeThermodynamicsWithoutHydroxyadenine(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result){
 		
 		double enthalpy = result.getEnthalpy();
@@ -171,21 +207,15 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		return result;
 	}
 	
-	@Override
-	public void loadData(HashMap<String, String> options) {
-		super.loadData(options);
-		
-		String crickName = options.get(OptionManagement.NNMethod);
-		RegisterMethods register = new RegisterMethods();
-		PatternComputationMethod NNMethod = register.getPatternComputationMethod(OptionManagement.NNMethod, crickName);
-		NNMethod.initialiseFileName(crickName);
-
-		String NNfile = NNMethod.getDataFileName(crickName);
-		
-		
-		loadFile(NNfile, this.collector);
-	}
-	
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	private int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 1){
 			pos1 --;

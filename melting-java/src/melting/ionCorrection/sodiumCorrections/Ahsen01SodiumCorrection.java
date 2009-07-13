@@ -13,12 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/* Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
-	 * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
-	 * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
-	 * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
-	 * */
-
 package melting.ionCorrection.sodiumCorrections;
 
 import java.util.logging.Level;
@@ -28,9 +22,24 @@ import melting.Helper;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
+/**
+ * This class represents the sodium correction model ahs01. It extends the EntropyCorrection class.
+ * 
+ * Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
+ * melting temperatures under PCR conditions : deoxynucleotide Triphosphate
+ * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
+ * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
+*/
 public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	
+	// Instance variables
+	
+	/**
+	 * String entropyCorrection : formula for the entropy correction.
+	 */
 	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x ln(Na)";
+	
+	// CorrectionMethod interface implementation
 	
 	@Override
 	public boolean isApplicable(Environment environment) {
@@ -48,6 +57,8 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 		}
 		return isApplicable;
 	}
+	
+	// Inherited method
 	
 	@Override
 	protected double correctEntropy(Environment environment){

@@ -29,13 +29,39 @@ import melting.ionCorrection.magnesiumCorrections.Tan07MagnesiumCorrection;
 import melting.ionCorrection.sodiumCorrections.Tan06SodiumCorrection;
 import melting.ionCorrection.sodiumCorrections.Tan07SodiumCorrection;
 
+/**
+ * This class represents the mixed (Na,Mg) correction model tanmix08. It extends the Owczarzy08MagnesiumCorrection class.
+ * 
+ * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
+ * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
+ * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
+*/
 public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	
+	// Instance variables
+
+	/**
+	 * String entropyCorrection : formula for the entropy correction
+	 */
 	protected static String entropyCorrection = "delta S(Na, Mg) = delta S(Na = 1M) - 3.22 x ((duplexLength - 1) x (x1 x g1 + x2 x g2) + g12)"; 
+	
+	/**
+	 * String x1Formula : formula representing the fractional contribution of Na+ ions
+	 */
 	protected static String x1Formula = "x1 = Na / (Na + (8.1 - 32.4 / duplexLength) x (5.2 - ln(Na)) x Mg)";
+	
+	/**
+	 * String x2Formula : formula representing the fractional contribution of Mg2+ ions
+	 */
 	protected static String x2Formula = "x2 = 1 - x1";
+	
+	/**
+	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
+	 */
 	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) *x Na) / duplexLength";
 	
+	// CorrectionMethod interface implementation
+
 	@Override
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
@@ -60,6 +86,8 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 		return isApplicable;
 	}
 	
+	// Inherited method
+	
 	@Override
 	protected double correctEntropy(Environment environment){
 		
@@ -78,11 +106,11 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 		double g2 = 0;
 		if (environment.getHybridization().equals("rnarna")){
 			g1 = Tan07SodiumCorrection.calculateFreeEnergyPerBaseStack(environment);
-			g2 = Tan07MagnesiumCorrection.calculateFreeEnergyPerBaseStack(environment);
+			g2 = Tan07MagnesiumCorrection.computeFreeEnergyPerBaseStack(environment);
 		}
 		else if (environment.getHybridization().equals("dnadna")){
 			g1 = Tan06SodiumCorrection.calculateFreeEnergyPerBaseStack(environment);
-			g2 = Tan06MagnesiumCorrection.calculateFreeEnergyPerBaseStack(environment);
+			g2 = Tan06MagnesiumCorrection.computeFreeEnergyPerBaseStack(environment);
 		}
 				
 		double entropy = -3.22 * ((duplexLength - 1) * (x1 * g1 + x2 * g2) + g12);

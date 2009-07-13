@@ -24,8 +24,19 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents one single bulge loop model. It extends the PatternComputation class.
+ * Int this model, the penalty for the single bulge loop is a global penalty for the pattern 
+ * composed of the single bulge loop surrounded by the adjacent base pairs in the duplex.
+ * 
+ * Ex : the thermodynamic parameters for (ATG, T-C) : (T,-) is the single bulge loop, (A,T) and (G,C)
+ * are the adjacent base pairs.
+ * 
+ */
 public abstract class GlobalSingleBulgeLoopMethod extends PatternComputation{
 	
+	// PatternComputationMethod interface implementation
+
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
@@ -52,7 +63,18 @@ public abstract class GlobalSingleBulgeLoopMethod extends PatternComputation{
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);
 	}
+	
+	// protected method
 
+	/**
+	 * corrects the pattern positions in the duplex to have the adjacent
+	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
+	 * @param int pos1 : starting position of the internal loop
+	 * @param int pos2 : ending position of the internal loop
+	 * @param int duplexLength : total length of the duplex
+	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
+	 * adjacent base pairs in the duplex.
+	 */
 	protected int[] correctPositions(int pos1, int pos2, int duplexLength){
 		if (pos1 > 0){
 			pos1 --;

@@ -13,8 +13,6 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-/*Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 */
-
 package melting.patternModels.singleBulge;
 
 import java.util.logging.Level;
@@ -24,18 +22,21 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
+/**
+ * This class represents the single bulge loop model ser07. It extends the GlobalSingleBulgeLoopMethod class.
+ * 
+ * Martin J Serra et al (2007). Biochemistry 46 : 15123-15135
+ */
 public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 	
+	// Instance variables
+	
+	/**
+	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single bulge loop
+	 */
 	public static String defaultFileName = "Serra2007bulge.xml";
 	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
+	// PatternComputationMethod interface implementation
 
 	@Override
 	public boolean isApplicable(Environment environment, int pos1,
@@ -75,6 +76,15 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 
 		return super.isMissingParameters(newSequences, pos1, pos2);
+	}
+	
+	@Override
+	public void initialiseFileName(String methodName){
+		super.initialiseFileName(methodName);
+		
+		if (this.fileName == null){
+			this.fileName = defaultFileName;
+		}
 	}
 
 }
