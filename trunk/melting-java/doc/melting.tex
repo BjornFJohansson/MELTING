@@ -67,8 +67,9 @@ of two options, the latter normally erases the former.
   Enters the different ion (Na, Mg, Tris, K) or agent (dNTP, DMSO, formamide) concentrations. The effect  
   of  ions and denaturing agents on  thermodynamic  stability  of nucleic  acid duplexes is complex,
   and the correcting functions are  at  best rough  approximations. All the concentrations must be positive numeric
-  values and in mol/L. There are some exceptions for the DMSO concentrations (in %) and the formamide concentrations
-  (in % or mol/L depending on the used correction method). Be aware, the $[\mbox{Tris}^+]$ is about half of the total tris buffer
+  values and in M. There are some exceptions for the DMSO concentrations (in
+  percent) and the formamide concentrations
+  (in percent or M depending on the used correction method). Be aware, the $[\mbox{Tris}^+]$ is about half of the total tris buffer
   concentration.
   At least one cation concentration is mandatory, the other agents are optional. See the documentation for the concentration 
   limits. It depends on the used correction.
@@ -107,13 +108,36 @@ to see if you can get something interesting).
   To precise that the sequence entered with the option \textbf{-S} is self complementary. No complementary sequence is mandatory. 
   The program automatically can detect a self complementary sequence for perfect matching sequences or sequences with dangling ends. 
   In these cases, the option \textbf{-self} is not necessary. Otherwise we need to precise that the sequences are self complementary with this option. 
-  examples:   
+  examples: 
+    
   \begin{verbatim}
-  - The sequence ATCGCGAT is self complementary. The option \textbf{-self} is not necessary because the programm can automatically detect it.
-  - The sequence -TCGCGAT is self complementary but with a single dangling end. The option \textbf{-self} is not necessary because the programm can automatically detect it.
-  - If the sequence ATCCCGAT is self complementary with a single mismatch (C/C), the option \textbf{-self} is necessary to precise the self complementarity because the 
-    programm can't automatically detect it.
+  Situation 1 : The sequence ATCGCGAT is self 
+                complementary. 
+      
   \end{verbatim}
+  
+  The option \textbf{-self} is not necessary because the programm can automatically detect it.
+  
+  \begin{verbatim}
+  Situation 2 : The sequence -TCGCGAT is self 
+                complementary with a single 
+		dangling end. 
+      
+  \end{verbatim}
+    
+  The option \textbf{-self} is not necessary because the programm 
+  can automatically detect it.
+  
+  \begin{verbatim}  
+  Situation 3 :  If the sequence ATCCCGAT is self 
+                 complementary with a single mismatch 
+		(C/C)
+      
+  \end{verbatim}
+  		 
+  The option \textbf{-self} is necessary to precise the self 
+  complementarity because the programm can't detect it.
+      
  \item [\textbf{-F} \textit{factor}  ]\mbox{}\\
   This is the correction factor used to modulate the effect of the nucleic acid concentration in the computation of the melting temperature. 
   See section ALGORITHM for details. If the sequences are automatically recognized as self complementary sequences or if the option \textbf{-self}
@@ -127,8 +151,8 @@ neighbor model is used.
 
 \item [\textbf{-am} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific approximative formula, based on G+C content. You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{ahs01}] (from Ahsen et al. 2001)
     \item [\textit{che93}] (from Marmur, Chester and al. 1962, 1993)
@@ -138,27 +162,37 @@ neighbor model is used.
     \item [\textit{san98}] (from Santalucia et al. 1998)
     \item [\textit{wetdna91}] (from Wetmur 1991)  (by default)
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{wetrna91}] (from Wetmur 1991)  (by default)
     \end{itemize}
-  \item [\textit{DNA/RNA duplexes}]
+  \textsc{DNA/RNA duplexes}
     \begin{itemize}
     \item [\textit{wetdnarna91}] (from Wetmur 1991)  (by default)
     \end{itemize}
-  \end{itemize}
   If there is no formula name after the option \textbf{-am}, we will compute the melting temperature with the default approximative formula.
   This option has to be used with caution. Note that such a calcul is increasingly incorrect when the length of  the duplex 
   decreases. Moreover, it does not take into account nucleic acid concentration, which is a strong mistake.
   examples :
+  
   \begin{verbatim}
-  - -am if you want to force the approximative approach with the default formula.
-  - -am ahs01 if you want to use the approximative formula from Ahsen et al. 2001.
-  \end{verbatim}	
+   command line 1 : "-am" 
+  
+  \end{verbatim}	  
+  if you want to force the approximative approach with the 
+  default formula.
+  
+  \begin{verbatim}
+   command line 2 : "-am ahs01" 
+  \end{verbatim}
+  	  
+  if you want to use the approximative formula from 
+  Ahsen et al. 2001.
+    	
 \item [\textbf{-nn} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model. You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{all97}] (from Allawi and Santalucia 1997)
     \item [\textit{bre86}] (from Breslauer et al. 1986)
@@ -167,238 +201,244 @@ neighbor model is used.
     \item [\textit{sug96}] (from Sugimoto et al 1996)
     \item [\textit{tan04}] (from Tanaka et al. 2004)		 
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{fre86}] (from Freier al. 1986)
     \item [\textit{xia98}] (from Xia et al. 1998)  (by default)		 
     \end{itemize}
-  \item [\textit{DNA/RNA duplexes}]
+  \textsc{DNA/RNA duplexes}
     \begin{itemize}
     \item [\textit{sug95}] (from Sugimoto et al. 1995)  (by default)
     \end{itemize}
-  \item [\textit{mRNA/RNA duplexes}]
+  \textsc{mRNA/RNA duplexes}
     \begin{itemize}
     \item [\textit{tur06}] (from Turner et al. 2006)  (by default)
     \end{itemize}
-  \end{itemize}
   If there is no formula name after the option \textbf{-nn}, we will compute the melting temperature with the default nearest neighbor model. 
   Each nearest neighbor model uses a specific xml file containing the thermodynamic values. If you want to use another file, write the file name or the file pathway preceded by ':' (-nn [optionalname:optionalfile]).
-  examples:   
+  examples:
+     
   \begin{verbatim}
-  - -nn if you want to force the nearest neighbor computation with the default model.
-  - -nn tan04 if you want to use the nearest neighbor model from Tanaka et al. 2004 with the thermodynamic parameters in the default xml file.
-  - -nn tan04:fileName if you want to use the nearest neighbor model from Tanaka et al. 2004 with the thermodynamic parameters in the file fileName.
-  - -nn :fileName if you want to use the default nearest neighbor model with the thermodynamic parameters in the file fileName.
-  \end{verbatim}		  
+  Command line 1 : "-nn" 
+  
+  \end{verbatim}
+  if you want to force the nearest neighbor computation with the default model.
+  
+  \begin{verbatim}
+  Command line 2 : "-nn tan04" 
+  
+  \end{verbatim}
+  if you want to use the nearest neighbor model from Tanaka et al. 2004 with the 
+  thermodynamic parameters in the default xml file.
+  
+  \begin{verbatim}
+  Command line 3 : "-nn tan04:fileName" 
+  
+  \end{verbatim}
+  if you want to use the nearest neighbor model from Tanaka et al. 2004 with the 
+  thermodynamic parameters in the file fileName.
+  
+  \begin{verbatim}
+  Command line 4 : "-nn :fileName" 
+  
+  \end{verbatim}
+  if you want to use the default nearest neighbor model with the thermodynamic parameters in the file fileName.
+  		  
 \item [\textbf{-sinMM} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of single mismatch to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{allsanpey}] (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default) 
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{tur06}] (from Turner et al. 2006)
     \item [\textit{zno07}] (from Znosko et al. 2007)  (by default)
     \item [\textit{zno08}] (from Znosko et al. 2008)		 		 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for single mismatch computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single mismatches are not taken into account by the approximative mode.
 \item [\textbf{-GU} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of GU base pairs to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{RNA duplexes}]
+  
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{tur99}] (from Turner et al. 1999) (by default)		 		 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for GU base pair computation, the same syntax as the one for the \textbf{-nn} option is used.
   GU base pairs are not taken into account by the approximative mode.
 \item [\textbf{-tanMM} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of tandem mismatches to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{allsanpey}] (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default) 
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{tur99}] (from Turner et al. 1999) (by default)		 		 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for tandem mismatch computation, the same syntax as the one for the \textbf{-nn} option is used.
   Tandem mismatches are not taken into account by the approximative mode. Note that not all the mismatched Crick's pairs have been investigated. 
 \item [\textbf{-intLP} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of internal loop to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{san04}] (from Santalucia 2004)  (by default) 
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{tur06}] (from Turner et al. 2006) (by default)
     \item [\textit{zno07}] (from Znosko et al. 2007, only for 1x2 loop)  
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for internal loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Internal loops are not taken into account by the approximative mode.   
 \item [\textbf{-sinDE} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of single dangling end to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{bom00}] (from Bommarito et al. 2000)  (by default) 
     \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)      
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
     \item [\textit{ser08}] (from Serra et al. 2008)  (by default) 		  
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for single dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single dangling ends are not taken into account by the approximative mode.   
 \item [\textbf{-secDE} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of double dangling end to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
     \item [\textit{ser05}] (from Serra et al. 2005) 	
     \item [\textit{ser06}] (from Serra et al. 2006) (by default) 			 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for double dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Double dangling ends are not taken into account by the approximative mode.  
 \item [\textbf{-longDE} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of long dangling end to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for long dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Long dangling ends are not taken into account by the approximative mode.  
 \item [\textbf{-sinBU} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of single bulge loop to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{san04}] (from Santalucia 2004) 
     \item [\textit{tan04}] (from Tanaka et al. 2004)  (by default) 	    
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{ser07}] (from Serra et al. 2007)
     \item [\textit{tur06}] (from Turner et al. 1999 and 2006)  (by default) 			 			 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for single bulge loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single bulge loops are not taken into account by the approximative mode. 
 \item [\textbf{-lonBU} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of long bulge loop to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{san04}] (from Santalucia 2004) (by default)
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{tur06}] (from Turner et al. 1999 and 2006)  (by default) 			 			 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for long bulge loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Long bulge loops are not taken into account by the approximative mode.
 \item [\textbf{-CNG} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of CNG repeats to the thermodynamic of helix-coil transition.
   N represents a single mismatch of type N/N. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{RNA duplexes}]
+  
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{bro05}] (from Broda et al. 2005) (by default)			 			 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for CNG repeats computation, the same syntax as the one for the \textbf{-nn} option is used.
   CNG repeats are not taken into account by the approximative mode. 
   Be aware : Melting can compute the contribution of CNG repeats to the thermodynamic of helix-coil transition for only 2 to 7 CNG repeats.
 \item [\textbf{-ino} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of inosine bases (I) to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{san05}] (from Santalucia et al. 2005)  (by default)
     \end{itemize}
-  \item [\textit{RNA duplexes}]
+  \textsc{RNA duplexes}
     \begin{itemize}
     \item [\textit{zno07}] (from Znosco et al. 2007, only IU base pairs)  (by default)  			 			 
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for inosine bases computation, the same syntax as the one for the \textbf{-nn} option is used.
   Inosine bases (I) are not taken into account by the approximative mode. 
 \item [\textbf{-ha} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of hydroxyadenine bases (A*) to the thermodynamic of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{sug01}] (from Sugimoto et al. 2001) (by default)
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for hydroxyadenine bases computation, the same syntax as the one for the \textbf{-nn} option is used.
   Hydroxyadenine bases (A*) are not taken into account by the approximative mode.
 \item [\textbf{-azo} \textit{method\_name}]\mbox{}\\ 
-  Forces to use a specific nearest neighbor model to compute the contribution of azobenzenes (X_T for trans azobenzenes and X_C for cis azobenzenes) to the thermodynamic 
+  Forces to use a specific nearest neighbor model to compute the contribution of azobenzenes (X\_T for trans azobenzenes and X\_C for cis azobenzenes) to the thermodynamic 
   of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{asa05}] (from Asanuma et al. 2005)(by default)
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for azobenzene computation, the same syntax as the one for the \textbf{-nn} option is used.
-  Azobenzenes (X_T for trans azobenzenes and X_C for cis azobenzenes) are not taken into account by the approximative mode.
+  Azobenzenes (X\_T for trans azobenzenes and X\_C for cis azobenzenes) are not taken into account by the approximative mode.
 \item [\textbf{-lck} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific nearest neighbor model to compute the contribution of locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
   of helix-coil transition. 
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{mct04}] (from McTigue et al. 2004) (by default)
     \end{itemize}
-  \end{itemize}
   To change the file containing the thermodynamic parameters for locked nucleic acids computation, the same syntax as the one for the \textbf{-nn} option is used.
   Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
 \item [\textbf{-ion} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific ion correction. You can use one of the following corrections : 
-  \begin{itemize}
-  \item [\textit{Sodium corrections}]
-    \begin{itemize}
-    \item [\textit{DNA duplexes}]
+    
+    \textbf{Sodium corrections}
+    
+    \textsc{DNA duplexes}
       \begin{itemize}
       \item [\textit{ahs01}] (from Ahsen et al. 2001)
       \item [\textit{kam71}] (from Frank Kamenetskii et al 2001)
@@ -412,118 +452,417 @@ neighbor model is used.
       \item [\textit{tanna06}] (from Zhi-Jie Tan et al. 2006)
       \item [\textit{wetdna91}] (from wetmur 1991)	 
       \end{itemize}
-    \item [\textit{RNA duplexes or mRNA/RNA duplexes}]
+    \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
       \item [\textit{tanna07}] (from Zhi-Jie Tan et al. 2007)  (by default)
       \item [\textit{wetrna91}] (from wetmur 1991)	 
       \end{itemize}
-    \item [\textit{DNA/RNA duplexes}]
+    \textsc{DNA/RNA duplexes}
       \begin{itemize}
       \item [\textit{wetdnarna91}] (from wetmur 1991)	 
       \end{itemize}
-    \end{itemize}
-  \item [\textit{Magnesium corrections}]
-    \begin{itemize}
-    \item [\textit{DNA duplexes}]
+  
+  \textbf{Magnesium corrections}
+  
+    \textsc{DNA duplexes}
       \begin{itemize}
       \item [\textit{owcmg08}] (from Owczarzy et al. 2008)  (by default)
       \item [\textit{tanmg06}] (from Zhi-Jie Tan et al. 2006)	  
       \end{itemize}
-    \item [\textit{RNA duplexes or mRNA/RNA duplexes}]
+    \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
       \item [\textit{tanmg07}] (from Zhi-Jie Tan et al. 2007)  (by default)
       \end{itemize}
-    \end{itemize}
-  \item [\textit{Mixed Na Mg corrections}]
-    \begin{itemize}
-    \item [\textit{DNA duplexes}]
+    
+  \textbf{Mixed Na Mg corrections}
+  
+    \textsc{DNA duplexes}
       \begin{itemize}
       \item [\textit{owcmix08}] (from Owczarzy et al. 2008)  (by default)
       \item [\textit{tanmix07}] (from Zhi-Jie Tan et al. 2007)	 	  
       \end{itemize}
-    \item [\textit{RNA duplexes or mRNA/RNA duplexes}]
+    \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
       \item [\textit{tanmix07}] (from Zhi-Jie Tan et al. 2007)  (by default)
       \end{itemize}
-    \end{itemize}
-  \end{itemize}
   The effect of ions on  thermodynamic  stability  of nucleic  acid duplexes is complex, and the correcting 
   functions are  at  best rough  approximations.
-  By default, the program use the algorithm from Owczarzy et al 2008 : ratio = Mg^0.5 and monovalent = Na + Tris + K
+  By default, the program use the algorithm from Owczarzy et al 2008 : ratio =
+  $[\mbox{Mg}^{0.5}]$ and monovalent = Na + Tris + K
+  
   if monovalent = 0, a magnesium correction is used.
+  
   if ratio < 0.22, a sodium correction is used.
+  
   if 0.22 <= ratio < 6, a mixed Na Mg correction is used.
+  
   if ratio >= 6, a magnesium correction is used.
+  
   example :
+  
   \begin{verbatim}
-  - "-ion owcmg08" if you want to force the use of the magnesium correction from Owczarzy et al 2008. This correction will be used independently
-  of the cations present in the solution.
+  Command line : "-ion owcmg08" 
+  
   \end{verbatim}
+  if you want to force the use of the magnesium correction from Owczarzy et al 2008. This correction will be used 
+  independently of the cations present in the solution.
 \item [\textbf{-naeq} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific ion correction which gives a sodium equivalent concentration if other cations are present.
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{ahs01}] (from Ahsen et al 2001)  (by default)
     \item [\textit{mit96}] (from Mitsuhashi et al. 1996)
     \item [\textit{pey00}] (from Peyret 2000)		 
     \end{itemize}
-  \end{itemize}
   For the other types of hybridization, the DNA default correction is used but there is no guaranty of accuracy.
   If there are other cations when an approximative approach is used, a sodium equivalence is automatically computed.
   The correcting functions are  at  best rough  approximations.
   example :
+  
   \begin{verbatim}
-  - "-naeq ahs01" if you want to force the use of the magnesium correction from Ahsen et al 2001. This sodium equivalence will be used 
-  in case of approximative approach. In case of nearest neighbor approach, the sodium equivalence will be used only if a sodium correction
-  is selected by the user.
-  - "-naeq ahs01 -ion san04" means that the sodium equivalence computed by the method ahs01 (from Ahsen et al 2001) will be combined with the sodium correction san04
-  (from Santalucia 2004)
-  \end{verbatim}
+  Command line 1 : "-naeq ahs01" 
+  
+    \end{verbatim}
+  if you want to force the use of the sodium equivalence from Ahsen et al 2001. This sodium equivalence 
+  will be used in case of approximative approach. In case of nearest neighbor approach, the sodium equivalence 
+  will be used only if a sodium correction is selected by the user.
+    
+    \begin{verbatim}
+  Command line 2 : "-naeq ahs01 -ion san04" 
+  
+    \end{verbatim}
+  it means that the sodium equivalence computed by the method ahs01 (from Ahsen et al 2001) will be combined with the 
+  sodium correction san04 (from Santalucia 2004).
+  
+  
 \item [\textbf{-DMSO} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific DMSO correction (DMSO is always in percent).
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{ahs01}] (from Ahsen et al 2001)  (by default)
     \item [\textit{mus81}] (from Musielski et al. 1981)
     \item [\textit{cul76}] (from Cullen et al. 1976)	
     \item [\textit{esc80}] (from Escara et al. 1980)		 	 
     \end{itemize}
-  \end{itemize}
   For the other types of hybridization, the DNA default correction is used but there is no guaranty of accuracy.
   If there are DMSO when an approximative approach is used, a DMSO correction is automatically computed.
   The correcting functions are  at  best rough  approximations.
   example :
+  
   \begin{verbatim}
-  - "-DMSO ahs01" if you want to force the use of the DMSO correction from Ahsen et al 2001. This DMSO correction will be used 
-  if there is DMSO present in the solutions in case of nearest neighbor approach and approximative approach. 
-  \end{verbatim}
+  Command line : "-DMSO ahs01"  
+  
+  \end{verbatim} 
+  if you want to force the use of the DMSO correction from Ahsen et al 2001. This DMSO correction will be used if there is 
+  DMSO present in the solutions in case of nearest neighbor approach and approximative approach.
 \item [\textbf{-for} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific formamide correction.
   You can use one of the following :
-  \begin{itemize}
-  \item [\textit{DNA duplexes}]
+  
+  \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{bla96}] (from Blake et al 1996) with formamide concentration in mol/L  (by default)
     \item [\textit{lincorr}] (linear correction) with a percent of formamide volume		  	 
     \end{itemize}
-  \end{itemize}
   For the other types of hybridization, the DNA default correction is used but there is no guaranty of accuracy.
   If there are formamide when an approximative approach is used, a formamide correction is automatically computed.
   The correcting functions are  at  best rough  approximations.
   example :
+  
   \begin{verbatim}
-  - "-for lincorr" if you want to force the use of the linear formamide correction. This formamide correction will be used 
-  if there is formamide present in the solutions in case of nearest neighbor approach and approximative approach. 
+  Command line : "-for lincorr" 
+  
   \end{verbatim}
+  if you want to force the use of the linear formamide correction. This formamide correction will be used if there is formamide 
+  present in the solutions in case of nearest neighbor approach and approximative approach. 
 \end{description}
 
  
 \section{Algorithm }
   
+
+\subsection{Thermodynamics of helix-coil transition of nucleic acid}  
+The nearest-neighbor approach is based on the fact that the helix-coil
+transition works as a zipper. After an initial attachment, the hybridisation
+propagates laterally. This program first computes the hybridisation enthalpy 
+and entropy for each structure in the duplex. (see later for the different possible
+structures recognized by Melting).
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}H&=&\delta{}h_\mathrm{initiation}+\sum \delta{}h_\mathrm{structure}\\
+  \Delta{}S&=&\delta{}s_\mathrm{initiation}+\sum \delta{}s_\mathrm{structure}
+  \end{array}
+\end{displaymath}
+
+\textbf{Example} : 
+
+\textit{Sequence with a single mismatch} 
+\begin{alltt}
+ATC\textbf{G}GCTA
+TAG\textbf{A}CGAT
+\end{alltt}
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}H&=&\delta{}h_\mathrm{initiation}+\delta{}h_\mathrm{structure1}+\delta{}h_\mathrm{structure2}+\delta{}h_\mathrm{structure3}\\
+  \Delta{}S&=&\delta{}s_\mathrm{initiation}+\delta{}s_\mathrm{structure1}+\delta{}s_\mathrm{structure2}+\delta{}s_\mathrm{structure3}
+  \end{array}
+\end{displaymath}
+
+where :
+
+structure1 = perfectly matching sequences ATC/TAG
+
+structure2 = single mismatch G/A
+
+structure 3 = perfectly matching sequences GCTA/CGAT
+
+\subsubsection{Perfectly matching sequences}
+
+The hybridization process depends on the adjacent nucleotides on each strand (the Crick's pairs).  
+Two duplexes with the same base pairs could have different stabilities, and on the contrary, two 
+duplexes with different sequences but identical sets of Crick's pairs will have the same
+thermodynamics properties (see Sugimoto et al. 1994).  This program first computes the hybridisation enthalpy 
+and entropy from the elementary parameters of each Crick's pair.
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{perfectly-matching}&=&\sum \delta{}h_\mathrm{Crick's pair}\\
+  \Delta{}s_\mathrm{perfectly-matching}&=&\sum \delta{}s_\mathrm{Crick's pair}
+  \end{array}
+\end{displaymath}
+The initiation computation is not the same for each following model. For further information, see the referenced articles.
+
+\begin{tabular}[h]{| c | c | c |}
+all97 & DNA & Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 \\
+bre86 & DNA & Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 \\
+\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
+san96 & DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
+sug96 & DNA & Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505 \\
+tan04 & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150  \\
+fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
+\textbf{xia98} & RNA & Xia et al (1998) Biochemistry 37: 14719-14735 \\
+\textbf{sug95} & DNA/DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
+\textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
+\end{tabular}
+
+Example :
+\begin{multline*}
+\Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
+\Delta H {\mbox{\texttt{AG}} \choose \mbox{\texttt{TC}} } + 
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}} } +
+\Delta H {\mbox{\texttt{CG}} \choose \mbox{\texttt{GC}} } +
+\Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CT}} }
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
+       
+\subsubsection{Sequences composed of CNG repeats}
+
+If the sequence (sens 5'3') is a sequence of type \texttt{G(CNG)xC} where x is the number of CNG repeats in
+the sequence and N a unique nucleic acid which will get bound to itself, we can use specific
+experimental parameters to compute the enthalpy and entropy of the duplex formation. These parameters can be used
+only for sequences composed from 2 to 7 CNG repeats and the initiation is already included.
+ 
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}H&=&\Delta{}h_\mathrm{sequence-of-type-\texttt{G(CNG)xC}}\\
+  \Delta{}S&=&\Delta{}s_\mathrm{sequence-of-type-\texttt{G(CNG)xC}}
+  \end{array}
+\end{displaymath}
+For further information, see the referenced article.
+
+\begin{tabular}[h]{| c | c | c |}
+\textbf{bro05} & RNA & Broda et al (2005). Biochemistry 44: 10873-10882 \\
+\end{tabular}
+
+Sequence example :
+\begin{alltt}
+G\textbf{CAGCAGCAG}C
+C\textbf{GACGACGAC}G
+\end{alltt}
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{GCAGCAGCAGC}} \choose \mbox{\texttt{CGACGACGACG}}} = 
+\Delta H {(\mbox{3-CAG-repeats})}
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
+
+\subsubsection{Single mismatch effect}
+
+Ths single mismatches are taken into account but the two first and positions cannot
+be mismatched. in such a case, the result is unpredictable, and all cases are
+possible. for instance (see Allawi and SanLucia 1997), the duplex
+\begin{alltt}
+A          T  
+ \underline{G}TGAGCTCA\underline{T}  
+ \underline{T}ACTCGAGT\underline{G}  
+T          A   
+\end{alltt}
+
+is more stable than 
+
+\begin{alltt}
+A\underline{G}TGAGCTCA\underline{T}T 
+T\underline{T}ACTCGAGT\underline{G}A 
+\end{alltt}
+
+For DNA duplexes, this program computes the hybridisation enthalpy and entropy from the elementary 
+parameters of each Crick's pair containing the single mismatch. 
+begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{single-mismatch}&=&\sum \delta{}h_\mathrm{Crick's-pair-containing-the-mismatch}\\
+  \Delta{}s_\mathrm{single-mismatch}&=&\sum \delta{}s_\mathrm{Crick's-pair-containing the-mismatch}
+  \end{array}
+\end{displaymath}
+
+For RNA duplexes, the different models to computes the thermodynamic contribution of single mismatch to the helix coil 
+stability are more complex.
+
+\textbf{Model from Amber R. Davis and Brent M Znosco, 2007-2008}
+
+\begin{multline*}
+\Delta h {\mbox{single-mismatch}} = 
+\delta h {\mbox{mismatch-nucleotides}} +
+\delta h {\mbox{mismatch-NN-interaction}} +
+\delta{}h_\mathrm{AU/GU} \\
+\end{multline*}
+
+Where :
+
+$\delta{}h_\mathrm{mismatch-nucleotides}$ accounts for the identity of the single mismatch nucleotides.
+
+$\delta{}h_\mathrm{mismatch-NN interaction}$ accounts for the interaction between the mismatch nucleotides and the nearest neighbors.
+
+$\delta{}h_\mathrm{AU/GU}$ accounts for AU or GU nearest neighbors.
+
+       (The same computation is performed for $\Delta S$)
+
+\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}
+
+\begin{multline*}
+\Delta h {\mbox{single-mismatch}} =
+\delta h {\mbox{initiation-loop-of-2}} +
+\delta h {\mbox{per-AU/GU}} +
+\delta h {\mbox{GG}} +
+\delta h {\mbox{RU/YU}}\\
+\end{multline*}
+
+Where :
+
+$\delta{}h_\mathrm{mismatch-nucleotides}$ accounts for the identity of the single mismatch nucleotides.
+
+$\delta{}h_\mathrm{mismatch NN interaction}$ accounts for the interaction between the mismatch nucleotides and the nearest neighbors.
+
+$\delta{}h_\mathrm{AU/GU}$ accounts for AU or GU nearest neighbors.
+
+       (The same computation is performed for $\Delta S$)
+       
+For further information, see the referenced articles.
+
+\begin{tabular}[h]{| c | c | c |}
+all97 & DNA & Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 \\
+bre86 & DNA & Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 \\
+\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
+san96 & DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
+sug96 & DNA & Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505 \\
+tan04 & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150  \\
+fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
+\textbf{xia98} & RNA & Xia et al (1998) Biochemistry 37: 14719-14735 \\
+\textbf{sug95} & DNA/DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
+\textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
+\end{tabular}
+
+Example :
+\begin{multline*}
+\Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
+\Delta H {\mbox{\texttt{AG}} \choose \mbox{\texttt{TC}} } + 
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}} } +
+\Delta H {\mbox{\texttt{CG}} \choose \mbox{\texttt{GC}} } +
+\Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CT}} }
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
+
+\begin{itemize}
+\item Single mismatch 
+\begin{alltt}
+ATC\textbf{G}GCTA
+TAG\textbf{A}CGAT
+\end{alltt}
+\item Tandem mismatches 
+\begin{alltt}
+ATC\textbf{GC}GCTA
+TAG\textbf{AC}CGAT
+\end{alltt}
+\item Internal loop (symmetric)
+\begin{alltt}
+ATC\textbf{GACG}GCTA
+TAG\textbf{AACT}CGAT
+\end{alltt}
+\item Internal loop (asymmetric)
+\begin{alltt}
+ATC\textbf{GA-G}GCTA
+TAG\textbf{AACT}CGAT
+\end{alltt}
+\item GU base pair
+\begin{alltt}
+AUC\textbf{G}GCUA
+UAG\textbf{U}CGAU
+\end{alltt}
+\item Single dangling end
+\begin{alltt}
+\textbf{-}GCUAC
+\textbf{A}CGAUG
+\end{alltt}
+\item Double dangling end
+\begin{alltt}
+GCCAU\textbf{--}
+CGGUA\textbf{AG}
+\end{alltt}
+\item Long dangling end
+\begin{alltt}
+GCCAU\textbf{----}
+CGGUA\textbf{AAAA}
+\end{alltt}
+\item Single bulge loop 
+\begin{alltt}
+ATT\textbf{-}GCCG
+TAA\textbf{A}CGGC
+\end{alltt}
+\item Long bulge loop 
+\begin{alltt}
+ATT\textbf{---}GCCG
+TAA\textbf{ATC}CGGC
+\end{alltt}
+\item Inosine bases 
+\begin{alltt}
+ATT\textbf{I}GCCG
+TAA\textbf{U}CGGC
+\end{alltt}
+\item Azobenzenes 
+\begin{alltt}
+ATT\textbf{X\_C}GCCG
+TAACGGC
+\end{alltt}
+\item Hydroxyadenine 
+\begin{alltt}
+ATT\textbf{A*}GCCG
+TAA\textbf{G}CGGC
+\end{alltt}
+\item Locked nuleic acid 
+\begin{alltt}
+ATT\textbf{AL}GCCG
+TAA\textbf{T}CGGC
+\end{alltt}
+\end{itemize}
+
+
+
+
    
 \subsection{Thermodynamics of helix-coil transition of nucleic acid}  
 The nearest-neighbor approach is based on the fact that the helix-coil
