@@ -150,10 +150,10 @@ to see if you can get something interesting).
 \end{description}
 
 \subsection{Set of thermodynamic parameters and methods (models)}
-\begin{description}
 
 By default, the approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), otherwise the nearest 
 neighbor model is used. 
+\begin{description}
 
 \item [\textbf{-am} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific approximative formula, based on G+C content. You can use one of the following :
@@ -596,15 +596,15 @@ The nearest-neighbor approach is based on the fact that the helix-coil
 transition works as a zipper. After an initial attachment, the hybridisation
 propagates laterally. This program first computes the hybridisation enthalpy 
 and entropy for each structure in the duplex. (see later for the different possible
-structures recognized by Melting).
+structures recognized by Melting). If the sequences are self complementary, a 
+symmetry correction will be added to the initiation energy.
 \begin{displaymath}
   \begin{array}[t]{ccc}
   \Delta{}H&=&\delta{}h_\mathrm{initiation}+\sum \delta{}h_\mathrm{structure}\\
   \Delta{}S&=&\delta{}s_\mathrm{initiation}+\sum \delta{}s_\mathrm{structure}
   \end{array}
-\end{displaymath}
+\end{displaymath} 
 
-\paragraph
 \textbf{Example} : 
 
 \textit{Sequence with a single mismatch} 
@@ -642,6 +642,7 @@ and entropy from the elementary parameters of each Crick's pair.
 \end{displaymath}
 The initiation computation is not the same for each following model. For further information, see the referenced articles.
 
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 all97 & DNA & Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 \\
 bre86 & DNA & Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 \\
@@ -654,9 +655,10 @@ fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
 \textbf{sug95} & DNA/DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
 \textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
 \end{tabular}
+\end{table}
 
-\paragraph
-Example :
+
+\textbf{Example} :
 \begin{multline*}
 \Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
 \Delta H {\mbox{\texttt{AG}} \choose \mbox{\texttt{TC}} } + 
@@ -677,17 +679,18 @@ only for sequences composed from 2 to 7 CNG repeats and the initiation is alread
 \begin{displaymath}
   \begin{array}[t]{ccc}
   \Delta{}H&=&\Delta{}h_\mathrm{sequence-of-type-\texttt{G(CNG)xC}}\\
-  \Delta{}S&=&\Delta{}s_\mathrm{sequence-of-type-\texttt{G(CNG)xC}}
   \end{array}
 \end{displaymath}
 For further information, see the referenced article.
 
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{bro05} & RNA & Broda et al (2005). Biochemistry 44: 10873-10882 \\
 \end{tabular}
+\end{table}
 
-\paragraph
-Sequence example :
+
+\textbf{Example} :
 \begin{alltt}
 G\textbf{CAGCAGCAG}C
 C\textbf{GACGACGAC}G
@@ -702,7 +705,7 @@ C\textbf{GACGACGAC}G
 
 \subsubsection{Single mismatch effect}
 
-Ths single mismatches are taken into account but the two first and positions cannot
+The single mismatches are taken into account but the two first and positions cannot
 be mismatched. in such a case, the result is unpredictable, and all cases are
 possible. for instance (see Allawi and SanLucia 1997), the duplex
 \begin{alltt}
@@ -721,22 +724,31 @@ T\underline{T}ACTCGAGT\underline{G}A
 
 For DNA duplexes, this program computes the hybridisation enthalpy and entropy from the elementary 
 parameters of each Crick's pair containing the single mismatch. 
-begin{displaymath}
+\begin{displaymath}
   \begin{array}[t]{ccc}
   \Delta{}h_\mathrm{single-mismatch}&=&\sum \delta{}h_\mathrm{Crick's-pair-containing-the-mismatch}\\
-  \Delta{}s_\mathrm{single-mismatch}&=&\sum \delta{}s_\mathrm{Crick's-pair-containing the-mismatch}
   \end{array}
 \end{displaymath}
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{ATC}} \choose \mbox{\texttt{TCG}}} = 
+\Delta H {\mbox{\texttt{AT}} \choose \mbox{\texttt{TC}} } + 
+\Delta H {\mbox{\texttt{TC}} \choose \mbox{\texttt{CG}} } \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
 
 For RNA duplexes, the different models to computes the thermodynamic contribution of single mismatch to the helix coil 
 stability are more complex.
 
-\textbf{Model from Amber R. Davis and Brent M Znosco, 2007-2008}
+
+\paragraph{\textbf{Model from Amber R. Davis and Brent M Znosco, 2007-2008}}
 
 \begin{multline*}
-\Delta h {\mbox{single-mismatch}} = 
-\delta h {\mbox{mismatch-nucleotides}} +
-\delta h {\mbox{mismatch-NN-interaction}} +
+\Delta h {(\mbox{single-mismatch})} = 
+\delta{}h_\mathrm{mismatch-nucleotides} +
+\delta{}h_\mathrm{mismatch-NN-interaction} +
 \delta{}h_\mathrm{AU/GU} \\
 \end{multline*}
 
@@ -744,115 +756,660 @@ Where :
 
 $\delta{}h_\mathrm{mismatch-nucleotides}$ accounts for the identity of the single mismatch nucleotides.
 
-$\delta{}h_\mathrm{mismatch-NN interaction}$ accounts for the interaction between the mismatch nucleotides and the nearest neighbors.
+$\delta{}h_\mathrm{mismatch-NN interaction}$ accounts for the interaction between the mismatch nucleotides and 
+the nearest neighbors. (R purine, Y pyrimidine)
 
 $\delta{}h_\mathrm{AU/GU}$ accounts for AU or GU nearest neighbors.
 
-       (The same computation is performed for $\Delta S$)
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{AUC}} \choose \mbox{\texttt{UUG}}} = 
+\Delta H {\mbox{\texttt{U}} \choose \mbox{\texttt{U}} } + 
+1 x \Delta H {\mbox{\texttt{AU}} } +
+\Delta H {\mbox{\texttt{RYY}} \choose \mbox{\texttt{YYR}} } \\
+\end{multline*}
 
-\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}
+       (The same computation is performed for $\Delta S$)
+       
+
+\paragraph{\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
 
 \begin{multline*}
-\Delta h {\mbox{single-mismatch}} =
-\delta h {\mbox{initiation-loop-of-2}} +
-\delta h {\mbox{per-AU/GU}} +
-\delta h {\mbox{GG}} +
-\delta h {\mbox{RU/YU}}\\
+\Delta h {(\mbox{single-mismatch})} =
+\delta{}h_\mathrm{initiation-loop-of-2} +
+\delta{}h_\mathrm{per-AU/GU} +
+\delta{}h_\mathrm{GG} +
+\delta{}h_\mathrm{RU/YU}\\
 \end{multline*}
 
 Where :
 
-$\delta{}h_\mathrm{mismatch-nucleotides}$ accounts for the identity of the single mismatch nucleotides.
+$\delta{}h_\mathrm{initiation-loop-of-2}$ accounts for the initiation of a single non canonical pair.
 
-$\delta{}h_\mathrm{mismatch NN interaction}$ accounts for the interaction between the mismatch nucleotides and the nearest neighbors.
+$\delta{}h_\mathrm{GG}$ accounts for a GG single mismatch.
 
-$\delta{}h_\mathrm{AU/GU}$ accounts for AU or GU nearest neighbors.
+$\delta{}h_\mathrm{RU/YU}$ accounts for a 5'RU/3'YU stack with R a purine and Y a pyrimidine.
+
+$\delta{}h_\mathrm{per-AU/GU}$ accounts for AU or GU nearest neighbors.
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{AUC}} \choose \mbox{\texttt{UUG}}} =
+\Delta H {\mbox{initiation-loop-of-2}} + 
+1 x \Delta H {\mbox{\texttt{per-AU}} } +
+\Delta H {\mbox{\texttt{RU}} \choose \mbox{\texttt{YU}} } \\
+\end{multline*}
 
        (The same computation is performed for $\Delta S$)
        
 For further information, see the referenced articles.
 
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
-all97 & DNA & Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 \\
-bre86 & DNA & Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 \\
-\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
-san96 & DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
-sug96 & DNA & Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505 \\
-tan04 & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150  \\
-fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
-\textbf{xia98} & RNA & Xia et al (1998) Biochemistry 37: 14719-14735 \\
-\textbf{sug95} & DNA/DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
-\textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
+\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594 \\
+ & & Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179 \\
+ & & Allawi and SantaLucia (1998).Nuc Acids Res 26: 2694-2701 \\
+ & & Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444 \\
+ & & Peyret et al. (1999). Biochemistry 38: 3468-3477 \\ 
+tur06 & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
+zno07 & RNA & Brent M Znosko et al (2007). Biochemistry 46: 13425-13436 \\
+\textbf{zno08} & RNA & Brent M Znosko et al (2008). Biochemistry 47: 10178-10187 \\
 \end{tabular}
+\end{table}
 
-\paragraph
-Example :
+\subsubsection{Tandem mismatches effect}
+
+The tandem mismatches (two adjacent mismatches) are taken into account but the two first and positions cannot
+be mismatched. Moreover the thermodynamic parameters are still not available for every possible cases.
+In such a case, the program, unable to compute any relevant result, will quit with a warning.
+
+For DNA duplexes, this program computes the hybridisation enthalpy and entropy from the elementary 
+parameters of each Crick's pair containing the mismatch(es). 
 \begin{multline*}
-\Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
-\Delta H {\mbox{\texttt{AG}} \choose \mbox{\texttt{TC}} } + 
-\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}} } +
-\Delta H {\mbox{\texttt{CG}} \choose \mbox{\texttt{GC}} } +
-\Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CT}} }
+\Delta{}h_\mathrm{tandem-mismatch} =
+\delta{}h_\mathrm{Crick's-pair-containing-tandem-mismatch} \\ + 
+\sum \delta{}h_\mathrm{Crick's-pair-containing-single-mismatch}
+\end{multline*}
+
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{ATGC}} \choose \mbox{\texttt{TCAG}}} = 
+\Delta H {\mbox{\texttt{AT}} \choose \mbox{\texttt{TC}} } + 
+\Delta H {\mbox{\texttt{TG}} \choose \mbox{\texttt{CA}} } + 
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{AG}} } \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+
+For RNA duplexes, the different models to computes the thermodynamic contribution of tandem mismatch to the helix coil 
+stability are more complex.
+
+\paragraph{Symmetric tandem mismatches : \textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
+
+\begin{multline*}
+\Delta h {(\mbox{tandem-mismatch})} = 
+\delta{}h_\mathrm{tandem-mismatch+closing-base-pairs} \\
+\end{multline*}
+
+Where :
+
+$\delta{}h_\mathrm{mismatch-nucleotides}$ accounts for the identity of the double mismatch nucleotides and the identity of the base pairs
+adjacent to the tandem mismatches.
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{G AC C}} \choose \mbox{\texttt{C CA G}}} = 
+\Delta H {\mbox{\texttt{AC}} \choose \mbox{\texttt{CA}}} -adjacent-to-GC\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)    
+
+\paragraph{Asymmetric tandem mismatches : \textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
+
+\begin{multline*}
+\Delta h {(\mbox{tandem-mismatch})} =
+( \delta{}h_\mathrm{symmetric-duplex-1} +
+\delta{}h_\mathrm{symmetric-duplex-2} ) / 2 \\ +
+\delta{}h_\mathrm{GG} +
+\delta{}h_\mathrm{p}\\
+\end{multline*}
+
+Where :
+
+$\delta{}h_\mathrm{symmetric-duplex-1}$ accounts for the enthalpy of a symmetric tandem mismatch composed of
+the first closing base pair and the first mismatch nucleotides.
+
+$\delta{}h_\mathrm{symmetric-duplex-2}$ accounts for the enthalpy of a symmetric tandem mismatch composed of
+the second closing base pair and the second mismatch nucleotides.
+
+$\delta{}h_\mathrm{GG}$ accounts for a GG pair adjacent to a AA pair or any non canonical pair containing a pyrimidine.
+
+$\delta{}h_\mathrm{p}$ accounts for an AG or GA pairs adjacent to a UC, CC or CU pair and a UU pair adjacent to an AA pair .
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{A GC C}} \choose \mbox{\texttt{U AU G}}} =
+( \Delta H {\mbox{\texttt{A GA U}} \choose \mbox{\texttt{U AG A}}} + 
+\Delta H {\mbox{\texttt{G UC C}} \choose \mbox{\texttt{C CU G}}} +
+\Delta H {\mbox{\texttt{GA}} -adjacent-to- \mbox{\texttt{CU}} } \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
+       
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594 \\
+ & & Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179 \\
+ & & Allawi and SantaLucia (1998).Nuc Acids Res 26: 2694-2701 \\
+ & & Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444 \\
+ & & Peyret et al. (1999). Biochemistry 38: 3468-3477 \\ 
+\textbf{tur99} & RNA & Douglas M Turner et al (1999). J.Mol.Biol.  288: 911-940 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Internal loop effect}
+
+The internal loops (more than two adjacent mismatches) are taken into account but the two first and positions cannot
+be mismatched. Moreover the thermodynamic parameters are still not available for every possible cases.
+In such a case, the program, unable to compute any relevant result, will quit with a warning.
+
+The thermodynamic model for DNA and RNA duplexes are similar.
+
+\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+
+\begin{multline*}
+\Delta h {(\mbox{internal-loop(n)})} =
+\delta{}h_\mathrm{asymmetry} +
+\delta{}h_\mathrm{left-terminal-mismatch} \\ +
+\delta{}h_\mathrm{right-terminal-mismatch}\\
+\Delta s {(\mbox{internal-loop(n)})} =
+\delta{}s_\mathrm{loop(n)} +
+\delta{}s_\mathrm{asymmetry} +
+\delta{}s_\mathrm{left-terminal-mismatch} \\ +
+\delta{}s_\mathrm{right-terminal-mismatch}\\
+\end{multline*}
+
+Where :
+
+$\delta{}h_\mathrm{internal-loop(n)}$ accounts for the internal loop of n nucleotides.
+
+$\delta{}h_\mathrm{asymmetry}$ accounts for the internal loop asymmetry (when the number of
+nucleic acid within the internal loop is higher in one of the strand).
+
+$\delta{}h_\mathrm{left-terminal-mismatch}$ accounts for the identity of the first mismatch 
+nucleotides of the loop.
+
+$\delta{}h_\mathrm{right-terminal-mismatch}$ accounts for the identity of the last mismatch 
+nucleotides of the loop.
+
+\textbf{Example} : Symmetric internal loop
+\begin{multline*}
+\Delta H {\mbox{\texttt{G ACCG C}} \choose \mbox{\texttt{C CATA G}}} = 
+\Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CC}}} +
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{AG}}}\\
+\Delta S {\mbox{\texttt{G ACCG C}} \choose \mbox{\texttt{C CATA G}}} = 
+\Delta S {\mbox{loop of 8}} +
+\Delta S {\mbox{\texttt{GA}} \choose \mbox{\texttt{CC}}} +
+\Delta S {\mbox{\texttt{GC}} \choose \mbox{\texttt{AG}}}\\
+\end{multline*}
+
+\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
+
+\begin{multline*}
+\Delta h {(\mbox{internal-loop(n)})} =
+\delta{}h_\mathrm{initiation-loop(n)} +
+\delta{}h_\mathrm{per-AU/GU} +
+(n1 - n2) \delta{}h_\mathrm{asymmetry} \\ +
+\delta{}h_\mathrm{first-non-canonical-pairs}\\
+\end{multline*}
+
+
+Where :
+
+$\delta{}h_\mathrm{initiation-loop(n)}$ accounts for the internal loop of n nucleotides.
+
+$\delta{}h_\mathrm{asymmetry}$ accounts for the internal loop asymmetry (when the number of
+there is an unequal numbers of nucleotides on each side) with n1 and n2 the
+number of nucleotides on each strand..
+
+$\delta{}h_\mathrm{per_AU/GU}$ accounts for each AU or GU base pair adjacent
+to the internal loop.
+
+$\delta{}h_\mathrm{first-non-canonical-pairs}$ accounts for each sequence
+specific first mismatch (bonus). It is not applied to loops of the form 1 x (n-1) with
+n > 2.
+
+
+\textbf{Example} : asymmetric internal loop
+\begin{multline*}
+\Delta H {\mbox{\texttt{A ACCG C}} \choose \mbox{\texttt{U C-UA G}}} = 
+\Delta H {\mbox{loop initiation(7)}} +
+1 x \Delta H {\mbox{\texttt{per-AU}}} +
+(4 - 3)\Delta H {\mbox{asymmetry}}\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)    
+       
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
+\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{GU wobble base pairs effect}
+
+The wobble GU base pairs are taken into account. This pairing is a non-Watson-Crick base pairing between two nucleotides 
+in RNA molecules, but the thermodynamic stability of a wobble base pair is comparable to that of a Watson-Crick base pair.
+Melting can also compute the thermodynamic of patterns with several adjacent GU base pairs.
+This program computes the hybridisation enthalpy and entropy from the elementary 
+parameters of each Crick's pair containing the GU base pairs.
+
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{pattern-composed-of-GU-base-pairs}&=&\sum \delta{}h_\mathrm{Crick's pair-containing-GU-base-pairs}\\
+  \end{array}
+\end{displaymath}
+
+\textbf{Examples} : One GU base pair
+\begin{multline*}
+\Delta H {\mbox{\texttt{GUC}} \choose \mbox{\texttt{CGG}}} = 
+\Delta H {\mbox{\texttt{GU}} \choose \mbox{\texttt{CG}}} +
+\Delta H {\mbox{\texttt{UC}} \choose \mbox{\texttt{GG}}}\\
+\end{multline*}
+
+\textbf{Examples} : Two adjacent GU base pairs
+\begin{multline*}
+\Delta H {\mbox{\texttt{GUGC}} \choose \mbox{\texttt{CGUG}}} = 
+\Delta H {\mbox{\texttt{GU}} \choose \mbox{\texttt{CG}}} +
+\Delta H {\mbox{\texttt{UG}} \choose \mbox{\texttt{GU}}} +
+\Delta H {\mbox{\texttt{UC}} \choose \mbox{\texttt{GG}}}\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+
+       
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{tur99} & RNA & Douglas M Turner et al (1999). J.Mol.Biol.  288: 911-940 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Single dangling end effect}
+
+The single dangling ends, that is the unmatched terminal nucleotides, can be taken into
+account, but all the thermodynamic parameters are not available. In such a case, 
+the result is unpredictable, and all cases are possible. 
+
+For DNA and RNA duplexes, this program computes the hybridisation enthalpy and entropy from the elementary 
+parameters of the Crick's pair containing the single dangling end. 
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{single-dangling-end}&=&\delta{}h_\mathrm{Crick's-pair-containing-the-dangling-end}\\
+  \end{array}
+\end{displaymath}
+
+\textbf{Example} :
+If the duplex is :
+\begin{alltt}
+GCTAG\textbf{-}
+CGATC\textbf{A}
+\end{alltt}
+\begin{multline*}
+\Delta H {\mbox{\texttt{GCTAG-}} \choose \mbox{\texttt{CGATCCA}}} =
+\Delta H {\mbox{perfectly-matching-sequence}} +
+\Delta H {\mbox{single-dangling-end}} \\
+\Delta H {\mbox{\texttt{GCTAG-}} \choose \mbox{\texttt{CGATCCA}}} =
+\Delta H {\mbox{\texttt{GCTAG}} \choose \mbox{\texttt{CGATCC}}} +
+\Delta H {\mbox{\texttt{G-}} \choose \mbox{\texttt{CA}}} \\
+\end{multline*}
+
+
+       (The same computation is performed for $\Delta S$)
+
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{bom00} & DNA & Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 \\
+sugdna02 & DNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
+sugrna02 & RNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
+\textbf{ser08} & RNA & Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 \\
+ & & Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Double dangling end effect}
+
+The double dangling ends, that is the two adjacent unmatched terminal nucleotides, can be taken into
+account (mostly for RNA sequences). This program computes the hybridisation enthalpy and entropy in two times :
+First, it computes the energy from the single dangling end as if the duplex contained
+only a single danging end and then, it adds a bonus for the second dangling end if it is necessary. 
+\begin{multline*}
+\Delta{}h_\mathrm{double-dangling-end} =
+\delta{}h_\mathrm{single-dangling-end} \\ + 
+\delta{}h_\mathrm{bonus-second-dangling-end}\\
+\end{multline*}
+
+\textbf{Example} :
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{UAC}} \choose \mbox{\texttt{A--}}} =
+\Delta H {\mbox{UA}} +
+\Delta H {\mbox{bonus-pyrimidine-purine-pyrimidine}} \\
 \end{multline*}
 
        (The same computation is performed for $\Delta S$)
 
-\begin{itemize}
-\item Single mismatch 
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+ser05 & RNA & Martin J Serra et al. (2005). RNA 11: 512-516 \\
+\textbf{ser06} & RNA & Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Long dangling end effect (poly A)}
+
+The long dangling ends, that is all the adjacent unmatched terminal nucleotides, can be taken into
+account (only for polyA dangling ends for the moment). It is possible to compute the thermodynamic 
+form one to four poly A dangling end. This program computes the hybridisation enthalpy 
+and entropy from the parameters of the long dangling end with the adjacent terminal base pair.  
+\begin{multline*}
+\Delta{}h_\mathrm{long-dangling-end} =
+\delta{}h_\mathrm{adjacent-terminal-base-pair+polyA} \\ 
+\end{multline*}
+
+\textbf{Example} :
+
+If the duplex is :
 \begin{alltt}
-ATC\textbf{G}GCTA
-TAG\textbf{A}CGAT
+GCTAG\textbf{---}
+CGATC\textbf{AAA}
 \end{alltt}
-\item Tandem mismatches 
+\begin{multline*}
+\Delta H {\mbox{\texttt{GCTAG---}} \choose \mbox{\texttt{CGATCCAAA}}} =
+\Delta H {\mbox{perfectly-matching-sequence}} +
+\Delta H {\mbox{long-dangling-end}} \\
+\Delta H {\mbox{\texttt{GCTAG---}} \choose \mbox{\texttt{CGATCCAAA}}} =
+\Delta H {\mbox{\texttt{GCTAG}} \choose \mbox{\texttt{CGATCC}}} +
+\Delta H {\mbox{\texttt{G---}} \choose \mbox{\texttt{CAAA}}} \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)
+
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{sugdna02} & DNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
+\textbf{sugrna02} & RNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Single bulge loop effect}
+
+The single bulge loops, that is the single unmatched internal nucleotides, can be taken into
+account. , but all the thermodynamic parameters are not available. In such a case, 
+the result is unpredictable, and all cases are possible. 
+There are several different models to compute the thermodynamic of single bulge loop:
+
+\paragraph{DNA and RNA dulexes :\textbf{nearest neighbor model "NNN"}} 
+
+\begin{multline*}
+\Delta h {(\mbox{single-bulge-loop})} =
+\delta{}h_\mathrm{unpaired-nucleotid+adjacent-base-pairs} \\
+\end{multline*}
+
+\textbf{Example} :
+If the duplex is :
 \begin{alltt}
-ATC\textbf{GC}GCTA
-TAG\textbf{AC}CGAT
+GCT\textbf{T}AGGC
+CGA\textbf{-}TCCG
 \end{alltt}
-\item Internal loop (symmetric)
-\begin{alltt}
-ATC\textbf{GACG}GCTA
-TAG\textbf{AACT}CGAT
-\end{alltt}
-\item Internal loop (asymmetric)
-\begin{alltt}
-ATC\textbf{GA-G}GCTA
-TAG\textbf{AACT}CGAT
-\end{alltt}
-\item GU base pair
-\begin{alltt}
-AUC\textbf{G}GCUA
-UAG\textbf{U}CGAU
-\end{alltt}
-\item Single dangling end
-\begin{alltt}
-\textbf{-}GCUAC
-\textbf{A}CGAUG
-\end{alltt}
-\item Double dangling end
-\begin{alltt}
-GCCAU\textbf{--}
-CGGUA\textbf{AG}
-\end{alltt}
-\item Long dangling end
-\begin{alltt}
-GCCAU\textbf{----}
-CGGUA\textbf{AAAA}
-\end{alltt}
-\item Single bulge loop 
-\begin{alltt}
-ATT\textbf{-}GCCG
-TAA\textbf{A}CGGC
-\end{alltt}
-\item Long bulge loop 
-\begin{alltt}
-ATT\textbf{---}GCCG
-TAA\textbf{ATC}CGGC
-\end{alltt}
-\item Inosine bases 
-\begin{alltt}
-ATT\textbf{I}GCCG
-TAA\textbf{U}CGGC
-\end{alltt}
+\begin{multline*}
+\Delta H {\mbox{\texttt{GCTTAGGC}} \choose \mbox{\texttt{CGA-TCCG}}} =
+\Delta H {\mbox{perfectly-matching-sequence-1}} +
+\Delta H {\mbox{single-bulge-loop}} \\ +
+\Delta H {\mbox{perfectly-matching-sequence-2}}\\
+\Delta H {\mbox{\texttt{GCTTAGGC}} \choose \mbox{\texttt{CGA-TCCG}}} =
+\Delta H {\mbox{\texttt{GCT}} \choose \mbox{\texttt{CGA}}} +
+\Delta H {\mbox{\texttt{TTA}} \choose \mbox{\texttt{A-T}}} +
+\Delta H {\mbox{\texttt{AGGC}} \choose \mbox{\texttt{TCCG}}}\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$)   
+  
+ However, some types of single bulge loop can't be only modelled with a NNN nearest 
+ neighbor model and the following models can give more reliable and accurate results (mostly
+ for RNA single bulge loops.)  
+  
+\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+
+\begin{multline*}
+\Delta h {(\mbox{single-bulge-loop})} =
+\delta{}h_\mathrm{intervening-NN} +
+\delta{}h_\mathrm{closing-AT-penalty}\\
+\Delta s {(\mbox{single-bulge-loop})} =
+\delta{}s_\mathrm{bulge-loop-of-1} +
+\delta{}s_\mathrm{intervening-NN} +
+\delta{}s_\mathrm{closing-AT-penalty}\\
+\end{multline*}
+
+
+Where :
+
+$\delta{}h_\mathrm{bulge-loop-of-1}$ accounts for the bulge loop of 1 nucleotide.
+
+$\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack.
+
+$\delta{}h_\mathrm{closing-AT-penalty}$ accounts for each AT base pair adjacent
+to the single bulge loop.
+
+\textbf{Example} :
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{GAC}} \choose \mbox{\texttt{C-G}}} =
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}}} \\
+\Delta S {\mbox{\texttt{GAC}} \choose \mbox{\texttt{C-G}}} =
+\Delta S {\mbox{bulge-loop-of-1}} +
+\Delta S {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}}} \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+
+\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
+
+\begin{multline*}
+\Delta h {(\mbox{single-bulge-loop})} =
+\delta{}h_\mathrm{initiation-bulge-loop-of-1} +
+\delta{}h_\mathrm{intervening-NN} \\
+\end{multline*}
+
+
+Where :
+
+$\delta{}h_\mathrm{bulge-loop-of-1}$ accounts for the bulge loop of 1 nucleotide.
+
+$\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack.
+
+
+\textbf{Example} :
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{GAC}} \choose \mbox{\texttt{C-G}}} =
+\Delta H {\mbox{bulge-loop-of-1}} +
+\Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}}} \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{tan04} & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150
+san04 & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
+ser07 & RNA & Martin J Serra et al (2007). Biochemistry 46 : 15123-15135
+\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{long bulge loop effect}
+
+The long bulge loops, that is all the adjacent unmatched internal nucleotides, can be taken into
+account. , but all the thermodynamic parameters are not available. In such a case, 
+the result is unpredictable, and all cases are possible. 
+The RNA and DNA thermodynamic models are similar : 
+  
+\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+
+\begin{multline*}
+\Delta h {(\mbox{long-bulge-loop})} =
+\delta{}h_\mathrm{closing-AT-penalty}\\
+\Delta s {(\mbox{single-bulge-loop})} =
+\delta{}s_\mathrm{bulge-loop-of-n} +
+\delta{}s_\mathrm{closing-AT-penalty}\\
+\end{multline*}
+
+
+Where :
+
+$\delta{}h_\mathrm{bulge-loop-of-n}$ accounts for the bulge loop of n nucleotides.
+
+$\delta{}h_\mathrm{closing-AT-penalty}$ accounts for each AT base pair adjacent
+to the long bulge loop.
+
+\textbf{Example} :
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{GACGC}} \choose \mbox{\texttt{C---G}}} =
+0
+\Delta S {\mbox{\texttt{GACGC}} \choose \mbox{\texttt{C---G}}} =
+\Delta S {\mbox{bulge-loop-of-3}} \\
+\end{multline*}
+
+\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
+
+\begin{multline*}
+\Delta h {(\mbox{long-bulge-loop})} =
+\delta{}h_\mathrm{initiation-bulge-loop-of-n} \\ +
+\delta{}h_\mathrm{per-AU/GU-penalty}\\
+\end{multline*}
+
+
+Where :
+
+$\delta{}h_\mathrm{bulge-loop-of-n}$ accounts for the bulge loop of n nucleotides.
+
+$\delta{}h_\mathrm{per-AU/GU-penalty}$ accounts for each AU or GU base pair adjacent
+to the long bulge loop.
+
+
+\textbf{Example} :
+
+\begin{multline*}
+\Delta H {\mbox{\texttt{AACGC}} \choose \mbox{\texttt{U---G}}} =
+\Delta H {\mbox{bulge-loop-of-3}} +
+1 x \Delta H {\mbox{per-AU-penalty}} \\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
+\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Inosine bases effect}
+
+The inosine bases (I) are taken into account, but all the thermodynamic parameters are not available. 
+In such a case, the result is unpredictable, and all cases are possible, so the
+programm quit with a warning. For the RNA duplexes, only the thermodynamic parameters
+for IU base pairs are available for the moment.
+This program computes the hybridisation enthalpy and entropy from the elementary 
+parameters of each Crick's pair containing the inosine base.
+
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{pattern-containing-inosine-bases}&=&\sum
+  \delta{}h_\mathrm{Crick's pair-containing-inosine-bases}\\
+  \end{array}
+\end{displaymath}
+
+\textbf{Examples} : One inosine base
+\begin{multline*}
+\Delta H {\mbox{\texttt{AIC}} \choose \mbox{\texttt{TAG}}} = 
+\Delta H {\mbox{\texttt{AI}} \choose \mbox{\texttt{TA}}} +
+\Delta H {\mbox{\texttt{IC}} \choose \mbox{\texttt{AG}}}\\
+\end{multline*}
+
+\textbf{Examples} : Two adjacent base pairs containing inosine
+\begin{multline*}
+\Delta H {\mbox{\texttt{GIAC}} \choose \mbox{\texttt{CAIG}}} = 
+\Delta H {\mbox{\texttt{GI}} \choose \mbox{\texttt{CA}}} +
+\Delta H {\mbox{\texttt{IA}} \choose \mbox{\texttt{AI}}} +
+\Delta H {\mbox{\texttt{AC}} \choose \mbox{\texttt{IG}}}\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+       
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{san05} & DNA & Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267 \\
+\textbf{zno07} & RNA & Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 \\
+\end{tabular}
+\end{table}
+
+\subsubsection{Azobenzenes effect}
+
+The trans azobenzenes (X\_T) and cis azobenzenes (X\_C) in DNA duplexes are taken 
+into account. 
+
+\begin{displaymath}
+  \begin{array}[t]{ccc}
+  \Delta{}h_\mathrm{pattern-containing-inosine-bases}&=&\sum
+  \delta{}h_\mathrm{Crick's pair-containing-inosine-bases}\\
+  \end{array}
+\end{displaymath}
+
+\textbf{Examples} : One inosine base
+\begin{multline*}
+\Delta H {\mbox{\texttt{AIC}} \choose \mbox{\texttt{TAG}}} = 
+\Delta H {\mbox{\texttt{AI}} \choose \mbox{\texttt{TA}}} +
+\Delta H {\mbox{\texttt{IC}} \choose \mbox{\texttt{AG}}}\\
+\end{multline*}
+
+\textbf{Examples} : Two adjacent base pairs containing inosine
+\begin{multline*}
+\Delta H {\mbox{\texttt{GIAC}} \choose \mbox{\texttt{CAIG}}} = 
+\Delta H {\mbox{\texttt{GI}} \choose \mbox{\texttt{CA}}} +
+\Delta H {\mbox{\texttt{IA}} \choose \mbox{\texttt{AI}}} +
+\Delta H {\mbox{\texttt{AC}} \choose \mbox{\texttt{IG}}}\\
+\end{multline*}
+
+       (The same computation is performed for $\Delta S$) 
+       
+For further information, see the referenced articles.
+
+\begin{table}[h]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{san05} & DNA & Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267 \\
+\textbf{zno07} & RNA & Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 \\
+\end{tabular}
+\end{table}
 \item Azobenzenes 
 \begin{alltt}
 ATT\textbf{X\_C}GCCG
@@ -1132,8 +1689,7 @@ in aqueous medium. Therefore the use of denaturing agents such as formamide
 completely invalidates the results.
    
 \section{References }
-Allawi 
-H.T., SantaLucia J. (1997). Thermodynamics and NMR of internal G-T mismatches 
+Allawi H.T., SantaLucia J. (1997). Thermodynamics and NMR of internal G-T mismatches 
 in DNA. \textit{Biochemistry}  36: 10581-10594   
 
 Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics parameters 
@@ -1146,6 +1702,23 @@ Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics of internal
 A.C mismatches in DNA: sequence dependence and pH effects.
 \textit{Biochemistry} 37: 9435-9444.
 
+Amanda S. O'toole, Stacy Miller and Martin J Serra (2005), Stability of 3' double 
+nucleotide overhangs that model the 3'ends of siRNA. \textit{RNA} 11: 512-516
+
+Amanda S. O'toole, Stacy Miller, Nathan Haines, M. Coleen Zink and Martin J Serra (2006). 
+Comprehensive thermodynamic analysis of 3' double-nucleotide overhangs neighboring 
+Watson-Crick terminal base pairs.\textit{Nucleic Acids research} 34: 3338-3344
+
+Amber R. Davis, and Brent M. Znosko (2007), Thermodynamic Characterization of Single 
+Mismatches Found in Naturally Occurring RNA.\textit{Biochemistry} 46: 13425-13436
+
+Amber R. Davis, and Brent M. Znosko (2008), Thermodynamic Characterization of Naturally 
+Occurring RNA Single Mismatches with G-U Nearest Neighbors.\textit{Biochemistry} 
+47: 10178-10187
+
+Blake, R. D., and Delcourt, S. G. (1998) , Thermal stability of DNA.
+\textit{Nucleic Acids Res} 26: 3323-3332 and corrigendum.
+
 Bommarito S., Peyret N., SantaLucia J. (2000).  Thermodynamic parameters for DNA
 sequences with dangling ends.  \textit{Nucleic Acids Res} 28: 1929-1934
 
@@ -1153,20 +1726,111 @@ sequences with dangling ends.  \textit{Nucleic Acids Res} 28: 1929-1934
 H., Marky L.A. (1986). Predicting DNA duplex stability from the base sequence. 
  \textit{Proc Natl Acad Sci USA}  83: 3746-3750   
 
-  Freier S.M., Kierzek R., Jaeger 
-J.A., Sugimoto N., Caruthers M.H., Neilson T., Turner D.H. (1986). \textit{Biochemistry} 
+Broda Magdalena, Elbieta Kierzek, Zofia Gdaniec, Tadeusz Kulinski and Ryszard 
+Kierzek (2005), Thermodynamic stability of RNA structures formed by CNG trinucleotide 
+repeats. Implication for prediction of RNA structure.\textit{Biochemistry} 
+44: 10873-10882.
+
+Casey J., and Davidson N. (1977) \textit{Nucleic acids research} 4: 1539-1532.
+
+Cullen Br, Bick Md (1976), Thermal denaturation of DNA from bromodeoxyuridine 
+substitued cells.\textit{Nucleic acids research} 3: 49-62.
+
+David H. Mathews, Jeffrey Sabina, Michael Zucker and Douglas H Turner (1999)
+Expanded sequence dependence of thermodynamic parameters improves prediction
+of RNA secondary structure.\textit{J. Mol. Biol} 288 : 911-940
+
+Elzbieta Kierzek, David H. Mathews, Anna Ciesielska, Douglas H. Turner and Ryszard Kierzek 
+(2006) Nearest neighbor parameters for Watson Crick complementary heteroduplexes
+formed between 2-O-methyl RNA and RNA oligonucleotides. \textit{Nucleic acids research} 
+34: 3609-3614
+
+Escara JF, Hutton Jr (1980), Thermal stability and renaturation of DNA in dimethyl sulfoxide
+solutions: acceleration of the renaturation rate.\textit{Biopolymers} 19: 1315-1327.
+
+Frank-Kamenetskii, M. D. (1971), Simplification of the empirical relationship between 
+melting temperature of DNA, its GC content and concentration of sodium ions in solution
+\textit{Biopolymers} 10: 2623-2624.
+
+Freier S.M., Kierzek R., Jaeger, J.A., Sugimoto N., Caruthers M.H., Neilson T., Turner D.H.
+(1986). \textit{Biochemistry} 
  83:9373-9377 
+ 
+ Fumiaki Tanaka, Atsushi Kameda, Masahito Yamamoto and Azuma Ohuchi (2004)., Thermodynamic 
+ Parameters based on a nearest neighbor model for DNA sequences with a single bulge loop.
+\textit{Biochemistry} 43 : 7143-7150
+
+Hiroyuki Asanuma, Daijiro Matsunaga and Makoto Komiyama (2005), Clear-cut photo-regulation 
+of the formation and dissociation of the DNA duplex by modified oligonucleotide involving 
+multiple azobenzenes.\textit{Nucleic acids Symposium Series} 49 : 35-36
+
+Hutton Jr (1977) \textit{Nucleic acids research} 4: 3537-3555.
+
+Jaya Badhwar, Saradasri Karri, Cody K. Cass, Erica L. Wunderlich and Brent M. Znosco (2007). 
+Thermodynamic characterization of RNA duplexes containing naturally occuring 1x2 nucleotide 
+internal loops.\textit{Biochemistry} 46: 14715-14724.
+
+Joshua M. Blose, Michelle L. Manni, Kelly A. Klapec, Yukiko Stranger-Jones, Allison C.
+Zyra, Vasiliy Sim, Chad A. Griffith, Jason D. Long, and Martin J. Serra (2007) 
+Non-Nearest-Neighbor Dependence of Stability for RNA Bulge Loops Based on the Complete 
+Set of Group I Single Nucleotide Bulge Loops.\textit{Biochemistry} 46 : 15123-15135
+
+Junji Kawakami1,2, Hiroyuki Kamiya3, Kyohko Yasuda2, Hiroyoshi Fujiki1, Hiroshi Kasai3 and
+Naoki Sugimoto (2001), Thermodynamic stability of base pairs between 2-hydroxyadenine and 
+incoming nucleotides as a determinant of nucleotide incorporation specificity during 
+replication.\textit{Nucleic acids research} 29 : 3289-3296
+
+Marmur, J., and Doty, P. (1962), Determination of the base composition of deoxyribonucleic 
+acid from its thermal denaturation temperature. \textit{J. Mol. Biol.} 5: 109-118.
+
+McConaughy, B.L., Laird, C.D. and McCarthy, B.I. (1969) \textit{ Biochemistry} 8: 3289-3295.
+
+Mitsuhashi M. (1996), Technical report: Part 1. Basic requirements for designing optimal 
+oligonucleotide probe sequences.\textit{J. Clin. Lab. Anal} 10: 277-284.
+
+Musielski H., Mann W, Laue R, Michel S (1981) Influence of dimethylsulfoxide on 
+transcription by bacteriophage T3-induced RNA polymerase.\textit{Z allg Microbiol}
+21: 447-456.
+
+Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz (2001) Oligonucleotide melting 
+temperatures under PCR conditions : deoxynucleotide Triphosphate and Dimethyl sulfoxide 
+concentrations with comparison to alternative empirical formulas \textit{Clinical Chemistry}
+47: 1956-1961.
  
  Owczarzy R., Moreira B.G., You Y., Behlke M.B., Walder J.A.(2008) Predicting stability of DNA duplexes 
  in solutions containing Magnesium and Monovalent Cations. \textit{Biochemistry} 47: 5336-5353.  
+
+Patricia M. McTigue, Raymond J. Peterson, and Jason D. Kahn (2004) Sequence-Dependent 
+Thermodynamic Parameters for Locked Nucleic Acid (LNA)DNA Duplex
+Formation.\textit{Biochemistry} 
+43 : 5388-5405
+
+Peyret N. (2000), Prediction of nucleic acid hybridization : parameters and algorithms.
+\textit{Ph.D Thesis} Section .5.4.2, 128, Wayne State University, Detroit, MI.
 
 Peyret N., Seneviratne P.A., Allawi H.T., SantaLucia J. (1999). Nearest Neighbor thermodynamics and 
 NMR of DNA sequences with internal A.A, C.C, G.G and T.T mismatches. dependence and pH effects.
 \textit{Biochemistry} 38: 3468-3477
 
+R. D. Blake and Scott G. Delcourt (1996), Thermodynamic effects of formamide on DNA stability.
+\textit{Nucleic Acids Research} 24, No. 11 : 2095-2103
+
+Record, M.T., Jr (1967) \textit{Biopolymers} 5: 975-992.
+
+Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. 
+Behlke and Joseph A.Walder (2004), Effects of sodium ions on DNA duplex oligomers: Improved 
+predictions of melting temperatures. \textit{Biochemistry} 43: 3537-3554.
+
   SantaLucia J. Jr, Allawi H.T., Seneviratne P.A. (1996). Improved 
 nearest-neighbor parameters for predicting DNA duplex stability. \textit{Biochemistry} 
-35: 3555-3562   
+35: 3555-3562  
+
+Schildkraut, C., and Lifson, S. (1965), Dependence of the melting temperature of DNA on 
+salt concentration.\textit{Biopolymers} 3: 195-208.
+
+Stacy Miller, Laura E. Jones, Karen Giovannitti, Dan Piper and Martin J. Serra (2008)
+Thermodynamic analysis of 5 and 3 single- and 3 double-nucleotide overhangs 
+neighboring wobble terminal base pairs.\textit{Nucleic Acids research}  36: 5652-5659  
 
   Sugimoto N., Katoh M., Nakano S., Ohmichi T., Sasaki M. (1994). 
 RNA/DNA hybrid duplexes with identical nearest-neighbor base-pairs hve identical 
@@ -1180,6 +1844,10 @@ to predict stability of RNA/DNA hybrid duplexes. \textit{Biochemistry} 34: 11211
 parameters and helix initiation factor to predict stability of DNA duplexes. 
 \textit{Nuc Acids Res}  24: 4501-4505  
 
+Tatsuo Ohmichi, Shu-ichi Nakano, Daisuke Miyoshi and Naoki Sugimoto (2002), Long RNA dangling
+end has large energetic contribution to duplex stability.\textit{J. Am. Chem. Soc.}
+124: 10367-10372
+
 Watkins N.E., Santalucia J. Jr. (2005). Nearest-neighbor thermodynamics of deoxyinosine 
 pairs in DNA duplexes. \textit{Nuc Acids Res} 33: 6258-6267 
 
@@ -1189,7 +1857,18 @@ inosine-uridine pairs in RNA duplexes. \textit{Biochemistry} 46: 4625-4634
   Xia T., SantaLucia J., Burkard M.E., Kierzek 
 R., Schroeder S.J., Jiao X., Cox C., Turner D.H. (1998). Thermodynamics parameters 
 for an expanded nearest-neighbor model for formation of RNA duplexes with 
-Watson-Crick base pairs. \textit{Biochemistry}  37: 14719-14735   
+Watson-Crick base pairs. \textit{Biochemistry}  37: 14719-14735  
+
+Zhi-Jie Tan and Shi-Jie Chen, (2006), Nucleic acid helix stability: effects of Salt 
+concentration, cation valence and size, and chain length.\textit{Biophysical Journal}
+90: 1175-1190. 
+
+Zhi-Jie Tan and Shi-Jie Chen (2007), RNA helix stability in Mixed Na+/Mg2+ solutions" 
+\textit{Biophysical Journal} 92: 3615-3632.
+
+Zhi John Lu, Douglas H. Turner and David H. Mathews (2006). A set of nearest neighbor 
+parameters for predicting the enthalpy change of RNA secondary structure formation. 
+\textit{Nucleic Acids Research} 34: 4912-4924. 
 
   For review see: 
   
@@ -1201,46 +1880,20 @@ SantaLucia  J., Hicks Donald (2004) The Thermodynamics of DNA structural motifs.
   
   Wetmur J.G. (1991) DNA probes: applications of the principles of nucleic 
 acid hybridization. \textit{Crit Rev Biochem Mol Biol} 26: 227-259   
-   
-\section{Files }
-\begin{itemize}
-\item [\textit{*.nn}] Files containing the nearest-neighbor parameters, enthalpy and entropy, 
-for each Crick's pair.  They have to be placed in a directory defined during 
-the compilation or targeted by the  environment variable NN\_PATH.  
-\item [\textit{tkmelting.pl}] A Graphical User Interface written in perl/tk is available for users
-who prefer  the 'button and menu' approach.  
-\item [\textit{*.pl}] Scripts are available to 
-use \textsc{melting} iteratively. For instance, the script multi.pl permits to predict 
-the Tm of several duplexes in one shot. The script profil.pl allow
-an interactive computation along a sequence, by sliding a window of specified width. 
-  
-\end{itemize}
  
 \section{See Also }
 New versions and 
-related material can be found at \url{http://www.pasteur.fr/recherche/unites/neubiomol/meltinghome.html} 
-and at \url{https://sourceforge.net/projects/melting/}
-  
-You can use \textsc{melting} through a web server at \url{http://bioweb.pasteur.fr/seqana
-l/interfaces/melting.html}
-  
-\section{Known Bugs }
-The infiles have to be ended by a blank line because otherwise the last line is not decoded.
+related material can be found at 
 
-If an infile is called, containing the 
-address of another input file, it does not care of this latter.  If it 
-is its own address, the program quit (is it a bug or a feature?).   
- 
-In interactive mode, a sequence can be entered on several lines with a backslash\\
-\texttt{AGCGACGAGCTAGCCTA{\textbackslash}\\
-AGGACCTATACGAC}\\
-If by mistake it is entered as  \\
-\texttt{AGCGACGAGCTAGCCTA{\textbackslash}{}AGGACCTATACGAC}
+\url{http://www.pasteur.fr/recherche/unites/neubiomol/meltinghome.html} 
 
-The backslash will be considered 
- as an illegal character. Here again, I do not think it is actually a bug 
-(even if it is unlikely, there is a small probability that the  backslash 
-could actually be a mistyped base).   
+\url{https://sourceforge.net/projects/melting/}
+
+\url{http://www.ebi.ac.uk/compneur-srv/melting/}
+  
+You can use \textsc{melting} through a web server at 
+\url{http://bioweb.pasteur.fr/seqanal/interfaces/melting.html}
+\url{http://www.ebi.ac.uk/compneur-srv/melting/melt.php}   
    
 \section{Copyright }
 Melting is copyright 
@@ -1277,6 +1930,7 @@ lenov@ebi.ac.uk
   
 \section{History }
 
+The Java version has been rewriten from the beginning.
 See the file ChangeLog for the changes of the versions 4 and more recent.
 
 \end{document}
