@@ -36,8 +36,8 @@ If you use \textsc{melting}, please quote
 The options are treated sequentially. If there is a conflict between the value
 of two options, the latter normally erases the former.
 
-\begin{description}
 \subsection{Information about MELTING}
+\begin{description}
 
 \item [\textbf{-h}]\mbox{}\\ 
   Displays a short help and quit.
@@ -49,8 +49,10 @@ of two options, the latter normally erases the former.
   Return the directory supposed to contain the sets of calorimetric parameters and quit. 
   If the environment variable NN\_PATH is set, it is returned. Otherwise, the value
   defined by default during the compilation is returned.
+\end{description}
 
 \subsection{Mandatory options}
+\begin{description}
 
 \item [\textbf{-S} \textit{sequence}  ]\mbox{}\\ 
   Sequence of one strand of the nucleic 
@@ -88,8 +90,10 @@ of two options, the latter normally erases the former.
   \item [\textit{mrnarna}] : RNA sequence (option \textbf{-S}) and 2-o-methyl RNA complementary sequence (option \textbf{-C})
   \end{itemize}
   This option is mandatory to select the default equations and methods to use.
+\end{description}
 
 \subsection{General options}
+\begin{description}
 
 \item [\textbf{-T} \textit{xxx}  ]\mbox{}\\ 
 Size threshold before approximative computation. The nearest-neighbour approach 
@@ -143,8 +147,10 @@ to see if you can get something interesting).
   See section ALGORITHM for details. If the sequences are automatically recognized as self complementary sequences or if the option \textbf{-self}
   is used, the factor correction is automatically 1. Otherwise F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. 
   The default factor value is 4.
+\end{description}
 
 \subsection{Set of thermodynamic parameters and methods (models)}
+\begin{description}
 
 By default, the approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), otherwise the nearest 
 neighbor model is used. 
@@ -598,6 +604,7 @@ structures recognized by Melting).
   \end{array}
 \end{displaymath}
 
+\paragraph
 \textbf{Example} : 
 
 \textit{Sequence with a single mismatch} 
@@ -648,6 +655,7 @@ fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
 \textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
 \end{tabular}
 
+\paragraph
 Example :
 \begin{multline*}
 \Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
@@ -678,6 +686,7 @@ For further information, see the referenced article.
 \textbf{bro05} & RNA & Broda et al (2005). Biochemistry 44: 10873-10882 \\
 \end{tabular}
 
+\paragraph
 Sequence example :
 \begin{alltt}
 G\textbf{CAGCAGCAG}C
@@ -776,6 +785,7 @@ fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
 \textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
 \end{tabular}
 
+\paragraph
 Example :
 \begin{multline*}
 \Delta H {\mbox{\texttt{AGCGA}} \choose \mbox{\texttt{TCGCT}}} = 
