@@ -243,11 +243,10 @@ public class NucleotidSequences {
 	 * @return true if the pattern between the positions pos1 and pos2 in the duplex is a CNG repeat pattern.
 	 */
 	public boolean isCNGPattern(int pos1, int pos2){
-		if (pos2 - pos1 + 1 != getDuplexLength() || pos2 - pos1 + 1 < 8){
+		if (pos2 - pos1 + 1 != getDuplexLength() || pos2 - pos1 + 1 < 8 || (pos2 - pos1 - 1)/3 > 7){
 			return false;
 		}
-		
-		if (duplex.get(0).getTopAcid().equals("G") == false || duplex.get(duplex.size() - 1).equals("C") == false){
+		if (duplex.get(0).getTopAcid().equals("G") == false || duplex.get(duplex.size() - 1).getTopAcid().equals("C") == false){
 			return false;
 		}
 
