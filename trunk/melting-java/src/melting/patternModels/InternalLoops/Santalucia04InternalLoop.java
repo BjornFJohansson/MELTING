@@ -92,7 +92,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos1), newSequences.getComplementaryNNPair(pos1));
-		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos2 - 2), newSequences.getComplementaryNNPair(pos2 - 2));
+		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos2 - 1), newSequences.getComplementaryNNPair(pos2 - 1));
 
 		OptionManagement.meltingLogger.log(Level.FINE, "Right terminal mismatch : " + newSequences.getSequenceNNPair(pos1) + "/" + newSequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
 		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + newSequences.getSequenceNNPair(pos2 - 1) + "/" + newSequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
@@ -114,7 +114,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 			}
 		}
 		else {
-			double value = collector.getInternalLoopValue("30").getEntropy() - 2.44 * 1.99 * Math.log(loopLength/30.0);
+			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * Math.log(loopLength/30.0);
 			
 			OptionManagement.meltingLogger.log(Level.FINE, "Internal loop of" + loopLength + " :  enthalpy = 0" + "  entropy = " + value);
 

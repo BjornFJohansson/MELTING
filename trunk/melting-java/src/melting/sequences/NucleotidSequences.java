@@ -591,32 +591,36 @@ public class NucleotidSequences {
 	 * Ex of type of internal loop : "1x2", "2x3", "4x4", ....
 	 */
 	public String getInternalLoopType(int pos1, int pos2){
-		if (isAsymetricInternalLoop(pos1, pos2)){
-			int internalLoopSize1 = 0;
-			int internalLoopSize2 = 0;
-			for (int i = pos1 + 1; i <= pos2 - 1; i++ ){
-				BasePair pair = duplex.get(i);
-				if (pair.getTopAcid().equals("-") == false){
-					internalLoopSize1 ++;
-				}
-				
-				if (pair.getBottomAcid().equals("-") == false){
-					internalLoopSize2 ++;
-				}
+		int internalLoopSize1 = 0;
+		int internalLoopSize2 = 0;
+		for (int i = pos1 + 1; i <= pos2 - 1; i++ ){
+			BasePair pair = duplex.get(i);
+			if (pair.getTopAcid().equals("-") == false){
+				internalLoopSize1 ++;
 			}
+			
+			if (pair.getBottomAcid().equals("-") == false){
+				internalLoopSize2 ++;
+			}
+		}
+		if (isAsymetricInternalLoop(pos1, pos2)){
 			if (Math.min(internalLoopSize1, internalLoopSize2) == 1 && Math.max(internalLoopSize2, internalLoopSize1) > 2){
 				return Integer.toString(internalLoopSize1) + "x" + "n_n>2";
 			}
-			else if ((internalLoopSize1 == 2 && internalLoopSize2 != 3 && internalLoopSize2 != 1) || (internalLoopSize2 == 2 && internalLoopSize1 != 3 && internalLoopSize1 != 1)){
-				return "others_non_2x2";
+			else if ((internalLoopSize1 == 1 && internalLoopSize2 == 2) || (internalLoopSize1 == 2 && internalLoopSize2 == 1) || (internalLoopSize1 == 2 && internalLoopSize2 == 3) || (internalLoopSize1 == 3 && internalLoopSize2 == 2)){
+				return Integer.toString(Math.min(internalLoopSize1, internalLoopSize2)) + "x" + Integer.toString(Math.max(internalLoopSize1, internalLoopSize2));
 			}
 			else {
-				return Integer.toString(internalLoopSize1) + "x" + Integer.toString(internalLoopSize2);
+				return "others_non_2x2";
 			}
 		}
 		else{
-			String internalLoopSize = Integer.toString(pos2 - pos1 - 1);
-			return internalLoopSize + "x" + internalLoopSize;
+			if ((internalLoopSize1 == 2 && internalLoopSize2 == 2) || (internalLoopSize1 == 1 && internalLoopSize2 == 1)){
+				return Integer.toString(Math.min(internalLoopSize1, internalLoopSize2)) + "x" + Integer.toString(Math.max(internalLoopSize1, internalLoopSize2));
+			}
+			else {
+				return "others_non_2x2";
+			}
 		}
 	}
 
