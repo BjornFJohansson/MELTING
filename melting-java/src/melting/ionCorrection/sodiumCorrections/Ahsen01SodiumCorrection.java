@@ -37,7 +37,7 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	/**
 	 * String entropyCorrection : formula for the entropy correction.
 	 */
-	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x ln(Na)";
+	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x log10(Na)";
 	
 	// CorrectionMethod interface implementation
 	
@@ -66,7 +66,7 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Ahsen et al. (2001) : " );
 		OptionManagement.meltingLogger.log(Level.FINE, entropyCorrection);
 		
-		double entropy = 0.847 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log(environment.getNa());
+		double entropy = 0.847 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log10(environment.getNa());
 
 		return entropy;
 	}
