@@ -27,49 +27,49 @@
     	
     <data type="hairpin_loop">
     	<hairpin size="3">
-  			<entropy>-11.3</entropy>
+  			<entropy>11.3</entropy>
   		</hairpin>
 		<hairpin size="4">
-  			<entropy>-11.3</entropy>
+  			<entropy>11.3</entropy>
   		</hairpin>
 		<hairpin size="5">
-  			<entropy>-10.6</entropy>
+  			<entropy>10.6</entropy>
   		</hairpin>
 		<hairpin size="6">
-  			<entropy>-12.9</entropy>
+  			<entropy>12.9</entropy>
   		</hairpin>
 		<hairpin size="7">
-  			<entropy>-13.5</entropy>
+  			<entropy>13.5</entropy>
   		</hairpin>
 		<hairpin size="8">
-  			<entropy>-13.9</entropy>
+  			<entropy>13.9</entropy>
   		</hairpin>
 		<hairpin size="9">
-  			<entropy>-14.5</entropy>
+  			<entropy>14.5</entropy>
   		</hairpin>
 		<hairpin size="10">
-  			<entropy>-14.8</entropy>
+  			<entropy>14.8</entropy>
   		</hairpin>
  		<hairpin size="12">
-  			<entropy>-16.1</entropy>
+  			<entropy>16.1</entropy>
   		</hairpin>
  		<hairpin size="14">
-  			<entropy>-16.4</entropy>
+  			<entropy>16.4</entropy>
   		</hairpin>
  		<hairpin size="16">
-  			<entropy>-17.1</entropy>
+  			<entropy>17.1</entropy>
   		</hairpin>
  		<hairpin size="18">
-  			<entropy>-17.7</entropy>
+  			<entropy>17.7</entropy>
   		</hairpin>
  		<hairpin size="20">
-  			<entropy>-18.4</entropy>
+  			<entropy>18.4</entropy>
   		</hairpin>
  		<hairpin size="25">
-  			<entropy>-19.7</entropy>
+  			<entropy>19.7</entropy>
   		</hairpin>
  		<hairpin size="30">
-  			<entropy>-20.3</entropy>
+  			<entropy>20.3</entropy>
   		</hairpin>
   		
   		<bonus type="triloop" sequence="AG-x-A/T">

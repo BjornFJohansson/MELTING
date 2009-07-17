@@ -189,10 +189,10 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				throw new NoExistingMethodException("There is no implemented ion correction method.");
 			}
 			this.environment.setResult(saltCorrection.correctMeltingResults(this.environment));
-			
-			if (environment.getResult().getSaltIndependentEntropy() > 0){
-				double TmInverse = 1 / this.environment.getResult().getTm() + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
-				this.environment.setResult(1 / TmInverse);
+
+			if (environment.getResult().getSaltIndependentEntropy() != 0){
+				double TmInverse = 1 / (this.environment.getResult().getTm() + 273.15) + this.environment.getResult().getSaltIndependentEntropy() / this.environment.getResult().getEnthalpy();
+				this.environment.setResult(1 / TmInverse - 273.15);
 			}
 		}
 		return this.environment.getResult();

@@ -27,48 +27,48 @@
   			
   		<data type="long_mismatch">
   			<mismatch size="3">
-  				<entropy>-10.3</entropy>
+  				<entropy>10.3</entropy>
   			</mismatch>
   			<mismatch size="4">
-  				<entropy>-11.6</entropy>
+  				<entropy>11.6</entropy>
   			</mismatch>
   			<mismatch size="5">
-  				<entropy>-12.9</entropy>
+  				<entropy>12.9</entropy>
   			</mismatch>
   			<mismatch size="6">
-  				<entropy>-14.2</entropy>
+  				<entropy>14.2</entropy>
   			</mismatch>
   			<mismatch size="7">
-  				<entropy>-14.8</entropy>
+  				<entropy>14.8</entropy>
   			</mismatch>
   			<mismatch size="8">
-  				<entropy>-15.5</entropy>
+  				<entropy>15.5</entropy>
   			</mismatch>
   			<mismatch size="9">
-  				<entropy>-15.8</entropy>
+  				<entropy>15.8</entropy>
   			</mismatch>
   			<mismatch size="10">
-  				<entropy>-15.8</entropy>
+  				<entropy>15.8</entropy>
   			</mismatch>
  			<mismatch size="12">
-  				<entropy>-16.7</entropy>
+  				<entropy>16.7</entropy>
   			</mismatch>
  			<mismatch size="14">
-  				<entropy>-17.4</entropy>
+  				<entropy>17.4</entropy>
   			</mismatch>
  			<mismatch size="16">
-  				<entropy>-18.1</entropy>
+  				<entropy>18.1</entropy>
   			</mismatch>
  			<mismatch size="18">
-  				<entropy>-18.7</entropy>
+  				<entropy>18.7</entropy>
   			</mismatch>
  			<mismatch size="20">
-  				<entropy>-19.0</entropy>
+  				<entropy>19.0</entropy>
   			</mismatch>
  			<mismatch size="25">
-  				<entropy>-20.3</entropy>
+  				<entropy>20.3</entropy>
   			</mismatch>
  			<mismatch size="30">
-  				<entropy>-21.3</entropy>
+  				<entropy>21.3</entropy>
   			</mismatch>
   		</data>
