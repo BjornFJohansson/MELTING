@@ -34,7 +34,7 @@ public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
 	/**
 	 * String NaCorrection : formula to compute a sodium equivalence.
 	 */
-	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 4 x sqrt(Mg - dNTP);";
+	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 4 x sqrt(Mg - dNTP)";
 	
 	// SodiumEquivalentMethod interface implementation
 

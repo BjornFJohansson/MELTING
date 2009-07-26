@@ -78,7 +78,7 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		}
 		if (this.environment.getNa() != 0.0 || this.environment.getMg() != 0.0015 || this.environment.getTris() != 0.01 || this.environment.getK() != 0.05){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING,"the formula of Marmur, Doty, Chester " +
+		   OptionManagement.meltingLogger.log(Level.WARNING,"the formula of Marmur, Doty, Chester " +
 			"and Marshak is originally established at a given ionic strength : " +
 			"Na = 0 M, Mg = 0.0015 M, Tris = 0.01 M and k = 0.05 M");
 		}
