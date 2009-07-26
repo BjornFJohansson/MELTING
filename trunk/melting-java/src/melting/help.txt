@@ -57,7 +57,7 @@ melting.xxx files, where xxx states for ps (postscript), pdf or html.
 	To precise that the sequence entered with the option -S is self complementary. No complementary sequence is mandatory. The program automatically can detect a self complementary sequence for perfect matching sequences or sequences with dangling ends. In these cases, the option -self is not necessary, otherwise we need to precise that the sequences are self complementary.
 
 -F [factor value]
-	Correction for the concentration of nucleic acid. F is automatically 1 if the sequences are self complementary. Otherwise F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. The default factor value is 4.
+	Correction for the concentration of nucleic acid. F is automatically 1 if the sequences are self complementary. Otherwise F is 4 if the both strands are present in equivalent amount and 2 if one strand is in excess. The default factor value is 4.
 
 	Set of thermodynamic parameters and methods : 
 By default, the approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), otherwise the nearest 
