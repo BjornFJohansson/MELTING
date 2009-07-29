@@ -2,11 +2,10 @@
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{times}
-\usepackage{mathtime}
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{alltt}
-\usepackage[dvips]{graphics}
+\usepackage[final]{graphicx}
 \begin{document}
  
 \section{Name }
@@ -642,19 +641,40 @@ and entropy from the elementary parameters of each Crick's pair.
 \end{displaymath}
 The initiation computation is not the same for each following model. For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
-\textbf{model} & \textbf{limits} & \textbf{Article} \\
-all97 & DNA & Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594 \\
-bre86 & DNA & Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 \\
-\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
-san96 & DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
-sug96 & DNA & Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505 \\
-tan04 & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150  \\
-fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
-\textbf{xia98} & RNA & Xia et al (1998) Biochemistry 37: 14719-14735 \\
-\textbf{sug95} & DNA/DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562 \\
-\textbf{tur06} & DNA & Turner et al (2006) Nucleic acids research 34: 3609-3614 \\
+\textbf{model} & \textbf{limits} & \textbf{Article} \\ 
+\hline
+all97 & DNA & Allawi and SantaLucia (1997) \\
+ & & Biochemistry 36 : 10581-10594 \\
+ \hline
+bre86 & DNA & Breslauer et al. (1986) \\
+ & & Proc Natl Acad Sci USA 83 : 3746-3750 \\
+ \hline
+\textbf{san04} & DNA & Santalucia et al (2004) \\
+ & & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
+ \hline
+san96 & DNA & SantaLucia et al.(1996) \\
+ & & Biochemistry 35 : 3555-3562 \\
+ \hline
+sug96 & DNA & Sugimoto et al. (1996)\\
+ & & Nuc Acids Res 24 : 4501-4505 \\
+ \hline
+tan04 & DNA & Tanaka Fumiaki et al (2004)\\
+ & & Biochemistry 43 : 7143-7150  \\
+ \hline
+fre86 & RNA & Freier et al (1986) \\
+ & & Proc Natl Acad Sci USA 83: 9373-9377 \\
+ \hline
+\textbf{xia98} & RNA & Xia et al (1998) \\
+ & & Biochemistry 37: 14719-14735 \\
+ \hline
+\textbf{sug95} & DNA/RNA & SantaLucia et al.(1996) \\
+ & & Biochemistry 35 : 3555-3562 \\
+ \hline
+\textbf{tur06} & DNA & Turner et al (2006) \\
+ & & Nucleic acids research 34: 3609-3614 \\
+ \hline
 \end{tabular}
 \end{table}
 
@@ -671,29 +691,31 @@ fre86 & RNA & Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377 \\
        (The same computation is performed for $\Delta S$)
        
 \begin{figure}[h]
-\includegraphics{images/DNAPrefectlyMatching.eps}
+\includegraphics[width=1\linewidth]{images/DNAPerfectlyMatching}
 \caption{Comparison of experimental and computed Tm for various sets of
   DNA nearest-neighbor parameters. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}
 
-\begin{figure}[h]
-\includegraphics{images/RNAPrefectlyMatching.eps}
+\begin{figure}[h!]
+\includegraphics[width=1\linewidth]{images/RNAPerfectlyMatching}
 \caption{Comparison of experimental and computed Tm for various sets of
   RNA nearest-neighbor parameters. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 2\cdot{}10^{-4}$~M}
 \end{figure}
 
-\begin{figure}[h]
-\includegraphics{images/DNARNA.eps}
+\begin{figure}[h!]
+\includegraphics[width=1\linewidth]{images/DNARNA}
 \caption{Comparison of experimental and computed Tm for various sets of
   DNA/RNA nearest-neighbor parameters. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure} 
 
-\begin{figure}[h]
-\includegraphics{images/mRNARNA.eps}
+\begin{figure}[h!]
+\includegraphics[width=1\linewidth]{images/mRNARNA}
 \caption{Comparison of experimental and computed Tm for various sets of
   2-O-methyl RNA nearest-neighbor parameters. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
-      
+
+\pagebreak
+\clearpage
 \subsubsection{Sequences composed of CNG repeats}
 
 If the sequence (sens 5'3') is a sequence of type \texttt{G(CNG)xC} where x is the number of CNG repeats in
@@ -708,12 +730,14 @@ only for sequences composed from 2 to 7 CNG repeats and the initiation is alread
 \end{displaymath}
 For further information, see the referenced article.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{bro05} & RNA & Broda et al (2005). Biochemistry 44: 10873-10882 \\
- & Self complementary sequences & \\
+ \hline
+\textbf{bro05} & RNA & Broda et al (2005) \\
+ & Self complementary sequences & Biochemistry 44: 10873-10882\\
  & 2 to 7 CNG repeats & \\
+ \hline
 \end{tabular}
 \end{table}
 
@@ -732,11 +756,12 @@ C\textbf{GACGACGAC}G
        (The same computation is performed for $\Delta S$)
 
 \begin{figure}[h]
-\includegraphics{images/CNG.eps}
+\includegraphics[width=1\linewidth]{images/CNG}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences composed of CNG repeats. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\pagebreak
 Be aware : The results for sequences composed of 4 or 5 CCG repeats is not reliable. (the figure shows two values
 far from the expected temperature). This might be due to a majority of hairpin loop formation. See the article
 above for further informations.
@@ -778,7 +803,7 @@ parameters of each Crick's pair containing the single mismatch.
        (The same computation is performed for $\Delta S$)
        
 \begin{figure}[h]
-\includegraphics{images/DNASingleMismatch.eps}
+\includegraphics[width=1\linewidth]{images/DNASingleMismatch}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing one single mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}
@@ -848,29 +873,43 @@ $\delta{}h_\mathrm{per-AU/GU}$ accounts for AU or GU nearest neighbors.
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594 \\
- & & Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179 \\
- & & Allawi and SantaLucia (1998).Nuc Acids Res 26: 2694-2701 \\
- & & Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444 \\
- & & Peyret et al. (1999). Biochemistry 38: 3468-3477 \\ 
-tur06 & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
-zno07 & RNA & Brent M Znosko et al (2007). Biochemistry 46: 13425-13436 \\
-\textbf{zno08} & RNA & Brent M Znosko et al (2008). Biochemistry 47: 10178-10187 \\
- & at least & \\
+ \hline
+\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997)\\
+ & & Biochemistry 36: 10581-10594 \\
+ & & Allawi and SantaLucia (1998)\\
+ & & Biochemistry 37: 2170-2179 \\
+ & & Allawi and SantaLucia (1998)\\
+ & & Nuc Acids Res 26: 2694-2701 \\
+ & & Allawi and SantaLucia (1998)\\
+ & & Biochemistry 37: 9435-9444 \\
+ & & Peyret et al. (1999)\\
+ & & Biochemistry 38: 3468-3477 \\
+ \hline 
+tur06 & RNA & Douglas M Turner et al (2006)\\
+ & & Nucleic Acids Research 34: 4912-4924 \\
+ \hline
+zno07 & RNA & Brent M Znosko et al (2007)\\
+ & & Biochemistry 46: 13425-13436 \\
+ \hline
+\textbf{zno08} & RNA & Brent M Znosko et al (2008)\\
+ & at least & Biochemistry 47: 10178-10187 \\
  & one adjacent & \\
  & GU base pair & \\
+ \hline
 \end{tabular}
 \end{table}
+\pagebreak
 
 \begin{figure}[h]
-\includegraphics{images/RNASingleMismatch.eps}
+\includegraphics[width=1\linewidth]{images/RNASingleMismatch}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing one single mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{Tandem mismatches effect}
 
 The tandem mismatches (two adjacent mismatches) are taken into account but the two first and positions cannot
@@ -897,7 +936,7 @@ parameters of each Crick's pair containing the mismatch(es).
        (The same computation is performed for $\Delta S$) 
 
 \begin{figure}[h]
-\includegraphics{images/DNATandemMismatch.eps}
+\includegraphics[width=1\linewidth]{images/DNATandemMismatch}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing one tandem mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}
@@ -959,27 +998,36 @@ $\delta{}h_\mathrm{p}$ accounts for an AG or GA pairs adjacent to a UC, CC or CU
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594 \\
- & only GT  & Allawi and SantaLucia (1998). Biochemistry 37: 2170-2179 \\
- & mismatches & Allawi and SantaLucia (1998).Nuc Acids Res 26: 2694-2701 \\
- & and TA/TG & Allawi and SantaLucia (1998). Biochemistry 37: 9435-9444 \\
- & mismatches & Peyret et al. (1999). Biochemistry 38: 3468-3477\\
-\textbf{tur99} & RNA & Douglas M Turner et al (1999). J.Mol.Biol.  288: 911-940 \\
- & no adjacent & \\
+ \hline
+\textbf{allsanpey} & DNA & Allawi and SantaLucia (1997) \\
+ & only GT & Biochemistry 36: 10581-10594 \\
+ & mismatches & Allawi and SantaLucia (1998) \\
+ & and TA/TG & Biochemistry 37: 2170-2179 \\
+ & mismatches & Allawi and SantaLucia (1998) \\
+ & & Nuc Acids Res 26: 2694-2701 \\
+ & & Allawi and SantaLucia (1998) \\
+ & & Biochemistry 37: 9435-9444 \\
+ & & Peyret et al. (1999) \\
+ & & Biochemistry 38: 3468-3477\\
+ \hline
+\textbf{tur99} & RNA & Douglas M Turner et al (1999) \\
+ & no adjacent & J.Mol.Biol.  288: 911-940 \\
  & GU or UG base & \\
  &  pairs & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/RNATandemMismatch.eps}
+\includegraphics[width=1\linewidth]{images/RNATandemMismatch}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing one tandem mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{Internal loop effect}
 
 The internal loops (more than two adjacent mismatches) are taken into account but the two first and positions cannot
@@ -991,7 +1039,7 @@ of the terminal mismatches are salt dependent and a salt correction will be appl
 to them.
 The thermodynamic model for DNA and RNA duplexes are similar.
 
-\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+\paragraph{DNA duplexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
 
 \begin{multline*}
 \Delta h {(\mbox{internal-loop(n)})} =
@@ -1029,7 +1077,7 @@ nucleotides of the loop.
 \Delta S {\mbox{\texttt{GC}} \choose \mbox{\texttt{AG}}}\\
 \end{multline*}
 
-\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
+\paragraph{RNA duplexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}}
 
 \begin{multline*}
 \Delta h {(\mbox{internal-loop(n)})} =
@@ -1068,28 +1116,32 @@ n > 2.
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
- & missing asymmetry & \\
- & penalty & \\
+\hline
+\textbf{san04} & DNA & Santalucia et al (2004) \\
+ & missing asymmetry & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
+ & penalty, & \\
  & not tested & \\
  & with experimental & \\
  & results & \\
-\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
- & not tested & \\
+ \hline
+\textbf{tur06} & RNA & Douglas M Turner et al (2006) \\
+ & not tested & Nucleic Acids Research 34: 4912-4924 \\
  & with experimental & \\
  & results & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/1x2InternalLoop.eps}
+\includegraphics[width=1\linewidth]{images/1x2InternalLoop}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing one 1x2 internal loop. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\pagebreak
 \subsubsection{GU wobble base pairs effect}
 
 The wobble GU base pairs are taken into account. This pairing is a non-Watson-Crick base pairing between two nucleotides 
@@ -1124,15 +1176,18 @@ parameters of each Crick's pair containing the GU base pairs.
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
+\hline
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{tur99} & RNA & Douglas M Turner et al (1999). J.Mol.Biol.  288: 911-940 \\
+\textbf{tur99} & RNA & Douglas M Turner et al (1999) \\
+ & & J.Mol.Biol.  288: 911-940 \\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/GUBasePairs.eps}
+\includegraphics[width=1\linewidth]{images/GUBasePairs}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing GU base pairs. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
@@ -1171,40 +1226,47 @@ CGATC\textbf{A}
 
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{bom00} & DNA & Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934 \\
-sugdna02 & DNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
- & only terminal & \\
+\hline
+\textbf{bom00} & DNA & Bommarito et al. (2000) \\
+ & & Nuc Acids Res 28: 1929-1934 \\
+\hline
+sugdna02 & DNA & Sugimoto et al. (2002) \\
+ & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
-sugrna02 & RNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
- & only terminal poly A & \\
+ \hline
+sugrna02 & RNA & Sugimoto et al. (2002) \\
+ & only terminal poly A & J. Am. Chem. Soc. 124: 10367-10372 \\
  & self complementary & \\
  & sequences & \\
-\textbf{ser08} & RNA & Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 \\
- & only 3' UA, & Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 \\
- & GU and UG terminal & \\
- & base pairs & \\
+ \hline
+\textbf{ser08} & RNA & Martin J Serra et al. (2006) \\
+ & only 3' UA, & Nucleic Acids research 34: 3338-3344 \\
+ & GU and UG terminal & Martin J Serra et al. (2008) \\
+ & base pairs & Nucleic Acids research 36: 5652-5659 \\
  & only 5' UG and GU & \\
  & terminal base pairs & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/DNASingleDanglingEnd.eps}
+\includegraphics[width=1\linewidth]{images/DNASingleDanglingEnd}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing single dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics{images/RNASingleDanglingEnd.eps}
+\includegraphics[width=1\linewidth]{images/RNASingleDanglingEnd}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing single dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{Double dangling end effect}
 
 The double dangling ends, that is the two adjacent unmatched terminal nucleotides, can be taken into
@@ -1229,36 +1291,43 @@ only a single danging end and then, it adds a bonus for the second dangling end 
 
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-sugdna02 & DNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
- & only terminal & \\
+\hline
+sugdna02 & DNA & Sugimoto et al. (2002)\\
+ & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
-sugrna02 & RNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
- & only terminal & \\
+ \hline
+sugrna02 & RNA & Sugimoto et al. (2002)\\
+ & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
-ser05 & RNA & Martin J Serra et al. (2005). RNA 11: 512-516 \\
- & depends on & \\
+ \hline
+ser05 & RNA & Martin J Serra et al. (2005)\\
+ & depends on & RNA 11: 512-516 \\
  & the available & \\
  & thermodynamic & \\
  & parameters for & \\
  & single dangling & \\
  & ends & \\
-\textbf{ser06} & RNA & Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 \\
+ \hline
+\textbf{ser06} & RNA & Martin J Serra et al. (2006)\\
+ & & Nucleic Acids research 34: 3338-3344 \\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/RNASecondDanglingEnd.eps}
+\includegraphics[width=1\linewidth]{images/RNASecondDanglingEnd}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing double dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\pagebreak
 \subsubsection{Long dangling end effect (poly A)}
 
 The long dangling ends, that is all the adjacent unmatched terminal nucleotides, can be taken into
@@ -1290,34 +1359,36 @@ CGATC\textbf{AAA}
 
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{sugdna02} & DNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
-& only terminal & \\
+\hline
+\textbf{sugdna02} & DNA & Sugimoto et al. (2002)\\
+ & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
-\textbf{sugrna02} & RNA & Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372 \\
-& only terminal & \\
+ \hline
+\textbf{sugrna02} & RNA & Sugimoto et al. (2002)\\
+ & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/DNALongDanglingEnd.eps}
-\caption{Comparison of experimental and computed Tm for various sets of
- DNA sequences containing long polyA dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
+\includegraphics[width=1\linewidth]{images/DNALongDanglingEnd}
+\caption{Comparison of experimental and computed Tm for various sets of DNA sequences containing long polyA dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics{images/RNALongDanglingEnd.eps}
-\caption{Comparison of experimental and computed Tm for various sets of
- RNA sequences containing long polyA dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
+\includegraphics[width=1\linewidth]{images/RNALongDanglingEnd}
+\caption{Comparison of experimental and computed Tm for various sets of RNA sequences containing long polyA dangling ends. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{Single bulge loop effect}
 
 The single bulge loops, that is the single unmatched internal nucleotides, can be taken into
@@ -1325,7 +1396,7 @@ account. , but all the thermodynamic parameters are not available. In such a cas
 the result is unpredictable, and all cases are possible. 
 There are several different models to compute the thermodynamic of single bulge loop:
 
-\paragraph{DNA and RNA dulexes :\textbf{nearest neighbor model "NNN"}} 
+\paragraph{DNA and RNA duplexes :\textbf{nearest neighbor model "NNN"}} 
 
 \begin{multline*}
 \Delta h {(\mbox{single-bulge-loop})} =
@@ -1355,7 +1426,7 @@ CGA\textbf{-}TCCG
  neighbor model and the following models can give more reliable and accurate results (mostly
  for RNA single bulge loops.)  
   
-\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+\paragraph{DNA duplexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
 
 \begin{multline*}
 \Delta h {(\mbox{single-bulge-loop})} =
@@ -1389,7 +1460,7 @@ to the single bulge loop.
 
        (The same computation is performed for $\Delta S$) 
 
-\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
+\paragraph{RNA duplexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
 
 \begin{multline*}
 \Delta h {(\mbox{single-bulge-loop})} =
@@ -1416,35 +1487,41 @@ $\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack
        (The same computation is performed for $\Delta S$) 
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{tan04} & DNA & Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 \\
-san04 & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
- & missing & \\
+\hline
+\textbf{tan04} & DNA & Tanaka Fumiaki et al (2004)\\
+ & & Biochemistry 43 : 7143-7150 \\
+\hline
+san04 & DNA & Santalucia et al (2004)\\
+ & missing & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & closing AT & \\
  & penalty & \\
-ser07 & RNA & Martin J Serra et al (2007). Biochemistry 46 : 15123-15135 \\
- & les reliable & \\
+ \hline
+ser07 & RNA & Martin J Serra et al (2007)\\
+ & les reliable & Biochemistry 46 : 15123-15135 \\
  & results & \\
  & some missing & \\
  & parameters & \\
-\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
+ \hline
+\textbf{tur06} & RNA & Douglas M Turner et al (2006)\\
+ & & Nucleic Acids Research 34: 4912-4924 \\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/DNASingleBulgeLoop.eps}
-\caption{Comparison of experimental and computed Tm for various sets of
- DNA sequences containing one single bulge loop. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
+\includegraphics[width=1\linewidth]{images/DNASingleBulgeLoop}
+\caption{Comparison of experimental and computed Tm for various sets of DNA sequences containing one single bulge loop. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics{images/RNASingleBulgeLoop.eps}
-\caption{Comparison of experimental and computed Tm for various sets of
- RNA sequences containing one single bulge loop. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
+\includegraphics[width=1\linewidth]{images/RNASingleBulgeLoop}
+\caption{Comparison of experimental and computed Tm for various sets of RNA sequences containing one single bulge loop. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{long bulge loop effect}
 
 The long bulge loops, that is all the adjacent unmatched internal nucleotides, can be taken into
@@ -1452,7 +1529,7 @@ account. , but all the thermodynamic parameters are not available. In such a cas
 the result is unpredictable, and all cases are possible. 
 The RNA and DNA thermodynamic models are similar : 
   
-\paragraph{DNA dulexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
+\paragraph{DNA duplexes :\textbf{Model from John Santalucia, Jr. and Donald Hicks, 2004}} 
 
 \begin{multline*}
 \Delta h {(\mbox{long-bulge-loop})} =
@@ -1479,7 +1556,7 @@ to the long bulge loop.
 \Delta S {\mbox{bulge-loop-of-3}} \\
 \end{multline*}
 
-\paragraph{RNA dulexes :\textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
+\paragraph{RNA duplexes : \textbf{Model from Zhi Johm Lu, Douglas H. Turner and David H. Mathews, 2006}} 
 
 \begin{multline*}
 \Delta h {(\mbox{long-bulge-loop})} =
@@ -1508,19 +1585,22 @@ to the long bulge loop.
 
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{san04} & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
- & missing closing & \\
+\hline
+\textbf{san04} & DNA & Santalucia et al (2004)\\
+ & missing closing & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & AT penalty & \\
  & not tested & \\
  & with experimental & \\
  & results & \\
-\textbf{tur06} & RNA & Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924 \\
- & not tested & \\
+ \hline
+\textbf{tur06} & RNA & Douglas M Turner et al (2006)\\
+ & not tested & Nucleic Acids Research 34: 4912-4924 \\
  & with experimental & \\
  & results & \\
+ \hline
 \end{tabular}
 \end{table}
 
@@ -1559,33 +1639,37 @@ parameters of each Crick's pair containing the inosine base.
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{san05} & DNA & Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267 \\
- & missing parameters & \\
+\hline
+\textbf{san05} & DNA & Santalucia et al.(2005)\\
+ & missing parameters & Nucleic acids research 33 : 6258-6267 \\
  & for tandem & \\
  & base pairs & \\
  & containing & \\
  & inosine bases & \\
-\textbf{zno07} & RNA & Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634 \\
- & only IU base & \\ 
+ \hline
+\textbf{zno07} & RNA & Brent M Znosko et al. (2005)\\
+ & only IU base & Biochemistry 46 : 4625-4634 \\
  & pairs & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/DNAInosine.eps}
+\includegraphics[width=1\linewidth]{images/DNAInosine}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing inosine. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics{images/RNAInosine.eps}
+\includegraphics[width=1\linewidth]{images/RNAInosine}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA sequences containing inosine. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
 
+\clearpage
 \subsubsection{Azobenzenes effect}
 
 The trans azobenzenes (X\_T) and cis azobenzenes (X\_C) in DNA duplexes are taken 
@@ -1618,24 +1702,27 @@ CGATCCG
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{asa05} & DNA & Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36 \\
- & less reliable & \\
+\hline
+\textbf{asa05} & DNA & Asanuma et al. (2005) \\
+ & less reliable & Nucleic acids Symposium Series 49 : 35-36 \\
  & results when & \\
  & the number & \\
  & of cis azobenzene & \\
  & increases & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/Azobenzene.eps}
+\includegraphics[width=1\linewidth]{images/Azobenzene}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing azobenzene. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 2\cdot{}10^{-6}$~M}
 \end{figure}
 
+\pagebreak
 \subsubsection{2-Hydroxyadenine bases effect}
 
 The 2-hydroxyadenine bases (A*) in DNA duplexes are taken into account, but only in this two different
@@ -1662,19 +1749,21 @@ increments.
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{sug01} & DNA & Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296\\
- & only in 5' & \\
+\hline
+\textbf{sug01} & DNA & Sugimoto et al.(2001)\\
+ & only in 5' & Nucleic acids research 29 : 3289-3296\\
  & GA*C 3' & \\
  & and 5' TA*A & \\
  & contexts & \\
+ \hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/Hydroxyadenine.eps}
+\includegraphics[width=1\linewidth]{images/Hydroxyadenine}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing hydroxyadenine. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
@@ -1705,15 +1794,18 @@ and then it computes the locked nucleic acid increments for each Crick's base pa
        
 For further information, see the referenced articles.
 
-\begin{table}[h]
-\begin{tabular}[h]{| c | c | c}
+\begin{table}[h][c]
+\begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{mct04} & DNA & McTigue et al.(2004). Biochemistry 43 : 5388-5405\\
+\hline
+\textbf{mct04} & DNA & McTigue et al.(2004)\\
+ & & Biochemistry 43 : 5388-5405\\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
-\includegraphics{images/LockedNucleicAcid.eps}
+\includegraphics[width=1\linewidth]{images/LockedNucleicAcid}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing Locked Nucleic Acids. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 5\cdot{}10^{-6}$~M}
 \end{figure}
@@ -1763,24 +1855,25 @@ to $C_{\mbox{min}}$, $(C_{\mbox{max}} - C_{\mbox{min}})/2$ is equivalent to $C_T
 correction.
 
 \textit{F} is 4 by default but note that \textsc{melting} can detect self complementary sequences 
-for prefectly matching sequences even though there is(are) dangling end(s). In this case, the program will 
+for perfectly matching sequences even though there is(are) dangling end(s). In this case, the program will 
 automatically change \textit{F} to 1. In addition to that, the computation takes an entropic term to correct 
 for self-complementarity.
 In case of other self complementary sequences which doesn't match perfetcly, the option \textit{-self} must be
 used to inform the program of the self complementarity.
 
 \begin{figure}[h]
-\includegraphics{images/DNASelfComplementarity.eps}
+\includegraphics[width=1\linewidth]{images/DNASelfComplementarity}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA self complementary sequences. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure} 
 
 \begin{figure}[h]
-\includegraphics{images/RNASelfComplementarity.eps}
+\includegraphics[width=1\linewidth]{images/RNASelfComplementarity}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA self complementary sequences. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}     
   
+\clearpage
 \subsection{Correction for the concentration of cations}  
 
 After the program computed the melting temperature for $[\mbox{Na}^+]$=1, an ion correction wille be applied
@@ -1788,8 +1881,8 @@ either directly on the computed melting temperature or on the computed entropy. 
 temperature is computed using the first formula of the \textit{Melting temperature} section.
 We must enter at least one of the following ion concentrations : $[\mbox{Na}^+]$, $[\mbox{K}^+]$, $[\mbox{Tris}^+]$ or
 $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference table to have more information):
-\begin{itemize}
-\item \textbf{Sodium corrections}
+
+\subsubsection{Sodium corrections}
  \begin{itemize}
  \item \textit{ahs01}
  \begin{displaymath}
@@ -1818,13 +1911,19 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
  Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
  \item \textit{owc2104}
  \begin{displaymath}
- Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-4.62 x Fgc + 4.52) x \ln [\mbox{Na}^+] - 0.985 x \ln [(\mbox{Na}^+)^2]  
+ Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-4.62 x Fgc + 4.52) x \ln [\mbox{Na}^+] 
+ \end{displaymath}
+ \begin{displaymath}
+ - 0.985 x \ln [(\mbox{Na}^+)^2]  
  \end{displaymath}
  Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
  \item \textit{owc2204}
  \begin{multline*}
- \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (4.29 * Fgc - 3.95) x \frac{1}{100000} x \ln [\mbox{Na}^+] 
-  + 9.40 x \frac{1}{1000000} x \ln [\mbox{Na}^+]
+ \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (4.29 * Fgc - 3.95) x 
+ \end{multline*}
+ \begin{multline*}
+ \frac{1}{100000} x \ln [\mbox{Na}^+] +
+ 9.40 x \frac{1}{1000000} x \ln [\mbox{Na}^+]
  \end{multline*}
  Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
  \item \textit{san96}
@@ -1874,49 +1973,68 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
  \end{displaymath}
  \end{itemize}
  
- \begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{contexts} & \textbf{Article} \\
-ahs01 & DNA & Nicolas Von Ahsen et al ,2001, Clinical Chemistry, 47, 1956-1961.\\
- & [\mbox{Na}^+]>0 & \\
-kam71 & DNA & Frank-Kamenetskii et al., Biopolymers 10, 2623-2624.\\
- & [\mbox{Na}^+]>=0.069  & \\
- & [\mbox{Na}^+]<=1.02  & \\
-marschdot & DNA & Marmur, J., and Doty, P. (1962), J. Mol. Biol. 5, 109-118.\\
- & [\mbox{Na}^+]>=0.069  & Blake and Delcourt. (1998) Nucleic Acids Res. 26, 3323-3332 \\ 
- & [\mbox{Na}^+]<=1.02 & and corrigendum.\\
-owc1904 & DNA & Richard Owczarzy et al., Biochemistry, 2004, 43, 3537-3554.\\
- & [\mbox{Na}^+]>0 & \\
-owc2004 & DNA & Richard Owczarzy et al., Biochemistry, 2004, 43, 3537-3554.\\ 
- & [\mbox{Na}^+]>0 & \\
-owc2104 & DNA & Richard Owczarzy et al., Biochemistry, 2004, 43, 3537-3554.\\ 
-\textbf{owc2204} & DNA & Richard Owczarzy et al., Biochemistry, 2004, 43, 3537-3554.\\
- & [\mbox{Na}^+]>0 & \\
-\textbf{owc2204} & DNA & Richard Owczarzy et al., Biochemistry, 2004, 43, 3537-3554.\\
- & [\mbox{Na}^+]>0 & \\
-san96 & DNA & SantaLucia et al.(1996). Biochemistry 35 : 3555-3562\\
- & [\mbox{Na}^+]>=0.1 & \\
-san04 & DNA & Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
- & [\mbox{Na}^+]>=0.05 & John Santalucia, Jr., 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465 \\
- & [\mbox{Na}^+]<=1.1 & \\
+\hline
+ahs01 & DNA & Nicolas Von Ahsen et al ,2001 \\
+ & Na>0 & Clinical Chemistry, 47, 1956-1961.\\
+ \hline
+kam71 & DNA & Frank-Kamenetskii et al. 1971 \\
+ & Na>=0.069  & Biopolymers 10, 2623-2624.\\
+ & Na<=1.02  & \\
+ \hline
+marschdot & DNA & Marmur, J., and Doty, P. (1962) \\
+ & Na>=0.069  & J. Mol. Biol. 5, 109-118.\\
+ & Na<=1.02 & Blake and Delcourt. (1998) Nucleic Acids Res. 26, 3323-3332 \\ 
+ & & and corrigendum.\\
+ \hline
+owc1904 & DNA & Richard Owczarzy et al.,2004  \\
+ & Na>0 & Biochemistry,43, 3537-3554.\\
+ \hline
+owc2004 & DNA & Richard Owczarzy et al., 2004 \\
+ & Na>0 & Biochemistry, 43, 3537-3554.\\ 
+ \hline
+owc2104 & DNA & Richard Owczarzy et al., 2004 \\
+ & Na>0 & Biochemistry, 43, 3537-3554.\\
+ \hline 
+\textbf{owc2204} & DNA & Richard Owczarzy et al., 2004 \\
+ & Na>0 & Biochemistry, 43, 3537-3554.\\
+ \hline
+\textbf{owc2204} & DNA & Richard Owczarzy et al., 2004 \\
+ & Na>0 & Biochemistry,43, 3537-3554.\\
+ \hline
+san96 & DNA & SantaLucia et al.(1996) \\
+ & Na>=0.1 & Biochemistry 35 : 3555-3562\\
+ \hline
+san04 & DNA & Santalucia et al (2004) \\
+ & Na>=0.05 & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
+ & Na<=1.1 & John Santalucia, Jr., 1998 \\
+ & & Proc. Natl. Acad. Sci. USA, 95, 1460-1465 \\
  & oligonucleotides & \\
- & inferior to 16 bases & \\    
-schlif & DNA & Schildkraut, C., and Lifson, S. (1965) Biopolymers 3, 195-208. \\
- & [\mbox{Na}^+]>=0.07 & \\
- & [\mbox{Na}^+]<=0.12 & \\
-tanna06 & DNA & Zhi-Jie Tan et al. 2006, Biophysical Journal, 90, 1175-1190. \\
- & [\mbox{Na}^+]>=0.001 & \\
- & [\mbox{Na}^+]<=1 & \\
-\textbf{tanna07} & RNA & Zhi-Jie Tan et al, 2007, Biophysical Journal, 92, 3615-3632. \\
- & [\mbox{Na}^+]>=0.003 & \\
- & [\mbox{Na}^+]<=1 & \\
-\textbf{wet91} & RNA, DNA & James G. Wetmur,Critical reviews in biochemistry and molecular \\
- & and RNA/DNA & biology, 26, 227-259 \\
-  & [\mbox{Na}^+]>0 & \\
+ & inferior to 16 bases & \\   
+ \hline 
+schlif & DNA & Schildkraut, C., and Lifson, S. (1965) \\
+ & Na>=0.07 & Biopolymers 3, 195-208. \\
+ & Na<=0.12 & \\
+ \hline
+tanna06 & DNA & Zhi-Jie Tan et al. 2006,  \\
+ & Na>=0.001 & Biophysical Journal, 90, 1175-1190. \\
+ & Na<=1 & \\
+ \hline
+\textbf{tanna07} & RNA & Zhi-Jie Tan et al, 2007 \\
+ & Na>=0.003 & Biophysical Journal, 92, 3615-3632. \\
+ & Na<=1 & \\
+ \hline
+\textbf{wet91} & RNA, DNA & James G. Wetmur 1991 \\
+ & and RNA/DNA & Critical reviews in biochemistry and molecular \\
+ & Na>0 & biology, 26, 227-259 \\
+  \hline
 \end{tabular}
 \end{table}
 
-\item \textbf{Magnesium corrections}
+\clearpage
+\subsubsection{Magnesium corrections}
   \begin{itemize}
   \item \textit{owcmg08}
  \begin{displaymath}
@@ -1964,28 +2082,33 @@ tanna06 & DNA & Zhi-Jie Tan et al. 2006, Biophysical Journal, 90, 1175-1190. \\
  \begin{displaymath}
   b2= \ln [\mbox{Mg}^{2+} + 0.38 x (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
- \end{itemize}
- 
- \begin{table}[h]
+ \end{itemize} 
+
+ \begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
-\textbf{oxcmg08} & DNA & Richard Owczarzy et al.,2008, Biochemistry, 47, 5336-5353. \\
- & Mg>=0.0005 & \\
+\hline
+\textbf{oxcmg08} & DNA & Richard Owczarzy et al.,2008 \\
+ & Mg>=0.0005 & Biochemistry, 47, 5336-5353. \\
  & Mg<=0.6 & \\
-tanmg06 & DNA & Zhi-Jie Tan et al. 2006, Biophysical Journal, 90, 1175-1190. \\
- & Mg>=0.0001 & \\
+ \hline
+tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
+ & Mg>=0.0001 & Biophysical Journal, 90, 1175-1190. \\
  & Mg<=1 & \\
  & oligomer & \\
  & length & \\
  & superior to & \\
  & 6 base pairs & \\
-\textbf{tanmg07} & RNA & Zhi-Jie Tan et al, 2007, Biophysical Journal, 92, 3615-3632. \\
- & Mg>=0.1 & \\
+ \hline
+\textbf{tanmg07} & RNA & Zhi-Jie Tan et al, 2007 \\
+ & Mg>=0.1 & Biophysical Journal, 92, 3615-3632. \\
  & Mg<=0.3 & \\
+ \hline
 \end{tabular}
 \end{table}
 
-\item \textbf{Mixed Na Mg corrections} 
+\pagebreak
+\subsubsection{Mixed Na Mg corrections} 
  \begin{itemize}
  \item \textit{owcmix08}
  \begin{displaymath}
@@ -2028,21 +2151,23 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006, Biophysical Journal, 90, 1175-1190. \\
   x2= 1-x1  
  \end{displaymath}
  \end{itemize}
-\end{itemize}
 
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
-\textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
-\textbf{oxcmix08} & DNA & Richard Owczarzy et al.,2008, Biochemistry, 47, 5336-5353. \\
- & Mg>=0.0005 & \\
+\textbf{correction} & \textbf{limits} & \textbf{Article} \\
+\hline 
+\textbf{oxcmix08} & DNA & Richard Owczarzy et al.,2008 \\
+ & Mg>=0.0005 & Biochemistry, 47, 5336-5353. \\
  & Mg<=0.6 & \\
  & Na+K+Tris/2>0 & \\
-\textbf{tanmix07} & DNA & Zhi-Jie Tan et al, 2007, Biophysical Journal, 92, 3615-3632.\\
- & and RNA &  \\
+ \hline
+\textbf{tanmix07} & DNA & Zhi-Jie Tan et al, 2007 \\
+ & and RNA & Biophysical Journal, 92, 3615-3632.\\
  & Mg>=0.1 & \\
  & Mg<=0.3 & \\
  & Na+K+Tris/2>=0.1 & \\
  & Na+K+Tris/2<=0.3 & \\
+ \hline
 \end{tabular}
 \end{table}
 
@@ -2055,15 +2180,15 @@ Where $[\mbox{Tris}^+]$ is equal to half of total tris buffer concentration. (in
 which is entered).
 
 \begin{itemize}
-\item if [\mbox{Mon}^+] = 0, a default sodium correction will be used.
-\item if \frac{[\mbox{Mg}^{2+}]^0.5}{[\mbox{Mon}^+]} < 0.22, a default sodium correction is used.
+\item if $[\mbox{Mon}^+]$ = 0, a default sodium correction will be used.
+\item if $[\mbox{Mg}^{2+}]$^0.5 / $[\mbox{Mon}^+]$ < 0.22, a default sodium correction is used.
 Monovalent ion influence is dominant, divalent cations can be 
 disregarded.
-\item if \frac{[\mbox{Mg}^{2+}]^0.5}{[\mbox{Mon}^+]} >= 0.22 and \frac{[\mbox{Mg}^{2+}]^0.5}{[\mbox{Mon}^+] < 6, 
+\item if $[\mbox{Mg}^{2+}]$^0.5 / $[\mbox{Mon}^+]$ >= 0.22 and $[\mbox{Mg}^{2+}]$^0.5 / $[\mbox{Mon}^+]$ < 6, 
 a default mixed Na Mg correction is used.
 We can have a competitive DNA or RNA binding between monovalent and divalent 
 cations.
-\item if \frac{[\mbox{Mg}^{2+}]^0.5}{[\mbox{Mon}^+]} >= 6, a default magnesium correction is used.
+\item if $[\mbox{Mg}^{2+}]$^0.5 / $[\mbox{Mon}^+]$ >= 6, a default magnesium correction is used.
 Divalent cation influence is dominant, monovalent cations can be 
 disregarded.
 \end{itemize}
@@ -2088,13 +2213,20 @@ Several sodium equivalence ready to use are proposed by this program :
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
-\textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
-\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001, Clinical Chemistry, 47, 1956-1961. \\
-mit96 & DNA & Mitsuhashi M. et al, 1996, J. Clin. Lab. Anal, 10, 277-284.\\
-pey00 & DNA & Peyret N., 2000, Ph.D Thesis, Section .5.4.2, 128, Wayne State \\
+\textbf{correction} & \textbf{limits} & \textbf{Article} \\
+\hline 
+\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001 \\
+ & & Clinical Chemistry, 47, 1956-1961. \\
+\hline
+mit96 & DNA & Mitsuhashi M. et al, 1996 \\
+ & & J. Clin. Lab. Anal, 10, 277-284.\\
+\hline
+pey00 & DNA & Peyret N., 2000 \\
+ & & Ph.D Thesis, Section .5.4.2, 128, Wayne State \\
  & & University, Detroit, MI\\
+ \hline
 \end{tabular}
 \end{table}
 
@@ -2104,8 +2236,7 @@ pey00 & DNA & Peyret N., 2000, Ph.D Thesis, Section .5.4.2, 128, Wayne State \\
 but some temperature corrections for the formamide and DMSO concentrations exists and can be
 applied. However, these corrections are rough approximations and results accuracy may be lost.
 
-\begin{itemize}
-\item textbf{DMSO corrections, DMSO in percentage}
+\subsubsection{DMSO corrections, DMSO in percentage}
   \begin{itemize}
   \item textit{ahs01}
   \begin{displaymath}
@@ -2124,41 +2255,48 @@ applied. However, these corrections are rough approximations and results accurac
   Tm=Tm(DMSO=0)-0.6 x DMSO
   \end{displaymath}
   \end{itemize}
-  
+\end{itemize} 
+ 
 For further information, see the referenced articles :
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
-\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001, Clinical Chemistry, 47, 1956-1961. \\
- & not tested & \\
+\hline
+\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001 \\
+ & not tested & Clinical Chemistry, 47, 1956-1961. \\
  & with experimental & \\
  & values & \\
-cul76 & DNA & Cullen Br et al., 1976, 3, 49-62.\\
- & not tested & \\
+ \hline
+cul76 & DNA & Cullen Br et al., 1976 \\
+ & not tested & 3, 49-62.\\
  & with experimental & \\
  & values & \\
-esc80 & DNA & Escara JF et al., 1980, 19, 1315-1327.\\
- & not tested & \\
+ \hline
+esc80 & DNA & Escara JF et al., 1980 \\
+ & not tested & 19, 1315-1327.\\
  & with experimental & \\
  & values & \\
-mus80 & DNA & Musielski H. et al., Z allg Microbiol 1981; 21, 447-456.\\
- & not tested & \\
+ \hline
+mus80 & DNA & Musielski H. et al., 1981 \\
+ & not tested & Z allg Microbiol 1981; 21, 447-456.\\
  & with experimental & \\
  & values & \\
+ \hline
 \end{tabular}
 \end{table}
-  
-  \item textbf{formamide corrections}
+ 
+\pagebreak
+\subsubsection{formamide corrections}
   \begin{itemize}
   \item textit{bla96}
   \begin{displaymath}
-  Tm=Tm(formamide=0)+ (0.453 * Fgc - 2.88) x formamide
+  Tm=Tm(formamide=0)+ (0.453 x Fgc - 2.88) x formamide
   \end{displaymath}
   Where Fgc is the frequence of GC base pairs in the sequence.
   formamide is in mol/L
   \item textit{lincorr}
   \begin{displaymath}
-  Tm (x % formamide) = Tm(0 % formamide) - 0.65 * x % formamide
+  Tm (x % formamide) = Tm(0 % formamide) - 0.65 x % formamide
   Tm=Tm(formamide=0)-0.65 x formamide
   \end{displaymath}
   Where formamide is in percentage.
@@ -2166,20 +2304,29 @@ mus80 & DNA & Musielski H. et al., Z allg Microbiol 1981; 21, 447-456.\\
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
-\textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
-\textbf{bla96} & DNA & R. D. Blake et al., 1996, Vol. 24, No. 11 2095–2103 \\
- & not tested & \\
+\textbf{correction} & \textbf{limits} & \textbf{Article} \\
+\hline 
+\textbf{bla96} & DNA & R. D. Blake et al., 1996 \\
+ & not tested & Vol. 24, No. 11 2095-2103 \\
  & with experimental & \\
  & values & \\
-lincorr & DNA & McConaughy et al., 1969, Biochemistry 8, 3289-3295. \\
- & not tested & Record, M.T., Jr, 1967, Biopolymers, 5, 975-992. \\
- & with experimental & Casey J. et al, 1977, Nucleic acids research, 4, 1539-1532. \\
- & values & Hutton Jr, 1977, Nucleic acids research, 4, 3537-3555. \\
+ & formamide in mol/L& \\
+ \hline
+lincorr & DNA & McConaughy et al., 1969 \\
+ & not tested & Biochemistry 8, 3289-3295. \\
+ & with experimental & Record, M.T., Jr, 1967 \\
+ & in percent & Biopolymers, 5, 975-992. \\
+ & values & Casey J. et al, 1977 \\
+ & Formamide in & Nucleic acids research, 4, 1539-1532. \\
+ & percentage & Hutton Jr, 1977 \\
+ & & Nucleic acids research, 4, 3537-3555. \\
+ \hline
 \end{tabular}
 \end{table}
 
+\pagebreak
 \subsection{Long sequences } 
  
 It is important to realise that the nearest-neighbor approach has been established  
@@ -2234,66 +2381,93 @@ Tm = 67 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbox{Na}^+]} + 0.8\% GC - \frac{50
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h]
+\begin{table}[h][c]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{formula} & \textbf{limits} & \textbf{Article} \\ 
-ahs01 & DNA & Nicolas Von Ahsen et al. 2001, Clinical Chemistry, 47, 1956-1961. \\
- & no mismatch & \\
-che93 & DNA & Marmur J et al., 1962, Journal of molecular biology, 5, 109-118. \\
- & no mismatch & Chester N et al. 1993, Analytical Biochemistry, 209, 284-290. \\
- & Na=0 & \\
- & Mg=0.0015 & \\
+\hline
+ahs01 & DNA & Nicolas Von Ahsen et al. 2001\\
+ & no mismatch & Clinical Chemistry, 47, 1956-1961. \\
+ \hline
+che93 & DNA & Marmur J et al., 1962\\
+ & no mismatch & Journal of molecular biology, 5, 109-118. \\
+ & Na=0 & Chester N et al. 1993\\
+ & Mg=0.0015 & Analytical Biochemistry, 209, 284-290. \\
  & Tris=0.01 & \\ 
  & K=0.05 & \\
-che93corr & DNA & Marmur J et al., 1962, Journal of molecular biology, 5, 109-118. \\
- & no mismatch & Chester N et al. 1993, Analytical Biochemistry, 209, 284-290. \\
- & Na=0 & Nicolas Von Ahsen et al. 2001, Clinical Chemistry, 47, 1956-1961. \\
- & Mg=0.0015 & \\
- & Tris=0.01 & \\ 
- & K=0.05 & \\
-marschdot & DNA & James G. Wetmur,1991, Critical reviews in biochemistry \\
- & no mismatch & and molecular biology, 26, 227-259 \\
- & & Marmur J et al., 1962, Journal of molecular biology, 5, 109-118. \\
- & & Chester N et al., 1993, Analytical Biochemistry, 209, 284-290. \\
- & & Schildkraut C et al., 1965, Biopolymers, 3, 95-110. \\
- & & Wahl GM et al., Methods Enzymol 1987;152:399 – 407. \\
- & & Britten RJ et al., Methods Enzymol 1974;29:363–418. \\
- & & Hall TJ et al., J Mol Evol 1980;16:95–110.\\
-owe69 & DNA & Owen RJ et al., Biopolymers 1969, 7:503–16. \\
- & no mismatch & Frank-Kamenetskii MD., Biopolymers 1971;10:2623– 4. \\
- & & Blake RD, Encyclopedia of molecular biology and \\
- & & molecular medicine, Vol. 2., 1996:1–19. \\
- & & Blake RD et al., Nucleic Acids Res 1998;26:3323–32. \\
-san98 & DNA & Santalucia J Jr, Proc Nacl Acad Sci USA \\
- & no mismatch & 1998, 95, 1460-1465. \\
- & & Nicolas Von Ahsen et al. 2001, Clinical Chemistry, 47, 1956-1961. \\
-wetdna91 & DNA & James G. Wetmur,1991, Critical reviews in biochemistry \\
+ \hline
+che93corr & DNA & Marmur J et al., 1962\\
+ & no mismatch & Journal of molecular biology, 5, 109-118. \\
+ & Na=0 & Chester N et al. 1993\\
+ & Mg=0.0015 & Analytical Biochemistry, 209, 284-290. \\
+ & Tris=0.01 & Nicolas Von Ahsen et al. 2001\\
+ & K=0.05 & Clinical Chemistry, 47, 1956-1961. \\
+ \hline
+marschdot & DNA & James G. Wetmur,1991\\
+ & no mismatch & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
-wetrna91 & RNA & James G. Wetmur,1991, Critical reviews in biochemistry \\
+ & & Marmur J et al., 1962\\
+ & & Journal of molecular biology, 5, 109-118. \\
+ & & Chester N et al., 1993\\
+ & & Analytical Biochemistry, 209, 284-290. \\
+ & & Schildkraut C et al., 1965\\
+ & & Biopolymers, 3, 95-110. \\
+ & & Wahl GM et al., 1987\\
+ & & Methods Enzymol;152:399 - 407. \\
+ & & Britten RJ et al.,1974\\
+ & & Methods Enzymol ;29:363-418. \\
+ & & Hall TJ et al., 1980\\
+ & & J Mol Evol ;16:95-110.\\
+ \hline
+owe69 & DNA & Owen RJ et al., 1969\\
+ & no mismatch & Biopolymers, 7:503-16. \\
+ & & Frank-Kamenetskii MD.,1971 \\
+ & & Biopolymers;10:2623- 4. \\
+ & & Blake RD, 1996\\
+ & & Encyclopedia of molecular biology and \\
+ & & molecular medicine, Vol. 2., :1-19. \\
+ & & Blake RD et al.,1998\\
+ & & Nucleic Acids Res;26:3323-32. \\
+ \hline
+san98 & DNA & Santalucia J Jr, 1998\\
+ & no mismatch & Proc Nacl Acad Sci USA \\
+ & & 95, 1460-1465. \\
+ & & Nicolas Von Ahsen et al. 2001, \\
+ & & Clinical Chemistry, 47, 1956-1961. \\
+ \hline
+wetdna91 & DNA & James G. Wetmur,1991, \\
+ & & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
-wetdnarna91 & DNA/RNA & James G. Wetmur,1991, Critical reviews in biochemistry \\
+ \hline
+wetrna91 & RNA & James G. Wetmur,1991, \\
+ & & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
+ \hline
+wetdnarna91 & DNA/RNA & James G. Wetmur,1991, \\
+ & & Critical reviews in biochemistry \\
+ & & and molecular biology, 26, 227-259 \\
+ \hline
 \end{tabular}
 \end{table}
  
 \begin{figure}[h]
-\includegraphics{images/DNAApproximativeMode.eps}
+\includegraphics[width=1\linewidth]{images/DNAApproximativeMode}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA approximative formulas. $[\mbox{Na}^+] = 1$~M}
 \end{figure}   
 
 \begin{figure}[h]
-\includegraphics{images/RNAApproximativeMode.eps}
+\includegraphics[width=1\linewidth]{images/RNAApproximativeMode}
 \caption{Comparison of experimental and computed Tm for various sets of
  RNA approximative formulas. $[\mbox{Na}^+] = 1$~M}
 \end{figure}
 
 \begin{figure}[h]
-\includegraphics{images/DNARNAApproximativeMode.eps}
+\includegraphics[width=1\linewidth]{images/DNARNAApproximativeMode}
 \caption{Comparison of experimental and computed Tm for various sets of
  DNARNA approximative formulas. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}      
-      
+ 
+\clearpage     
 \section{References }
 Allawi H.T., SantaLucia J. (1997). Thermodynamics and NMR of internal G-T mismatches 
 in DNA. \textit{Biochemistry}  36: 10581-10594   
