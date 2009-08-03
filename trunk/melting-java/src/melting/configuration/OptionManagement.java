@@ -258,7 +258,7 @@ public class OptionManagement {
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
 	 * the thermodynamic parameters.)
 	 */
-	public static String dataPathwayValue = "Data";
+	public static String dataPathwayValue = System.getProperty("NN_PATH", "Data");
 	
 	/**
 	 * int thresholdValue : the threshold value. It is the maximum oligonucleotides length for which we
@@ -452,7 +452,7 @@ public class OptionManagement {
 	private void setOptionValues(String [] args){
 
 		boolean isNecessaryToSetOptionsValues = true;
-
+		
 		if (args.length == 1){
 			isNecessaryToSetOptionsValues = false;
 		}
