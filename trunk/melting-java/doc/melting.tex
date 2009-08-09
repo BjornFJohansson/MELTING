@@ -6,12 +6,28 @@
 \usepackage{amsmath}
 \usepackage{alltt}
 \usepackage[final]{graphicx}
+
 \begin{document}
- 
-\section{Name }
-\textsc{melting} - nearest-neighbor computation of nucleic acid hybridation
+\title{\textsc{melting} - nearest-neighbor computation of nucleic acid hybridation}
+\author{Marine Dumousseau \and Nicolas Le Nov\`ere \\
+  \texttt{lenov@ebi.ac.uk}}
+\date{August 2009}
+\maketitle
+
+\newpage
+\nocite{*}
+
 \section{Synopsis}
-\textbf{melting} [\textit{options }]  
+The nearest-neighbor approach is based on the fact that the helix-coil
+transition works as a zipper. After an initial attachment, the hybridisation
+propagates laterally.
+The hybridization process depends on the adjacent nucleotides on each strand (the Crick's pairs).  
+Two duplexes with the same base pairs could have different stabilities, and on the contrary, two 
+duplexes with different sequences but identical sets of Crick's pairs will have the same
+thermodynamics properties (see Sugimoto et al. 1994).
+See Wetmur J.G (1991) and Santalucia (1998) for deep reviews on the nucleic acid hybridization
+and on the different set of nearest-neighbor parameters.
+ 
 \section{Description }
 
 \textsc{melting} computes, for a nucleic acid duplex, the enthalpy and the
@@ -23,6 +39,7 @@ a free program in both sense of the term. It comes with no cost and it is
 open-source. In addition it is coded in Java (1.5) and can be compiled on any
 operating system.
 
+
 If you use \textsc{melting}, please quote
 
 \begin{quote}
@@ -30,7 +47,7 @@ If you use \textsc{melting}, please quote
     melting temperature of nucleic acid duplex. \emph{Bioinformatics}, 17: 1226-1227. 
 \end{quote}
 
-\section{Options }
+\section{Usage}
 
 The options are treated sequentially. If there is a conflict between the value
 of two options, the latter normally erases the former.
@@ -69,8 +86,8 @@ of two options, the latter normally erases the former.
   of  ions and denaturing agents on  thermodynamic  stability  of nucleic  acid duplexes is complex,
   and the correcting functions are  at  best rough  approximations. All the concentrations must be positive numeric
   values and in M. There are some exceptions for the DMSO concentrations (in
-  percent) and the formamide concentrations
-  (in percent or M depending on the used correction method). Be aware, the $[\mbox{Tris}^+]$ is about half of the total tris buffer
+  \%) and the formamide concentrations
+  (in \% or M depending on the used correction method). Be aware, the $[\mbox{Tris}^+]$ is about half of the total tris buffer
   concentration.
   At least one cation concentration is mandatory, the other agents are optional. See the documentation for the concentration 
   limits. It depends on the used correction.
@@ -543,7 +560,7 @@ neighbor model is used.
   
   
 \item [\textbf{-DMSO} \textit{method\_name}]\mbox{}\\ 
-  Forces to use a specific DMSO correction (DMSO is always in percent).
+  Forces to use a specific DMSO correction (DMSO is always in \%).
   You can use one of the following :
   
   \textsc{DNA duplexes}
@@ -571,7 +588,7 @@ neighbor model is used.
   \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{bla96}] (from Blake et al 1996) with formamide concentration in mol/L  (by default)
-    \item [\textit{lincorr}] (linear correction) with a percent of formamide volume		  	 
+    \item [\textit{lincorr}] (linear correction) with a \% of formamide volume		  	 
     \end{itemize}
   For the other types of hybridization, the DNA default correction is used but there is no guaranty of accuracy.
   If there are formamide when an approximative approach is used, a formamide correction is automatically computed.
@@ -591,6 +608,7 @@ neighbor model is used.
   
 
 \subsection{Thermodynamics of helix-coil transition of nucleic acid}  
+
 The nearest-neighbor approach is based on the fact that the helix-coil
 transition works as a zipper. After an initial attachment, the hybridisation
 propagates laterally. This program first computes the hybridisation enthalpy 
@@ -631,7 +649,7 @@ structure 3 = perfectly matching sequences GCTA/CGAT
 The hybridization process depends on the adjacent nucleotides on each strand (the Crick's pairs).  
 Two duplexes with the same base pairs could have different stabilities, and on the contrary, two 
 duplexes with different sequences but identical sets of Crick's pairs will have the same
-thermodynamics properties (see Sugimoto et al. 1994).  This program first computes the hybridisation enthalpy 
+thermodynamics properties.  This program first computes the hybridisation enthalpy 
 and entropy from the elementary parameters of each Crick's pair.
 \begin{displaymath}
   \begin{array}[t]{ccc}
@@ -639,9 +657,9 @@ and entropy from the elementary parameters of each Crick's pair.
   \Delta{}s_\mathrm{perfectly-matching}&=&\sum \delta{}s_\mathrm{Crick's pair}
   \end{array}
 \end{displaymath}
-The initiation computation is not the same for each following model. For further information, see the referenced articles.
+The initiation computation is not the same for each following model. 
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -730,7 +748,7 @@ only for sequences composed from 2 to 7 CNG repeats and the initiation is alread
 \end{displaymath}
 For further information, see the referenced article.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -834,7 +852,7 @@ $\delta{}h_\mathrm{AU/GU}$ accounts for AU or GU nearest neighbors.
 \begin{multline*}
 \Delta H {\mbox{\texttt{AUC}} \choose \mbox{\texttt{UUG}}} = 
 \Delta H {\mbox{\texttt{U}} \choose \mbox{\texttt{U}} } + 
-1 x \Delta H {\mbox{\texttt{AU}} } +
+1 \times \Delta H {\mbox{\texttt{AU}} } +
 \Delta H {\mbox{\texttt{RYY}} \choose \mbox{\texttt{YYR}} } \\
 \end{multline*}
 
@@ -865,7 +883,7 @@ $\delta{}h_\mathrm{per-AU/GU}$ accounts for AU or GU nearest neighbors.
 \begin{multline*}
 \Delta H {\mbox{\texttt{AUC}} \choose \mbox{\texttt{UUG}}} =
 \Delta H {\mbox{initiation-loop-of-2}} + 
-1 x \Delta H {\mbox{\texttt{per-AU}} } +
+1 \times \Delta H {\mbox{\texttt{per-AU}} } +
 \Delta H {\mbox{\texttt{RU}} \choose \mbox{\texttt{YU}} } \\
 \end{multline*}
 
@@ -873,7 +891,7 @@ $\delta{}h_\mathrm{per-AU/GU}$ accounts for AU or GU nearest neighbors.
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -998,7 +1016,7 @@ $\delta{}h_\mathrm{p}$ accounts for an AG or GA pairs adjacent to a UC, CC or CU
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -1100,7 +1118,7 @@ $\delta{}h_\mathrm{per_AU/GU}$ accounts for each AU or GU base pair adjacent
 to the internal loop.
 
 $\delta{}h_\mathrm{first-non-canonical-pairs}$ accounts for each sequence
-specific first mismatch (bonus). It is not applied to loops of the form 1 x (n-1) with
+specific first mismatch (bonus). It is not applied to loops of the form 1 \times (n-1) with
 n > 2.
 
 
@@ -1108,7 +1126,7 @@ n > 2.
 \begin{multline*}
 \Delta H {\mbox{\texttt{A ACCG C}} \choose \mbox{\texttt{U C-UA G}}} = 
 \Delta H {\mbox{loop initiation(7)}} +
-1 x \Delta H {\mbox{\texttt{per-AU}}} +
+1 \times \Delta H {\mbox{\texttt{per-AU}}} +
 (4 - 3)\Delta H {\mbox{asymmetry}}\\
 \end{multline*}
 
@@ -1116,7 +1134,7 @@ n > 2.
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1176,7 +1194,7 @@ parameters of each Crick's pair containing the GU base pairs.
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \hline
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
@@ -1226,7 +1244,7 @@ CGATC\textbf{A}
 
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1291,7 +1309,7 @@ only a single danging end and then, it adds a bonus for the second dangling end 
 
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1359,7 +1377,7 @@ CGATC\textbf{AAA}
 
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1471,7 +1489,7 @@ to the single bulge loop.
 
 Where :
 
-$\delta{}h_\mathrm{bulge-loop-of-1}$ accounts for the bulge loop of 1 nucleotide.
+$\delta{}h_\mathrm{initiation-bulge-loop-of-1}$ accounts for the initiation of  bulge loop of 1 nucleotide.
 
 $\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack.
 
@@ -1480,14 +1498,14 @@ $\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack
 
 \begin{multline*}
 \Delta H {\mbox{\texttt{GAC}} \choose \mbox{\texttt{C-G}}} =
-\Delta H {\mbox{bulge-loop-of-1}} +
+\Delta H {\mbox{initiation-bulge-loop-of-1}} +
 \Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}}} \\
 \end{multline*}
 
        (The same computation is performed for $\Delta S$) 
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1567,7 +1585,7 @@ to the long bulge loop.
 
 Where :
 
-$\delta{}h_\mathrm{bulge-loop-of-n}$ accounts for the bulge loop of n nucleotides.
+$\delta{}h_\mathrm{initiation-bulge-loop-of-n}$ accounts for the initiation of the bulge loop of n nucleotides.
 
 $\delta{}h_\mathrm{per-AU/GU-penalty}$ accounts for each AU or GU base pair adjacent
 to the long bulge loop.
@@ -1577,15 +1595,15 @@ to the long bulge loop.
 
 \begin{multline*}
 \Delta H {\mbox{\texttt{AACGC}} \choose \mbox{\texttt{U---G}}} =
-\Delta H {\mbox{bulge-loop-of-3}} +
-1 x \Delta H {\mbox{per-AU-penalty}} \\
+\Delta H {\mbox{initiation-bulge-loop-of-3}} +
+1 \times \Delta H {\mbox{per-AU-penalty}} \\
 \end{multline*}
 
        (The same computation is performed for $\Delta S$) 
 
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1639,7 +1657,7 @@ parameters of each Crick's pair containing the inosine base.
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1702,7 +1720,7 @@ CGATCCG
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1749,7 +1767,7 @@ increments.
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1794,7 +1812,7 @@ and then it computes the locked nucleic acid increments for each Crick's base pa
        
 For further information, see the referenced articles.
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1886,86 +1904,86 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
  \begin{itemize}
  \item \textit{ahs01}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}+0.847 x (N - 1) x \log [\mbox{Na}^+]   
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}+0.847 \times (N - 1) \times \log [\mbox{Na}^+]   
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \item \textit{kam71}
  \begin{displaymath}
-  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+(7.95 - 3.06 x Fgc) x \ln [\mbox{Na}^+]  
+  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+(7.95 - 3.06 \times \Chi_{GC}) \times \ln [\mbox{Na}^+]  
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{marschdot}
  \begin{displaymath}
-  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (8.75 - 2.83 x Fgc) x \ln [\mbox{Na}^+]  
+  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (8.75 - 2.83 \times \Chi_{GC}) \times \ln [\mbox{Na}^+]  
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{owc1904}
  \begin{displaymath}
-  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-3.22 x Fgc - 6.39) x \ln [\mbox{Na}^+]  
+  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-3.22 \times \Chi_{GC} - 6.39) \times \ln [\mbox{Na}^+]  
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{owc2004}
  \begin{displaymath}
- \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (3.85 x Fgc - 6.18) x \frac{1}{100000} x \ln [\mbox{Na}^+]  
+ \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (3.85 \times \Chi_{GC} - 6.18) \times \frac{1}{100000} \times \ln [\mbox{Na}^+]  
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{owc2104}
  \begin{displaymath}
- Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-4.62 x Fgc + 4.52) x \ln [\mbox{Na}^+] 
+ Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ (-4.62 \times \Chi_{GC} + 4.52) \times \ln [\mbox{Na}^+] 
  \end{displaymath}
  \begin{displaymath}
- - 0.985 x \ln [(\mbox{Na}^+)^2]  
+ - 0.985 \times \ln [(\mbox{Na}^+)^2]  
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{owc2204}
  \begin{multline*}
- \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (4.29 * Fgc - 3.95) x 
+ \frac{1}{Tm}=\frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}}+ (4.29 \times \Chi_{GC} - 3.95) \times 
  \end{multline*}
  \begin{multline*}
- \frac{1}{100000} x \ln [\mbox{Na}^+] +
- 9.40 x \frac{1}{1000000} x \ln [\mbox{Na}^+]
+ \frac{1}{100000} \times \ln [\mbox{Na}^+] +
+ 9.40 \times \frac{1}{1000000} \times \ln [\mbox{Na}^+]
  \end{multline*}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \item \textit{san96}
  \begin{displaymath}
   12.5  \log [\mbox{Na}^+]   
  \end{displaymath}
  \item \textit{san04}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}+ 0.368 * (N - 1) x \ln [\mbox{Na}^+]   
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}+ 0.368 * (N - 1) \times \ln [\mbox{Na}^+]   
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \item \textit{schlif}
  \begin{displaymath}
-  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ 16.6 x \log [\mbox{Na}^+]   
+  Tm=Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}+ 16.6 \times \log [\mbox{Na}^+]   
  \end{displaymath}
  \item \textit{tanna06}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 x (N - 1) x g1  
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 \times (N - 1) \times g1  
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \begin{displaymath}
   g1=a1 + \frac{b1}{N}  
  \end{displaymath}
  \begin{displaymath}
-  a1= -0.07 x \ln [\mbox{Na}^+] + 0.012 x (\ln [\mbox{Mg}^{2+}])^2  
+  a1= -0.07 \times \ln [\mbox{Na}^+] + 0.012 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \begin{displaymath}
-  b1= 0.013 x (\ln [\mbox{Mg}^{2+}])^2  
+  b1= 0.013 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  item \textit{tanna07}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 x (N - 1) x g1  
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 \times (N - 1) \times g1  
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \begin{displaymath}
   g1=a1 + \frac{b1}{N}  
  \end{displaymath}
  \begin{displaymath}
-  a1= -0.075 x \ln [\mbox{Na}^+] + 0.012 x (\ln [\mbox{Mg}^{2+}])^2  
+  a1= -0.075 \times \ln [\mbox{Na}^+] + 0.012 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \begin{displaymath}
-  b1= 0.018 x (\ln [\mbox{Mg}^{2+}])^2  
+  b1= 0.018 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \item \textit{wet91}
  \begin{displaymath}
@@ -1973,7 +1991,7 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
  \end{displaymath}
  \end{itemize}
  
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{contexts} & \textbf{Article} \\
 \hline
@@ -2039,52 +2057,53 @@ tanna06 & DNA & Zhi-Jie Tan et al. 2006,  \\
   \item \textit{owcmg08}
  \begin{displaymath}
  \frac{1}{Tm_{[\mbox{Mg}^{2+}]}} = \frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}} + a
- - b (\ln [\mbox{Mg}^{2+}]) + Fgc (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} 
+ - b (\ln [\mbox{Mg}^{2+}]) + \Chi_{GC} (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} 
  \end{displaymath}
  \begin{displaymath}
  (-e + f \ln [\mbox{Mg}^{2+}] + g (\ln [\mbox{Mg}^{2+}])^{2}])
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \emph{Nbp} is the number of base pairs
  and a, b, c, d, e, f, g fixed to :
- a = 3.92 x $10^{-5}$
- b = 9.11 x $10^{-6}$
- c = 6.26 x $10^{-5}$
- d = 1.42 x $10^{-5}$
- e = 4.82 x $10^{-4}$
- f = 5.25 x $10^{-4}$
- g = 8.31 x $10^{-5}$.
+ 
+ a = 3.92 \times $10^{-5}$ \\
+ b = 9.11 \times $10^{-6}$ \\
+ c = 6.26 \times $10^{-5}$ \\
+ d = 1.42 \times $10^{-5}$ \\
+ e = 4.82 \times $10^{-4}$ \\
+ f = 5.25 \times $10^{-4}$ \\
+ g = 8.31 \times $10^{-5}$. \\
  \item \textit{tanmg06}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 x (N - 1) x g2  
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 \times (N - 1) \times g2  
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \begin{displaymath}
   g2=a2 + \frac{b2}{(N)^2}  
  \end{displaymath}
  \begin{displaymath}
-  a2= 0.02 x \ln [\mbox{Mg}^{2+}] + 0.0068 x (\ln [\mbox{Mg}^{2+}])^2  
+  a2= 0.02 \times \ln [\mbox{Mg}^{2+}] + 0.0068 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \begin{displaymath}
-  b2= 1.18 x \ln [\mbox{Mg}^{2+}] + 0.344 x (\ln [\mbox{Mg}^{2+}])^2
+  b2= 1.18 \times \ln [\mbox{Mg}^{2+}] + 0.344 \times (\ln [\mbox{Mg}^{2+}])^2
  \end{displaymath}
  item \textit{tanmg07}
  \begin{displaymath}
-  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 x (N - 1) x g2  
+  \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 \times (N - 1) \times g2  
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \begin{displaymath}
   g2=a2 + \frac{b2}{(N)^2}  
  \end{displaymath}
  \begin{displaymath}
-  a2= \frac{-0.6}{N} + 0.025 x \ln [\mbox{Mg}^{2+}] + 0.0068 x (\ln [\mbox{Mg}^{2+}])^2  
+  a2= \frac{-0.6}{N} + 0.025 \times \ln [\mbox{Mg}^{2+}] + 0.0068 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \begin{displaymath}
-  b2= \ln [\mbox{Mg}^{2+} + 0.38 x (\ln [\mbox{Mg}^{2+}])^2  
+  b2= \ln [\mbox{Mg}^{2+} + 0.38 \times (\ln [\mbox{Mg}^{2+}])^2  
  \end{displaymath}
  \end{itemize} 
 
- \begin{table}[h][c]
+ \begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2113,12 +2132,12 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
  \item \textit{owcmix08}
  \begin{displaymath}
  \frac{1}{Tm_{[\mbox{Mg}^{2+}]}} = \frac{1}{Tm_{[\mbox{Na}^+]=1\;\mathrm{M}}} + a
- - b (\ln [\mbox{Mg}^{2+}]) + Fgc (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} 
+ - b (\ln [\mbox{Mg}^{2+}]) + \Chi_{GC} (c + d \ln [\mbox{Mg}^{2+}]) + \frac{1}{2 (Nbp-1)} 
  \end{displaymath}
  \begin{displaymath}
  (-e + f \ln [\mbox{Mg}^{2+}] + g (\ln [\mbox{Mg}^{2+}])^{2}])
  \end{displaymath}
- Where \emph{Fgc} is the frequence of GC base pairs in the duplex.
+ Where \emph{$\Chi_{GC}$} is the frequence of GC base pairs in the duplex.
  \emph{Nbp} is the number of base pairs.
  b, c, e, f are fixed as in the magnesium correction owcmg08.
  \begin{displaymath}
@@ -2134,17 +2153,17 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
  \end{displaymath}
  \item \textit{tanmix07}
  \begin{displaymath}
- \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 x ((N - 1) x (x1 x g1 + x2 x g2) + g12))  
+ \Delta{}S=\Delta{}S_{[\mbox{Na}^+]=1\;\mathrm{M}}- 3.22 \times ((N - 1) \times (x1 \times g1 + x2 \times g2) + g12))  
  \end{displaymath}
  Where \emph{N} is the length of the duplex.
  \begin{displaymath}
-  g12 = -0.6 x x1 x x2 x \ln [\mbox{Na}^+] x \ln [(\frac{1}{x1} - 1) x \frac{\mbox{Na}^+)]}{N}  
+  g12 = -0.6 \times x1 \times x2 \times \ln [\mbox{Na}^+] \times \frac{\ln [(\frac{1}{x1} - 1) \times \mbox{Na}^+]}{N}  
  \end{displaymath}
   See what is g1 and g2 in the sodium corrections tanna06 and tanna07 (g1) and
   magnesium corrections tanmg06 and tanmg07 (g2).
   Formula representing the fractional contribution of Na+ ions.
  \begin{displaymath}
-  x1 = \frac{[\mbox{Na}^+]}{(\mbox{Na}^+ + (\frac{8.1 - 32.4}{N}) x (5.2 - \ln [\mbox{Na}^+]) x \mbox{Mg}^{2+})}  
+  x1 = \frac{[\mbox{Na}^+]}{(\mbox{Na}^+ + (\frac{8.1 - 32.4}{N}) \times (5.2 - \ln [\mbox{Na}^+]) \times \mbox{Mg}^{2+})}  
  \end{displaymath}
  Formula representing the fractional contribution of Mg2+ ions.
  \begin{displaymath}
@@ -2152,7 +2171,7 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
  \end{displaymath}
  \end{itemize}
 
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
@@ -2213,7 +2232,7 @@ Several sodium equivalence ready to use are proposed by this program :
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
@@ -2236,29 +2255,29 @@ pey00 & DNA & Peyret N., 2000 \\
 but some temperature corrections for the formamide and DMSO concentrations exists and can be
 applied. However, these corrections are rough approximations and results accuracy may be lost.
 
-\subsubsection{DMSO corrections, DMSO in percentage}
+\subsubsection{DMSO corrections, DMSO in \%}
   \begin{itemize}
-  \item textit{ahs01}
+  \item \textit{ahs01}
   \begin{displaymath}
-  Tm=Tm(DMSO=0)-0.75 x DMSO
+  Tm=Tm(DMSO=0)-0.75 \times DMSO
   \end{displaymath}
-  \item textit{cul76}
+  \item \textit{cul76}
   \begin{displaymath}
-  Tm=Tm(DMSO=0)-0.5 x DMSO
+  Tm=Tm(DMSO=0)-0.5 \times DMSO
   \end{displaymath}
-  \item textit{esc80}
+  \item \textit{esc80}
   \begin{displaymath}
-  Tm=Tm(DMSO=0)-0.675 x DMSO
+  Tm=Tm(DMSO=0)-0.675 \times DMSO
   \end{displaymath}
-  \item textit{mus81}
+  \item \textit{mus81}
   \begin{displaymath}
-  Tm=Tm(DMSO=0)-0.6 x DMSO
+  Tm=Tm(DMSO=0)-0.6 \times DMSO
   \end{displaymath}
   \end{itemize}
 \end{itemize} 
  
 For further information, see the referenced articles :
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2288,39 +2307,38 @@ mus80 & DNA & Musielski H. et al., 1981 \\
 \pagebreak
 \subsubsection{formamide corrections}
   \begin{itemize}
-  \item textit{bla96}
+  \item \textit{bla96}
   \begin{displaymath}
-  Tm=Tm(formamide=0)+ (0.453 x Fgc - 2.88) x formamide
+  Tm=Tm(formamide=0)+ (0.453 \times \Chi_{GC} - 2.88) \times formamide
   \end{displaymath}
-  Where Fgc is the frequence of GC base pairs in the sequence.
+  Where $\Chi_{GC}$ is the frequence of GC base pairs in the sequence.
   formamide is in mol/L
-  \item textit{lincorr}
+  \item \textit{lincorr}
   \begin{displaymath}
-  Tm (x % formamide) = Tm(0 % formamide) - 0.65 x % formamide
-  Tm=Tm(formamide=0)-0.65 x formamide
+  Tm=Tm(formamide=0)-0.65 \times formamide
   \end{displaymath}
-  Where formamide is in percentage.
+  Where formamide is in \%.
   \end{itemize}
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
-\textbf{correction} & \textbf{limits} & \textbf{Article} \\
+\te\timestbf{correction} & \te\timestbf{limits} & \te\timestbf{Article} \\
 \hline 
-\textbf{bla96} & DNA & R. D. Blake et al., 1996 \\
+\te\timestbf{bla96} & DNA & R. D. Blake et al., 1996 \\
  & not tested & Vol. 24, No. 11 2095-2103 \\
- & with experimental & \\
+ & with e\timesperimental & \\
  & values & \\
  & formamide in mol/L& \\
  \hline
 lincorr & DNA & McConaughy et al., 1969 \\
  & not tested & Biochemistry 8, 3289-3295. \\
- & with experimental & Record, M.T., Jr, 1967 \\
- & in percent & Biopolymers, 5, 975-992. \\
+ & with e\timesperimental & Record, M.T., Jr, 1967 \\
+ & in \% & Biopolymers, 5, 975-992. \\
  & values & Casey J. et al, 1977 \\
  & Formamide in & Nucleic acids research, 4, 1539-1532. \\
- & percentage & Hutton Jr, 1977 \\
+ & \% & Hutton Jr, 1977 \\
  & & Nucleic acids research, 4, 3537-3555. \\
  \hline
 \end{tabular}
@@ -2339,49 +2357,49 @@ This mode is launched if the sequence length is higher than the value given by t
  
 The melting temperature can be computed by one of the following formulas:   
 \begin{itemize}
-\item \textit{ahs01}
+\item \te\timestit{ahs01}
 \begin{displaymath}
-Tm = 80.4 + 0.345 x percentGC + \log[\mbox{Na}^+] x (17.0 - 0.135 x percentGC) - \frac{550}{size}
+Tm = 80.4 + 0.345 \times \%GC + \log[\mbox{Na}^+] \times (17.0 - 0.135 \times \%GC) - \frac{550}{size}
 \end{displaymath}
-\item \textit{che93}
+\item \te\timestit{che93}
 \begin{displaymath}
-Tm = 69.3 + 0.41 x percentGC - \frac{650}{size}
+Tm = 69.3 + 0.41 \times \%GC - \frac{650}{size}
 \end{displaymath}
-\item \textit{che93corr}
+\item \te\timestit{che93corr}
 \begin{displaymath}
-Tm = 69.3 + 0.41 x percentGC - \frac{535}{size}
+Tm = 69.3 + 0.41 \times \%GC - \frac{535}{size}
 \end{displaymath}
-\item \textit{marschdot}
+\item \te\timestit{marschdot}
 \begin{displaymath}
-Tm = 81.5 + 16.6 x \log[\mbox{Na}^+] + 0.41 x percentGC - \frac{675}{size}
+Tm = 81.5 + 16.6 \times \log[\mbox{Na}^+] + 0.41 \times \%GC - \frac{675}{size}
 \end{displaymath}
-\item \textit{owe69}
+\item \te\timestit{owe69}
 \begin{displaymath}
-Tm = 87.16 + 0.345 x percentGC + \log[\mbox{Na}^+] x (20.17 - 0.066 x percentGC)
+Tm = 87.16 + 0.345 \times \%GC + \log[\mbox{Na}^+] \times (20.17 - 0.066 \times \%GC)
 \end{displaymath}
-\item \textit{san98}
+\item \te\timestit{san98}
 \begin{displaymath}
-Tm = 77.1 + 11.7 x \log[\mbox{Na}^+] + 0.41 x percentGC - \frac{528}{size}
+Tm = 77.1 + 11.7 \times \log[\mbox{Na}^+] + 0.41 \times \%GC - \frac{528}{size}
 \end{displaymath}
-\item \textit{wetdna91}
+\item \te\timestit{wetdna91}
 \begin{displaymath}
-Tm = 81.5 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbox{Na}^+]} + 0.41\% GC - \frac{500}{size} 
-- percentMismatching
+Tm = 81.5 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbo\times{Na}^+]} + 0.41\% GC - \frac{500}{size} 
+- \%Mismatching
 \end{displaymath}
-\item \textit{wetrna91}
+\item \te\timestit{wetrna91}
 \begin{displaymath}
-Tm = 78 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbox{Na}^+]} + 0.7\% GC - \frac{500}{size}
-- percentMismatching
+Tm = 78 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbo\times{Na}^+]} + 0.7\% GC - \frac{500}{size}
+- \%Mismatching
 \end{displaymath}
-\item \textit{wetdnarna91}
+\item \te\timestit{wetdnarna91}
 \begin{displaymath}
-Tm = 67 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbox{Na}^+]} + 0.8\% GC - \frac{500}{size}
-- percentMismatching
+Tm = 67 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbo\times{Na}^+]} + 0.8\% GC - \frac{500}{size}
+- \%Mismatching
 \end{displaymath}
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[h][c]
+\begin{table}[hc]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{formula} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2467,199 +2485,9 @@ wetdnarna91 & DNA/RNA & James G. Wetmur,1991, \\
  DNARNA approximative formulas. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}      
  
-\clearpage     
-\section{References }
-Allawi H.T., SantaLucia J. (1997). Thermodynamics and NMR of internal G-T mismatches 
-in DNA. \textit{Biochemistry}  36: 10581-10594   
-
-Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics parameters 
-for internal G.A mismatches in DNA. \textit{Biochemistry} 37: 2170-2179
-
-Allawi H.T., SantaLucia J. (1998).Thermodynamics of internal C.T mismatches in DNA.
-\textit{Biochemistry} 26: 2694-2701.
-
-Allawi H.T., SantaLucia J. (1998). Nearest Neighbor thermodynamics of internal 
-A.C mismatches in DNA: sequence dependence and pH effects.
-\textit{Biochemistry} 37: 9435-9444.
-
-Amanda S. O'toole, Stacy Miller and Martin J Serra (2005), Stability of 3' double 
-nucleotide overhangs that model the 3'ends of siRNA. \textit{RNA} 11: 512-516
-
-Amanda S. O'toole, Stacy Miller, Nathan Haines, M. Coleen Zink and Martin J Serra (2006). 
-Comprehensive thermodynamic analysis of 3' double-nucleotide overhangs neighboring 
-Watson-Crick terminal base pairs.\textit{Nucleic Acids research} 34: 3338-3344
-
-Amber R. Davis, and Brent M. Znosko (2007), Thermodynamic Characterization of Single 
-Mismatches Found in Naturally Occurring RNA.\textit{Biochemistry} 46: 13425-13436
-
-Amber R. Davis, and Brent M. Znosko (2008), Thermodynamic Characterization of Naturally 
-Occurring RNA Single Mismatches with G-U Nearest Neighbors.\textit{Biochemistry} 
-47: 10178-10187
-
-Blake, R. D., and Delcourt, S. G. (1998) , Thermal stability of DNA.
-\textit{Nucleic Acids Res} 26: 3323-3332 and corrigendum.
-
-Bommarito S., Peyret N., SantaLucia J. (2000).  Thermodynamic parameters for DNA
-sequences with dangling ends.  \textit{Nucleic Acids Res} 28: 1929-1934
-
-  Breslauer K.J., Frank R., Bl\"ocker 
-H., Marky L.A. (1986). Predicting DNA duplex stability from the base sequence. 
- \textit{Proc Natl Acad Sci USA}  83: 3746-3750   
-
-Broda Magdalena, Elbieta Kierzek, Zofia Gdaniec, Tadeusz Kulinski and Ryszard 
-Kierzek (2005), Thermodynamic stability of RNA structures formed by CNG trinucleotide 
-repeats. Implication for prediction of RNA structure.\textit{Biochemistry} 
-44: 10873-10882.
-
-Casey J., and Davidson N. (1977) \textit{Nucleic acids research} 4: 1539-1532.
-
-Cullen Br, Bick Md (1976), Thermal denaturation of DNA from bromodeoxyuridine 
-substitued cells.\textit{Nucleic acids research} 3: 49-62.
-
-David H. Mathews, Jeffrey Sabina, Michael Zucker and Douglas H Turner (1999)
-Expanded sequence dependence of thermodynamic parameters improves prediction
-of RNA secondary structure.\textit{J. Mol. Biol} 288 : 911-940
-
-Elzbieta Kierzek, David H. Mathews, Anna Ciesielska, Douglas H. Turner and Ryszard Kierzek 
-(2006) Nearest neighbor parameters for Watson Crick complementary heteroduplexes
-formed between 2-O-methyl RNA and RNA oligonucleotides. \textit{Nucleic acids research} 
-34: 3609-3614
-
-Escara JF, Hutton Jr (1980), Thermal stability and renaturation of DNA in dimethyl sulfoxide
-solutions: acceleration of the renaturation rate.\textit{Biopolymers} 19: 1315-1327.
-
-Frank-Kamenetskii, M. D. (1971), Simplification of the empirical relationship between 
-melting temperature of DNA, its GC content and concentration of sodium ions in solution
-\textit{Biopolymers} 10: 2623-2624.
-
-Freier S.M., Kierzek R., Jaeger, J.A., Sugimoto N., Caruthers M.H., Neilson T., Turner D.H.
-(1986). \textit{Biochemistry} 
- 83:9373-9377 
- 
- Fumiaki Tanaka, Atsushi Kameda, Masahito Yamamoto and Azuma Ohuchi (2004)., Thermodynamic 
- Parameters based on a nearest neighbor model for DNA sequences with a single bulge loop.
-\textit{Biochemistry} 43 : 7143-7150
-
-Hiroyuki Asanuma, Daijiro Matsunaga and Makoto Komiyama (2005), Clear-cut photo-regulation 
-of the formation and dissociation of the DNA duplex by modified oligonucleotide involving 
-multiple azobenzenes.\textit{Nucleic acids Symposium Series} 49 : 35-36
-
-Hutton Jr (1977) \textit{Nucleic acids research} 4: 3537-3555.
-
-Jaya Badhwar, Saradasri Karri, Cody K. Cass, Erica L. Wunderlich and Brent M. Znosco (2007). 
-Thermodynamic characterization of RNA duplexes containing naturally occuring 1x2 nucleotide 
-internal loops.\textit{Biochemistry} 46: 14715-14724.
-
-Joshua M. Blose, Michelle L. Manni, Kelly A. Klapec, Yukiko Stranger-Jones, Allison C.
-Zyra, Vasiliy Sim, Chad A. Griffith, Jason D. Long, and Martin J. Serra (2007) 
-Non-Nearest-Neighbor Dependence of Stability for RNA Bulge Loops Based on the Complete 
-Set of Group I Single Nucleotide Bulge Loops.\textit{Biochemistry} 46 : 15123-15135
-
-Junji Kawakami1,2, Hiroyuki Kamiya3, Kyohko Yasuda2, Hiroyoshi Fujiki1, Hiroshi Kasai3 and
-Naoki Sugimoto (2001), Thermodynamic stability of base pairs between 2-hydroxyadenine and 
-incoming nucleotides as a determinant of nucleotide incorporation specificity during 
-replication.\textit{Nucleic acids research} 29 : 3289-3296
-
-Marmur, J., and Doty, P. (1962), Determination of the base composition of deoxyribonucleic 
-acid from its thermal denaturation temperature. \textit{J. Mol. Biol.} 5: 109-118.
-
-McConaughy, B.L., Laird, C.D. and McCarthy, B.I. (1969) \textit{ Biochemistry} 8: 3289-3295.
-
-Mitsuhashi M. (1996), Technical report: Part 1. Basic requirements for designing optimal 
-oligonucleotide probe sequences.\textit{J. Clin. Lab. Anal} 10: 277-284.
-
-Musielski H., Mann W, Laue R, Michel S (1981) Influence of dimethylsulfoxide on 
-transcription by bacteriophage T3-induced RNA polymerase.\textit{Z allg Microbiol}
-21: 447-456.
-
-Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz (2001) Oligonucleotide melting 
-temperatures under PCR conditions : deoxynucleotide Triphosphate and Dimethyl sulfoxide 
-concentrations with comparison to alternative empirical formulas \textit{Clinical Chemistry}
-47: 1956-1961.
- 
- Owczarzy R., Moreira B.G., You Y., Behlke M.B., Walder J.A.(2008) Predicting stability of DNA duplexes 
- in solutions containing Magnesium and Monovalent Cations. \textit{Biochemistry} 47: 5336-5353.  
-
-Patricia M. McTigue, Raymond J. Peterson, and Jason D. Kahn (2004) Sequence-Dependent 
-Thermodynamic Parameters for Locked Nucleic Acid (LNA)DNA Duplex
-Formation.\textit{Biochemistry} 
-43 : 5388-5405
-
-Peyret N. (2000), Prediction of nucleic acid hybridization : parameters and algorithms.
-\textit{Ph.D Thesis} Section .5.4.2, 128, Wayne State University, Detroit, MI.
-
-Peyret N., Seneviratne P.A., Allawi H.T., SantaLucia J. (1999). Nearest Neighbor thermodynamics and 
-NMR of DNA sequences with internal A.A, C.C, G.G and T.T mismatches. dependence and pH effects.
-\textit{Biochemistry} 38: 3468-3477
-
-R. D. Blake and Scott G. Delcourt (1996), Thermodynamic effects of formamide on DNA stability.
-\textit{Nucleic Acids Research} 24, No. 11 : 2095-2103
-
-Record, M.T., Jr (1967) \textit{Biopolymers} 5: 975-992.
-
-Richard Owczarzy, Yong You, Bernardo G. Moreira, Jeffrey A.Manthey, Lingyan Huang, Mark A. 
-Behlke and Joseph A.Walder (2004), Effects of sodium ions on DNA duplex oligomers: Improved 
-predictions of melting temperatures. \textit{Biochemistry} 43: 3537-3554.
-
-  SantaLucia J. Jr, Allawi H.T., Seneviratne P.A. (1996). Improved 
-nearest-neighbor parameters for predicting DNA duplex stability. \textit{Biochemistry} 
-35: 3555-3562  
-
-Schildkraut, C., and Lifson, S. (1965), Dependence of the melting temperature of DNA on 
-salt concentration.\textit{Biopolymers} 3: 195-208.
-
-Stacy Miller, Laura E. Jones, Karen Giovannitti, Dan Piper and Martin J. Serra (2008)
-Thermodynamic analysis of 5 and 3 single- and 3 double-nucleotide overhangs 
-neighboring wobble terminal base pairs.\textit{Nucleic Acids research}  36: 5652-5659  
-
-  Sugimoto N., Katoh M., Nakano S., Ohmichi T., Sasaki M. (1994). 
-RNA/DNA hybrid duplexes with identical nearest-neighbor base-pairs hve identical 
-stability. \textit{FEBS Letters} 354: 74-78   
-
-  Sugimoto N., Nakano S., Katoh M., Matsumura 
-A., Nakamuta H., Ohmichi T., Yoneyama M., Sasaki M. (1995). Thermodynamic parameters 
-to predict stability of RNA/DNA hybrid duplexes. \textit{Biochemistry} 34: 11211-11216 
-  
-  Sugimoto N., Nakano S., Yoneyama M., Honda K. (1996).  Improved thermodynamic 
-parameters and helix initiation factor to predict stability of DNA duplexes. 
-\textit{Nuc Acids Res}  24: 4501-4505  
-
-Tatsuo Ohmichi, Shu-ichi Nakano, Daisuke Miyoshi and Naoki Sugimoto (2002), Long RNA dangling
-end has large energetic contribution to duplex stability.\textit{J. Am. Chem. Soc.}
-124: 10367-10372
-
-Watkins N.E., Santalucia J. Jr. (2005). Nearest-neighbor thermodynamics of deoxyinosine 
-pairs in DNA duplexes. \textit{Nuc Acids Res} 33: 6258-6267 
-
-Wright D.J., Rice J.L., Yanker D.M., Znosko B.M. (2007). Nearest neighbor parameters for 
-inosine-uridine pairs in RNA duplexes. \textit{Biochemistry} 46: 4625-4634
-
-  Xia T., SantaLucia J., Burkard M.E., Kierzek 
-R., Schroeder S.J., Jiao X., Cox C., Turner D.H. (1998). Thermodynamics parameters 
-for an expanded nearest-neighbor model for formation of RNA duplexes with 
-Watson-Crick base pairs. \textit{Biochemistry}  37: 14719-14735  
-
-Zhi-Jie Tan and Shi-Jie Chen, (2006), Nucleic acid helix stability: effects of Salt 
-concentration, cation valence and size, and chain length.\textit{Biophysical Journal}
-90: 1175-1190. 
-
-Zhi-Jie Tan and Shi-Jie Chen (2007), RNA helix stability in Mixed Na+/Mg2+ solutions" 
-\textit{Biophysical Journal} 92: 3615-3632.
-
-Zhi John Lu, Douglas H. Turner and David H. Mathews (2006). A set of nearest neighbor 
-parameters for predicting the enthalpy change of RNA secondary structure formation. 
-\textit{Nucleic Acids Research} 34: 4912-4924. 
-
-  For review see: 
-  
-  SantaLucia J. (1998) A unified view of polymer, dumbbell, and oligonucleotide 
-DNA nearest-neighbor thermodynamics. \textit{Proc Natl Acad Sci USA}  95: 1460-1465 
-
-SantaLucia  J., Hicks Donald (2004) The Thermodynamics of DNA structural motifs. 
-\textit{Annu. Rev. Biophys. Struct} 33: 415-440 
-  
-  Wetmur J.G. (1991) DNA probes: applications of the principles of nucleic 
-acid hybridization. \textit{Crit Rev Biochem Mol Biol} 26: 227-259   
+\clearpage
+\bibliographystyle{plain}
+\bibliography{melting}  
  
 \section{See Also }
 New versions and 

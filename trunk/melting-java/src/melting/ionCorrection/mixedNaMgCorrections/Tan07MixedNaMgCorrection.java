@@ -58,7 +58,7 @@ public class Tan07MixedNaMgCorrection extends EntropyCorrection {
 	/**
 	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
 	 */
-	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) *x Na) / duplexLength";
+	protected static String gFormula = "g12 = -0.6 x x1 x x2 x ln(Na) x ln((1 / x1 - 1) x Na) / duplexLength";
 	
 	// CorrectionMethod interface implementation
 
