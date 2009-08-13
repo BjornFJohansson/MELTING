@@ -25,7 +25,7 @@
 /* J.Mol.Biol.  288: 911_940                                                                         
 /******************************************************************************/-->
         
-       <data type="woddle">
+       <data type="wobble">
         <mismatch sequence="AG/UU">
 	        <enthalpy>-3200.0</enthalpy>
             <entropy>-8.6</entropy>
