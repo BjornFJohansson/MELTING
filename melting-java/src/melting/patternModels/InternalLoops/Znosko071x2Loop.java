@@ -26,7 +26,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the 1x2 internal loop model zno07. It extends the PatternComputation class.
+ * This class represents the 1x2 internal loop model zno07. It extends PatternComputation.
  * 
  *  Brent M Znosko et al (2007). Biochemistry 46: 14715-14724.
  */

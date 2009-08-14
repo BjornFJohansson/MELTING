@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model owe69. It extends the Approximative class.
+ * This class represents the model owe69. It extends Approximative.
  * 
  * Owen RJ, Hill LR, Lapage SP. Determination of DNA base 
  * compositions from melting profiles in dilute buffers. Biopolymers 1969;

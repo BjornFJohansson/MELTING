@@ -24,14 +24,14 @@ import org.xml.sax.SAXException;
 
 /**
  * This class represents a Handler to parse the Data nodes in the xml files. It
- * extends the NodeHandler class
+ * extends NodeHandler.
  */
 public class DataHandler extends NodeHandler {
 
 	// Instance variables
 
 	/**
-	 * attributes for the Data node.
+	 * attributes for the data node.
 	 */
 	private String type;
 
@@ -44,24 +44,24 @@ public class DataHandler extends NodeHandler {
 	// public methods
 
 	/**
-	 * This method is called to get the map HashMap of the DataHandler object.
-	 * @return the map HashMap of the DataHandler object.
+	 * This method is called to get the map of DataHandler.
+	 * @return the map of DataHandler.
 	 */
 	public HashMap<String, Thermodynamics> getMap() {
 		return map;
 	}
 
 	/**
-	 * This method is called to get the type String of the DataHandler object.
-	 * @return the  'type' of the DataHandler object.
+	 * This method is called to get the type String of DataHandler.
+	 * @return the  'type' of the DataHandler.
 	 */
 	public String getType() {
 		return type;
 	}
 
 	/**
-	 * This method is called to get the map HashMap of the DataHandler object.
-	 * @return the map HashMap of the DataHandler object.
+	 * This method is called to get the map of DataHandler.
+	 * @return the map of DataHandler.
 	 */
 	private void setType(String s) {
 		this.type = s;

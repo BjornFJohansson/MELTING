@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception for an output file which doesn't exist.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class NoExistingOutputFileException extends RuntimeException {
 

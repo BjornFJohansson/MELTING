@@ -26,7 +26,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the GU base pair model tur99. It extends the PatternComputation class.
+ * This class represents the GU base pair model tur99. It extends PatternComputation.
  * 
  * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 
  */

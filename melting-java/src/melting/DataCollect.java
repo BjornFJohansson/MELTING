@@ -34,17 +34,17 @@ public class DataCollect {
 	// public methods
 	
 	/**
-	 * This method is called to get the data HashMap<String, Thermodynamics> of the DataCollect object.
-	 * @return the data HashMap<String, Thermodynamics> of the DataCollect object which contains the thermodynamic parameters.
+	 * This method is called to get the data of DataCollect.
+	 * @return the data HashMap<String, Thermodynamics> of DataCollect which contains the thermodynamic parameters.
 	 */
 	public HashMap<String, Thermodynamics> getData() {
 		return data;
 	}
 
 	/**
-	 * add all of the mappings from the specified HashMap to the data HasMap of the DataCollect object.
+	 * add all of the mappings from the specified HashMap to the data of DataCollect.
 	 * @param HashMap<String, Thermodynamics> parameters : contains the new mappings to add to the data 
-	 * HasMap of the DataCollect object.
+	 * of DataCollect.
 	 */
 	public void addData(HashMap<String, Thermodynamics> parameters) {
 		this.data.putAll(parameters);
@@ -53,7 +53,7 @@ public class DataCollect {
 	// => methods to extract the thermodynamic parameters for different crick's pair models
 	
 	/**
-	 * to get the Thermodynamics object containing the parameters for the specified type of terminal base pair.
+	 * to get the Thermodynamics containing the parameters for the specified type of terminal base pair.
 	 * @param String type : type of the terminal base pair.
 	 * @return Thermodynamics object containing the parameters for the specified type of terminal base pair.
 	 */
@@ -63,7 +63,7 @@ public class DataCollect {
 	}
 	
 	/**
-	 * to get the Thermodynamics object containing the parameters for the crick's pair composed of the String seq1 and the String seq2.
+	 * to get the Thermodynamics containing the parameters for the crick's pair composed of the String seq1 and the String seq2.
 	 * @param String seq1 : nucleic acids from the sequence (5'3') in the Crick's pair.
 	 * @param String seq2 : nucleic acids from the complementary sequence (3'5') in the Crick's pair. 
 	 * @return Thermodynamics object containing the parameters for the crick's pair composed of the String seq1 and the String seq2.

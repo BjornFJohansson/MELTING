@@ -25,7 +25,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the inosine model. It extends the PatternComputation class.
+ * This class represents the inosine model. It extends PatternComputation.
  */
 public abstract class InosineNNMethod extends PatternComputation{
 	

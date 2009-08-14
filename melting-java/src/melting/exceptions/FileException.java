@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception raised by a parameters file or another Melting file.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class FileException extends RuntimeException {
 

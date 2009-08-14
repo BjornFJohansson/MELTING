@@ -147,15 +147,15 @@ public class Environment {
 	}
 
 	/**
-	 * This method is called to get the int factor of the Environment object.
-	 * @return int factor of the Environment object.
+	 * This method is called to get the factor of Environment.
+	 * @return int factor of Environment.
 	 */
 	public int getFactor() {
 		return factor;
 	}
 	
 	/**
-	 * changes the int factor value of the Environment object
+	 * changes the factor value of Environment.
 	 * @param int factor : new factor value
 	 */
 	public void setFactor(int factor) {
@@ -163,24 +163,24 @@ public class Environment {
 	}
 
 	/**
-	 * This method is called to get the ThermoResult of the Environment object.
-	 * @return ThermoResult result of the Environment object.
+	 * This method is called to get the ThermoResult of Environment.
+	 * @return ThermoResult result of Environment.
 	 */
 	public ThermoResult getResult() {
 		return result;
 	}
 
 	/**
-	 * This method is called to get the sequences NucleotidSequences of the Environment object.
-	 * @return NucleotidSequences sequences of the Environment object.
+	 * This method is called to get the sequences NucleotidSequences of Environment.
+	 * @return NucleotidSequences sequences of Environment.
 	 */
 	public NucleotidSequences getSequences() {
 		return sequences;
 	}
 
 	/**
-	 * This method is called to get the oligomerConcentration double of the Environment object.
-	 * @return double oligomerConcentration of the Environment object.
+	 * This method is called to get the oligomerConcentration of Environment.
+	 * @return double oligomerConcentration of Environment.
 	 */
 	public double getNucleotides() {
 		return oligomerConcentration;
@@ -203,16 +203,16 @@ public class Environment {
 	}
 	
 	/**
-	 * This method is called to get the hybridization String of the Environment object.
-	 * @return String hybridization of the Environment object. (represents the type of hybridization)
+	 * This method is called to get the hybridization of Environment.
+	 * @return String hybridization of Environment. (represents the type of hybridization)
 	 */
 	public String getHybridization() {
 		return Hybridization;
 	}
 	
 	/**
-	 * This method is called to get the HashMap options of the Environment object.
-	 * @return HashMap options of the Environment object.
+	 * This method is called to get the HashMap options of Environment.
+	 * @return HashMap options of Environment.
 	 */
 	public HashMap<String, String> getOptions() {
 		return options;
@@ -271,8 +271,8 @@ public class Environment {
 	}
 	
 	/**
-	 * This method is called to get the concentrations HashMap of the Environment object.
-	 * @return HashMap concentrations of the Environment object. (contains the different ion and agent concentrations)
+	 * This method is called to get the concentrations of Environment.
+	 * @return HashMap concentrations of Environment. (contains the different ion and agent concentrations)
 	 */
 	public HashMap<String, Double> getConcentrations(){
 		return this.concentrations;
@@ -309,7 +309,7 @@ public class Environment {
 	}
 	
 	/**
-	 * increments the ThermoResult enthalpy and ThermoResult entropy of the Environment object
+	 * increments the ThermoResult enthalpy and ThermoResult entropy of Environment.
 	 * with the specified double enthalpy and double entropy.  
 	 * @param double enthalpy : enthalpy incrementation value
 	 * @param double entropy : entropy incrementation value
@@ -320,7 +320,7 @@ public class Environment {
 	}
 	
 	/**
-	 * changes the melting temperature of the ThermoResult object.
+	 * changes the melting temperature of ThermoResult.
 	 * @param double temperature : new melting temperature
 	 */
 	public void setResult(double temperature){
@@ -328,7 +328,7 @@ public class Environment {
 	}
 	
 	/**
-	 * changes the result ThermoResult of the Environment object.
+	 * changes the result ThermoResult of Environment.
 	 * @param ThermoResult result : new ThermoResult object.
 	 */
 	public void setResult(ThermoResult result){
@@ -349,7 +349,7 @@ public class Environment {
 	// private methods
 	
 	/**
-	 * initialises the concentrations HashMap of the Environment object.
+	 * initialises the concentrations of Environment.
 	 */
 	private void initialiseConcentrations(){
 		String [] solution = this.options.get(OptionManagement.solutioncomposition).split(":");

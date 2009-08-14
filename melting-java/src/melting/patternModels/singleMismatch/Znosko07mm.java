@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single mismatch model zno07. It extends the ZnoskoMethod class.
+ * This class represents the single mismatch model zno07. It extends ZnoskoMethod.
  * 
  * Brent M Znosko et al (2007). Biochemistry 46: 13425-13436.
  */

@@ -154,7 +154,7 @@ public class NucleotidSequences {
 	 * encodes the String sequence and complementary of the NucleotidSequences object.
 	 * @param String sequence : the sequence (5'3')
 	 * @param String complementary : the complementary sequence (3'5')
-	 * @return a String [] object which contains the encoded String sequence and complementary of the NucleotidSequences object
+	 * @return a String [] which contains the encoded String sequence and complementary of NucleotidSequences.
 	 */
 	public String [] encodeSequences(String sequence, String complementary){
 		StringBuffer seq = new StringBuffer();
@@ -168,10 +168,10 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * removes the unnecessary "-" in the String sequence and complementary of the NucleotidSequences object
+	 * removes the unnecessary "-" in the String sequence and complementary of NucleotidSequences.
 	 * @param String sequence : the sequence (5'3')
 	 * @param String complementary : the complementary sequence (3'5')
-	 * @return a String [] object which contains the String sequence and complementary without unnecessary gaps ("-")
+	 * @return a String [] which contains the String sequence and complementary without unnecessary gaps ("-")
 	 */
 	public String [] correctSequences( String sequence, String complementary){
 		StringBuffer correctedSequence = new StringBuffer(sequence.length());
@@ -196,8 +196,8 @@ public class NucleotidSequences {
 	 * @param int pos1 : starting position of the subsequence in the duplex
 	 * @param int pos2 : ending position of the subsequence in the duplex
 	 * @return the substring between pos1 and pos2 which is the complementary to the sequence String.
-	 * If the sequence String is neither a substring of the sequence String of NucleotidSequences object, nor a substring of 
-	 * the complementary String of NucleotidSequences object, a SequenceException is thrown.
+	 * If the sequence String is neither a substring of the sequence of NucleotidSequences., nor a substring of 
+	 * the complementary of NucleotidSequences., a SequenceException is thrown.
 	 */
 	public String getComplementaryTo(String sequence, int pos1, int pos2){
 		
@@ -213,7 +213,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * this method is called to get the String sequence or complementary of the NucleotidSequences object 
+	 * this method is called to get the String sequence or complementary of NucleotidSequences.
 	 * which contains the pattern "pattern".
 	 * @param String pattern
 	 * @param int pos1 : starting position of the pattern in the duplex
@@ -447,8 +447,8 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * to check if the nucleic acids of the base pair at the position pos in the duplex are existing nucleic acids. (exist in the
-	 * existingNucleicAcids ArrayList of the BasePair class)
+	 * to check if the nucleic acids in the base pair at the position pos in the duplex are existing nucleic acids. (exist in the
+	 * existingNucleicAcids of BasePair)
 	 * @param int pos : position of the nucleic acid in the duplex
 	 * @return true if the two nucleic acids are known by MELTING. 
 	 */
@@ -724,7 +724,7 @@ public class NucleotidSequences {
 	}
 
 	/**
-	 * This method is called to get the duplex ArrayList of the NucleotidSequences object.
+	 * This method is called to get the duplex of NucleotidSequences.
 	 * @return the duplex ArrayList containing BasePair objects.
 	 */
 	public ArrayList<BasePair> getDuplex() {
@@ -754,7 +754,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * computes the percentage of GC base pairs in the duplex of the NucleotidSeqences object.
+	 * computes the percentage of GC base pairs in the duplex of NucleotidSequences.
 	 * @return double percentage of GC base pairs in the duplex.
 	 */
 	public double computesPercentGC(){
@@ -771,7 +771,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * Computes the percentage of mismatching base pairs in the duplex of the NucleotidSequences object
+	 * Computes the percentage of mismatching base pairs in the duplex of NucleotidSequences.
 	 * @return double percentage of mismatching base pairs in the duplex
 	 */
 	public double computesPercentMismatching(){
@@ -787,7 +787,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * To check if there is at least one GC base pair in the duplex of the NucleotidSequences object.
+	 * To check if there is at least one GC base pair in the duplex of NucleotidSequences.
 	 * @return true if at least one GC base pair exists in the duplex.
 	 */
 	public boolean isOneGCBasePair(){
@@ -801,7 +801,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * This method is called to get the length of the ArrayList duplex of the NucleotidSequences object.
+	 * This method is called to get the length of the ArrayList duplex of NucleotidSequences.
 	 * @return int length which represents the length of the nucleic acid duplex.
 	 */
 	public int getDuplexLength(){
@@ -809,16 +809,16 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * This method is called to get the encoded sequence String of the NucleotidSequences object.
-	 * @return String sequence of the NucleotidSequences object.
+	 * This method is called to get the encoded sequence String of NucleotidSequences.
+	 * @return String sequence of NucleotidSequences.
 	 */
 	public String getSequence() {
 		return getSequence(0, getDuplexLength() - 1);
 	}
 
 	/**
-	 * This method is called to get the encoded complementary String of the NucleotidSequences object.
-	 * @return String complementary of the NucleotidSequences object.
+	 * This method is called to get the encoded complementary String of NucleotidSequences.
+	 * @return String complementary of NucleotidSequences.
 	 */
 	public String getComplementary() {
 		return getComplementary(0, getDuplexLength() - 1);
@@ -913,12 +913,12 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * calculates the number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
+	 * calculates the number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex of NucleotidSequences.
 	 * @param String base1
 	 * @param String base2
-	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @return int number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex ArrayList of the NucleotidSequences object
+	 * @param int pos1 : starting position of the subsequence in the duplex of NucleotidSequences.
+	 * @param int pos2 : ending position of the subsequence in the duplex of NucleotidSequences.
+	 * @return int number of base pairs (base1, base2) at the postions pos1 and pos2 in the duplex of NucleotidSequences.
 	 */
 	public double calculateNumberOfTerminal(String base1, String base2, int pos1, int pos2){
 		return calculateNumberOfTerminal(base1, base2, this.duplex, pos1, pos2);
@@ -926,8 +926,8 @@ public class NucleotidSequences {
 	
 	/**
 	 * calculates the number of terminal 5'T3'A in the subduplex between pos1 and pos2
-	 * @param int pos1 : starting position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
-	 * @param int pos2 : ending position of the subsequence in the duplex Arraylist of the NucleotidSequences object.
+	 * @param int pos1 : starting position of the subsequence in the duplex of NucleotidSequences.
+	 * @param int pos2 : ending position of the subsequence in the duplex of NucleotidSequences.
 	 * @return int number of terminal 5'T3'A in the subduplex between pos1 and pos2. 5'A/3'T means that at the position
 	 * pos1, the base pair is (T,A) and at the position pos2, the base pair is (A,T).
 	 */
@@ -988,7 +988,7 @@ public class NucleotidSequences {
 	 * @param String base1
 	 * @param String base2
 	 * @param int pos : position of the base pair in the duplex
-	 * @return true if the tuple (TopAcid, BottomAcid) of the BasePair object at the position pos in the duplex ArrayList
+	 * @return true if the tuple (TopAcid, BottomAcid) of BasePair at the position pos in the duplex ArrayList
 	 * is (base1, base2) or (base2, base1).
 	 */
 	public boolean isBasePair(String base1, String base2, int pos){
@@ -1002,7 +1002,7 @@ public class NucleotidSequences {
 	// private methods
 	
 	/**
-	 * encodes the complementary String of the object NucleotidSequences
+	 * encodes the complementary of NucleotidSequences.
 	 * @param String sequence : the sequence (5'3')
 	 * @param StringBuffer comp : the complementary sequence (3'5') to encode
 	 * @return the encoded complementary String
@@ -1036,7 +1036,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * encodes the sequence String of the object NucleotidSequences
+	 * encodes the sequence of NucleotidSequences.
 	 * @param String complementary : the complementary sequence (3'5')
 	 * @param StringBuffer seq : the sequence (5'3') to encode
 	 * @return the encoded sequence String
@@ -1131,10 +1131,10 @@ public class NucleotidSequences {
 	// public static methods
 	
 	/**
-	 * This method is called to get the ArrayList duplex of the NucleotidSequences object.
+	 * This method is called to get the duplex of NucleotidSequences.
 	 * @param String sequence : sequence (5'3')
 	 * @param String complementary : complementary sequence (3'5')
-	 * @return the ArrayList duplex of the NucleotiSequences object.
+	 * @return the duplex of NucleotidSequences.
 	 */
 	public static ArrayList<BasePair> getDuplexFrom(String sequence, String complementary){
 		ArrayList<BasePair> duplex = new ArrayList<BasePair>();
@@ -1148,10 +1148,10 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * decodes the String sequence and complementary of the NucleotidSequences object.
+	 * decodes the String sequence and complementary of NucleotidSequences.
 	 * @param String sequence : sequence (5'3')
 	 * @param String complementary : complementary sequence (3'5')
-	 * @return a String [] object containing the decoded String sequence and complementary of the NucleotidSequences object.
+	 * @return a String [] object containing the decoded String sequence and complementary of NucleotidSequences.
 	 */
 	public static String [] decodeSequences(String sequence, String complementary){
 		StringBuffer seq = new StringBuffer();
@@ -1165,11 +1165,11 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * creates a NucleotidSequences object with two symmetric sequences String created from the
+	 * creates a NucleotidSequences with two symmetric sequences String created from the
 	 * seq1 String an seq2 String.
 	 * @param String seq1 : sequence (5'3')
 	 * @param String seq2 : complementary sequence (3'5')
-	 * @return NucleotidSequences object whith the sequence String symmetric to the complementary String.
+	 * @return NucleotidSequences whith the sequence String symmetric to the complementary String.
 	 */
 	public static NucleotidSequences buildSymetricSequences(String seq1, String seq2){
 		StringBuffer symetricSequence = new StringBuffer(seq1.length());
@@ -1188,9 +1188,9 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * creates the inverse String of the sequence String
+	 * creates the inverse String of the sequence
 	 * @param String sequence to inverse
-	 * @return String which is the inverse of the sequence String
+	 * @return String which is the inverse of the sequence
 	 */
 	public static String getInversedSequence(String sequence){
 		StringBuffer newSequence = new StringBuffer(sequence.length());
@@ -1203,10 +1203,10 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * To check if a sequence String is self complementary. A self complementary sequence is a 
+	 * To check if a sequence is self complementary. A self complementary sequence is a 
 	 * sequence which can get bound or hybridized to itself.
 	 * @param String sequence
-	 * @return true if the sequence String is self complementary.
+	 * @return true if the sequence is self complementary.
 	 */
 	public static boolean isSelfComplementarySequence(String sequence){
 		String seq = removeDanglingEnds(sequence);
@@ -1224,11 +1224,11 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * converts a sequence String in a String composed of purine and pyrimidine.
+	 * converts a sequence into a String composed of purine and pyrimidine.
 	 * A and G are purines (represented by "R" in the new sequence String), C, T and U are
 	 * pyrimidines (represented by "Y" in the new sequence String)
 	 * @param String sequence to convert in purine-pyrimidine sequence.
-	 * @return the new sequence String converted into a String composed of purines ("R") and pyrimidines ("Y").
+	 * @return the new sequence converted into a String composed of purines ("R") and pyrimidines ("Y").
 	 * If the sequence String is not only composed of - (gap), A, T, U, G and C, a SequenceExceptions is thrown.
 	 */
 	public static String convertToPyr_Pur(String sequence){
@@ -1261,15 +1261,15 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * This method is called to get the modifiedAcidNames HashMap of the NucleotidSequences class.
-	 * @return the public static modifiedAcidNames HashMap of the NucleotidSequences class.
+	 * This method is called to get the modifiedAcidNames of NucleotidSequences.
+	 * @return the public static modifiedAcidNames of NucleotidSequences.
 	 */
 	public static HashMap<String, SpecificAcidNames> getModifiedAcidNames() {
 		return modifiedAcidNames;
 	}
 	
 	/**
-	 * initialises the HasMap modifiedAcidNames of the NucleotiSequences class.
+	 * initialises the modifiedAcidNames of NucleotidSequences.
 	 */
 	public static void initialiseModifiedAcidHashmap(){
 		modifiedAcidNames.put("I", SpecificAcidNames.inosine);
@@ -1283,7 +1283,7 @@ public class NucleotidSequences {
 	}
 	
 	/**
-	 * This method is called when we want to get the complementary String of the NucleotidSequences object with the
+	 * This method is called when we want to get the complementary of NucleotidSequences with the
 	 * type of hybridization "hybridization".
 	 * @param String sequence
 	 * @param String hybridization : type of hybridization
@@ -1517,7 +1517,7 @@ public class NucleotidSequences {
 	 * @param String sequence : sequence (5'3')
 	 * @param String complementary : complementary sequence (3'5')
 	 * @param int pos : position in the sequence where is the base pair.
-	 * @return BasePair object which represents the nucleic acid base pair at the position pos in the duplex
+	 * @return BasePair which represents the nucleic acid base pair at the position pos in the duplex
 	 * If neither the nucleic acid from the sequence (5'3') nor the nucleic acid from the complementary sequence (3'5')
 	 * is known (acid1 == null and acid2 == null), a SequenceException is thrown.
 	 */

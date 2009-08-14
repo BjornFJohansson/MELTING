@@ -26,7 +26,7 @@ import melting.exceptions.MethodNotApplicableException;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model sug95. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model sug95. It extends CricksNNMethod.
  * 
  * Sugimoto et al. (1995). Biochemistry 34 : 11211-11216
  */

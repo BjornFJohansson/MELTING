@@ -45,8 +45,8 @@ public class FileReader {
 	// public static methods
 	
 	/**
-	 * This method is called to get the loadedData HashMap of the FileReader class.
-	 * @return the loadedData HashMap of the FileReader class.
+	 * This method is called to get the loadedData of FileReader.
+	 * @return the loadedData of FileReader.
 	 */
 	public static HashMap<String, HashMap<String, Thermodynamics>> getLoadedData() {
 		return loadedData;

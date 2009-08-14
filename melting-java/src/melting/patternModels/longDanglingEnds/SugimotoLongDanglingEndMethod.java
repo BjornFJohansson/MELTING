@@ -27,7 +27,7 @@ import melting.sequences.NucleotidSequences;
 
 /**
  * This class represents the long dangling end model (for long poly A only)from Sugimoto et al. 2002. 
- * It extends the PatternComputation class.
+ * It extends PatternComputation.
  * 
  * Sugimoto et al. (2002). J. Am. Chem. Soc. 124: 10367-10372
  */

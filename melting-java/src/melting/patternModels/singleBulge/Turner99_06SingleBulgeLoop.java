@@ -27,7 +27,7 @@ import melting.patternModels.longBulge.Turner99_06LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single bulge loop model tur06. It extends the Turner99_06LongBulgeLoop class.
+ * This class represents the single bulge loop model tur06. It extends Turner99_06LongBulgeLoop.
  * 
  * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924. 
  * 

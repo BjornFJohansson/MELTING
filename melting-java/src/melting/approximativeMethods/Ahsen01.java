@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /** 
- * This class represents the approxiamtive model ahs01. It extends the ApproximativeMode class.
+ * This class represents the approxiamtive model ahs01. It extends ApproximativeMode.
  * 
  * Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
  * melting temperatures under PCR conditions : deoxynucleotide Triphosphate

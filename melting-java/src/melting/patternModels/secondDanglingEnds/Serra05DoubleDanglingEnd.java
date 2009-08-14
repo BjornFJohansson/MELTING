@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the second dangling end model ser05. It extends the SecondDanglingEndMethod class.
+ * This class represents the second dangling end model ser05. It extends SecondDanglingEndMethod.
  * 
  * Martin J Serra et al. (2005). RNA 11: 512-516
  */

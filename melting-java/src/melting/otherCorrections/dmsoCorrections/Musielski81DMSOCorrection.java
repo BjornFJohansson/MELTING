@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
 
 /**
- * This class represents the DMSO correction model mus81. It extends the DNADMSOCorrections class.
+ * This class represents the DMSO correction model mus81. It extends DNADMSOCorrections.
  * 
  * Musielski H., Mann W, Laue R, Michel S, "Influence of dimethylsulfoxide
  * on transcription by bacteriophage T3-induced RNA polymerase.", Z allg Microbiol 1981; 21, 447-456.

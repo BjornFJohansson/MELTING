@@ -27,7 +27,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the internal loop model tur06. It extends the PatternComputation class.
+ * This class represents the internal loop model tur06. It extends PatternComputation.
  * 
  * Douglas M Turner et al (2006). Nucleic Acids Research 34: 4912-4924.
  */

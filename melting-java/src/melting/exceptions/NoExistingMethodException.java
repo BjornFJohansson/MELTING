@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception for a method or model which doesn't exist.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class NoExistingMethodException extends RuntimeException {
 

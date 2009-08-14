@@ -25,7 +25,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model bre86. It extends the GlobalInitiation class.
+ * This class represents the nearest neighbor model bre86. It extends GlobalInitiation.
  * 
  * Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 
  */

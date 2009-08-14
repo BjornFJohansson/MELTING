@@ -29,7 +29,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the locked nucleic acid (AL, GL, CL or TL) model mct04. It extends the PatternComputation class.
+ * This class represents the locked nucleic acid (AL, GL, CL or TL) model mct04. It extends PatternComputation.
  * 
  * McTigue et al.(2004). Biochemistry 43 : 5388-5405
  */

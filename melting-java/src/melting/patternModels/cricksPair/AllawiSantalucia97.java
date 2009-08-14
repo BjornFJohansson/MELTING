@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model all97. It extends the DecomposedInitiation class.
+ * This class represents the nearest neighbor model all97. It extends DecomposedInitiation.
  * 
  * Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594
  */

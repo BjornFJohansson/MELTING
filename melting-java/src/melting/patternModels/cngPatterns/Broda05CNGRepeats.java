@@ -26,7 +26,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the CNG repeats model bro05. It extends the PatternComputation class.
+ * This class represents the CNG repeats model bro05. It extends PatternComputation.
  * 
  * Broda et al (2005). Biochemistry 44: 10873-10882.
  */

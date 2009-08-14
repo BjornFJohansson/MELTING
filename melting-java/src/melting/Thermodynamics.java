@@ -44,15 +44,15 @@ public class Thermodynamics {
 	// public methods
 	
 	/**
-	 * This method is called to get the enthalpy double of a Thermodynamic object.
-	 *  @return the enthalpy double of a Thermodynamic object.
+	 * This method is called to get the enthalpy of Thermodynamics.
+	 *  @return the enthalpy of Thermodynamics.
 	 */
 	public double getEnthalpy() {
 		return enthalpy;
 	}
 	
 	/**
-	 * This method is called to change the enthalpy double value of a Thermodynamic object.
+	 * This method is called to change the enthalpy of Thermodynamics.
 	 * @param double enthalpy : new enthalpy value
 	 */
 	public void setEnthalpy(double enthalpy) {
@@ -60,15 +60,15 @@ public class Thermodynamics {
 	}
 	
 	/**
-	 * This method is called to get the entropy double of a Thermodynamic object.
-	 *  @return the entropy double of a Thermodynamic object.
+	 * This method is called to get the entropy of Thermodynamics.
+	 *  @return the entropy of Thermodynamics.
 	 */
 	public double getEntropy() {
 		return entropy;
 	}
 	
 	/**
-	 * This method is called to change the entropy double value of a Thermodynamic object.
+	 * This method is called to change the entropy of Thermodynamics.
 	 * @param double entropy : new entropy value
 	 */
 	public void setEntropy(double entropy) {

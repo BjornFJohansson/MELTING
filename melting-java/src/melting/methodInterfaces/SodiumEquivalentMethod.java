@@ -24,7 +24,7 @@ public interface SodiumEquivalentMethod {
 
 	/**
 	 * This method is called to convert an initial sodium concentration in a new equivalent sodium concentration
-	 * which take in account the other cation concentrations.
+	 * which takes in account the other cation concentrations.
 	 * @param int Na : sodium concentration entered by the user
 	 * @param int Mg : magnesium concentration entered by the user
 	 * @param int K : potassium concentration entered by the user

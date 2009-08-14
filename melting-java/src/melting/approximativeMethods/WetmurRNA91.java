@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model wetrna91. It extends the Wetmur91 class
+ * This class represents the model wetrna91. It extends Wetmur91.
  */
 public class WetmurRNA91 extends Wetmur91 {
 	

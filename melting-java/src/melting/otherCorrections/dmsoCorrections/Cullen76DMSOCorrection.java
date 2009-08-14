@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
 
 /**
- * This class represents the DMSO correction model cul76. It extends the DNADMSOCorrections class.
+ * This class represents the DMSO correction model cul76. It extends DNADMSOCorrections.
  * 
  * Cullen Br, Bick Md, "Thermal denaturation of DNA from bromodeoxyuridine substitued cells."
  * Nucleic acids research, 1976, 3, 49-62.

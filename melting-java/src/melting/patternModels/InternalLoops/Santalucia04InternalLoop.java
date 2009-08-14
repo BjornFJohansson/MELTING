@@ -29,7 +29,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the internal loop model san04. It extends the PatternComputation class.
+ * This class represents the internal loop model san04. It extends PatternComputation.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 
  */

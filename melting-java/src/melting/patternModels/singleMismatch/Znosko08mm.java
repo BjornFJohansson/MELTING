@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single mismatch model zno08. It extends the ZnoskoMethod class.
+ * This class represents the single mismatch model zno08. It extends ZnoskoMethod.
  * 
  * Brent M Znosko et al (2008). Biochemistry 47: 10178-10187.
  */

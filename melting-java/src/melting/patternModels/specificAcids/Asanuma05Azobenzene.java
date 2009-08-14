@@ -26,7 +26,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the azobenzene (X_C or X_T) model asa05. It extends the PatternComputation class.
+ * This class represents the azobenzene (X_C or X_T) model asa05. It extends PatternComputation.
  * 
  * Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36
  */

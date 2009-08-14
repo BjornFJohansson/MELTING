@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model from Wetmur 1991. It extends the ApproximativeMode class.
+ * This class represents the model from Wetmur 1991. It extends ApproximativeMode.
  * 
  * James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 1991, Critical reviews in biochemistry and molecular biology, 26, 227-259*/

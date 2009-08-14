@@ -414,7 +414,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the crickMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the crickMethod of NearestNeighborMode.
 	 */
 	private void initialiseCrickMethod(){
 		String optionName = OptionManagement.NNMethod;
@@ -423,7 +423,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the azobenzeneMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the azobenzeneMethod of NearestNeighborMode.
 	 */
 	private void initialiseAzobenzeneMethod(){
 		String optionName = OptionManagement.azobenzeneMethod;
@@ -432,7 +432,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the CNGRepeatsMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the CNGRepeatsMethod of NearestNeighborMode.
 	 */
 	private void initialiseCNGRepeatsMethod(){
 		String optionName = OptionManagement.CNGMethod;
@@ -441,7 +441,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the doubleDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the doubleDanglingEndMethod of NearestNeighborMode.
 	 */
 	private void initialiseDoubleDanglingEndMethod(){
 		String optionName = OptionManagement.doubleDanglingEndMethod;
@@ -450,7 +450,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the hydroxyadenosineMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the hydroxyadenosineMethod of NearestNeighborMode.
 	 */
 	private void initialiseHydroxyadenosineMethod(){
 		String optionName = OptionManagement.hydroxyadenineMethod;
@@ -459,7 +459,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the inosineMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the inosineMethod of NearestNeighborMode.
 	 */
 	private void initialiseInosineMethod(){
 		String optionName = OptionManagement.inosineMethod;
@@ -468,7 +468,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the internalLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the internalLoopMethod of NearestNeighborMode.
 	 */
 	private void initialiseInternalLoopMethod(){
 		String optionName = OptionManagement.internalLoopMethod;
@@ -479,7 +479,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the lockedAcidMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the lockedAcidMethod of NearestNeighborMode.
 	 */
 	private void initialiseLockedAcidMethod(){
 		String optionName = OptionManagement.lockedAcidMethod;
@@ -488,7 +488,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the longBulgeLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the longBulgeLoopMethod of NearestNeighborMode.
 	 */
 	private void initialiseLongBulgeLoopMethod(){
 		String optionName = OptionManagement.longBulgeLoopMethod;
@@ -497,7 +497,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the longDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the longDanglingEndMethod of NearestNeighborMode.
 	 */
 	private void initialiseLongDanglingEndMethod(){
 		String optionName = OptionManagement.longDanglingEndMethod;
@@ -506,7 +506,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the singleBulgeLoopMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the singleBulgeLoopMethod of NearestNeighborMode.
 	 */
 	private void initialiseSingleBulgeLoopMethod(){
 		String optionName = OptionManagement.singleBulgeLoopMethod;
@@ -515,7 +515,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the singleDanglingEndMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the singleDanglingEndMethod of NearestNeighborMode.
 	 */
 	private void initialiseSingleDanglingEndMethod(){
 		String optionName = OptionManagement.singleDanglingEndMethod;
@@ -525,7 +525,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the singleMismatchMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the singleMismatchMethod of NearestNeighborMode.
 	 */
 	private void initialiseSingleMismatchMethod(){
 		String optionName = OptionManagement.singleMismatchMethod;
@@ -534,7 +534,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the tandemMismatchMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the tandemMismatchMethod of NearestNeighborMode.
 	 */
 	private void initialiseTandemMismatchMethod(){
 		String optionName = OptionManagement.tandemMismatchMethod;
@@ -543,7 +543,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the wobbleMethod PatternComputationMethod of the NearestNeighborMode object.
+	 * initialises the wobbleMethod of NearestNeighborMode.
 	 */
 	private void initialiseWobbleMethod(){
 		String optionName = OptionManagement.wobbleBaseMethod;
@@ -552,11 +552,11 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * initialises the PatternComputationMethod object which represents the model 'methodName' entered
+	 * initialises the PatternComputationMethod which represents the model 'methodName' entered
 	 * with the option 'optionName'
 	 * @param String optionName : option name
 	 * @param String methodName : method or model name
-	 * @return the initialised PatternComputationMethod object.
+	 * @return the initialised PatternComputationMethod.
 	 */
 	private PatternComputationMethod initialiseMethod(String optionName, String methodName){
 

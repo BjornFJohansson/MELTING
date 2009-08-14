@@ -258,7 +258,7 @@ public class RegisterMethods {
 	// private methods
 	
 	/**
-	 * initialises the NaEqMethod HashMap of the RegisterMethods object.
+	 * initialises the NaEqMethod of RegisterMethods.
 	 */
 	private void initialiseNaEqMethods(){
 		NaEqMethod.put("ahs01", Ahsen01_NaEquivalent.class);
@@ -267,7 +267,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the meltingComputationMethods HashMap of the RegisterMethods object.
+	 * initialises the meltingComputationMethods of RegisterMethods.
 	 */
 	private void initialiseMeltingComputationMethods(){
 		meltingComputationMethods.put("A", ApproximativeMode.class);
@@ -276,7 +276,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the approximativeMethod HashMap of the RegisterMethods object.
+	 * initialises the approximativeMethod of RegisterMethods.
 	 */
 	private void initialiseApproximativeMethods(){
 		approximativeMethod.put("ahs01", Ahsen01.class);
@@ -291,7 +291,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the cricksMethod HashMap of the RegisterMethods object.
+	 * initialises the cricksMethod of RegisterMethods.
 	 */
 	private void initialiseCricksMethods(){
 		cricksMethod.put("all97", AllawiSantalucia97.class);
@@ -307,7 +307,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the singleMismatchMethod HashMap of the RegisterMethods object.
+	 * initialises the singleMismatchMethod of RegisterMethods.
 	 */
 	private void initialiseSingleMismatchMethods(){
 		singleMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99mm.class);
@@ -317,7 +317,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the tandemMismatchMethod HashMap of the RegisterMethods object.
+	 * initialises the tandemMismatchMethod of RegisterMethods.
 	 */
 	private void initialiseTandemMismatchMethods(){
 		tandemMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99tanmm.class);
@@ -325,14 +325,14 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the wobbleMethod HashMap of the RegisterMethods object.
+	 * initialises the wobbleMethod of RegisterMethods.
 	 */
 	private void initialiseWobbleMismatchMethods(){
 		wobbleMethod.put("tur99", Turner99Wobble.class);
 	}
 	
 	/**
-	 * initialises the internalLoopMethod HashMap of the RegisterMethods object.
+	 * initialises the internalLoopMethod of RegisterMethods.
 	 */
 	private void initialiseInternalLoopMethods(){
 		internalLoopMethod.put("tur06", Turner06InternalLoop.class);
@@ -341,7 +341,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the singleBulgeLoopMethod HashMap of the RegisterMethods object.
+	 * initialises the singleBulgeLoopMethod of RegisterMethods.
 	 */
 	private void initialiseSingleBulgeLoopMethods(){
 		singleBulgeLoopMethod.put("tur06", Turner99_06SingleBulgeLoop.class);
@@ -352,7 +352,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the longBulgeLoopMethod HashMap of the RegisterMethods object.
+	 * initialises the longBulgeLoopMethod of RegisterMethods.
 	 */
 	private void initialiseLongBulgeLoopMethods(){
 		longBulgeLoopMethod.put("tur06", Turner99_06LongBulgeLoop.class);
@@ -360,7 +360,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the singleDanglingEndMethod HashMap of the RegisterMethods object.
+	 * initialises the singleDanglingEndMethod of RegisterMethods.
 	 */
 	private void initialiseSingleDanglingEndMethods(){
 		singleDanglingEndMethod.put("bom00", Bommarito00SingleDanglingEnd.class);
@@ -370,7 +370,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the doubleDanglingEndMethod HashMap of the RegisterMethods object.
+	 * initialises the doubleDanglingEndMethod of RegisterMethods.
 	 */
 	private void initialiseDoubleDanglingEndMethods(){
 		doubleDanglingEndMethod.put("ser05", Serra05DoubleDanglingEnd.class);
@@ -381,7 +381,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the longDanglingEndMethod HashMap of the RegisterMethods object.
+	 * initialises the longDanglingEndMethod of RegisterMethods.
 	 */
 	private void initialiseLongDanglingEndMethods(){
 		longDanglingEndMethod.put("sugdna02", Sugimoto02DNADanglingEnd.class);
@@ -389,14 +389,14 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the CNGRepeatsMethod HashMap of the RegisterMethods object.
+	 * initialises the CNGRepeatsMethod of RegisterMethods.
 	 */
 	private void initialiseCNGRepeatsMethods(){
 		CNGRepeatsMethod.put("bro05", Broda05CNGRepeats.class);
 	}
 	
 	/**
-	 * initialises the inosineMethod HashMap of the RegisterMethods object.
+	 * initialises the inosineMethod of RegisterMethods.
 	 */
 	private void initialiseInosineMethods(){
 		inosineMethod.put("san05", Santalucia05Inosine.class);
@@ -404,28 +404,28 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the azobenzeneMethod HashMap of the RegisterMethods object.
+	 * initialises the azobenzeneMethod of RegisterMethods.
 	 */
 	private void initialiseAzobenzeneMethods(){
 		azobenzeneMethod.put("asa05", Asanuma05Azobenzene.class);
 	}
 	
 	/**
-	 * initialises the lockedAcidMethod HashMap of the RegisterMethods object.
+	 * initialises the lockedAcidMethod of RegisterMethods.
 	 */
 	private void initialiseLockedAcidMethods(){
 		lockedAcidMethod.put("mct04", McTigue04LockedAcid.class);
 	}
 	
 	/**
-	 * initialises the hydroxyadenineMethod HashMap of the RegisterMethods object.
+	 * initialises the hydroxyadenineMethod of RegisterMethods.
 	 */
 	private void initialiseHydroxyadenosineMethods(){
 		hydroxyadenosineMethod.put("sug01", Sugimoto01Hydroxyadenine.class);
 	}
 	
 	/**
-	 * initialises the ionCorrectionMethod HashMap of the RegisterMethods object.
+	 * initialises the ionCorrectionMethod of RegisterMethods.
 	 */
 	private void initialiseIonCorrectionMethod(){
 		ionCorrection.put("ahs01", Ahsen01SodiumCorrection.class);
@@ -449,7 +449,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the DMSOCorrectionMethod HashMap of the RegisterMethods object.
+	 * initialises the DMSOCorrectionMethod of RegisterMethods.
 	 */
 	private void initialiseDMSOCorrectionMethod(){
 		DMSOCorrection.put("ahs01", Ahsen01DMSOCorrection.class);
@@ -459,7 +459,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the formamideCorrectionMethod HashMap of the RegisterMethods object.
+	 * initialises the formamideCorrectionMethod of RegisterMethods.
 	 */
 	private void initialiseFormamideCorrectionMethod(){
 		formamideCorrection.put("lincorr", FormamideLinearMethod.class);
@@ -467,7 +467,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the otherCorrectionMethod HashMap of the RegisterMethods object.
+	 * initialises the otherCorrectionMethod of RegisterMethods.
 	 */
 	private void initialiseOtherCorrectionMethod(){
 		otherCorrection.put(OptionManagement.DMSOCorrection, DMSOCorrection);
@@ -475,7 +475,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * initialises the patternModels HashMap of the RegisterMethods object.
+	 * initialises the patternModels of RegisterMethods.
 	 */
 	private void initialisePatternModels(){
 		PatternModel.put(OptionManagement.azobenzeneMethod, azobenzeneMethod);
@@ -497,7 +497,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * This method is called to get the appropriate HashMap of the RegisterMethods object. It registers all
+	 * This method is called to get the appropriate HashMap of RegisterMethods. It registers all
 	 * the possible method names for the model 'optionName'.
 	 * @param String optionName : method or model name
 	 * @return the appropriate HashMap of the RegisterMethods object. It registers all
@@ -515,7 +515,7 @@ public class RegisterMethods {
 	// public methods
 	
 	/**
-	 * This method is called to get the PatternComputationMethod object which represents the method 'methodName'
+	 * This method is called to get the PatternComputationMethod which represents the method 'methodName'
 	 * entered with the option 'optionName'.
 	 * @param String optionName : option name
 	 * @param String methodName : method or model name
@@ -523,7 +523,7 @@ public class RegisterMethods {
 	 * entered with the option 'optionName'.
 	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
 	 * a NoExistingMethodException is thrown.
-	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is caught, a NoExistingMethodException is thrown.
 	 */
 	public PatternComputationMethod getPatternComputationMethod(String optionName, String methodName){
 		
@@ -549,14 +549,14 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * This method is called to get the SodiumEquivalentMethod object which represents the method or model
+	 * This method is called to get the SodiumEquivalentMethod which represents the method or model
 	 * for the sodium equivalence in the HashMap 'optionSet'.
 	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
 	 * @return SodiumEquivalentMethod object which represents the method or model
 	 * for the sodium equivalence in the HashMap 'optionSet'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
 	 * a NoExistingMethodException is thrown.
-	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is caught, a NoExistingMethodException is thrown.
 	 * If the method is not applicable with the options present in 'optionSet', a MethodNotApplicableException
 
 	 */
@@ -586,7 +586,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * This method is called to get the CorrectionMethod object which represents the method or model
+	 * This method is called to get the CorrectionMethod which represents the method or model
 	 * used for the ion correction in the environment 'environment'.
 	 * If no ion correction method is specified by the user, the ion correction will be selected
 	 * depending on the algorithm from Owczarzy et al. (2008)
@@ -595,7 +595,7 @@ public class RegisterMethods {
 	 * used for the ion correction in the environment 'environment'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
 	 * a NoExistingMethodException is thrown.
-	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is caught, a NoExistingMethodException is thrown.
 	 */
 	public CorrectionMethod getIonCorrectionMethod (Environment environment){
 		if (environment.getOptions().containsKey(OptionManagement.ionCorrection)){
@@ -677,14 +677,14 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * This method is called to get the MeltingComputationMethod object which represents the method or model
+	 * This method is called to get the MeltingComputationMethod which represents the method or model
 	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
 	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
 	 * @return MeltingComputationMethod object which represents the method or model
 	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
 	 * a NoExistingMethodException is thrown.
-	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is caught, a NoExistingMethodException is thrown.
 	 * If the method is not applicable with the options present in 'optionSet', a MethodNotApplicableException
 	 */
 	public MeltingComputationMethod getMeltingComputationMethod(HashMap<String, String> optionSet){
@@ -754,7 +754,7 @@ public class RegisterMethods {
 	}
 	
 	/**
-	 * This method is called to get the CorrectionMethod object which represents the method 'methodName'
+	 * This method is called to get the CorrectionMethod which represents the method 'methodName'
 	 * entered with the option 'optionName'.
 	 * @param String optionName : option name
 	 * @param String methodName : method or model name
@@ -762,7 +762,7 @@ public class RegisterMethods {
 	 * entered with the option 'optionName'.
 	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
 	 * a NoExistingMethodException is thrown.
-	 * If a InstantiationException or a IllegalAccessException is catch, a NoExistingMethodException is thrown.
+	 * If a InstantiationException or a IllegalAccessException is caught, a NoExistingMethodException is thrown.
 	 */
 	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
 		

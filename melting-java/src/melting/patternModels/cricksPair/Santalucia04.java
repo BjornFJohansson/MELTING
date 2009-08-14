@@ -26,7 +26,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model san04. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model san04. It extends CricksNNMethod.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
  */

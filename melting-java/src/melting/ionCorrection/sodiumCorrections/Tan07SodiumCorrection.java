@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
 /**
- * This class represents the sodium correction model tanna07. It extends the EntropyCorrection class.
+ * This class represents the sodium correction model tanna07. It extends EntropyCorrection..
  * 
  * Zhi-Jie Tan and Shi-Jie Chen," RNA helix stability in Mixed Na+/Mg2+ solutions", 2007, 
  * Biophysical Journal, 92, 3615-3632.

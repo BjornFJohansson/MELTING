@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception for a method or model which is not applicable.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class MethodNotApplicableException extends RuntimeException {
 

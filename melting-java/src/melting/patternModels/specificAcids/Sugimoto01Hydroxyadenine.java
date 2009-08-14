@@ -29,7 +29,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the hydroxyadenine (A*) model sug01. It extends the PatternComputation class.
+ * This class represents the hydroxyadenine (A*) model sug01. It extends PatternComputation.
  * 
  * Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296
  */

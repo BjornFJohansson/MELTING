@@ -258,7 +258,7 @@ public class OptionManagement {
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
 	 * the thermodynamic parameters.)
 	 */
-	public static String dataPathwayValue = System.getProperty("NN_PATH", "Data");
+	public static String dataPathwayValue = System.getProperty("NN_PATH", "../Data");
 	
 	/**
 	 * int thresholdValue : the threshold value. It is the maximum oligonucleotides length for which we
@@ -294,7 +294,7 @@ public class OptionManagement {
 	// OptionManagement constructor
 	
 	/**
-	 * creates an OptionManagement object. initialises the default options, variables, etc... 
+	 * creates an OptionManagement object. initialises the default options, variables, etc. 
 	 */
 	public OptionManagement(){
 		
@@ -310,7 +310,7 @@ public class OptionManagement {
 	// private methods
 	
 	/**
-	 * Initialises the registerPatternModels HashMap of the OptionManagement object.
+	 * Initialises the registerPatternModels of OptionManagement.
 	 */
 	private void initialiseRegisterPatternModels(){
 		registerPatternModels.add(NNMethod);
@@ -331,7 +331,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * Initialises the registerEnvironmentOptions HashMap of the OptionManagement object.
+	 * Initialises the registerEnvironmentOptions of OptionManagement.
 	 */
 	private void initialiseRegisterEnvironmentOptions(){
 		registerEnvironmentOptions.add(solutioncomposition);
@@ -349,7 +349,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * Initialises the registerMeltingVariables HashMap of the OptionManagement object.
+	 * Initialises the registerMeltingVariables of OptionManagement.
 	 */
 	private void initialiseMeltingVariables(){
 		registerMeltingVariables.add(NN_Path);
@@ -358,7 +358,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the DNADefaultOptions HashMap of the OptionManagement object.
+	 * initialises the DNADefaultOptions of OptionManagement.
 	 */
 	private void initialisesDNADefaultOptions() {
 		this.DNADefaultOptions.put(NNMethod, "san04");
@@ -382,7 +382,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the RNADefaultOptions HashMap of the OptionManagement object.
+	 * initialises the RNADefaultOptions of OptionManagement.
 	 */
 	private void initialiseRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "xia98");
@@ -405,7 +405,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the hybridDefaultOptions HashMap of the OptionManagement object.
+	 * initialises the hybridDefaultOptions of OptionManagement.
 	 */
 	private void initialiseHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "sug95");
@@ -417,7 +417,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the mRNADefaultOptions HashMap of the OptionManagement object.
+	 * initialises the mRNADefaultOptions of OptionManagement.
 	 */
 	private void initialiseMRNADefaultOptions() {
 		this.mRNADefaultOptions.put(NNMethod, "tur06");
@@ -509,7 +509,7 @@ public class OptionManagement {
 	
 	/**
 	 * displays Melting help documentation.
-	 * If a FileNotFoundException or a IOException is catch, a FileException is thrown.
+	 * If a FileNotFoundException or a IOException is caught, a FileException is thrown.
 	 */
 	private void readMeltingHelp(){
 		try {
@@ -630,29 +630,29 @@ public class OptionManagement {
 	 * @param String solutionComposition : different ion and agent concentrations
 	 * @return true if all the ion and agent concentrations entered by the are valid.
 	 * If at least one of the concentrations is not valid, an OptionSynthaxException is thrown.
-	 * If a NumberFormatException is catch, an OptionSynthaxError is thrown.
+	 * If a NumberFormatException is caught, an OptionSynthaxError is thrown.
 	 */
 	private boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
 				
 		if (solution == null){
-			throw new OptionSyntaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
+			throw new OptionSyntaxError("There is a syntax error in the option value of " + solutioncomposition + ".");
 		}
 
 		for (int i = 0; i < solution.length; i++){
 			String [] couple = solution[i].split("=");
 			if (couple == null){
-				throw new OptionSyntaxError("There is a syntax error in the value of the option " + solutioncomposition + ".");
+				throw new OptionSyntaxError("There is a syntax error in the option value of " + solutioncomposition + ".");
 			}
 
 			String concentration = solution[i].split("=")[1];
 			double val = Double.parseDouble(concentration);
 			try {
 				if (val < 0){
-					throw new OptionSyntaxError("All the concentrations must be positive.");
+					throw new OptionSyntaxError("Each concentration must be positive.");
 				}
 			} catch (NumberFormatException e) {
-				throw new OptionSyntaxError("All the concentrations must be a numeric value.", e);
+				throw new OptionSyntaxError("Each concentration must be a numeric value.", e);
 			}
 		}		
 		return true;
@@ -705,7 +705,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the meltingLogger Logger.
+	 * initialises the meltingLogger.
 	 */
 	private void initialiseLogger(){
 		StreamHandler handler = new StreamHandler(System.out, new MeltingFormatter());
@@ -739,7 +739,7 @@ public class OptionManagement {
 	private HashMap<String, String> collectOptions(String [] args){
 
 		if (args.length < 2){
-			throw new OptionSyntaxError("There is a syntax error int the options. Check the manual for further informations about melting options.");
+			throw new OptionSyntaxError("Some required options are missing. Check the manual for further informations about melting options.");
 		}
 
 		initialiseLogger();
@@ -831,8 +831,8 @@ public class OptionManagement {
 							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
 						}
 					}
-					else{
-						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+					else if (registerMeltingVariables.contains(option) == false){
+						throw new OptionSyntaxError("I don't understand the option " + option +" "+ value + ".");
 					}
 				}
 			}
@@ -855,31 +855,31 @@ public class OptionManagement {
 	// public methods
 	
 	/**
-	 * This method is called to get the DNADefaultOptions HashMap of the OptionManagement object.
-	 * @return the DNADefaultOptions HashMap of the OptionManagement object.
+	 * This method is called to get the DNADefaultOptions of OptionManagement.
+	 * @return the DNADefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getDNADefaultOptions() {
 		return DNADefaultOptions;
 	}
 	
 	/**
-	 * This method is called to get the RNADefaultOptions HashMap of the OptionManagement object.
-	 * @return the RNADefaultOptions HashMap of the OptionManagement object.
+	 * This method is called to get the RNADefaultOptions of OptionManagement.
+	 * @return the RNADefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getRNADefaultOptions() {
 		return RNADefaultOptions;
 	}
 	
 	/**
-	 * This method is called to get the hybridDefaultOptions HashMap of the OptionManagement object.
-	 * @return the hybridDefaultOptions HashMap of the OptionManagement object.
+	 * This method is called to get the hybridDefaultOptions of OptionManagement.
+	 * @return the hybridDefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getHybridDefaultOptions() {
 		return hybridDefaultOptions;
 	}
 	
 	/**
-	 * This method is called to get the mRNADefaultOptions HashMap of the OptionManagement object.
+	 * This method is called to get the mRNADefaultOptions of OptionManagement.
 	 * @return the mRNADefaultOptions HashMap of the OptionManagement object.
 	 */
 	public HashMap<String, String> getMRNADefaultOptions() {
@@ -938,16 +938,16 @@ public class OptionManagement {
 					meltingLogger.log(Level.INFO, "The current data files are in "+ dataPathwayValue + ".");
 				}
 				else if (option.equals(versionNumber)){
-					meltingLogger.log(Level.INFO, "This MELTING program is the java version "+ version + ".");
+					meltingLogger.log(Level.INFO, "This MELTING program is the version "+ version + ".");
 				}
 			}
 		}
 	}
 	
 	/**
-	 * collects the options entered by the user and creates an Environment object from them.
+	 * collects the options entered by the user and creates an Environment from them.
 	 * @param String [] args : contains the options entered by the user
-	 * @return Environment object initialized with the default options and the options entered by the user.
+	 * @return Environment initialized with the default options and the options entered by the user.
 	 */
 	public Environment createEnvironment(String [] args){
 

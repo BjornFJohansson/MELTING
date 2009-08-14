@@ -26,7 +26,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single mismatch model from Znosco et al, 2007, 2008. It extends the PatternComputation class.
+ * This class represents the single mismatch model from Znosco et al, 2007, 2008. It extends PatternComputation.
  */
 public abstract class ZnoskoMethod extends PatternComputation{
 	

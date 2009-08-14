@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
 
 /**
- * This class represents the DMSO correction model esc80. It extends the DNADMSOCorrections class.
+ * This class represents the DMSO correction model esc80. It extends DNADMSOCorrections.
  * 
  * Escara JF, Hutton Jr, "Thermal stability and renaturation of DNA
  * in dimethyl sulfoxide solutions: acceleration of the renaturation rate"
