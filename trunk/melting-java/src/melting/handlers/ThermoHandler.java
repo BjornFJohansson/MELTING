@@ -59,7 +59,7 @@ public class ThermoHandler extends NodeHandler{
 	private boolean hasEntropy = false;
 	
 	/**
-	 * HashMap<String, String> attribut : contains the different possible attributs for the subnodes of Data nodes
+	 * HashMap<String, String> attribut : contains the different possible attributes for the subnodes of Data nodes
 	 */
 	private HashMap<String, String> attribut = new HashMap<String, String>();
 	

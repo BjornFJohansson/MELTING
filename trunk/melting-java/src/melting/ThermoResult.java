@@ -16,8 +16,8 @@
 package melting;
 
 /**
- * This class extends the Thermodynamics class. It represents the computed thermodynamic results of Melting
- * It contains a Tm double and a salIndependentEntropy double as instance variables in addition to the instance variables
+ * This class extends Thermodynamics. It represents the computed thermodynamic results of Melting
+ * It contains a Tm double and a salIndependentEntropy double value as instance variables in addition to the instance variables
  * of the Thermodynamics class.
  */
 public class ThermoResult extends Thermodynamics{
@@ -52,15 +52,15 @@ public class ThermoResult extends Thermodynamics{
 	// public methods
 	
 	/**
-	 * This method is called to get the Tm double of a ThermoResult object.
-	 * @return the Tm double of a ThermoResult object.
+	 * This method is called to get the Tm of ThermoResult.
+	 * @return double : the Tm of ThermoResult.
 	 */
 	public double getTm() {
 		return Tm;
 	}
 	
 	/**
-	 * This method is called to change the Tm double value of a ThermoResult object.
+	 * This method is called to change the Tm of ThermoResult.
 	 * @param double tm : the new melting temperature
 	 */
 	public void setTm(double tm) {
@@ -68,15 +68,15 @@ public class ThermoResult extends Thermodynamics{
 	}
 	
 	/**
-	 * This method is called to get the SaltIndependentEntropy double of a ThermoResult object.
-	 * @return the SaltIndependentEntropy double of a ThermoResult object.
+	 * This method is called to get the SaltIndependentEntropy of ThermoResult.
+	 * @return double : the SaltIndependentEntropy of ThermoResult.
 	 */
 	public double getSaltIndependentEntropy() {
 		return saltIndependentEntropy;
 	}
 
 	/**
-	 * This method is called to change the SaltIndependentEntropy double value of a ThermoResult object.
+	 * This method is called to change the SaltIndependentEntropy of ThermoResult.
 	 * @param double SaltIndependentEntropy : the new salt independent concentration.
 	 */
 	public void setSaltIndependentEntropy(double saltIndependentEntropy) {

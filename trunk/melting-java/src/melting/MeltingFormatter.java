@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 /**
- * This class extends the Formatter class. It formats the MeltingLogger message. (information, warning and severe messages)
+ * This class extends Formatter. It formats the MeltingLogger message. (information, warning and severe messages)
  */
 public class MeltingFormatter extends Formatter {
 

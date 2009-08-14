@@ -22,7 +22,7 @@ import melting.nearestNeighborModel.NearestNeighborMode;
 
 /**
  * This class represents a specific type of ion correction which corrects the entropy value. It implements 
- * the CorrectionMethod interface
+ * the CorrectionMethod interface.
  */
 public abstract class EntropyCorrection implements CorrectionMethod{
 
@@ -46,7 +46,7 @@ public abstract class EntropyCorrection implements CorrectionMethod{
 	/**
 	 * corrects the computed entropy (delta S (Na = 1M)).
 	 * @param Environment environment
-	 * @return double corrected entropy;
+	 * @return double : corrected entropy;
 	 */
 	protected double correctEntropy(Environment environment){
 		return 0;

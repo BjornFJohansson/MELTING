@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model for a sodium equivalence ahs01. It extends the SodiumEquivalent class.
+ * This class represents the model for a sodium equivalence ahs01. It extends SodiumEquivalent.
  * 
  * Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
  * melting temperatures under PCR conditions : deoxynucleotide Triphosphate

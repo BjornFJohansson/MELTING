@@ -63,8 +63,8 @@ public class BasePair {
 	// public methods
 	
 	/**
-	 * This method is called to get the nucleic acid "TopAcid" of a BasePair object.
-	 * @return String TopAcid : The nucleic acid "TopAcid" of the BasePair object. It represents the
+	 * This method is called to get the nucleic acid "TopAcid" of BasePair.
+	 * @return String TopAcid : The nucleic acid "TopAcid" of BasePair.. It represents the
 	 * nucleic acid from the sequence (5'3'). 
 	 */
 	public String getTopAcid() {
@@ -72,7 +72,7 @@ public class BasePair {
 	}
 	
 	/**
-	 * To change the TopAcid Value of the BasePair object.
+	 * To change the TopAcid Value of BasePair..
 	 *  
 	 */
 	public void setTopAcid(String topAcid) {
@@ -80,8 +80,8 @@ public class BasePair {
 	}
 	
 	/**
-	 * This method is called to get the nucleic acid "BottomAcid"of a BasePair object.
-	 * @return String TopAcid : The nucleic acid "BottomAcid" of the BasePair object. It represents the
+	 * This method is called to get the nucleic acid "BottomAcid" of BasePair..
+	 * @return String TopAcid : The nucleic acid "BottomAcid" of BasePair. It represents the
 	 * nucleic acid from the complementary sequence (3'5'). 
 	 */
 	public String getBottomAcid() {
@@ -89,7 +89,7 @@ public class BasePair {
 	}
 	
 	/**
-	 * To change the BottomAcid Value of the BasePair object.
+	 * To change the BottomAcid Value of BasePair.
 	 *  
 	 */
 	public void setBottomAcid(String bottomAcid) {
@@ -147,7 +147,7 @@ public class BasePair {
 
 	/**
 	 * Check if the Nucleic acid TopAcid is a frequent nucleic acid. 
-	 * @return true if the TopAcid of the BasePair object is a frequent nucleic acid. A frequent
+	 * @return true if the TopAcid of BasePair is a frequent nucleic acid. A frequent
 	 * nucleic acid is A, T, U, G or C.
 	 */
 	public boolean isFrequentNucleicAcidTopBase(){
@@ -175,7 +175,7 @@ public class BasePair {
 	
 	/**
 	 * Check if the Nucleic acid BottomAcid is a frequent nucleic acid. 
-	 * @return true if the BottomAcid of the BasePair object is a frequent nucleic acid. A frequent
+	 * @return true if the BottomAcid of BasePair is a frequent nucleic acid. A frequent
 	 * nucleic acid is A, T, U, G or C.
 	 */
 	public boolean isWatsonCrickBottomBase(){
@@ -203,7 +203,7 @@ public class BasePair {
 	
 	/**
 	 * Check if the nucleic acid represented by TopAcid is a pyrimidine.
-	 * @return true if the TopAcid of the BasePair object is a pyrimidine. C, T and U are pyrimidines.
+	 * @return true if the TopAcid of BasePair is a pyrimidine. C, T and U are pyrimidines.
 	 */
 	public boolean isTopBasePyrimidine(){
 		if (topAcid.length() != 1){
@@ -231,7 +231,7 @@ public class BasePair {
 	
 	/**
 	 * Check if the nucleic acid represented by BottomAcid is a pyrimidine.
-	 * @return true if the BottomAcid of the BasePair object is a pyrimidine. C, T and U are pyrimidines.
+	 * @return true if the BottomAcid of BasePair is a pyrimidine. C, T and U are pyrimidines.
 	 */
 	public boolean isBottomBasePyrimidine(){
 		if (bottomAcid.length() != 1){
@@ -286,7 +286,7 @@ public class BasePair {
 	
 	/**
 	 * This method is called to get the length of the nucleic acid.
-	 * @return int length : The maximum length between the String length of TopAcid and the String length of BottomAcid 
+	 * @return int length : The maximum length between the TopAcid length and the BottomAcid length. 
 	 */
 	public int getLengthAcid(){
 		if (topAcid == null && bottomAcid == null){
@@ -306,7 +306,7 @@ public class BasePair {
 	/**
 	 * To check if the nucleic acids in the base pair are paired.
 	 * @return true if the nucleic acids in the base pair are paired. When a nucleic acid is unpaired, there is a gap
-	 * in the duplex represented by "-". Consequently, the nucleic acids are paired in a BasePair object if TopAcid
+	 * in the duplex represented by "-". Consequently, the nucleic acids are paired in BasePair if TopAcid
 	 * and bottomAcid are not equal to "-".
 	 */
 	public boolean isUnpaired(){
@@ -319,7 +319,7 @@ public class BasePair {
 	// Public static methods
 	
 	/**
-	 * initialises the ArrayList existingNucleicAcids of the BasePair class.
+	 * initialises the existingNucleicAcids of BasePair.
 	 */
 	public static void initialiseNucleicAcidList(){
 		existingNucleicAcids.add("A");
@@ -340,15 +340,15 @@ public class BasePair {
 	}
 	
 	/**
-	 * This method is called to get the ArrayList existingNucleicAcids of the BasePair class.
-	 * @return ArrayList existingNucleicAcids of the BasePair class.
+	 * This method is called to get the existingNucleicAcids of BasePair.
+	 * @return ArrayList existingNucleicAcids of BasePair.
 	 */
 	public static ArrayList<String> getExistingNucleicAcids() {
 		return existingNucleicAcids;
 	}
 
 	/**
-	 * This method is called to get the position of a BasePair object.
+	 * This method is called to get the position of BasePair in the duplex.
 	 * @return int position of the BasePair object.
 	 */
 	public int getPosition() {

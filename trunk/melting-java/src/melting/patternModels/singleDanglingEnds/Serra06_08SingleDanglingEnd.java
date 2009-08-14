@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single dangling end model ser08. It extends the SingleDanglingEndMethod class.
+ * This class represents the single dangling end model ser08. It extends SingleDanglingEndMethod.
  * 
  * Martin J Serra et al. (2006). Nucleic Acids research 34: 3338-3344 
  * 

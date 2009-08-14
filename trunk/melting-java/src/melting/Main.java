@@ -33,7 +33,7 @@ public class Main {
 	/**
 	 * compute the entropy, enthalpy and the melting temperature and display the results. 
 	 * @param String [] args : contains the options entered by the user.
-	 * @param OptionManagement optionManager : the OptionManegement object which allows to manage
+	 * @param OptionManagement optionManager : the OptionManegement which allows to manage
 	 * the different options entered by the user.
 	 */
 	private static void runMelting(String [] args, OptionManagement optionManager){
@@ -60,9 +60,9 @@ public class Main {
 	/**
 	 * displays the results of Melting : the computed enthalpy and entropy (in cal/mol and J/mol), and the computed 
 	 * melting temperature (in degrees).
-	 * @param ThermoResult results : the ThermoResult object containing the computed enthalpy, entropy and
+	 * @param ThermoResult results : the ThermoResult containing the computed enthalpy, entropy and
 	 * melting temperature
-	 * @param MeltingComputationMethod calculMethod : the melting computation method (Appriximative or nearest neighbor computation)
+	 * @param MeltingComputationMethod calculMethod : the melting computation method (Approximative or nearest neighbor computation)
 	 */
 	private static void displaysMeltingResults(ThermoResult results, MeltingComputationMethod calculMethod){
 		NumberFormat format = NumberFormat.getInstance(); 

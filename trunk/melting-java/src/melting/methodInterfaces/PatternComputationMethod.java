@@ -59,7 +59,7 @@ public interface PatternComputationMethod {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2);
 	
 	/**
-	 * This method is called to get the DataCollect object of the implemented class.
+	 * This method is called to get the DataCollect of the implemented class.
 	 * @return DataCollect object of the implemented class.
 	 */
 	public DataCollect getCollector();

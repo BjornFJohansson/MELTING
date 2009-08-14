@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
 /**
- * This class represents the sodium correction model ahs01. It extends the EntropyCorrection class.
+ * This class represents the sodium correction model ahs01. It extends EntropyCorrection.
  * 
  * Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
  * melting temperatures under PCR conditions : deoxynucleotide Triphosphate

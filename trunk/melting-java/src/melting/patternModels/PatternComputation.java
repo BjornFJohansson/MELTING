@@ -109,8 +109,8 @@ public abstract class PatternComputation implements PatternComputationMethod{
 	// public static method
 	
 	/**
-	 * This method is called to get the HasMap of the DataCollect object containing the thermodynamic parameters
-	 * @return HasMap of the DataCollect object containing the thermodynamic parameters for this pattern.
+	 * This method is called to get the HasMap of DataCollect containing the thermodynamic parameters
+	 * @return HasMap of DataCollect containing the thermodynamic parameters for this pattern.
 	 */
 	public static String getData(){
 		return null;

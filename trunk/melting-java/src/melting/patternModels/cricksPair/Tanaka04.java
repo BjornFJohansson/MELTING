@@ -25,7 +25,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model tan04. It extends the DecomposedInitiation class.
+ * This class represents the nearest neighbor model tan04. It extends DecomposedInitiation.
  * 
  * Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150 
  */

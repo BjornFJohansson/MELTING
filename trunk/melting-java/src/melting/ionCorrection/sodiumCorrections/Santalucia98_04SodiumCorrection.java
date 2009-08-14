@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
 /**
- * This class represents the sodium correction model san04. It extends the EntropyCorrection class.
+ * This class represents the sodium correction model san04. It extends EntropyCorrection.
  * 
  * John Santalucia, Jr., "A unified view of polymer, dumbbell, and oligonucleotide DNA nearest-neighbor
  * thermodynamics.", 1998, Proc. Natl. Acad. Sci. USA, 95, 1460-1465

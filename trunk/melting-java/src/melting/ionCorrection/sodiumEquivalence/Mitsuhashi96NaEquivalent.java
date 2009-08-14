@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model for a sodium equivalence mit96. It extends the SodiumEquivalent class.
+ * This class represents the model for a sodium equivalence mit96. It extends SodiumEquivalent.
  * 
  *  Mitsuhashi M., 1996, "Technical report: Part 1. Basic requirements for designing optimal 
  * oligonucleotide probe sequences.", J. Clin. Lab. Anal, 10, 277-284.

@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the inosine model zno07. It extends the InosineNNMethod class.
+ * This class represents the inosine model zno07. It extends InosineNNMethod.
  * 
  * Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634
  */

@@ -25,7 +25,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single mismatch model allsanpey. It extends the PatternComputation class.
+ * This class represents the single mismatch model allsanpey. It extends PatternComputation.
  * 
  * Allawi and SantaLucia (1997). Biochemistry 36: 10581-10594. 
  * 

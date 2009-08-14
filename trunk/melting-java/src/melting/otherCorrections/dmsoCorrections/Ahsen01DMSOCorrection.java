@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
 
 /**
- * This class represents the DMSO correction model ahs01. It extends the DNADMSOCorrections class.
+ * This class represents the DMSO correction model ahs01. It extends DNADMSOCorrections.
  * 
  *  Nicolas Von Ahsen, Carl T Wittwer and Ekkehard Schutz, "Oligonucleotide
  * melting temperatures under PCR conditions : deoxynucleotide Triphosphate

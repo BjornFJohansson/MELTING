@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model san98. It extends the ApproximativeMode class.
+ * This class represents the model san98. It extends ApproximativeMode.
  * 
  * Santalucia J Jr, "A unified view of polymer, dumbbel, and 
  * oligonucleotide DNA nearest-neighbor thermodynamics", Proc

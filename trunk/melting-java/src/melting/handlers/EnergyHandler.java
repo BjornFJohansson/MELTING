@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 
 /**
  * This class represents a Handler to parse the enthalpy or entropy nodes in the xml files. It
- * extends the NodeHandler class
+ * extends NodeHandler.
  */
 public class EnergyHandler extends NodeHandler{
 
@@ -46,16 +46,16 @@ public class EnergyHandler extends NodeHandler{
 	// public methods
 	
 	/**
-	 * This method is called to get the energy double of the EnergyHandler object.
-	 * @return the energy double of the EnergyHandler object.
+	 * This method is called to get the energy of EnergyHandler.
+	 * @return double : the energy of EnergyHandler.
 	 */
 	public double getEnergy() {
 		return energy;
 	}
 	
 	/**
-	 * This method is called to get the hasEnergy boolean of the EnergyHandler object.
-	 * @return the energy double of the EnergyHandler object.
+	 * This method is called to get the hasEnergy of EnergyHandler.
+	 * @return double : the energy of EnergyHandler.
 	 */
 	public boolean getHasEnergy(){
 		return hasEnergy;

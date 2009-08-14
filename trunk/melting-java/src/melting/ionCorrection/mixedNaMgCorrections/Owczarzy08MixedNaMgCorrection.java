@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
 
 /**
- * This class represents the mixed (Na,Mg) correction model owcmix08. It extends the Owczarzy08MagnesiumCorrection class.
+ * This class represents the mixed (Na,Mg) correction model owcmix08. It extends Owczarzy08MagnesiumCorrection.
  * 
  * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
  * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions

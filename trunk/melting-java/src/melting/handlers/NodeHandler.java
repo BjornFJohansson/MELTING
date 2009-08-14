@@ -18,7 +18,7 @@ package melting.handlers;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * This class represents a Handler for any node of the data xml files.
+ * This class represents a Handler for any node of the data xml files. It extends DefaultHanlder.
  */
 public abstract class NodeHandler extends DefaultHandler {
 

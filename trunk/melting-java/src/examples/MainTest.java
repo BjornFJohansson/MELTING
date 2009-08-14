@@ -42,9 +42,9 @@ public class MainTest {
 	// public static methods
 	
 	/**
-	 * loads the data from the file and stock them in a Properties object.
+	 * loads the data from the file and stocks them in a Properties object.
 	 * @param String fileName : name or pathway of the file containing the experimental data.
-	 * @return Properties object containing the experimental data from the file.
+	 * @return Properties containing the experimental data from the file.
 	 */
 	public static Properties loadSequencesTest(String fileName){
 		
@@ -65,9 +65,9 @@ public class MainTest {
 	}
 	
 	/**
-	 * computes the enthalpy, entropy and melting temperature with the options in the String [] args.
+	 * computes the enthalpy, entropy and melting temperature with the options in String [] args.
 	 * @param String [] args : contains the test options
-	 * @return double melting temperature.
+	 * @return double : melting temperature.
 	 */
 	public static double getMeltingTest(String [] args){
 		OptionManagement optionManager = new OptionManagement();
@@ -228,7 +228,7 @@ public class MainTest {
 	/**
 	 * to run melting 4.2 and get the results
 	 * @param String [] args : contains test options
-	 * @return double computed melting temperature
+	 * @return double : computed melting temperature
 	 */
 	public static double getCMeltingResult(String args) {
 		String path = "/home/compneur/Desktop/meltin_c/MELTING_SOURCE/";

@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single bulge loop model ser07. It extends the GlobalSingleBulgeLoopMethod class.
+ * This class represents the single bulge loop model ser07. It extends GlobalSingleBulgeLoopMethod.
  * 
  * Martin J Serra et al (2007). Biochemistry 46 : 15123-15135
  */

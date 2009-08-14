@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model fre86. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model fre86. It extends CricksNNMethod.
  * 
  * Freier et al (1986) Proc Natl Acad Sci USA 83: 9373-9377
  */

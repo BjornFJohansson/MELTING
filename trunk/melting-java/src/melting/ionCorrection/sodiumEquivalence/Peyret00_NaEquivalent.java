@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model for a sodium equivalence pey00. It extends the SodiumEquivalent class.
+ * This class represents the model for a sodium equivalence pey00. It extends SodiumEquivalent.
  * 
  * Peyret N., 2000, "Prediction of nucleic acid hybridization : parameters and algorithms."
  * Ph.D Thesis, Section .5.4.2, 128, Wayne State University, Detroit, MI.

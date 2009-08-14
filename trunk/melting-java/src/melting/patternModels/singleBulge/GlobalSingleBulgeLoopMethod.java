@@ -25,7 +25,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents one single bulge loop model. It extends the PatternComputation class.
+ * This class represents one single bulge loop model. It extends PatternComputation.
  * Int this model, the penalty for the single bulge loop is a global penalty for the pattern 
  * composed of the single bulge loop surrounded by the adjacent base pairs in the duplex.
  * 

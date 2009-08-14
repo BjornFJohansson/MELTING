@@ -29,7 +29,7 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the second dangling end model. It extends the PatternComputation class.
+ * This class represents the second dangling end model. It extends PatternComputation.
  */
 public abstract class SecondDanglingEndMethod extends PatternComputation {
 

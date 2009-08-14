@@ -28,7 +28,7 @@ import melting.patternModels.longBulge.Santalucia04LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single bulge loop model san04. It extends the Santalucia04LongBulgeLoop class.
+ * This class represents the single bulge loop model san04. It extends Santalucia04LongBulgeLoop.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
  */

@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents a problem within the sequences.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class SequenceException extends RuntimeException {
 

@@ -27,7 +27,7 @@ import melting.sequences.NucleotidSequences;
 
 /**
  * This class represents the NN nearest neighbor model (adds the thermodynamic energy (enthalpy and entropy) for each Crick's pair composing the duplex). 
- * It extends the PatternComputation class.
+ * It extends PatternComputation..
  */
 public abstract class CricksNNMethod extends PatternComputation{
 	

@@ -30,7 +30,7 @@ import melting.ionCorrection.sodiumCorrections.Tan06SodiumCorrection;
 import melting.ionCorrection.sodiumCorrections.Tan07SodiumCorrection;
 
 /**
- * This class represents the mixed (Na,Mg) correction model tanmix08. It extends the Owczarzy08MagnesiumCorrection class.
+ * This class represents the mixed (Na,Mg) correction model tanmix08. It extends EntropyCorrection.
  * 
  * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A 
  * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions

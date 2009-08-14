@@ -26,7 +26,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model san96. It extends the GlobalInitiation class.
+ * This class represents the nearest neighbor model san96. It extends GlobalInitiation.
  * 
  * SantaLucia et al.(1996). Biochemistry 35 : 3555-3562
  */

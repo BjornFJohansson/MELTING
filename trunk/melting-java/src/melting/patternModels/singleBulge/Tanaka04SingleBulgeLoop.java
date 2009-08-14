@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single bulge loop model tan04. It extends the GlobalSingleBulgeLoopMethod class.
+ * This class represents the single bulge loop model tan04. It extends GlobalSingleBulgeLoopMethod.
  * 
  * Tanaka Fumiaki et al (2004). Biochemistry 43 : 7143-7150
  */

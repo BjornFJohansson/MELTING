@@ -26,7 +26,7 @@ import melting.configuration.OptionManagement;
  * This class represents one model to compute the initiation enthalpy and entropy.
  * The duplex initiation is computed by the addition of either an initiation penalty for duplexes 
  * containing at least one GC base pair or an initiation penalty for duplexes only composed of AT or AU base pairs.
- * It extends the CricksNNMethod class.
+ * It extends CricksNNMethod.
  */
 public abstract class GlobalInitiation extends CricksNNMethod {
 	

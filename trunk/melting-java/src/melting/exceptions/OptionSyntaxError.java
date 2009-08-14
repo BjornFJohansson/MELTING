@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception raised by an option syntax error.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class OptionSyntaxError extends RuntimeException {
 

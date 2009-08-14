@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model sug96. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model sug96. It extends CricksNNMethod.
  * 
  * Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505
  */

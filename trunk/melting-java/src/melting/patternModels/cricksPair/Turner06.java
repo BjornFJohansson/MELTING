@@ -26,7 +26,7 @@ import melting.exceptions.MethodNotApplicableException;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model tur06. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model tur06. It extends CricksNNMethod.
  * 
  * Turner et al (2006) Nucleic acids research 34: 3609-3614
  */

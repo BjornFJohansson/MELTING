@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the long dangling end model sugdna02 (for long poly A only). It extends the SugimotoLongDanglingEndMethod class.
+ * This class represents the long dangling end model sugdna02 (for long poly A only). It extends SugimotoLongDanglingEndMethod.
  */
 public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	

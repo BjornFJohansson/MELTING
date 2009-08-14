@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the single dangling end model bom00. It extends the SingleDanglingEndMethod class.
+ * This class represents the single dangling end model bom00. It extends SingleDanglingEndMethod.
  * 
  * Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934
  */

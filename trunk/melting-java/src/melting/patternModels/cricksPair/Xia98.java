@@ -25,7 +25,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the nearest neighbor model xia98. It extends the CricksNNMethod class.
+ * This class represents the nearest neighbor model xia98. It extends CricksNNMethod.
  * 
  * Xia et al (1998) Biochemistry 37: 14719-14735
  */

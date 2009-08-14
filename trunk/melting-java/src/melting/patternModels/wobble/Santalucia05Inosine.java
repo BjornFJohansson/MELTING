@@ -24,7 +24,7 @@ import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the inosine model san05. It extends the InosineNNMethod class.
+ * This class represents the inosine model san05. It extends InosineNNMethod.
  * 
  * Santalucia et al.(2005). Nucleic acids research 33 : 6258-6267
  */

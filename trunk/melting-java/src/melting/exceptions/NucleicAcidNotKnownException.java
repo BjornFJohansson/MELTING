@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents an exception for a nucleic acid which is not known by Melting.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class NucleicAcidNotKnownException extends RuntimeException {
 	

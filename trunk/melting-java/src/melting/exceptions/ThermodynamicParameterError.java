@@ -17,7 +17,7 @@ package melting.exceptions;
 
 /**
  * This class represents a problem with the thermodynamic parameters.
- * It extends the RuntimeException class.
+ * It extends RuntimeException.
  */
 public class ThermodynamicParameterError extends RuntimeException {
 

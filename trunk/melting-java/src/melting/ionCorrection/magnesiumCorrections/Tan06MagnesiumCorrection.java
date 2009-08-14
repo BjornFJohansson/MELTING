@@ -22,7 +22,7 @@ import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
 
 /**
- * This class represents the magnesium correction model tanmg06. It extends the EntropyCorrection class.
+ * This class represents the magnesium correction model tanmg06. It extends EntropyCorrection.
  * 
  *  Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
  * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 

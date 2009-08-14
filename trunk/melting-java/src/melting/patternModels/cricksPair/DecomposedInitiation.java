@@ -28,7 +28,7 @@ import melting.sequences.NucleotidSequences;
  * This class represents one model to compute the initiation enthalpy and entropy.
  * The duplex initiation is computed by the addition of an initiation penalty for the first
  * base pair of the duplex and an initiation penalty for the last base pair of the duplex.
- * It extends the CricksNNMethod class.
+ * It extends CricksNNMethod.
  */
 public abstract class DecomposedInitiation extends CricksNNMethod {
 	

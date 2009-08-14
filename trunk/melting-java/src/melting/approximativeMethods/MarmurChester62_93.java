@@ -23,7 +23,7 @@ import melting.configuration.OptionManagement;
 import melting.exceptions.NoExistingMethodException;
 
 /**
- * This class represents the model che93. It extends the ApproximativeMode class
+ * This class represents the model che93. It extends ApproximativeMode.
  * 
  * Marmur J, Doty P, "Determination of the base composition of 
  * deoxyribonucleic acid from its thermal denaturation temperature", 

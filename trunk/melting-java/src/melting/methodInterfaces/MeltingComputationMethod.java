@@ -27,7 +27,7 @@ public interface MeltingComputationMethod {
 
 	/**
 	 * This method is called to compute the melting temperature.
-	 * @return ThermoResult object containing the computed enthalpy, entropy and melting temperature.
+	 * @return ThermoResult containing the computed enthalpy, entropy and melting temperature.
 	 */
 	public ThermoResult computesThermodynamics();
 	
@@ -44,8 +44,8 @@ public interface MeltingComputationMethod {
 	public void setUpVariables(HashMap<String, String> options);
 	
 	/**
-	 * This method is called to get the object RegisterMethod of the implemented class.
-	 * @return the RegisterMethod object of the implemented class.
+	 * This method is called to get the RegisterMethod of the implemented class.
+	 * @return the RegisterMethod of the implemented class.
 	 */
 	public RegisterMethods getRegister();
 }
