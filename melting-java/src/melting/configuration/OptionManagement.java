@@ -17,8 +17,9 @@ package melting.configuration;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,9 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-
 import melting.Environment;
 import melting.Helper;
+import melting.Main;
 import melting.MeltingFormatter;
 import melting.exceptions.FileException;
 import melting.exceptions.NoExistingOutputFileException;
@@ -513,8 +514,8 @@ public class OptionManagement {
 	 */
 	private void readMeltingHelp(){
 		try {
-			FileReader help = new FileReader("src/melting/help.txt");
-			BufferedReader buffer = new BufferedReader(help);
+			InputStream help = Main.class.getResourceAsStream("help.txt");
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(help));
 			
 			String line = buffer.readLine();
 			while (line != null){

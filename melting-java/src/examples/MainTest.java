@@ -87,7 +87,7 @@ public class MainTest {
 					
 			return environment.getResult().getTm();
 		} catch (Exception e) {
-			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
+			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return 0.0;
 	}
