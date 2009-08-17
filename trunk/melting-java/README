@@ -1,14 +1,14 @@
 [INSTALLATION]
 
 Unbundle the distribution in the proper place (e.g. /usr/local/ or c:\Program
-Files) and the file melting-gui.desktop in /usr/share/applications. 
+Files). 
 
 Some pre-compiled binaries are located in the directory BIN. The program just needs 
 a Java 1.5 environment.
 
 UNICES 
 
-Type `sudo install.unice' to install the program.
+Type `sudo Install.unice' to install the program.
 The manpage melting.1 is moved in the proper location during the
 installation. The other files can stay in doc or the entire doc directory can be
 moved under the name melting in /usr/doc or an equivalent directory.
@@ -16,24 +16,24 @@ moved under the name melting in /usr/doc or an equivalent directory.
 WINDOWS
 
 The documentation is located in the directory doc. The files containing the nearest-neighbor
-parameters are located in the directory Data. Move them in the proper
-directory specified in c:/program files/melting/Data.
+parameters are located in the directory Data.
 
 [EXECUTION]
 
-READ THE DOCUMENTATION BEFORE TO RUN THE PROGRAM. 
+READ THE DOCUMENTATION BEFORE RUNNING THE PROGRAM. 
 
 The executable versions do not require any particular external libraries, 
-and must run directly. Go to the directory containing the programme and 
-type './melting [options]' under Unixes and 'melting.exe [options]' under 
-DOS/Windows. 
+and must run directly. 
+Go to the directory executable (contains the executable) and type 
+'melting.bat [options]' under DOS/Windows. 
+Type './melting [options]' under Unixes.  
 
 You can also put the executable in a directory present in your PATH 
 variable in order to use the programme wherever you are. The environment 
 variable NN_PATH can be set to the directory containing your personal 
 nearest-neighbor parameters. For instance in the bash:
 
-export NN_PATH=$HOME/LIB/MELTING/NNFILES
+export NN_PATH=$HOME/LIB/MELTING/Data
 
 In a graphical environment you can also launch melting by clicking on an 
 icon linked to the program (the command-line options can then be entered 

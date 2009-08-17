@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #/******************************************************************************
 # *                      Script for melting v5                             *
 # * This program   computes for a nucleotide probe, the enthalpy, the entropy  *
@@ -27,28 +27,25 @@
 #*/
 
 # MUST EXIST
-prefix = /usr/local
-exec_prefix = $(prefix)
+set prefix=/usr/local
+exec_prefix=$prefix
 # where to put the executables
-bindir = $(exec_prefix)/bin
-mandir = $(prefix)/man
-# where to put melting-gui.desktop : 
-guidir = /usr/share/applications
+set bindir=$exec_prefix/bin
+set mandir=$prefix/man
 # MUST EXIST
-docdir = $(prefix)/doc/MELTING
-srcdir = SRC
+set docdir=$prefix/doc/MELTING
+set srcdir=src
 
 # where to find the files containing the sets of nearest_neighbor parameters. 
 # This one is to initialise the default value of melting. 
-NNDIR = $(prefix)/share/MELTING/Data
+set NNDIR=$prefix/share/MELTING/Data
 
 
-cp melting $(bindir)
-cp doc/melting.1 $(mandir)/man1/melting.1
-if test -e $(prefix)/share/MELTING ; then echo '$(prefix)/share/MELTING is already present'; else mkdir $(prefix)/share/MELTING; fi
-if test -e $(prefix)/share/MELTING/Data; then echo '$(prefix)/share/MELTING/Data is already present'; else mkdir $(prefix)/share/MELTING/Data; fi
-cp Data/*.nn $(NNDIR)/
-cp melting-gui.desktop $(guidir)/melting-gui.desktop
+cp executables/melting $bindir
+cp doc/melting.1 $mandir/man1/melting.1
+if test -e $prefix/share/MELTING ; then echo '$prefix/share/MELTING is already present'; else mkdir $prefix/share/MELTING; fi
+if test -e $prefix/share/MELTING/Data; then echo '$prefix/share/MELTING/Data is already present'; else mkdir $prefix/share/MELTING/Data; fi
+cp Data/*.nn $NNDIR/
 
 
 
