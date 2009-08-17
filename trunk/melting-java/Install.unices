@@ -1,0 +1,57 @@
+#!/bin/sh
+#/******************************************************************************
+# *                      Script for melting v5                             *
+# * This program   computes for a nucleotide probe, the enthalpy, the entropy  *
+# * and the melting temperature of the binding to its complementary template.  *
+# * Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and mRNA/RNA.  *
+# *                 Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2009*
+# ******************************************************************************/
+# 
+#/*    This program is free software; you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation; either version 2 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program; if not, write to the Free Software
+#      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+#
+#      Nicolas Le Novère and Marine Dumousseau
+#      Computational Neurobiology, EMBL-EBI, Genome Campus
+#      Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk
+#*/
+
+# MUST EXIST
+prefix = /usr/local
+exec_prefix = $(prefix)
+# where to put the executables
+bindir = $(exec_prefix)/bin
+mandir = $(prefix)/man
+# where to put melting-gui.desktop : 
+guidir = /usr/share/applications
+# MUST EXIST
+docdir = $(prefix)/doc/MELTING
+srcdir = SRC
+
+# where to find the files containing the sets of nearest_neighbor parameters. 
+# This one is to initialise the default value of melting. 
+NNDIR = $(prefix)/share/MELTING/Data
+
+
+cp melting $(bindir)
+cp doc/melting.1 $(mandir)/man1/melting.1
+if test -e $(prefix)/share/MELTING ; then echo '$(prefix)/share/MELTING is already present'; else mkdir $(prefix)/share/MELTING; fi
+if test -e $(prefix)/share/MELTING/Data; then echo '$(prefix)/share/MELTING/Data is already present'; else mkdir $(prefix)/share/MELTING/Data; fi
+cp Data/*.nn $(NNDIR)/
+cp melting-gui.desktop $(guidir)/melting-gui.desktop
+
+
+
+
+
+
