@@ -3,7 +3,7 @@
 Unbundle the distribution in the proper place (e.g. /usr/local/ or c:\Program
 Files). 
 
-Some pre-compiled binaries are located in the directory BIN. The program just needs 
+Some pre-compiled binaries are located in the directory bin. The program just needs 
 a Java 1.5 environment.
 
 UNICES 
@@ -12,6 +12,9 @@ Type `sudo Install.unice' to install the program.
 The manpage melting.1 is moved in the proper location during the
 installation. The other files can stay in doc or the entire doc directory can be
 moved under the name melting in /usr/doc or an equivalent directory.
+Be aware : the Install.unice script is for ubuntu, check if the executable and the 
+Data are moved in the proper place. The melting5.jar is moved with the executable
+in /usr/local/bin.
 
 WINDOWS
 
