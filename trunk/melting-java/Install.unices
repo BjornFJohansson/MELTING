@@ -27,26 +27,27 @@
 #*/
 
 # MUST EXIST
-set prefix=/usr/local
-exec_prefix=$prefix
+prefix=/usr/local
+exec_prefix=${prefix}
 # where to put the executables
-set bindir=$exec_prefix/bin
-set mandir=$prefix/man
+bindir=${exec_prefix}/bin
+mandir=/usr/share/man
 # MUST EXIST
-set docdir=$prefix/doc/MELTING
-set srcdir=src
+docdir=${prefix}/doc/MELTING
+srcdir=src
 
 # where to find the files containing the sets of nearest_neighbor parameters. 
 # This one is to initialise the default value of melting. 
-set NNDIR=$prefix/share/MELTING/Data
+NNDIR=${prefix}/share/MELTING/Data
 
 
-cp executables/melting $bindir
-cp doc/melting.1 $mandir/man1/melting.1
-if test -e $prefix/share/MELTING ; then echo '$prefix/share/MELTING is already present'; else mkdir $prefix/share/MELTING; fi
-if test -e $prefix/share/MELTING/Data; then echo '$prefix/share/MELTING/Data is already present'; else mkdir $prefix/share/MELTING/Data; fi
-cp Data/*.nn $NNDIR/
-
+cp executable/melting ${bindir}/
+cp executable/melting5.jar ${bindir}/
+cp doc/melting.1 ${mandir}/man1/melting.1
+if test -e ${prefix}/share/MELTING ; then echo '${prefix}/share/MELTING is already present'; else mkdir ${prefix}/share/MELTING; fi
+if test -e ${prefix}/share/MELTING/Data; then echo '${prefix}/share/MELTING/Data is already present'; else mkdir ${prefix}/share/MELTING/Data; fi
+cd Data
+cp * ${NNDIR}/
 
 
 
