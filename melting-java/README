@@ -1,0 +1,56 @@
+[INSTALLATION]
+
+Unbundle the distribution in the proper place (e.g. /usr/local/ or c:\Program
+Files) and the file melting-gui.desktop in /usr/share/applications. 
+
+Some pre-compiled binaries are located in the directory BIN. The program just needs 
+a Java 1.5 environment.
+
+UNICES 
+
+Type `sudo install.unice' to install the program.
+The manpage melting.1 is moved in the proper location during the
+installation. The other files can stay in doc or the entire doc directory can be
+moved under the name melting in /usr/doc or an equivalent directory.
+
+WINDOWS
+
+The documentation is located in the directory doc. The files containing the nearest-neighbor
+parameters are located in the directory Data. Move them in the proper
+directory specified in c:/program files/melting/Data.
+
+[EXECUTION]
+
+READ THE DOCUMENTATION BEFORE TO RUN THE PROGRAM. 
+
+The executable versions do not require any particular external libraries, 
+and must run directly. Go to the directory containing the programme and 
+type './melting [options]' under Unixes and 'melting.exe [options]' under 
+DOS/Windows. 
+
+You can also put the executable in a directory present in your PATH 
+variable in order to use the programme wherever you are. The environment 
+variable NN_PATH can be set to the directory containing your personal 
+nearest-neighbor parameters. For instance in the bash:
+
+export NN_PATH=$HOME/LIB/MELTING/NNFILES
+
+In a graphical environment you can also launch melting by clicking on an 
+icon linked to the program (the command-line options can then be entered 
+through the properties of the icon, generally in the 'execute' or 'run' 
+entry).
+
+Type 'melting -h' to get a summary of options.
+
+The directory testResults contains files with measured Tm from the literature.
+They are useful only for testing the different sets of NN, the corrections
+of salt concentration etc.
+
+Report any questions, comments, suggestions or critics to
+
+      Nicolas Le Novère and Marine Dumousseau
+      EMBL-EBI
+      Wellcome-Trust Genome Campus
+      Hinxton Cambridge
+      CB10 1SD United-Kingdom
+      e-mail: lenov@ebi.ac.uk
