@@ -27,9 +27,9 @@ READ THE DOCUMENTATION BEFORE RUNNING THE PROGRAM.
 
 The executable versions do not require any particular external libraries, 
 and must run directly. 
-Go to the directory executable (contains the executable) and type 
+Go to the directory executables (contains the executable) and type 
 'melting.bat [options]' under DOS/Windows. 
-Type './melting [options]' under Unixes.  
+Type 'melting [options]' under Unixes.  
 
 You can also put the executable in a directory present in your PATH 
 variable in order to use the programme wherever you are. The environment 
