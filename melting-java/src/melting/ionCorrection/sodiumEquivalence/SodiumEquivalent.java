@@ -15,6 +15,7 @@
 
 package melting.ionCorrection.sodiumEquivalence;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -55,6 +56,11 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 		OptionManagement.meltingLogger.log(Level.FINE, "\n Other cations than Na+ are present in the solution, we can use a sodium equivalence : "); 
 		
 		double NaEq = Na + K + Tris / 2 + b * Math.sqrt(Mg - dNTP);
+		
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		OptionManagement.meltingLogger.log(Level.FINE, "\n NaEq = " + format.format(NaEq) + " M."); 
 		
 		return NaEq;
 	}
