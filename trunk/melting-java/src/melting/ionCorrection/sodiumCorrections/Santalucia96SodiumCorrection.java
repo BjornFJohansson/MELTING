@@ -43,18 +43,18 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 		boolean isApplicable = true;
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.1){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium correction of Santalucia et al. (1996) is not reliable for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1996) is not reliable for " +
 					"sodium concentrations inferior to 0.1M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Santalucia et al. (1996) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1996) is originally established for " +
 			"DNA duplexes.");
 		}
 		return isApplicable;

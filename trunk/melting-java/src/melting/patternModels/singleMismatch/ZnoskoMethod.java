@@ -44,7 +44,7 @@ public abstract class ZnoskoMethod extends PatternComputation{
 			int pos2) {
 		if (environment.getHybridization().equals("rnarna") == false){
 
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single mismatches parameter of " +
 					"Znosco et al. are originally established " +
 					"for RNA duplexes.");
 		}
@@ -63,8 +63,8 @@ public abstract class ZnoskoMethod extends PatternComputation{
 		if (NNNeighboringValue == null){
 			NNNeighboringValue = new Thermodynamics(0,0);
 		}
-		OptionManagement.meltingLogger.log(Level.FINE, "N/N mismatch " + sequences.getSequence(pos1 + 1, pos1 + 1) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
-		OptionManagement.meltingLogger.log(Level.FINE, "NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2)) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n N/N mismatch " + sequences.getSequence(pos1 + 1, pos1 + 1) + "/" + sequences.getComplementary(pos1 + 1, pos1 + 1) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n NNN intervening  " + NucleotidSequences.convertToPyr_Pur(sequences.getSequence(pos1, pos2)) + "/" + NucleotidSequences.convertToPyr_Pur(sequences.getComplementary(pos1, pos2)) + " : enthalpy = " + NNNeighboringValue.getEnthalpy() + "  entropy = " + NNNeighboringValue.getEntropy());
 		
 		double enthalpy = result.getEnthalpy() + mismatchValue.getEnthalpy() + NNNeighboringValue.getEnthalpy();
 		double entropy = result.getEntropy() + mismatchValue.getEntropy() + NNNeighboringValue.getEntropy();
@@ -77,7 +77,7 @@ public abstract class ZnoskoMethod extends PatternComputation{
 		if (numberAU > 0){
 			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
 
 			enthalpy += numberAU * closingAU.getEnthalpy();
 			entropy += numberAU * closingAU.getEntropy();
@@ -85,7 +85,7 @@ public abstract class ZnoskoMethod extends PatternComputation{
 		if (numberGU > 0){
 			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 
-			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
 
 			enthalpy += numberAU * closingGU.getEnthalpy();
 			entropy += numberAU * closingGU.getEntropy();
@@ -107,7 +107,7 @@ public abstract class ZnoskoMethod extends PatternComputation{
 		
 			if (mismatch.calculateNumberOfTerminal("A", "U", pos1, pos2) > 0){
 				if (this.collector.getClosureValue("A", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
 
 					return true;
 				}
@@ -115,7 +115,7 @@ public abstract class ZnoskoMethod extends PatternComputation{
 			
 			if (mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2) > 0){
 				if (this.collector.getClosureValue("G", "U") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
 
 					return true;
 				}

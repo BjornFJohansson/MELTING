@@ -45,7 +45,7 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Wetmur (1991) is applicable for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Wetmur (1991) is applicable for " +
 					"strictky positive sodium concentrations.");
 			isApplicable = false;
 		}

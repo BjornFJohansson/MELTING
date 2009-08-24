@@ -507,7 +507,7 @@ public class RegisterMethods {
 	 */
 	private HashMap<String , Class<? extends PatternComputationMethod>> getPartialCalculMethodHashMap(String optionName){
 		if (PatternModel.get(optionName) == null){
-			throw new NoExistingMethodException("No method is implemented for the option " + optionName + ".");
+			throw new NoExistingMethodException("\n No method is implemented for the option " + optionName + ".");
 		}
 		return PatternModel.get(optionName);
 	}
@@ -535,14 +535,14 @@ public class RegisterMethods {
 
 				}
 				if (getPartialCalculMethodHashMap(optionName).get(methodName) == null){
-					throw new NoExistingMethodException("We don't know the method " + methodName);
+					throw new NoExistingMethodException("\n We don't know the method " + methodName);
 				}
 				method = getPartialCalculMethodHashMap(optionName).get(methodName).newInstance();
 				return method;
 			} catch (InstantiationException e) {
-				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName, e);
+				throw new NoExistingMethodException("\n The calcul method is not implemented yet. Check the option " + optionName, e);
 			} catch (IllegalAccessException e) {
-				throw new NoExistingMethodException("The calcul method is not implemented yet. Check the option " + optionName, e);
+				throw new NoExistingMethodException("\n The calcul method is not implemented yet. Check the option " + optionName, e);
 			}
 		}
 		return null;
@@ -564,24 +564,24 @@ public class RegisterMethods {
 		String methodName = optionSet.get(OptionManagement.NaEquivalentMethod);
 		
 		if (methodName == null){
-		throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.NaEquivalentMethod + ".");
+		throw new NoExistingMethodException("\n No method is implemented for the option " + OptionManagement.NaEquivalentMethod + ".");
 		}
 		SodiumEquivalentMethod method;
 		try {
 			if (NaEqMethod.get(methodName) == null){
-				throw new NoExistingMethodException("We don't know the method " + methodName);
+				throw new NoExistingMethodException("\n We don't know the method " + methodName);
 			}
 			method = NaEqMethod.get(methodName).newInstance();
 			if (method.isApplicable(optionSet)) {
 				return method;
 			}
 			else {
-				throw new MethodNotApplicableException("The sodium equivalent method (option " + OptionManagement.NaEquivalentMethod + ") is not applicable with this environment.");
+				throw new MethodNotApplicableException("\n The sodium equivalent method (option " + OptionManagement.NaEquivalentMethod + ") is not applicable with this environment.");
 			}
 		} catch (InstantiationException e) {
-			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
+			throw new NoExistingMethodException("\n The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
 		} catch (IllegalAccessException e) {
-			throw new NoExistingMethodException("The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
+			throw new NoExistingMethodException("\n The sodium equivalence method is not implemented yet. Check the option " + OptionManagement.NaEquivalentMethod, e);
 		}
 	}
 	
@@ -602,36 +602,40 @@ public class RegisterMethods {
 			String methodName = environment.getOptions().get(OptionManagement.ionCorrection);
 			
 			if (methodName == null){
-				throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.ionCorrection + ".");
+				throw new NoExistingMethodException("\n No method is implemented for the option " + OptionManagement.ionCorrection + ".");
 			}
 			CorrectionMethod method;
 			try {
 				if (ionCorrection.get(methodName) == null){
-					throw new NoExistingMethodException("We don't know the method " + methodName);
+					throw new NoExistingMethodException("\n We don't know the method " + methodName);
 				}
 				method = ionCorrection.get(methodName).newInstance();
 				if (method.isApplicable(environment)) {
 					return method;
 				}
 				else {
-					throw new MethodNotApplicableException("The ion correction method (option " + OptionManagement.ionCorrection + ") is not applicable with this environment.");
+					throw new MethodNotApplicableException("\n The ion correction method (option " + OptionManagement.ionCorrection + ") is not applicable with this environment.");
 				}
 			} catch (InstantiationException e) {
-				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
+				throw new NoExistingMethodException("\n The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 			} catch (IllegalAccessException e) {
-				throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
+				throw new NoExistingMethodException("\n The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 			}
 		}
 		else{
+			// Algorithm from Owczarzy et al. 2008
+			
 			double monovalent = environment.getNa() + environment.getK() + environment.getTris() / 2;
 			
+			// sodium corrections for DNA/RNA duplexes
 			if (environment.getHybridization().equals("dnarna") || environment.getHybridization().equals("rnadna")){
 				return new Wetmur91SodiumCorrection();
 			}
 			else if (environment.getHybridization().equals("dnadna") == false && environment.getHybridization().equals("rnarna") == false && environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
-				throw new NoExistingMethodException("There is no existing ion correction method (option " + OptionManagement.ionCorrection + ") for this type of hybridization.");
+				throw new NoExistingMethodException("\n There is no existing ion correction method (option " + OptionManagement.ionCorrection + ") for this type of hybridization.");
 			}
 			
+			// Magnesium correction
 			if (monovalent == 0){
 				if (environment.getHybridization().equals("dnadna")){
 					return new Owczarzy08MagnesiumCorrection();
@@ -644,6 +648,7 @@ public class RegisterMethods {
 				double Mg = environment.getMg() - environment.getDNTP();
 				double ratio = Math.sqrt(Mg) / monovalent;
 				
+				// Sodium correction
 				if (ratio < 0.22){
 					environment.setMg(0.0);
 					if (environment.getHybridization().equals("dnadna")){
@@ -654,6 +659,7 @@ public class RegisterMethods {
 					}
 				}
 				else{
+					// Mixed Na Mg correction
 					if (ratio < 6.0){
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MixedNaMgCorrection();
@@ -662,6 +668,7 @@ public class RegisterMethods {
 							return new Tan07MixedNaMgCorrection();
 						}
 					}
+					// Magnesium correction
 					else {
 						if (environment.getHybridization().equals("dnadna")){
 							return new Owczarzy08MagnesiumCorrection();
@@ -691,7 +698,7 @@ public class RegisterMethods {
 		
 		String methodName = optionSet.get(OptionManagement.globalMethod);
 		if (methodName == null){
-			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.globalMethod + ".");
+			throw new NoExistingMethodException("\n No method is implemented for the option " + OptionManagement.globalMethod + ".");
 		}
 	
 		MeltingComputationMethod method = null;
@@ -707,14 +714,14 @@ public class RegisterMethods {
 
 					try {
 						if (approximativeMethod.get(methodName) == null){
-							throw new NoExistingMethodException("We don't know the method " + methodName);
+							throw new NoExistingMethodException("\n We don't know the method " + methodName);
 						}
 						method = approximativeMethod.get(methodName).newInstance();
 						method.setUpVariables(optionSet);
 					} catch (InstantiationException e) {
-						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
+						throw new NoExistingMethodException("\n The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 					} catch (IllegalAccessException e) {
-						throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
+						throw new NoExistingMethodException("\n The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 					}
 				}
 				else {
@@ -729,14 +736,14 @@ public class RegisterMethods {
 
 				try {
 					if (approximativeMethod.get(methodName) == null){
-						throw new NoExistingMethodException("We don't know the method " + methodName);
+						throw new NoExistingMethodException("\n We don't know the method " + methodName);
 					}
 					method = approximativeMethod.get(methodName).newInstance();
 					method.setUpVariables(optionSet);
 				} catch (InstantiationException e) {
-					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
+					throw new NoExistingMethodException("\n The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 				} catch (IllegalAccessException e) {
-					throw new NoExistingMethodException("The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
+					throw new NoExistingMethodException("\n The approximative method is not implemented yet. Check the option " + OptionManagement.approximativeMode, e);
 				}
 			}
 			else {
@@ -749,7 +756,7 @@ public class RegisterMethods {
 				return method;
 			}
 			else {
-				throw new MethodNotApplicableException("The melting temperature calcul method (option " + OptionManagement.globalMethod + ") is not applicable with this environment.");
+				throw new MethodNotApplicableException("\n The melting temperature calcul method (option " + OptionManagement.globalMethod + ") is not applicable with this environment.");
 			}
 	}
 	
@@ -767,20 +774,20 @@ public class RegisterMethods {
 	public CorrectionMethod getCorrectionMethod (String optionName, String methodName){
 		
 		if (methodName == null){
-			throw new NoExistingMethodException("No method is implemented for the option " + OptionManagement.DMSOCorrection + "or" + OptionManagement.formamideCorrection + ".");
+			throw new NoExistingMethodException("\n No method is implemented for the option " + OptionManagement.DMSOCorrection + "or" + OptionManagement.formamideCorrection + ".");
 		}
 		CorrectionMethod method;
 		try {
 			if (otherCorrection.get(optionName).get(methodName) == null){
-			throw new NoExistingMethodException("We don't know the method " + methodName);
+			throw new NoExistingMethodException("\n We don't know the method " + methodName);
 		}
 			method = otherCorrection.get(optionName).get(methodName).newInstance();
 			return method;
 			
 		} catch (InstantiationException e) {
-			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
+			throw new NoExistingMethodException("\n The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 		} catch (IllegalAccessException e) {
-			throw new NoExistingMethodException("The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
+			throw new NoExistingMethodException("\n The ion correction method is not implemented yet. Check the option " + OptionManagement.ionCorrection, e);
 		}
 	}
 	
@@ -794,26 +801,26 @@ public class RegisterMethods {
 			CorrectionMethod DMSOCorrection = getCorrectionMethod(OptionManagement.DMSOCorrection, environment.getOptions().get(OptionManagement.DMSOCorrection));
 			
 			if (DMSOCorrection == null){
-				throw new NoExistingMethodException("There is no implemented DMSO correction.");
+				throw new NoExistingMethodException("\n There is no implemented DMSO correction.");
 			}
 			else if (DMSOCorrection.isApplicable(environment)){
 				environment.setResult(DMSOCorrection.correctMeltingResults(environment));
 			}
 			else {
-				throw new MethodNotApplicableException("The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
+				throw new MethodNotApplicableException("\n The DMSO correction is not applicable with this environment (option " + OptionManagement.DMSOCorrection + ").");
 			}
 		}
 		if (environment.getFormamide() > 0){
 			CorrectionMethod formamideCorrection = getCorrectionMethod(OptionManagement.formamideCorrection, environment.getOptions().get(OptionManagement.formamideCorrection));
 			
 			if (formamideCorrection == null){
-				throw new NoExistingMethodException("There is no implemented formamide correction.");
+				throw new NoExistingMethodException("\n There is no implemented formamide correction.");
 			}
 			else if (formamideCorrection.isApplicable(environment)){
 				environment.setResult(formamideCorrection.correctMeltingResults(environment));
 			}
 			else {
-				throw new MethodNotApplicableException("The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
+				throw new MethodNotApplicableException("\n The formamide correction is not applicable with this environment (option " + OptionManagement.formamideCorrection + ").");
 			}
 		}
 		

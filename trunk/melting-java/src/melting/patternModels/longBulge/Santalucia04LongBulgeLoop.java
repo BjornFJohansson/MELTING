@@ -56,7 +56,7 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 			int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single bulge loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
 		}
@@ -70,6 +70,8 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
 		pos1 = positions[0];
 		pos2 = positions[1];
+		
+		OptionManagement.meltingLogger.log(Level.WARNING, "\n The long bulge loop model san04 has not been tested with experimental values.");
 
 		NucleotidSequences bulgeLoop = sequences.getEquivalentSequences("dna");
 		
@@ -86,12 +88,12 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 		if (bulgeLoopValue == null){
 			bulgeLoopValue = this.collector.getBulgeLoopvalue("30");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " - 2.44 x 1.99 x ln(bulgeSize / 30)");
+			OptionManagement.meltingLogger.log(Level.FINE, "\n bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy() + " - 2.44 x 1.99 x ln(bulgeSize / 30)");
 
 			entropy += bulgeLoopValue.getEntropy() - 2.44 * 1.99 * Math.log(Double.parseDouble(bulgeSize) / 30.0);
 		}
 		else {
-			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n bulge loop of " + bulgeSize + " :  enthalpy = " + bulgeLoopValue.getEnthalpy() + "  entropy = " + bulgeLoopValue.getEntropy());
 
 			entropy += bulgeLoopValue.getEntropy();
 		}
@@ -99,7 +101,7 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 		if (numberAT> 0 && this.collector.getClosureValue("A", "T") != null){
 			Thermodynamics closingAT = this.collector.getClosureValue("A", "T");
 
-			OptionManagement.meltingLogger.log(Level.FINE, numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAT + " x AT closing : enthalpy = " + closingAT.getEnthalpy() + "  entropy = " + closingAT.getEntropy());
 
 			enthalpy += numberAT * closingAT.getEnthalpy();
 			enthalpy += numberAT * closingAT.getEntropy();
@@ -127,12 +129,12 @@ public class Santalucia04LongBulgeLoop extends PatternComputation{
 		
 		if (numberAT > 0){
 			if (this.collector.getClosureValue("A", "T") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AT closing base pair are missing. The results can lose accuracy.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for AT closing base pair are missing. The results can lose accuracy.");
 			}
 		}
 		if (this.collector.getBulgeLoopvalue(bulgeSize) == null){
 			if (this.collector.getBulgeLoopvalue("30") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge loop parameters.");
 
 				return true;
 			}

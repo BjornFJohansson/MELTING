@@ -33,7 +33,7 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 		String hybridization = options.get(OptionManagement.hybridization);
 		
 		if (hybridization.equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The current equations to have the sodium equivalent" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The current equations to have the sodium equivalent" +
 					"concentration are established for DNA duplexes.");
 		}
 		return true;

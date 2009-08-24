@@ -58,50 +58,54 @@ Contents</A>
 <!--Table of Contents-->
 
 <UL CLASS="TofC">
-<LI><A NAME="tex2html30"
-  HREF="DeveloppersGuide.html#SECTION00020000000000000000">Introduction</A>
 <LI><A NAME="tex2html31"
-  HREF="DeveloppersGuide.html#SECTION00030000000000000000">Package layout</A>
+  HREF="DeveloppersGuide.html#SECTION00020000000000000000">Introduction</A>
 <LI><A NAME="tex2html32"
-  HREF="DeveloppersGuide.html#SECTION00040000000000000000">How to add new approximative formulas</A>
+  HREF="DeveloppersGuide.html#SECTION00030000000000000000">Package layout</A>
 <LI><A NAME="tex2html33"
-  HREF="DeveloppersGuide.html#SECTION00050000000000000000">How to add new thermodynamic model</A>
+  HREF="DeveloppersGuide.html#SECTION00040000000000000000">How to add new approximative formulas</A>
 <LI><A NAME="tex2html34"
-  HREF="DeveloppersGuide.html#SECTION00060000000000000000">How to create a new duplex structure</A>
+  HREF="DeveloppersGuide.html#SECTION00050000000000000000">How to add new thermodynamic model</A>
 <LI><A NAME="tex2html35"
-  HREF="DeveloppersGuide.html#SECTION00070000000000000000">How to add new nucleic acids</A>
+  HREF="DeveloppersGuide.html#SECTION00060000000000000000">How to create a new duplex structure</A>
 <LI><A NAME="tex2html36"
+  HREF="DeveloppersGuide.html#SECTION00070000000000000000">How to add new nucleic acids</A>
+<LI><A NAME="tex2html37"
   HREF="DeveloppersGuide.html#SECTION00080000000000000000">How to add new corrections for Na, Mg, K, Tris, DMSO and/or formamide</A>
 <UL>
-<LI><A NAME="tex2html37"
-  HREF="DeveloppersGuide.html#SECTION00081000000000000000">New ion correction</A>
 <LI><A NAME="tex2html38"
-  HREF="DeveloppersGuide.html#SECTION00082000000000000000">New sodium equivalence formula</A>
+  HREF="DeveloppersGuide.html#SECTION00081000000000000000">New ion correction</A>
 <LI><A NAME="tex2html39"
+  HREF="DeveloppersGuide.html#SECTION00082000000000000000">New sodium equivalence formula</A>
+<LI><A NAME="tex2html40"
   HREF="DeveloppersGuide.html#SECTION00083000000000000000">New DMSO and formamide corrections</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html40"
+<LI><A NAME="tex2html41"
   HREF="DeveloppersGuide.html#SECTION00090000000000000000">How to add new ion and denaturing agent species</A>
 <UL>
-<LI><A NAME="tex2html41"
-  HREF="DeveloppersGuide.html#SECTION00091000000000000000">New ion species</A>
 <LI><A NAME="tex2html42"
+  HREF="DeveloppersGuide.html#SECTION00091000000000000000">New ion species</A>
+<LI><A NAME="tex2html43"
   HREF="DeveloppersGuide.html#SECTION00092000000000000000">New denaturing agent species or other species</A>
 </UL>
 <BR>
-<LI><A NAME="tex2html43"
-  HREF="DeveloppersGuide.html#SECTION000100000000000000000">How to change the default textitMelting options</A>
 <LI><A NAME="tex2html44"
+  HREF="DeveloppersGuide.html#SECTION000100000000000000000">How to change the default textitMelting options</A>
+<LI><A NAME="tex2html45"
   HREF="DeveloppersGuide.html#SECTION000110000000000000000">XML Files</A>
 <UL>
-<LI><A NAME="tex2html45"
-  HREF="DeveloppersGuide.html#SECTION000111000000000000000">General information</A>
 <LI><A NAME="tex2html46"
-  HREF="DeveloppersGuide.html#SECTION000112000000000000000">List of existing nodes and attributes</A>
+  HREF="DeveloppersGuide.html#SECTION000111000000000000000">General information</A>
 <LI><A NAME="tex2html47"
+  HREF="DeveloppersGuide.html#SECTION000112000000000000000">List of existing nodes and attributes</A>
+<LI><A NAME="tex2html48"
   HREF="DeveloppersGuide.html#SECTION000113000000000000000">what to change if you add new subnodes or new attributes</A>
-</UL></UL>
+</UL>
+<BR>
+<LI><A NAME="tex2html49"
+  HREF="DeveloppersGuide.html#SECTION000120000000000000000">How to change the default ion corrections</A>
+</UL>
 <!--End of Table of Contents-->
 <P>
 
@@ -2329,6 +2333,17 @@ public Thermodynamics getNewThermodynamicParameter1(arg-1, ..., arg-n){
 <P>
 
 <H1><A NAME="SECTION000120000000000000000">
+How to change the default ion corrections</A>
+</H1>
+
+<P>
+You can change the default ion corrections in the method 
+<SPAN  CLASS="textit">public CorrectionMethod getIonCorrectionMethod (Environment environment)</SPAN>
+of the class RegisterMethod from the melting.configuration package.
+
+<P>
+
+<H1><A NAME="SECTION000130000000000000000">
 About this document ...</A>
 </H1>
  <STRONG><SMALL>MELTING</SMALL> - development guide</STRONG><P>
@@ -2346,7 +2361,7 @@ Mathematics Department, Macquarie University, Sydney.
 The command line arguments were: <BR>
  <STRONG>latex2html</STRONG> <TT>-split 0 DeveloppersGuide.tex</TT>
 <P>
-The translation was initiated by Computational Neurobiology on 2009-08-13
+The translation was initiated by Computational Neurobiology on 2009-08-24
 <DIV CLASS="navigation"><HR>
 <!--Navigation Panel-->
 <IMG WIDTH="81" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next_inactive"
@@ -2359,7 +2374,7 @@ The translation was initiated by Computational Neurobiology on 2009-08-13
 <!--End of Navigation Panel-->
 <ADDRESS>
 Computational Neurobiology
-2009-08-13
+2009-08-24
 </ADDRESS>
 </BODY>
 </HTML>

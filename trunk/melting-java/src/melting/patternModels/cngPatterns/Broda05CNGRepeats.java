@@ -46,17 +46,17 @@ public class Broda05CNGRepeats extends PatternComputation {
 			int pos2) {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The nearest neighbor model for CNG repeats of Broda et al." +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The nearest neighbor model for CNG repeats of Broda et al." +
 					"(2005) is only established for RNA sequences.");
 		}
 		
 		if (environment.getSequences().getSequence().charAt(pos1) != 'G' && environment.getSequences().getSequence().charAt(pos2) != 'C'){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
-			"(2005) are only established for CNG RNA sequences. The sequence must begin with a G/C base pair and end with a C/Gbase pair.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for CNG repeats of Broda et al." +
+			"(2005) are only established for RNA sequences. The sequence must begin with a G/C base pair and end with a C/G base pair.");
 		}
 		
 		if (environment.isSelfComplementarity() == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for CNG repeats of Broda et al." +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for CNG repeats of Broda et al." +
 			"(2005) are only established for self complementary RNA sequences.");
 			
 			isApplicable = false;
@@ -69,7 +69,7 @@ public class Broda05CNGRepeats extends PatternComputation {
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG motifs model : from Broda et al. (2005). \n");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n CNG model : from Broda et al. (2005). \n");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		int repeats = (pos2 - pos1 - 1) / 3;
@@ -80,7 +80,7 @@ public class Broda05CNGRepeats extends PatternComputation {
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "motif (" + sequences.getSequence(pos1 + 1, pos1 + 3) + ")" + repeats + " : " + "enthalpy = " + CNGValue.getEnthalpy() + "  entropy = " + CNGValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Structure (" + sequences.getSequence(pos1 + 1, pos1 + 3) + ")" + repeats + " : " + "enthalpy = " + CNGValue.getEnthalpy() + "  entropy = " + CNGValue.getEntropy());
 		
 		return result;
 	}
@@ -89,10 +89,13 @@ public class Broda05CNGRepeats extends PatternComputation {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		int repeats = (sequences.getDuplexLength() - 2) / 3;
+		boolean isMissing = super.isMissingParameters(sequences, pos1, pos2);
 		if (this.collector.getCNGvalue(Integer.toString(repeats), sequences.getSequence(pos1 + 1, pos1 + 3, "rna")) == null){
-			return true;			
+			OptionManagement.meltingLogger.log(Level.WARNING, "/n The thermodynamic parameters for " + repeats + sequences.getSequence(pos1 + 1, pos1 + 3, "rna") + " are missing.");
+
+			isMissing = true;			
 		}
-		return super.isMissingParameters(sequences, pos1, pos2);
+		return isMissing;
 	}
 
 	

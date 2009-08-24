@@ -4,7 +4,7 @@ Unbundle the distribution in the proper place (e.g. /usr/local/ or c:\Program
 Files). 
 
 Some pre-compiled binaries are located in the directory bin. The program just needs 
-a Java 1.5 environment.
+a Java 1.5 environment (http://java.sun.com/javase/downloads/index_jdk5.jsp).
 
 UNICES 
 

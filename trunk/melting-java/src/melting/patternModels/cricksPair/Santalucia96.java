@@ -45,7 +45,7 @@ public class Santalucia96 extends GlobalInitiation {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Santalucia (1996)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Santalucia (1996)" +
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -66,8 +66,20 @@ public class Santalucia96 extends GlobalInitiation {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
-				
-		return super.isMissingParameters(newSequences, pos1, pos2);
+		
+		boolean isMissing = super.isMissingParameters(newSequences, pos1, pos2);
+		
+		int [] truncatedPositions =  newSequences.removeTerminalUnpairedNucleotides();
+
+		double number5AT = newSequences.getNumberTerminal5TA(truncatedPositions[0], truncatedPositions[1]);
+		
+		if (number5AT > 0) {
+			if (this.collector.getTerminal("5_T/A") == null){
+				isMissing = true;
+				OptionManagement.meltingLogger.log(Level.FINE,"\n The thermodynamic parameters for terminal 5'TA base pair are missing.");
+			}
+		}
+		return isMissing;
 	}
 	
 	@Override
@@ -95,7 +107,7 @@ public class Santalucia96 extends GlobalInitiation {
 		
 		if (number5AT > 0) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
-			OptionManagement.meltingLogger.log(Level.FINE,number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE,"\n" + number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
 			
 			enthalpy += number5AT * terminal5AT.getEnthalpy();
 			entropy += number5AT * terminal5AT.getEntropy();

@@ -54,7 +54,7 @@ public class WetmurRNA91 extends Wetmur91 {
 	public boolean isApplicable() {
 		
 		if (this.environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The wetmur equation used here was originally established for RNA duplexes.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The wetmur equation used here was originally established for RNA duplexes.");
 		}
 		
 		return super.isApplicable();

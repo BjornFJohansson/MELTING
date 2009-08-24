@@ -94,13 +94,13 @@ public class Environment {
 		this.options = options;
 
 		if (options == null){
-			throw new OptionSyntaxError("Some required options are missing. Read the manual for further informations or see the option " + OptionManagement.meltingHelp);
+			throw new OptionSyntaxError("\n Some required options are missing. You have to enter the type of hybridization, the oligomer concentration, the sequences (at less the sequence 5'3') and at less one of the following ion concentrations : Na+, Mg2+, Tris+, K+. Read the manual for further information or see the option " + OptionManagement.meltingHelp);
 		}
 				
 		initialiseConcentrations();
 		
 		if (isRequiredConcentrations() == false){
-			throw new OptionSyntaxError("You must enter at lest one of these concentrations : Na, Mg, K or Tris.");
+			throw new OptionSyntaxError("\n You have to enter at lest one of these ion concentrations : Na+, Mg2+, K+ or Tris+.");
 		}
 		
 		this.oligomerConcentration = Double.parseDouble(options.get(OptionManagement.nucleotides));

@@ -32,7 +32,7 @@ public abstract class DNADMSOCorrections implements CorrectionMethod{
 	public boolean isApplicable(Environment environment) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The current DMSO corrections are established for DNA duplexes.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The current DMSO corrections are established for DNA duplexes.");
 		}
 		return true;
 	}
@@ -40,6 +40,8 @@ public abstract class DNADMSOCorrections implements CorrectionMethod{
 	public ThermoResult correctMeltingResult(Environment environment, double parameter) {
 		double Tm = environment.getResult().getTm() - parameter * environment.getDMSO();
 		
+		OptionManagement.meltingLogger.log(Level.WARNING, "\n The current DMSO corrections has not been tested with experimenta values.");
+
 		environment.setResult(Tm);
 		return environment.getResult();
 	}

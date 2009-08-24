@@ -43,7 +43,7 @@ public class Tanaka04SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 			int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single bulge loop parameters of " +
 					"Tanaka (2004) are originally established " +
 					"for DNA sequences.");
 		}

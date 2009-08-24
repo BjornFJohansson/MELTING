@@ -44,7 +44,7 @@ public class Tanaka04 extends DecomposedInitiation {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Tanaka (2004)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Tanaka (2004)" +
 					"is established for DNA sequences ");
 		}
 

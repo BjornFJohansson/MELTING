@@ -44,7 +44,7 @@ public class Freier86 extends CricksNNMethod {
 
 		if (environment.getHybridization().equals("rnarna") == false){
 
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Freier et al. (1986)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Freier et al. (1986)" +
 			"is established for RNA sequences.");	
 		}
 

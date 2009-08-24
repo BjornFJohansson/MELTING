@@ -59,6 +59,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing.");	
 				return true;
 			}
 		}
@@ -89,7 +90,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 		if (environment.isSelfComplementarity()){
 			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
 			
 			enthalpy += symmetry.getEnthalpy();
 			entropy += symmetry.getEntropy();

@@ -45,7 +45,7 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for dangling ends" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for dangling ends" +
 					" of Serra et al. (2006 - 2008) are established for RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);

@@ -44,7 +44,7 @@ public class Breslauer86 extends GlobalInitiation{
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Breslauer86 et al (1986)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Breslauer86 et al (1986)" +
 					"is established for DNA sequences.");			
 		}
 		return super.isApplicable(environment, pos1, pos2);

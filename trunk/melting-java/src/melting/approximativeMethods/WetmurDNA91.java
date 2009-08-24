@@ -54,7 +54,7 @@ public class WetmurDNA91 extends Wetmur91 {
 	public boolean isApplicable() {
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The wetmur equation used here was originally established for DNA duplexes.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The wetmur equation used here was originally established for DNA duplexes.");
 		}
 		
 		return super.isApplicable();

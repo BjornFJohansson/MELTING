@@ -56,19 +56,19 @@ public class ApproximativeMode implements MeltingComputationMethod{
 		boolean isApplicable = true;
 		
 		if (environment.getSequences().computesPercentMismatching() != 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The approximative mode formulas" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The approximative mode formulas" +
 					"cannot properly account for the presence of mismatches" +
 					" and unpaired nucleotides.");
 		}
 		
-		if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) >= environment.getSequences().getDuplexLength()){
+		/*if (Integer.parseInt(environment.getOptions().get(OptionManagement.threshold)) >= environment.getSequences().getDuplexLength()){
 			if (environment.getOptions().get(OptionManagement.globalMethod).equals("def")){
 				isApplicable = false;
 			}
-			OptionManagement.meltingLogger.log(Level.WARNING, "the approximative equations " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The approximative equations " +
 			"were originally established for long DNA duplexes. (length superior to " +
 			 environment.getOptions().get(OptionManagement.threshold) +").");
-		}
+		}*/
 		return isApplicable;
 	}
 	
@@ -83,7 +83,7 @@ public class ApproximativeMode implements MeltingComputationMethod{
 					environment.setNa(method.computeSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(), environment.getDNTP()));
 				}
 				else{
-					throw new NoExistingMethodException("There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
+					throw new NoExistingMethodException("\n There are other ions than Na+ in the solution and no ion correction method is avalaible for this type of hybridization.");
 				}
 			}
 		}

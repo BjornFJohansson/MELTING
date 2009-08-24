@@ -46,12 +46,12 @@ public class Turner06 extends CricksNNMethod {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Turner et al. (2006)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Turner et al. (2006)" +
 			"is established for 2-0-methyl RNA/RNA sequences.");
 		}
 		
 		if (environment.isSelfComplementarity()){
-			throw new MethodNotApplicableException ( "The thermodynamic parameters of Turner et al. (2006)" +
+			throw new MethodNotApplicableException ( "\n The thermodynamic parameters of Turner et al. (2006)" +
 					"are established for hybrid mRNA/RNA sequences.");
 		}
 		return isApplicable;
@@ -91,8 +91,19 @@ public class Turner06 extends CricksNNMethod {
 			int pos2) {
 
 		boolean isMissing = false;
+		int [] truncatedPositions =  sequences.removeTerminalUnpairedNucleotides();
+
+		double numberTerminalAU = sequences.calculateNumberOfTerminal("A", "U", truncatedPositions[0], truncatedPositions[1]);
+
+		if (numberTerminalAU != 0) {
+			if (this.collector.getTerminal("per_A/U") == null){
+				isMissing = true;
+				OptionManagement.meltingLogger.log(Level.WARNING, "/n The thermodynamic parameters for terminal AU base pair are missing.");
+			}	
+		}
 		for (int i = pos1; i <= pos2 - 1; i++){
 			if (this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for m" + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + "are missing.");	
 				isMissing = true;
 			}
 		}
@@ -123,7 +134,7 @@ public class Turner06 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "/n" + numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();

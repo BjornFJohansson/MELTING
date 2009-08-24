@@ -44,7 +44,7 @@ public class Santalucia05Inosine extends InosineNNMethod{
 			int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for dangling ends" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for dangling ends" +
 			"of Bommarito (2000) are established for DNA sequences.");
 		}
 		
