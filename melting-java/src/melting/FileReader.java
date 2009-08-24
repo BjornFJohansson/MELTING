@@ -74,7 +74,9 @@ public class FileReader {
 				
 				return dataHandler.getMap();
 			} catch (IOException e) {
-				throw new FileException("One of the file containing the thermodynamic parameters can't be parsed.", e);
+				throw new FileException("The file " + file.getName() + " can't be found.", e);
+			} catch (SAXException e) {
+				throw new FileException("The file " + file.getName() + " can't be parsed.", e);
 			}
 		}
 	}

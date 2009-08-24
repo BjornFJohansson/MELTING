@@ -45,7 +45,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		NucleotidSequences inosine = environment.getSequences().getEquivalentSequences("rna");
 		
 		if (environment.getHybridization().equals("rnarna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for inosine base of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for inosine base of" +
 					"Znosco (2007) are established for RNA sequences.");
 		
 		}
@@ -54,7 +54,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
 			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.getDuplex().get(i).isBasePairEqualTo("I", "U") == false){
 				isApplicable = false;
-				OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco" +
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters of Znosco" +
 						"(2007) are only established for IU base pairs.");
 				break;
 			}
@@ -82,7 +82,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == sequences.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
-			OptionManagement.meltingLogger.log(Level.FINE, numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
 
 			enthalpy += numberIU * terminaIU.getEnthalpy();
 			entropy += numberIU * terminaIU.getEntropy();
@@ -106,7 +106,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0){
 			if (this.collector.getTerminal("per_I/U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameter for terminal IU base pair is missing.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for terminal IU base pair is missing.");
 				return true;
 			}
 		}

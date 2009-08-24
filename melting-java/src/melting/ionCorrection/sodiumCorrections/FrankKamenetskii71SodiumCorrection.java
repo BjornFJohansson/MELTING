@@ -46,16 +46,16 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 		boolean isApplicable = true;
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		else if (NaEq < 0.069 || NaEq > 1.02){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium correction of Frank Kamenetskii (1971)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Frank Kamenetskii (1971)" +
 					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Frank Kamenetskii (1971) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Frank Kamenetskii (1971) is originally established for " +
 			"DNA duplexes.");		}
 		
 		return isApplicable;

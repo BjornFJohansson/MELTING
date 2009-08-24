@@ -57,7 +57,7 @@ public abstract class PatternComputation implements PatternComputationMethod{
 		NucleotidSequences sequences = environment.getSequences();
 
 		if (isMissingParameters(sequences, pos1, pos2)) {
-			throw new ThermodynamicParameterError("Some thermodynamic parameters are missing to compute " +
+			throw new ThermodynamicParameterError("\n Some thermodynamic parameters are missing to compute " +
 					"melting temperature.");
 		}
 		return true;
@@ -87,9 +87,9 @@ public abstract class PatternComputation implements PatternComputationMethod{
 			collector.addData(FileReader.readFile(dataFile));
 
 		} catch (ParserConfigurationException e) {
-			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.", e);
+			throw new FileException("\n One of the files containing the thermodynamic parameters can't be parsed.", e);
 		} catch (SAXException e) {
-			throw new FileException("One of the files containing the thermodynamic parameters can't be parsed.", e);
+			throw new FileException("\n One of the files containing the thermodynamic parameters can't be parsed.", e);
 		}
 	}
 	

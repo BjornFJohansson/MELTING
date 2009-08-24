@@ -42,7 +42,7 @@ public class Sugimoto96 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al (1996)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Sugimoto et al (1996)" +
 					"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);

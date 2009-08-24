@@ -52,7 +52,7 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The long bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The long bulge loop parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
 		}
@@ -67,6 +67,8 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 		pos1 = positions[0];
 		pos2 = positions[1];
 
+		OptionManagement.meltingLogger.log(Level.WARNING, "\n The long bulge loop model tur06 has not been tested with experimental values.");
+		
 		NucleotidSequences bulgeLoop = sequences.getEquivalentSequences("rna");
 				
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The long bulge loop model is from Turner et al. (1999, 2006) : ");
@@ -81,13 +83,13 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 		if (initiationBulge == null){
 			initiationBulge = this.collector.getInitiationBulgevalue(">6");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
+			OptionManagement.meltingLogger.log(Level.FINE, "\n bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy() + " / 310.15 x (8.7 - 1085.5 x ln( bulgeSize / 6)");
 
 			enthalpy += initiationBulge.getEnthalpy();
 			entropy += initiationBulge.getEntropy() / 310.15 * (8.7 - 1085.5 * Math.log( Double.parseDouble(bulgeSize) / 6.0));
 		}
 		else{
-			OptionManagement.meltingLogger.log(Level.FINE, "bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n bulge loop of " + bulgeSize + " :  enthalpy = " + initiationBulge.getEnthalpy() + "  entropy = " + initiationBulge.getEntropy());
 
 			enthalpy += initiationBulge.getEnthalpy();
 			entropy += initiationBulge.getEntropy();
@@ -99,7 +101,7 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 			if (numberAU > 0){
 				Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 				
-				OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAU + " x AU closing : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
 
 				enthalpy += numberAU * closingAU.getEnthalpy();
 				entropy += numberAU * closingAU.getEntropy();
@@ -108,7 +110,7 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 			if (numberGU > 0){
 				Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 				
-				OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n " + numberGU + " x GU closing : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
 				
 				enthalpy += numberGU * closingGU.getEnthalpy();
 				entropy += numberGU * closingGU.getEntropy();
@@ -135,14 +137,14 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 		
 		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing base pair are missing. Check the long bulge parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for AU closing base pair are missing. Check the long bulge parameters.");
 				return true;
 			}
 		}
 		
 		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing base pair are missing. Check the long bulge parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for GU closing base pair are missing. Check the long bulge parameters.");
 				return true;
 			}
 		}
@@ -150,7 +152,7 @@ public class Turner99_06LongBulgeLoop extends PatternComputation{
 		String bulgeSize = Integer.toString(Math.abs(pos2 - pos1) - 1);
 		if (this.collector.getInitiationBulgevalue(bulgeSize) == null){
 			if (this.collector.getInitiationBulgevalue("6") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for a bulge loop of " + bulgeSize + " are missing. Check the long bulge parameters.");
 
 				return true;
 			}

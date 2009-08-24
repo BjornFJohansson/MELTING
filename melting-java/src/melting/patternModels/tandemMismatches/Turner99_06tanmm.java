@@ -53,7 +53,7 @@ public class Turner99_06tanmm extends PatternComputation{
 
 		if (environment.getHybridization().equals("rnarna") == false){
 			
-			OptionManagement.meltingLogger.log(Level.WARNING, "the tandem mismatch parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
 		}
@@ -85,7 +85,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(pos1+1, pos2-1), newSequences.getComplementary(pos1+1,pos2-1), closing.toString());
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();
@@ -95,7 +95,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			NucleotidSequences sequences1 = NucleotidSequences.buildSymetricSequences(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
 			NucleotidSequences sequences2 = NucleotidSequences.buildSymetricSequences(NucleotidSequences.getInversedSequence(newSequences.getComplementary(pos1,pos2)),NucleotidSequences.getInversedSequence(newSequences.getSequence(pos1,pos2)));
 
-			OptionManagement.meltingLogger.log(Level.FINE, "asymmetric tandem mismatches (other formula used): ");
+			OptionManagement.meltingLogger.log(Level.FINE, "\n asymmetric tandem mismatches (other formula used): ");
 
 			ThermoResult result1 = new ThermoResult(0,0,0);
 			ThermoResult result2 = new ThermoResult(0,0,0);
@@ -108,7 +108,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				Thermodynamics penalty1 = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
-				OptionManagement.meltingLogger.log(Level.FINE, "penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
 				enthalpy += penalty1.getEnthalpy();
 				entropy += penalty1.getEntropy();
 			}
@@ -118,7 +118,7 @@ public class Turner99_06tanmm extends PatternComputation{
 				
 				enthalpy += penalty2.getEnthalpy();
 				entropy += penalty2.getEntropy();
-				OptionManagement.meltingLogger.log(Level.FINE, "penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
 			}
 		}
 		result.setEnthalpy(enthalpy);
@@ -149,7 +149,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			}
 			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -157,7 +157,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				

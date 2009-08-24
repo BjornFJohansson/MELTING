@@ -51,22 +51,22 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		if (environment.getMg() == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (environment.getMg() < 0.0001 && environment.getMg() > 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2006)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
 					"is reliable for magnesium concentrations between 0.001M and 1M.");
 		}
 		
 		if (environment.getSequences().getDuplexLength() < 6){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2006)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
 			"is valid for oligonucleotides with a number of base pairs superior or equal to 6.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
 			"DNA duplexes.");
 		}
 		return isApplicable;

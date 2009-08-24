@@ -98,7 +98,7 @@ public class NucleotidSequences {
 		}
 		
 		if (sequences[0].length() != sequences[1].length()){
-			throw new SequenceException("The sequences have two different length. Replace the gaps by the character '-'.");
+			throw new SequenceException("The sequences have two different lengths. Replace the gaps by the character '-'.");
 		}
 		this.sequence = sequences[0];
 		this.complementary = sequences[1];
@@ -147,7 +147,7 @@ public class NucleotidSequences {
 			}
 			return rnaEquivalent;
 		}
-		throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
+		throw new SequenceException("\n It is impossible to convert this sequences in sequences of type " + hybridizationType + ". MELTING can just convert a DNA sequence into a RNA sequence and a RNA sequence into a DNA sequence.");
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class NucleotidSequences {
 			return getSequence(pos1, pos2);
 		}
 		else{
-			throw new SequenceException("There is no complementary sequence.");
+			throw new SequenceException("\n There is no complementary sequence registered for the sequence " + sequence + ".");
 		}
 	}
 	
@@ -749,7 +749,7 @@ public class NucleotidSequences {
 			return "3'5'";
 		}
 		else {
-			throw new SequenceException("We don't recognize the sequence " + getSequence(pos1, pos2));
+			throw new SequenceException("\n We don't recognize the structure " + getSequence(pos1, pos2));
 		}
 	}
 	
@@ -833,7 +833,7 @@ public class NucleotidSequences {
 	 */
 	public String getSequence(int pos1, int pos2){
 		if (arePositionsOutOfRange(pos1, pos2)){
-			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
+			throw new SequenceException("\n The length of the duplex has to be inferior to " + pos2 + 1 + "and superior to 0.");
 		}
 		
 		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
@@ -851,7 +851,7 @@ public class NucleotidSequences {
 	 */
 	public String getComplementary(int pos1, int pos2){
 		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
-			throw new SequenceException("The length of the duplex is inferior to " + pos2 + 1 + "and superior to 0.");
+			throw new SequenceException("\n The length of the duplex has to be inferior to " + pos2 + 1 + "and superior to 0.");
 		}
 		
 		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
@@ -963,7 +963,7 @@ public class NucleotidSequences {
 		}
 
 		if (indexStart >= getDuplexLength() - 1){
-			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
+			throw new SequenceException("/n There is no possible hybridization with the sequences " + this.sequence + " and " + this.complementary + ".");
 		}
 		
 		int indexEnd = getDuplexLength() - 1;
@@ -977,7 +977,7 @@ public class NucleotidSequences {
 			}
 		}
 		if (indexEnd <= 0){
-			throw new SequenceException("The sequences can be hybridized. Check the sequences.");
+			throw new SequenceException("/n There is no possible hybridization with the sequences " + this.sequence + " and " + this.complementary + ".");
 		}
 		int [] positions = {indexStart, indexEnd};
 		return positions;
@@ -1120,7 +1120,7 @@ public class NucleotidSequences {
 			acidToRemplace = 'T';
 		}
 		else {
-			throw new SequenceException("It is impossible to convert this sequences in a sequence of type " + hybridizationType + ".");
+			throw new SequenceException("\n It is impossible to convert this sequences in sequences of type " + hybridizationType + ". MELTING can just convert a DNA sequence into a RNA sequence and a RNA sequence into a DNA sequence.");
 		}
 		
 		String newSequence = sequence.replace(acidToRemplace, remplacingAcid);
@@ -1254,7 +1254,7 @@ public class NucleotidSequences {
 				newSeq.append('-');
 				break;
 			default:
-				throw new SequenceException("There are non watson crick bases in the sequence.");
+				throw new SequenceException("\n There are non Watson-Crick base pairs in the sequence " + sequence + ". MELTING needs Watson-Crick base pairs to convert them into purine/pyrimidine base pairs (A, T, G, C, U).");
 			}
 		}
 		return newSeq.toString();
@@ -1347,7 +1347,7 @@ public class NucleotidSequences {
 		int position = 0;
 		
 		if (sequence.length() == 0){
-			throw new SequenceException("The sequence must be entered with the option " + OptionManagement.sequence);
+			throw new SequenceException("\n There is no 5'3' sequence. It has to be entered with the option " + OptionManagement.sequence);
 		}
 		while (position < sequence.length()){
 			String acid = getNucleicAcid(sequence, position);
@@ -1389,9 +1389,9 @@ public class NucleotidSequences {
 			return "5";
 		}
 		else if (seq1.contains("-") == false && seq2.contains("-") == false){
-			throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
+			throw new SequenceException("\n We cannot determine the sens of the dangling end " + seq1 + "/" + seq2 + ".");
 		}
-		throw new SequenceException("We cannot determine the sens of the dangling end. Check the sequence.");
+		throw new SequenceException("\n We cannot determine the sens of the dangling end " + seq1 + "/" + seq2 + ".");
 	}
 	
 	// private static methods
@@ -1414,7 +1414,7 @@ public class NucleotidSequences {
 		}
 		
 		if (possibleNucleicAcids.size() == 0 && seq.charAt(0) != ' '){
-			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options and the sequence: " + seq);
+			throw new SequenceException("\n Some nucleic acids are unknown in the sequence " + seq + ". MELTING can recognize A, T, G, C, U, X_C, X_T, A*, Al, Tl, Gl, Cl. Check the manual for further information.");
 		}
 		
 		return possibleNucleicAcids;
@@ -1507,7 +1507,7 @@ public class NucleotidSequences {
 		}
 		
 		if (newSequence.toString().length() == 0){
-			throw new SequenceException("No hybridization is possible with this sequence "+ sequence +". Check the sequences");
+			throw new SequenceException("\n There is no possible hybridization with this sequence "+ sequence +".");
 		}
 		return newSequence.toString();
 	}
@@ -1527,7 +1527,7 @@ public class NucleotidSequences {
 		String acid1 = getNucleicAcid(sequence, pos);
 		String acid2 = getNucleicAcid(complementary, pos);
 		if (acid1 == null && acid2 == null){
-			throw new SequenceException("Some nucleic acids are unknown in the sequences. Check the options.");
+			throw new SequenceException("\n The nucleic acids at the position " + pos + " are unknown in the duplex " + sequence + "/" + complementary + ". MELTING can recognize A, T, G, C, U, X_C, X_T, A*, Al, Tl, Gl, Cl. Check the manual for further information.");
 		}
 		else if (acid1 == null){
 			acid1 = sequence.substring(pos, pos + acid2.length());

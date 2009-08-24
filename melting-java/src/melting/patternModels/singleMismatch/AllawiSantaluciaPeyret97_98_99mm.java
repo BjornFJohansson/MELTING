@@ -53,7 +53,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 
 		if (environment.getHybridization().equals("dnadna") == false){
 				
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatch parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
 		}
@@ -79,7 +79,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		for (int i = pos1; i < pos2; i++){
 			mismatchValue =  collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();		
@@ -101,7 +101,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		
 		for (int i = pos1; i < pos2; i++){
 			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
 				return true;
 			}
 		}

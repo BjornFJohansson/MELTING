@@ -51,7 +51,7 @@ public class Znosko08mm extends ZnoskoMethod {
 		NucleotidSequences mismatch = environment.getSequences().getEquivalentSequences("rna");
 		
 		if (mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2) == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters of Znosco (2008)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters of Znosco (2008)" +
 			"are originally established for single mismatches with GU nearest neighbors.");
 			isApplicable = false;
 		}

@@ -59,13 +59,13 @@ public class Turner06InternalLoop extends PatternComputation{
 		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The internal loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, " \n The internal loop parameters of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
 		}
 				
 		if (loopType.charAt(0) == '3' && loopType.charAt(2) == '3' && environment.getSequences().getDuplex().get(pos1 + 2).isBasePairEqualTo("A", "G")){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Turner (2006) excluded" +
+			OptionManagement.meltingLogger.log(Level.WARNING, " \n The thermodynamic parameters of Turner (2006) excluded" +
 					"3 x 3 internal loops with a middle GA pair. The middle GA pair is shown to enhance " +
 					"stability and this extra stability cannot be predicted by this nearest neighbor" +
 					"parameter set.");
@@ -109,7 +109,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		int loopLength = sequences.computesInternalLoopLength(pos1, pos2);
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue(Integer.toString(loopLength));
 		if (initiationLoop != null){
-			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
 
 			enthalpy += initiationLoop.getEnthalpy();
 			if (loopLength > 4){
@@ -121,7 +121,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		}
 		else {
 			initiationLoop = this.collector.getInitiationLoopValue(">6");
-			OptionManagement.meltingLogger.log(Level.FINE, loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - (1.08 x ln(loopLength / 6)) / 310.15");
+			OptionManagement.meltingLogger.log(Level.FINE, "\n " + loopType + "Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy() + " - (1.08 x ln(loopLength / 6)) / 310.15");
 
 			enthalpy += initiationLoop.getEnthalpy();
 
@@ -138,7 +138,7 @@ public class Turner06InternalLoop extends PatternComputation{
 
 			Thermodynamics closureAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
 
 			enthalpy += numberAU * closureAU.getEnthalpy();
 			entropy += numberAU * closureAU.getEntropy();
@@ -149,7 +149,7 @@ public class Turner06InternalLoop extends PatternComputation{
 			
 			Thermodynamics closureGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
 
 			enthalpy += numberGU *  closureGU.getEnthalpy();
 			entropy += numberGU * closureGU.getEntropy();
@@ -158,7 +158,7 @@ public class Turner06InternalLoop extends PatternComputation{
 			
 			Thermodynamics asymmetry = this.collector.getAsymmetry();
 			int asymetricValue = Math.abs(Integer.parseInt(loopType.substring(0, 1)) - Integer.parseInt(loopType.substring(2, 3)));
-			OptionManagement.meltingLogger.log(Level.FINE, asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + asymetricValue + " x asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 			
 			enthalpy += asymetricValue * asymmetry.getEnthalpy();
 			
@@ -180,7 +180,7 @@ public class Turner06InternalLoop extends PatternComputation{
 				else{
 					firstMismatch = this.collector.getFirstMismatch(mismatch[0].substring(1, 2), mismatch[1].substring(1, 2), loopType);
 				}
-				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch[0].substring(1, 2) + "/" + mismatch[1].substring(1, 2) + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n First mismatch : " + mismatch[0].substring(1, 2) + "/" + mismatch[1].substring(1, 2) + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
 			else {
 				if (this.collector.getFirstMismatch(mismatch[0], mismatch[1], loopType) == null){
@@ -190,7 +190,7 @@ public class Turner06InternalLoop extends PatternComputation{
 					firstMismatch = this.collector.getFirstMismatch(mismatch[0], mismatch[1], loopType);
 				}
 
-				OptionManagement.meltingLogger.log(Level.FINE, "First mismatch : " + mismatch[0] + "/" + mismatch[1] + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+				OptionManagement.meltingLogger.log(Level.FINE, "\n First mismatch : " + mismatch[0] + "/" + mismatch[1] + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 			}
 			enthalpy += firstMismatch.getEnthalpy();
 			entropy += firstMismatch.getEntropy();
@@ -217,7 +217,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		boolean isMissingParameters = super.isMissingParameters(newSequences, pos1, pos2);
 		if (this.collector.getInitiationLoopValue(Integer.toString(sequences.computesInternalLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("6") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for internal loop of 6 are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for internal loop of 6 are missing. Check the internal loop parameters.");
 
 				return true;
 			}
@@ -225,7 +225,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		
 		if (newSequences.calculateNumberOfTerminal("A", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
 
 				return true;
 			}
@@ -233,7 +233,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		
 		if (newSequences.calculateNumberOfTerminal("G", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
 
 				return true;
 			}
@@ -241,7 +241,7 @@ public class Turner06InternalLoop extends PatternComputation{
 		
 		if (sequences.isAsymetricInternalLoop(pos1, pos2)){
 			if (this.collector.getAsymmetry() == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for asymetric loop are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for asymetric loop are missing. Check the internal loop parameters.");
 
 				return true;
 			}

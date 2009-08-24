@@ -52,17 +52,17 @@ public class Tan07MagnesiumCorrection extends EntropyCorrection {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		if (environment.getMg() == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (environment.getMg() < 0.1 && environment.getMg() > 0.3){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2007)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for magnseium concentrations between 0.1M and 0.3M.");
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
 			"RNA duplexes.");
 		}
 		return isApplicable;

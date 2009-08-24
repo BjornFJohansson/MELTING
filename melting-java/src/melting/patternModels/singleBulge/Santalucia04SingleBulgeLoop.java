@@ -68,7 +68,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
 		result = super.computeThermodynamics(newSequences, pos1, pos2, result);
@@ -78,7 +78,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "NN intervening"+ NNNeighbors[0] + "/" + NNNeighbors[1] +" :  enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n NN intervening"+ NNNeighbors[0] + "/" + NNNeighbors[1] +" :  enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -98,7 +98,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 
 		if (this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]) == null){
-			OptionManagement.meltingLogger.log(Level.FINE, "The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop parameters.");
+			OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop parameters.");
 
 			return true;
 		}

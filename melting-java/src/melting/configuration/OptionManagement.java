@@ -259,7 +259,7 @@ public class OptionManagement {
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
 	 * the thermodynamic parameters.)
 	 */
-	public static String dataPathwayValue = (System.getenv("NN_PATH") != null)?System.getenv("NN_PATH"):"../Data";
+	public static String dataPathwayValue = (System.getenv("NN_PATH") != null)?System.getenv("NN_PATH"):"Data";
 	
 	/**
 	 * int thresholdValue : the threshold value. It is the maximum oligonucleotides length for which we
@@ -475,7 +475,7 @@ public class OptionManagement {
 							dataPathwayValue = value;
 						}
 						else {
-							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+							throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
 						}
 					}	
 				}
@@ -485,11 +485,11 @@ public class OptionManagement {
 							thresholdValue = Integer.parseInt(value);
 						}
 						else {
-							throw new OptionSyntaxError("The threshold must be a strictly positive numeric value.");
+							throw new OptionSyntaxError("\n The threshold (option " + threshold + ") must be a strictly positive numeric value.");
 						}
 					}
 					else {
-						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+						throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
 					}
 				}
 				else if (option.equals(factor)){
@@ -498,11 +498,11 @@ public class OptionManagement {
 							factorValue = Integer.parseInt(value);
 						}
 						else {
-							throw new OptionSyntaxError("The correction factor must be 1, 2 or 4.");
+							throw new OptionSyntaxError("\n The correction factor (option " + factor + ") must be 1, 2 or 4.");
 						}
 					}
 					else {
-						throw new OptionSyntaxError("I don't understand the option " + option + value + ".");				}
+						throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");				}
 				}
 			}
 		}
@@ -526,10 +526,10 @@ public class OptionManagement {
 			buffer.close();
 	
 		} catch (FileNotFoundException e) {
-			throw new FileException("The help file doesn't exist. Check if the melting help file is src/melting/help.txt", e);
+			throw new FileException("\n The help file doesn't exist. Check if the melting help file is src/melting/help.txt", e);
 		}
 		catch (IOException e) {
-			throw new FileException("The help file can't be read or can't be closed. Check src/melting/help.txt.", e);
+			throw new FileException("\n The help file can't be read or can't be closed. Check src/melting/help.txt.", e);
 		}
 		
 	}
@@ -578,11 +578,11 @@ public class OptionManagement {
 			double val = Double.parseDouble(optionSet.get(nucleotides));
 
 			if (val <= 0){
-				throw new OptionSyntaxError("The nucleotide concentration must be strictly positive.");
+				throw new OptionSyntaxError("\n The oligomer concentration (entered with the option " + nucleotides + ") must be strictly positive.");
 			}
 			
 		} catch (NumberFormatException e) {
-			throw new OptionSyntaxError("The nucleotide concentration must be a numeric value.", e);
+			throw new OptionSyntaxError("\n The oligomer concentration (entered with the option " + nucleotides + ") must be a numeric value.", e);
 		}
 		
 		String value = optionSet.get(sequence).toUpperCase();
@@ -593,16 +593,16 @@ public class OptionManagement {
 			}
 		}
 		else {
-			throw new OptionSyntaxError("The sequence contains some characters we can't understand.");
+			throw new OptionSyntaxError("\n The sequence (entered with the option " + sequence + ") contains some characters we can't understand.");
 		}
 
 		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
 
-			throw new OptionSyntaxError("There is one syntax mistake in the concentrations. Check the option" + solutioncomposition + ".");
+			throw new OptionSyntaxError("\n There is one syntax mistake in the ion and denaturing agent concentrations. Check the option" + solutioncomposition + ".");
 		}
 		if(optionSet.containsKey(complementarySequence)){
 			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
-				throw new OptionSyntaxError("The complementary sequence contains some characters we can't understand.");
+				throw new OptionSyntaxError("\n The complementary sequence (entered with the option " + complementarySequence + ") contains some characters we can't understand.");
 			}
 		}
 		
@@ -637,23 +637,23 @@ public class OptionManagement {
 		String [] solution = solutionComposition.split(":"); 
 				
 		if (solution == null){
-			throw new OptionSyntaxError("There is a syntax error in the option value of " + solutioncomposition + ".");
+			throw new OptionSyntaxError("\n There is a syntax error in the option value of " + solutioncomposition + ".");
 		}
 
 		for (int i = 0; i < solution.length; i++){
 			String [] couple = solution[i].split("=");
 			if (couple == null){
-				throw new OptionSyntaxError("There is a syntax error in the option value of " + solutioncomposition + ".");
+				throw new OptionSyntaxError("\n There is a syntax error in the option value of " + solutioncomposition + ".");
 			}
 
 			String concentration = solution[i].split("=")[1];
 			double val = Double.parseDouble(concentration);
 			try {
 				if (val < 0){
-					throw new OptionSyntaxError("Each concentration must be positive.");
+					throw new OptionSyntaxError("\n Each concentration entered with the option " + solutioncomposition + "must be positive.");
 				}
 			} catch (NumberFormatException e) {
-				throw new OptionSyntaxError("Each concentration must be a numeric value.", e);
+				throw new OptionSyntaxError("\n Each concentration entered with the option " + solutioncomposition + " must be a numeric value.", e);
 			}
 		}		
 		return true;
@@ -692,7 +692,7 @@ public class OptionManagement {
 			optionSet.putAll(mRNADefaultOptions);
 		}
 		else {
-			throw new OptionSyntaxError("The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
+			throw new OptionSyntaxError("\n The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
 		}
 		
 		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0:formamide=0");
@@ -740,7 +740,7 @@ public class OptionManagement {
 	private HashMap<String, String> collectOptions(String [] args){
 
 		if (args.length < 2){
-			throw new OptionSyntaxError("Some required options are missing. Check the manual for further informations about melting options.");
+			throw new OptionSyntaxError("\n Some required options are missing. Check the manual for further information about MELTING options.");
 		}
 
 		initialiseLogger();
@@ -784,13 +784,13 @@ public class OptionManagement {
 								meltingLogger.addHandler(fileHandler);
 								
 							} catch (SecurityException e) {
-								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile, e);
+								throw new NoExistingOutputFileException("\n We cannot output the results in a file. Check the option " + outPutFile, e);
 							} catch (IOException e) {
-								throw new NoExistingOutputFileException("We cannot output the results in a file. Check the option " + outPutFile, e);
+								throw new NoExistingOutputFileException("\n We cannot output the results in a file. Check the option " + outPutFile, e);
 							}
 						}
 						else{
-							throw new OptionSyntaxError("I don't understand the option " + option + value + ". We need a file name after the option " + outPutFile);
+							throw new OptionSyntaxError("I don't understand the option " + option + " " + value + ". We need a file name after the option " + outPutFile);
 						}
 					}
 					else if (option.equals(OptionManagement.selfComplementarity)){
@@ -809,7 +809,7 @@ public class OptionManagement {
 							optionSet.put(option, value);
 						}
 						else{
-							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+							throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
 						}
 					}
 					else if (registerMeltingVariables.contains(option) == false && registerPatternModels.contains(option)){
@@ -829,18 +829,18 @@ public class OptionManagement {
 							}
 						}
 						else{
-							throw new OptionSyntaxError("I don't understand the option " + option + value + ".");
+							throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
 						}
 					}
 					else if (registerMeltingVariables.contains(option) == false){
-						throw new OptionSyntaxError("I don't understand the option " + option +" "+ value + ".");
+						throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
 					}
 				}
 			}
 
 		if (hasRequiredOptions(optionSet) == false){
 
-			throw new OptionSyntaxError("To compute, MELTING need at less the hybridization type " +
+			throw new OptionSyntaxError("\n To compute, MELTING need at less the hybridization type " +
 					"(option " + hybridization + "), the nucleic acid concentration (option " 
 					+ nucleotides + ") and the sequence (option " + sequence + "). If there " +
 					"are inosine bases in the sequence, a complementary sequence is required (option"
@@ -936,10 +936,10 @@ public class OptionManagement {
 					readLegalInformation();
 				}
 				else if (option.equals(dataPathway)){
-					meltingLogger.log(Level.INFO, "The current data files are in "+ dataPathwayValue + ".");
+					meltingLogger.log(Level.INFO, "\n The current data files are in "+ dataPathwayValue + ".");
 				}
 				else if (option.equals(versionNumber)){
-					meltingLogger.log(Level.INFO, "This MELTING program is the version "+ version + ".");
+					meltingLogger.log(Level.INFO, "\n This MELTING program is the version "+ version + ".");
 				}
 			}
 		}
@@ -955,7 +955,7 @@ public class OptionManagement {
 		HashMap<String, String> optionDictionnary = collectOptions(args);
 		Environment environment = new Environment(optionDictionnary);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "Environment : ");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n Environment : ");
 		Iterator<Map.Entry<String, Double>> entry = environment.getConcentrations().entrySet().iterator();
 		while (entry.hasNext()){
 			Map.Entry<String, Double> couple = entry.next();

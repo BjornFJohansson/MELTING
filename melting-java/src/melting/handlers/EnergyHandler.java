@@ -83,13 +83,13 @@ public class EnergyHandler extends NodeHandler{
 				hasEnergy = true;
 			}
 		} catch (NumberFormatException e2) {
-			throw new ThermodynamicParameterError("There is one error in the files containing the thermodynamic parameters. The energy value must be a numeric value.", e2);
+			throw new ThermodynamicParameterError("\n There is one error in the files containing the thermodynamic parameters. The energy value" + stringEnergy + " must be a numeric value.", e2);
 		}
 		if (hasEnergy){
 			completedNode();
 		}
 		else {
-			throw new ThermodynamicParameterError("one enthalpy or entropy value is missing, the xml node is incomplete");
+			throw new ThermodynamicParameterError("\n One enthalpy or entropy value is missing, the xml node is incomplete");
 		}
 	}
 }

@@ -54,17 +54,17 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.003 && NaEq > 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Zhi-Jie Tan et al. (2007)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for sodium concentrations between 0.003M and 1M.");
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
 			"RNA duplexes.");
 		}
 		return isApplicable;

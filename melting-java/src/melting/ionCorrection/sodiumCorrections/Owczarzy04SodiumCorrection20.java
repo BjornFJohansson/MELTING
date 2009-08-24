@@ -46,13 +46,13 @@ public class Owczarzy04SodiumCorrection20 implements CorrectionMethod {
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The sodium concentration must be strictly positive.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be strictly positive.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 			
-			OptionManagement.meltingLogger.log(Level.WARNING, "The sodium correction of Owczarzy et al. (2004) 20 is originally established for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Owczarzy et al. (2004) 20 is originally established for " +
 			"DNA duplexes.");
 		}
 		

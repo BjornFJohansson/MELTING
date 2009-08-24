@@ -15,6 +15,7 @@
 
 package melting;
 
+import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.exceptions.NoExistingMethodException;
 import melting.methodInterfaces.SodiumEquivalentMethod;
@@ -70,7 +71,7 @@ public class Helper {
 			RegisterMethods setNaEqMethod = new RegisterMethods();
 			SodiumEquivalentMethod method = setNaEqMethod.getNaEqMethod(environment.getOptions());
 			if (method == null){
-				throw new NoExistingMethodException("There is no implemented method to compute the Na equivalent concentration.");
+				throw new NoExistingMethodException("\n There is no implemented method to compute the Na equivalent concentration. Check the option " + OptionManagement.NaEquivalentMethod);
 			}
 			
 			NaEq = method.computeSodiumEquivalent(environment.getNa(), environment.getMg(), environment.getK(), environment.getTris(),environment.getDNTP());

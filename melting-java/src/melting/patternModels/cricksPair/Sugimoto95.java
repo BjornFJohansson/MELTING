@@ -46,7 +46,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		boolean isApplicable = true;
 		if (environment.getHybridization().equals("dnarna") == false && environment.getHybridization().equals("rnadna") == false){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Sugimoto et al. (1995)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Sugimoto et al. (1995)" +
 					"is established for hybrid DNA/RNA sequences.");
 		}
 		
@@ -62,7 +62,7 @@ public class Sugimoto95 extends CricksNNMethod {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "The nearest neighbor model is  from Sugimoto et al (1995).");
+		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is  from Sugimoto et al (1995).");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 		
 		double enthalpy = result.getEnthalpy();
@@ -91,6 +91,7 @@ public class Sugimoto95 extends CricksNNMethod {
 		for (int i = pos1; i <= pos2 - 1; i++){
 
 			if (this.collector.getNNvalue("d" + sequences.getSequenceNNPair(i), "r" + sequences.getComplementaryNNPair(i)) == null){
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for d" + sequences.getSequenceNNPair(i) + "/r" + sequences.getComplementaryNNPair(i) + "are missing.");
 				isMissing = true;
 			}
 		}

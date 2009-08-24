@@ -143,7 +143,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			pos2 = positions[1];
 			PatternComputationMethod currentCalculMethod = getAppropriatePatternModel(positions);
 			if (currentCalculMethod == null){
-				throw new NoExistingMethodException("There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
+				throw new NoExistingMethodException("\n There is no implemented method to compute the enthalpy and entropy of this segment " + environment.getSequences().getSequence(pos1, pos2) + "/" + environment.getSequences().getComplementary(pos1, pos2));
 			}
 			ThermoResult newResult = currentCalculMethod.computeThermodynamics(this.environment.getSequences(), pos1, pos2, this.environment.getResult());
 			this.environment.setResult(newResult);
@@ -186,7 +186,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			CorrectionMethod saltCorrection = register.getIonCorrectionMethod(this.environment);
 			
 			if (saltCorrection == null){
-				throw new NoExistingMethodException("There is no implemented ion correction method.");
+				throw new NoExistingMethodException("\n There is no implemented ion correction method.");
 			}
 			this.environment.setResult(saltCorrection.correctMeltingResults(this.environment));
 
@@ -201,7 +201,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	public boolean isApplicable() {
 		boolean isApplicable = true;
 		if (Integer.parseInt(this.environment.getOptions().get(OptionManagement.threshold)) <= this.environment.getSequences().getDuplexLength()){
-			OptionManagement.meltingLogger.log(Level.WARNING, "the Nearest Neighbor model is accurate for " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Nearest Neighbor model is accurate for " +
 			"shorter sequences. (length superior to 6 and inferior to" +
 			 this.environment.getOptions().get(OptionManagement.threshold) +")");
 			
@@ -210,7 +210,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			}
 		}
 		if (this.environment.getOptions().get(OptionManagement.selfComplementarity).equals("true") && Integer.parseInt(this.environment.getOptions().get(OptionManagement.factor)) != 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
 			isApplicable = false;
 		}
 		
@@ -326,11 +326,11 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 					return this.longDanglingEndMethod;
 				}
 				else {
-					throw new SequenceException("we don't recognize the motif " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
+					throw new SequenceException("\n We don't recognize the structure " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
 				}
 			}
 		else if (environment.getSequences().isMismatchPair(positions[0]) || environment.getSequences().isMismatchPair(positions[1])){
-			throw new NoExistingMethodException("No method for terminal mismatches have been implemented yet.");
+			throw new NoExistingMethodException("\n No method for terminal mismatches has been implemented yet.");
 		}
 	}
 	if (environment.getSequences().isPerfectMatchSequence(positions[0], positions[1])){
@@ -406,7 +406,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 					}
 					return this.lockedAcidMethod;
 				default:
-					throw new SequenceException("There is a unknown modified acid nucleic in the sequences.");
+					throw new SequenceException("\n" + acidName + " is unknown.");
 				}
 			}
 		}
@@ -591,10 +591,10 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			pos2 = positions[1];
 			PatternComputationMethod necessaryMethod = getAppropriatePatternModel(positions);
 			if (necessaryMethod == null){
-				throw new NoExistingMethodException("We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
+				throw new NoExistingMethodException("\n We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
-				OptionManagement.meltingLogger.log(Level.WARNING, " We cannot comput the melting temperature, a method is not applicable with the chosen options.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n We cannot comput the melting temperature, the method to compute the structure from" + pos1 + " to " + pos2 + " is not applicable with the chosen options.");
 				isApplicableMethod = false;
 			}
 				pos1 = pos2 + 1;
@@ -609,7 +609,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	 */
 	private void analyzeSequence(){
 		if (checkIfMethodsAreApplicable() == false){
-			throw new MethodNotApplicableException("we cannot compute the melting because one method is not applicable. Check the sequences.");
+			throw new MethodNotApplicableException("\n We cannot compute the melting because one method is not applicable. Check the sequences.");
 		}
 	}
 	

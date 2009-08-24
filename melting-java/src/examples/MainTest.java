@@ -145,6 +145,58 @@ public class MainTest {
 	}
 	
 	/**
+	 * displays the computed and experimental melting temperature for each method or model to test with different magnesium concentrations.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
+	public static void displayResultsMagnesium(Properties properties, ArrayList<String> methodNames, String hybridization, String nucleotides, String option){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+
+			String [] coupleValues = pairs.getKey().toString().split("/");
+			System.out.print("\n" + coupleValues[0] + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String [] argsOption = {"-H", hybridization, "-E", "Tris=0.002:Mg=" + coupleValues[1], "-P", nucleotides, "-S", coupleValues[0], option, methodNames.get(i)}; 
+				double Tm = MainTest.getMeltingTest(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for each NaEq method or model to test with different magnesium concentrations.
+	 * @param Properties properties : contains the experimental data.
+	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.
+	 * @param String hybridization : type of hybridization
+	 * @param String nucleotides : oligomer concentration
+	 * @param String option : option name for the pattern computation method.
+	 */
+	public static void displayResultsNaEq(Properties properties, ArrayList<String> methodNames, String hybridization, String nucleotides, String option){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+
+			String [] coupleValues = pairs.getKey().toString().split("/");
+			System.out.print("\n" + coupleValues[0] + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String [] argsOption = {"-H", hybridization, "-E", "Tris=0.002:Mg=" + coupleValues[1], "-P", nucleotides, "-S", coupleValues[0], option, methodNames.get(i), "-am"}; 
+				double Tm = MainTest.getMeltingTest(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
 	 * displays the computed and experimental melting temperature for each dangling end method or model.
 	 * @param Properties properties : contains the experimental data.
 	 * @param ArrayList<String> methodNames : contains all the method or model to test with the experimental data.

@@ -53,12 +53,12 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for azobenzene of" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
 		}
 
 		if (modified.calculateNumberOfTerminal("X", " ", pos1, pos2) > 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamics parameters for azobenzene of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
 			isApplicable = false;
 		}
@@ -98,7 +98,7 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		if (this.collector.getAzobenzeneValue(newSequences.getSequence(pos1,pos2),newSequences.getComplementary(pos1,pos2)) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2)+ 
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2)+ 
 			" are missing. Check the azobenzene parameters.");
 			return true;
 		}

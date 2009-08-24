@@ -40,7 +40,7 @@ public class Blake96FormamideCorrection implements CorrectionMethod{
 	
 	public boolean isApplicable(Environment environment) {
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The formamide correction from Blake et al.(1996) are established for DNA duplexes.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The formamide correction from Blake et al.(1996) is established for DNA duplexes.");
 		}
 		return true;
 	}
@@ -51,6 +51,8 @@ public class Blake96FormamideCorrection implements CorrectionMethod{
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The formamide correction from Blake et al.(1996) : ");
 		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		
+		OptionManagement.meltingLogger.log(Level.WARNING, "\n The current formamide correction has not been tested with experimental values.");
 		
 		environment.setResult(Tm);
 		return environment.getResult();

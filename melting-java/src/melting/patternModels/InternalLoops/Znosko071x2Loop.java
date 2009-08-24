@@ -56,7 +56,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		String loopType = environment.getSequences().getInternalLoopType(pos1,pos2);
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The internal 1x2 loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The internal 1x2 loop parameters of " +
 					"Znosco et al. (2007) are originally established " +
 					"for RNA sequences.");
 			
@@ -64,7 +64,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (loopType.equals("1x2") == false && loopType.equals("2x1") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The thermodynamic parameters of Znosco et al. (2007) are" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters of Znosco et al. (2007) are" +
 					"established only for 1x2 internal loop.");
 			
 			isApplicable = false;
@@ -92,7 +92,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		
 		Thermodynamics initiationLoop = this.collector.getInitiationLoopValue();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "1x2 Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n 1x2 Internal loop :  enthalpy = " + initiationLoop.getEnthalpy() + "  entropy = " + initiationLoop.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + initiationLoop.getEnthalpy();
 		double entropy = result.getEntropy() + initiationLoop.getEntropy();
@@ -106,7 +106,7 @@ public class Znosko071x2Loop extends PatternComputation {
 				firstMismatch = this.collector.getFirstMismatch("A", "G_not_RA/YG", "1x2");
 			}
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n First mismatch A/G, not RA/YG : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		else {
 			if (this.collector.getFirstMismatch(mismatch[0], mismatch[1], "1x2") == null){
@@ -116,7 +116,7 @@ public class Znosko071x2Loop extends PatternComputation {
 				firstMismatch = this.collector.getFirstMismatch(mismatch[0], mismatch[1], "1x2");
 			}
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "First mismatch " + mismatch[0] + "/" + mismatch[1] + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n First mismatch " + mismatch[0] + "/" + mismatch[1] + " : enthalpy = " + firstMismatch.getEnthalpy() + "  entropy = " + firstMismatch.getEntropy());
 		}
 		enthalpy += firstMismatch.getEnthalpy();
 		entropy += firstMismatch.getEntropy();
@@ -124,7 +124,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		if (numberAU > 0){
 			Thermodynamics closureAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAU + " x AU closure : enthalpy = " + closureAU.getEnthalpy() + "  entropy = " + closureAU.getEntropy());
 
 			enthalpy += numberAU * closureAU.getEnthalpy();
 			entropy += numberAU * closureAU.getEntropy();
@@ -134,7 +134,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		if (numberGU > 0){
 			Thermodynamics closureGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberGU + " x GU closure : enthalpy = " + closureGU.getEnthalpy() + "  entropy = " + closureGU.getEntropy());
 
 			enthalpy += numberGU * closureGU.getEnthalpy();
 			entropy += numberGU * closureGU.getEntropy();
@@ -167,14 +167,14 @@ public class Znosko071x2Loop extends PatternComputation {
 
 		boolean isMissingParameters = super.isMissingParameters(sequences, pos1, pos2);
 		if (this.collector.getInitiationLoopValue() == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for loop initiation are missing. Check the internal loop parameters.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for loop initiation are missing. Check the internal loop parameters.");
 
 			return true;
 		}
 		
 		if (internalLoop.calculateNumberOfTerminal("A", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for AU closing are missing. Check the internal loop parameters.");
 
 				return true;
 			}
@@ -182,7 +182,7 @@ public class Znosko071x2Loop extends PatternComputation {
 		
 		if (internalLoop.calculateNumberOfTerminal("G", "U", pos1, pos2) > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for GU closing are missing. Check the internal loop parameters.");
 
 				return true;
 			}

@@ -43,7 +43,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "the single bulge loop parameters of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single bulge loop parameters of " +
 					"Serra et al. (2007) are originally established " +
 					"for RNA sequences.");
 		}

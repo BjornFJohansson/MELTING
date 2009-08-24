@@ -43,7 +43,7 @@ public class AllawiSantalucia97 extends DecomposedInitiation {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Allawi and Santalucia (1997)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Allawi and Santalucia (1997)" +
 					"is established for DNA sequences.");	
 			
 		}

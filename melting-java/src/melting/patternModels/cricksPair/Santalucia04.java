@@ -45,7 +45,7 @@ public class Santalucia04 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The model of Santalucia (2004)" +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Santalucia (2004)" +
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -66,8 +66,20 @@ public class Santalucia04 extends CricksNNMethod {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
+
+		boolean isMissing = super.isMissingParameters(newSequences, pos1, pos2);
+				
+		int [] truncatedPositions = newSequences.removeTerminalUnpairedNucleotides();
+
+		double numberTerminalAT = newSequences.calculateNumberOfTerminal("A", "T", truncatedPositions[0], truncatedPositions[1]);
 		
-		return super.isMissingParameters(newSequences, pos1, pos2);
+		if (numberTerminalAT != 0){
+			if(this.collector.getTerminal("per_A/T") == null){
+				isMissing = true;
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for terminal AT base pair are missing.");
+			}
+		}
+		return isMissing;
 	}
 	
 	@Override
@@ -97,7 +109,7 @@ public class Santalucia04 extends CricksNNMethod {
 		if (numberTerminalAT != 0){
 			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
 			
 			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
 			entropy += numberTerminalAT * terminalAT.getEntropy();

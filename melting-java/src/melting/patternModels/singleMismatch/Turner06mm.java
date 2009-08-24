@@ -52,7 +52,7 @@ public class Turner06mm extends PatternComputation{
 
 		if (environment.getHybridization().equals("rnarna") == false){
 
-			OptionManagement.meltingLogger.log(Level.WARNING, "The single mismatches parameter of " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single mismatches parameter of " +
 					"Turner et al. (2006) are originally established " +
 					"for RNA sequences.");
 		}
@@ -80,13 +80,13 @@ public class Turner06mm extends PatternComputation{
 		double numberGU = mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2);
 		String [] mismatchAcid = mismatch.getLoopFistMismatch(pos1);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "initiation loop of 2 : enthalpy = " + initiationValue.getEnthalpy() + "  entropy = " + initiationValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n initiation loop of 2 : enthalpy = " + initiationValue.getEnthalpy() + "  entropy = " + initiationValue.getEntropy());
 		
 		if (numberAU > 0){
 			
 			Thermodynamics closingAU = this.collector.getClosureValue("A", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberAU + " x closing AU : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberAU + " x closing AU : enthalpy = " + closingAU.getEnthalpy() + "  entropy = " + closingAU.getEntropy());
 
 			enthalpy += numberAU * closingAU.getEnthalpy();
 			entropy += numberAU * closingAU.getEntropy();
@@ -96,7 +96,7 @@ public class Turner06mm extends PatternComputation{
 			
 			Thermodynamics closingGU = this.collector.getClosureValue("G", "U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, numberGU + " x closing GU : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberGU + " x closing GU : enthalpy = " + closingGU.getEnthalpy() + "  entropy = " + closingGU.getEntropy());
 
 			enthalpy += numberGU * closingGU.getEnthalpy();
 			entropy += numberGU * closingGU.getEntropy();
@@ -105,7 +105,7 @@ public class Turner06mm extends PatternComputation{
 		if (sequences.getDuplex().get(pos1 + 1).isBasePairEqualTo("G", "G")){
 			Thermodynamics GGMismatch = this.collector.getFirstMismatch("G", "G", "1x1");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, " GG mismatch bonus : enthalpy = " + GGMismatch.getEnthalpy() + "  entropy = " + GGMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n GG mismatch bonus : enthalpy = " + GGMismatch.getEnthalpy() + "  entropy = " + GGMismatch.getEntropy());
 
 			enthalpy += GGMismatch.getEnthalpy();
 			entropy += GGMismatch.getEntropy();
@@ -114,7 +114,7 @@ public class Turner06mm extends PatternComputation{
 		else if (mismatchAcid[0].equals("RU") && mismatchAcid[1].equals("YU")){
 			Thermodynamics RUMismatch = this.collector.getFirstMismatch("RU", "YU", "1x1");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, " RU mismatch bonus : enthalpy = " + RUMismatch.getEnthalpy() + "  entropy = " + RUMismatch.getEntropy());
+			OptionManagement.meltingLogger.log(Level.FINE, "\n RU mismatch bonus : enthalpy = " + RUMismatch.getEnthalpy() + "  entropy = " + RUMismatch.getEntropy());
 			
 			enthalpy += RUMismatch.getEnthalpy();
 			entropy += RUMismatch.getEntropy();
@@ -140,33 +140,33 @@ public class Turner06mm extends PatternComputation{
 		String [] mismatchAcid = mismatch.getLoopFistMismatch(pos1);
 		
 		if (this.collector.getInitiationLoopValue("2") == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The initiation parameters for a loop of 2 are missing. Check the single mismatch parameters.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The initiation parameters for a loop of 2 are missing. Check the single mismatch parameters.");
 			return true;
 		}
 		if (numberAU > 0){
 			if (this.collector.getClosureValue("A", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for AU closing base pair are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		if (numberGU > 0){
 			if (this.collector.getClosureValue("G", "U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The parameters for GU closing base pair are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		if (sequences.getDuplex().get(pos1 + 1).isBasePairEqualTo("G", "G")){
 			if (this.collector.getFirstMismatch("G", "G", "1x1") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for GG mismatch are missing. Check the single mismatch parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The bonus parameters for GG mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}
 		
 		else if (mismatchAcid[0].equals("RU") && mismatchAcid[1].equals("YU")){
 			if (this.collector.getFirstMismatch("RU", "YU", "1x1") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The bonus parameters for RU/YU mismatch are missing. Check the single mismatch parameters.");
+				OptionManagement.meltingLogger.log(Level.WARNING, "\n The bonus parameters for RU/YU mismatch are missing. Check the single mismatch parameters.");
 				return true;
 			}
 		}

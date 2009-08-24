@@ -57,17 +57,17 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		if (environment.getMg() == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, " The magnesium concentration must be a positive numeric value.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (environment.getMg() < 0.0005 || environment.getMg() > 0.6){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Owczarzy et al. " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Owczarzy et al. " +
 			"(2008) is accurate in the magnesium concentration range of 0.5mM to 600mM.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The magnesium correction of Owczarzy et al. " +
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Owczarzy et al. " +
 					"(2008) is originally established for DNA duplexes.");
 		}
 		return isApplicable;

@@ -72,7 +72,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 
-		OptionManagement.meltingLogger.log(Level.FINE, NNNeighbors[0] + "/" + NNNeighbors[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n" + NNNeighbors[0] + "/" + NNNeighbors[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -92,7 +92,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 
 		if (this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]) == null && this.collector.getMismatchValue(NNNeighbors[0], NNNeighbors[1]) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop thermodynamic parameters.");
+			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop thermodynamic parameters.");
 
 			return true;
 		}

@@ -96,7 +96,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 		enthalpy += doubleDanglingValue.getEnthalpy();
 		entropy += doubleDanglingValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
+		OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + ": incremented enthalpy = " + doubleDanglingValue.getEnthalpy() + "  incremented entropy = " + doubleDanglingValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -120,7 +120,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 			if (sequences.getSequenceSens(sequence, pos1, pos2).equals("5'3'")){
 				sens = NucleotidSequences.getDanglingSens(sequence, complementary);
 				if (this.collector.getSecondDanglingValue("","Y", sens) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for x-Y-x/x are missing. Check the second dangling ends parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodymamic parameters for x-Y-x/x are missing. Check the second dangling ends parameters.");
 					return true;			
 				}
 			}
@@ -128,7 +128,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 				sens = NucleotidSequences.getDanglingSens(complementary, sequence);
 
 				if (this.collector.getSecondDanglingValue("Y","", sens) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for x-Y-x/x are missing. Check the second dangling ends parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodymamic parameters for x-Y-x/x are missing. Check the second dangling ends parameters.");
 					return true;			
 				}
 			}
@@ -145,7 +145,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 				sens = NucleotidSequences.getDanglingSens(sequence, complementary);
 
 				if (this.collector.getSecondDanglingValue("",complementary, sens) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for x/" + complementary + " are missing. Check the second dangling ends parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodymamic parameters for x/" + complementary + " are missing. Check the second dangling ends parameters.");
 
 					return true;			
 					}
@@ -154,7 +154,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod {
 				sens = NucleotidSequences.getDanglingSens(complementary, sequence);
 
 				if (this.collector.getSecondDanglingValue(complementary,"", sens) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "The thermodymamic parameters for " + complementary.substring(1) + "/x are missing. Check the second dangling ends parameters.");
+					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodymamic parameters for " + complementary.substring(1) + "/x are missing. Check the second dangling ends parameters.");
 
 					return true;			
 					}
