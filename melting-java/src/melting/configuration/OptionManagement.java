@@ -712,6 +712,7 @@ public class OptionManagement {
 		StreamHandler handler = new StreamHandler(System.out, new MeltingFormatter());
 		meltingLogger.setUseParentHandlers(false);
 		meltingLogger.addHandler(handler);
+		meltingLogger.setLevel(Level.INFO);
 	}
 	
 	/**
@@ -739,6 +740,7 @@ public class OptionManagement {
 	 */
 	private HashMap<String, String> collectOptions(String [] args){
 
+		boolean isOutputFile = false;
 		if (args.length < 2){
 			throw new OptionSyntaxError("\n Some required options are missing. Check the manual for further information about MELTING options.");
 		}
@@ -766,11 +768,17 @@ public class OptionManagement {
 						meltingLogger.setLevel(Level.FINE);
 						Handler[] handlers = meltingLogger.getHandlers();
 						for ( int index = 0; index < handlers.length; index++ ) {
-						    handlers[index].setLevel( Level.FINE );
+						   if (isOutputFile && handlers[index] instanceof FileHandler){
+								handlers[index].setLevel( Level.FINE );
+						   }
+						   else if (isOutputFile == false){
+								handlers[index].setLevel( Level.FINE );
+						   }
 						}
 
 					}
 					else if (option.equals(OptionManagement.outPutFile)){
+						isOutputFile = true;
 						if (isAnOptionValue(value)){
 							try {
 								Handler[] handlers = meltingLogger.getHandlers();
