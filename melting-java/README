@@ -28,8 +28,14 @@ READ THE DOCUMENTATION BEFORE RUNNING THE PROGRAM.
 The executable versions do not require any particular external libraries, 
 and must run directly. 
 Go to the directory executables (contains the executable) and type 
-'melting.bat [options]' under DOS/Windows. 
-Type 'melting [options]' under Unixes.  
+'melting.bat [options]' under DOS/Windows (or 'melting4.bat [options]' if you
+want to use MELTING 5 with the options of MELTING 4. Be aware, using MELTING 5 with the options
+of MELTING 4 doesn't allow the user to change some of the thermodynamic models and corrections.
+In addition to that, the user can't enter a formamide or DMSO %). 
+Type 'melting [options]' under Unixes (or 'melting4 [options]' if you
+want to use MELTING 5 with the options of MELTING 4. Be aware, using MELTING 5 with the options
+of MELTING 4 doesn't allow the user to change some of the thermodynamic models and corrections.
+In addition to that, the user can't enter a formamide or DMSO %).  
 
 You can also put the executable in a directory present in your PATH 
 variable in order to use the programme wherever you are. The environment 
