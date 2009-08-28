@@ -36,7 +36,8 @@ the program usages, you can read the \textsc{melting} documentation.
     \end{itemize}
   \item \textit{melting} \\
   This package contains the general classes used by most classes of the program. It also
-  contains the main class which runs \textsc{melting}.
+  contains the main class which runs \textsc{melting}. This package also contains the CompatibleMain
+  class which allow the user to use MELTING 5 with the MELTING 4 option syntax (except for the option '-q') 
     \begin{itemize}
     \item \textit{approximativeMethods} \\
     It contains all the classes which implement an approximative formula to compute the melting

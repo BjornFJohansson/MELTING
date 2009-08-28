@@ -196,13 +196,6 @@ public class CompatibleMain {
 		}
 	}
 	
-	private static boolean switchMode(boolean currentMode){
-		if (currentMode){
-			return false;
-		}
-		return true;
-	}
-	
 	private static StringBuffer collectIonConcentrations(String [] args, StringBuffer convertedArgs){
 		
 		boolean isFirstConcentration = true;
@@ -351,7 +344,7 @@ public class CompatibleMain {
 					convertedArgs.append(" " + OptionManagement.approximativeMode);
 				}
 				else if (optionName.equals("-v")){
-					isVerboseMode = switchMode(isVerboseMode);
+					isVerboseMode = !isVerboseMode;
 				}
 				else if (optionName.equals("-O")){
 					if (args[i].length() > 2){
