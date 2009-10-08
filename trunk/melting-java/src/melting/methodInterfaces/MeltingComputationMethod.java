@@ -39,7 +39,7 @@ public interface MeltingComputationMethod {
 	
 	/**
 	 * Creates the Environment object and set up the variables of the chosen model. 
-	 * @param HashMap options containing all the options (default options and options entered by the user)
+	 * @param options containing all the options (default options and options entered by the user)
 	 */
 	public void setUpVariables(HashMap<String, String> options);
 	

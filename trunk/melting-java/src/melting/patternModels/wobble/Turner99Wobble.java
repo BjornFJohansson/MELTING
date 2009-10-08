@@ -150,9 +150,9 @@ public class Turner99Wobble extends PatternComputation{
 	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2.
 	 * If one of the adjacent base pair is not a complementary base pair, this adjacent base pair is not
 	 * taken in account in the subsequence.
-	 * @param int pos1 : starting position of the internal loop
-	 * @param int pos2 : ending position of the internal loop
-	 * @param int duplexLength : total length of the duplex
+	 * @param pos1 : starting position of the internal loop
+	 * @param pos2 : ending position of the internal loop
+	 * @param duplexLength : total length of the duplex
 	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
 	 * adjacent base pairs in the duplex.
 	 * If one of the adjacent base pair is not a complementary base pair, this adjacent base pair is not

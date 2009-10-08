@@ -85,7 +85,7 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	
 	/**
 	 * corrects the computed melting temperature depending on the environment.
-	 * @param Environment environment
+	 * @param environment
 	 * @return double corrected melting temperature
 	 */
 	protected double correctTemperature(Environment environment) {

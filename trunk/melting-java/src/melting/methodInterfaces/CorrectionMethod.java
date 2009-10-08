@@ -24,14 +24,14 @@ public interface CorrectionMethod {
 
 	/**
 	 * Check if the environment chosen by the user is a applicable with the correction model.
-	 * @param Environment environment
+	 * @param environment
 	 * @return false if the correction method can't be used with the Environment. If the environment can make the results less reliable, a warning message will appear.
 	 */
 	public boolean isApplicable(Environment environment);
 	
 	/**
 	 * This method is called to correct the computed melting temperature.
-	 * @param Environment environment
+	 * @param environment
 	 * @return ThermoResult which contains the corrected results (enthalpy, entropy and melting temperature).
 	 */
 	public ThermoResult correctMeltingResults(Environment environment);

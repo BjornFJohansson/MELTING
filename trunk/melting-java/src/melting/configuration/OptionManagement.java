@@ -430,7 +430,7 @@ public class OptionManagement {
 	
 	/**
 	 * to check if the argument 'option' entered by the user is an option value.
-	 * @param String option
+	 * @param  option
 	 * @return true if the argument 'option' entered by the user is an option value.
 	 * Ex : "-nn" => isAnOptionValue("-nn") = false
 	 * Ex : "san04" => isAnOptionValue("san04") = true
@@ -447,7 +447,7 @@ public class OptionManagement {
 	
 	/**
 	 * changes the default Threshold value, correction factor value and/or data file pathway value if the user wants to.
-	 * @param String [] args : contains the options entered by the user
+	 * @param args : contains the options entered by the user
 	 * If there is an error in the options syntax, a OptonSyntaxError is thrown.
 	 */
 	private void setOptionValues(String [] args){
@@ -564,7 +564,7 @@ public class OptionManagement {
 	/**
 	 * to check if all mandatory options are present and valid. (hybridization type, ion concentrations, sequence (5'3'), oligomer concentration and sometimes the 
 	 * complementary sequence (3'5'))
-	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
+	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return true if all mandatory options are present and valid.
 	 * If one of the required options is not valid, an OptionSynthaxError is thrown.
 	 */
@@ -628,7 +628,7 @@ public class OptionManagement {
 	
 	/**
 	 * to check if all the ion and agent concentrations entered by the user are valid. (positive numeric values)
-	 * @param String solutionComposition : different ion and agent concentrations
+	 * @param  solutionComposition : different ion and agent concentrations
 	 * @return true if all the ion and agent concentrations entered by the are valid.
 	 * If at least one of the concentrations is not valid, an OptionSynthaxException is thrown.
 	 * If a NumberFormatException is caught, an OptionSynthaxError is thrown.
@@ -661,7 +661,7 @@ public class OptionManagement {
 	
 	/**
 	 * puts the default options in a new HashMap depending on the type of hybridization entered by the user.
-	 * @param String [] args : contains the options entered by the user.
+	 * @param args : contains the options entered by the user.
 	 * @return HasMap containing the default options. The default options depend on the type of hybridization entered by the user.
 	 * If the type of hybridization is missing, an OptionSyntaxError is thrown.
 	 */
@@ -733,7 +733,7 @@ public class OptionManagement {
 	
 	/**
 	 * collects the options entered by the user and stocks them in a HashMap.
-	 * @param String [] args : contains the options entered by the user.
+	 * @param args : contains the options entered by the user.
 	 * @return HasMap containing the options entered by the user.
 	 * If one of the options is invalid, an OptionsSyntaxError is thrown.
 	 * If one of the Melting required options is missing, an OptionsSyntaxError is thrown. 
@@ -897,7 +897,7 @@ public class OptionManagement {
 	
 	/**
 	 * to check if the user just wants to know some information about melting. (help documentation, legal information, data file pathway or Melting version number)
-	 * @param String [] args : contains the options entered by the user
+	 * @param args : contains the options entered by the user
 	 * @return true if the user wants to know some information about melting.
 	 */
 	public boolean isMeltingInformationOption(String [] args){
@@ -925,7 +925,7 @@ public class OptionManagement {
 	/**
 	 * if at least one of the options entered by the user is an option to display some information about Melting,
 	 * the requested information is displayed.
-	 * @param String [] args : contains the option entered by the user
+	 * @param args : contains the option entered by the user
 	 */
 	public void readOptions(String [] args){
 
@@ -955,7 +955,7 @@ public class OptionManagement {
 	
 	/**
 	 * collects the options entered by the user and creates an Environment from them.
-	 * @param String [] args : contains the options entered by the user
+	 * @param args : contains the options entered by the user
 	 * @return Environment initialized with the default options and the options entered by the user.
 	 */
 	public Environment createEnvironment(String [] args){

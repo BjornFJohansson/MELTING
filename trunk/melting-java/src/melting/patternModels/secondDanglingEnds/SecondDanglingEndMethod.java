@@ -106,9 +106,9 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 	/**
 	 * corrects the pattern positions in the duplex to have the adjacent
 	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
-	 * @param int pos1 : starting position of the internal loop
-	 * @param int pos2 : ending position of the internal loop
-	 * @param int duplexLength : total length of the duplex
+	 * @param pos1 : starting position of the internal loop
+	 * @param pos2 : ending position of the internal loop
+	 * @param duplexLength : total length of the duplex
 	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
 	 * adjacent base pairs in the duplex.
 	 */
@@ -129,9 +129,9 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 	 * computes the enthalpy and entropy of the first dangling end as if the pattern was a single
 	 * dangling end.
 	 * @param NucleotidSequence sequences : contains the sequences and the duplex
-	 * @param int pos1 : starting position of the pattern
-	 * @param int pos2 : ending position of the pattern
-	 * @param ThermoResult result : contains the current enthalpy, entropy and melting temperature for this NulceotidSequences.
+	 * @param pos1 : starting position of the pattern
+	 * @param pos2 : ending position of the pattern
+	 * @param result : contains the current enthalpy, entropy and melting temperature for this NulceotidSequences.
 	 * @return ThermoResult result : contains the computed enthalpy and entropy.
 	 */
 	private ThermoResult computesThermodynamicsSingleDanglingEnd(NucleotidSequences sequences,

@@ -53,7 +53,7 @@ public class BasePair {
 	
 	/**
 	 * To create a BasePair, we need to give the position in the sequence where starts the String TopAcid or BottomAcid.
-	 * @param int pos : the position of the base pair in the sequence. It is the starting position of the String
+	 * @param pos : the position of the base pair in the sequence. It is the starting position of the String
 	 * TopAcid or BottomAcid in the String sequence.
 	 */
 	public BasePair (int pos){
@@ -258,8 +258,8 @@ public class BasePair {
 	
 	/**
 	 * Check if the two nucleic acids of the base pair are (base1, base2) or (base2, base1).
-	 * @param String base1 : first base (the nucleic acid is represented by a String)
-	 * @param String base2 : second base (the nucleic acid is represented by a String) 
+	 * @param  base1 : first base (the nucleic acid is represented by a String)
+	 * @param  base2 : second base (the nucleic acid is represented by a String) 
 	 * @return true if (TopAcid, BottomAcid) is equal to (base1, base2) or (base2, base1).
 	 */
 	public boolean isBasePairEqualTo(String base1, String base2){
@@ -272,8 +272,8 @@ public class BasePair {
 	
 	/**
 	 * Check if the two nucleic acids of the base pair are (base1, base2).
-	 * @param String base1 : first base (the nucleic acid is represented by a String)
-	 * @param String base2 : second base (the nucleic acid is represented by a String) 
+	 * @param  base1 : first base (the nucleic acid is represented by a String)
+	 * @param  base2 : second base (the nucleic acid is represented by a String) 
 	 * @return true if (TopAcid, BottomAcid) is strictly equal to (base1, base2).
 	 */
 	public boolean isBasePairStrictlyEqualTo(String base1, String base2){

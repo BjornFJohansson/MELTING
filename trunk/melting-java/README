@@ -6,6 +6,11 @@ Files).
 Some pre-compiled binaries are located in the directory bin. The program just needs 
 a Java 1.5 environment (http://java.sun.com/javase/downloads/index_jdk5.jsp).
 
+If you want to build this project, you need to have ant installed on your system (
+http://ant.apache.org). When this is done, you just need to type buildProject.sh.
+The resulting classes will be in ./build/src, the resulting jar in ./build/lib and
+the generated Javadoc in ./build/javadoc.
+
 UNICES 
 
 Type `sudo Install.unice' to install the program.

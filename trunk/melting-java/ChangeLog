@@ -1,3 +1,6 @@
+[8/09/09] Marine Dumousseau (marine@ebi.ac.uk)
+	Fixed some bugs in the Javadoc.
+	Created a build.xml file and buildProject.sh to build the project.
 [28/08/09] Marine Dumousseau (marine@ebi.ac.uk)
 	Fixed a bug for the option -O in OptionManagement.
 	Created the CompatibleMain class which allow a compatibility

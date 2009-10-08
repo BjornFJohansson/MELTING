@@ -39,9 +39,9 @@ public class ThermoResult extends Thermodynamics{
 	
 	/**
 	 * creates a ThermoResult object initialised with the double enthalpy, double entropy and double Tm.
-	 * @param double enthalpy : the enthalpy value
-	 * @param double entropy : the entropy value
-	 * @param double Tm : the melting temperature
+	 * @param enthalpy : the enthalpy value
+	 * @param entropy : the entropy value
+	 * @param Tm : the melting temperature
 	 */
 	public ThermoResult(double enthalpy, double entropy, double Tm){
 		super(enthalpy, entropy);
@@ -61,7 +61,7 @@ public class ThermoResult extends Thermodynamics{
 	
 	/**
 	 * This method is called to change the Tm of ThermoResult.
-	 * @param double tm : the new melting temperature
+	 * @param tm : the new melting temperature
 	 */
 	public void setTm(double tm) {
 		Tm = tm;
@@ -77,7 +77,7 @@ public class ThermoResult extends Thermodynamics{
 
 	/**
 	 * This method is called to change the SaltIndependentEntropy of ThermoResult.
-	 * @param double SaltIndependentEntropy : the new salt independent concentration.
+	 * @param SaltIndependentEntropy : the new salt independent concentration.
 	 */
 	public void setSaltIndependentEntropy(double saltIndependentEntropy) {
 		this.saltIndependentEntropy = saltIndependentEntropy;
@@ -85,7 +85,7 @@ public class ThermoResult extends Thermodynamics{
 
 	/**
 	 * converts the energyValy double in cal/mol into an energy value in J/mol.
-	 * @param double energyValue : a thermodynamic energy value in cal/mol (enthalpy or entropy)
+	 * @param energyValue : a thermodynamic energy value in cal/mol (enthalpy or entropy)
 	 * @return a double representing the energy value in J/mol.
 	 */
 	public double getEnergyValueInJ(double energyValue){

@@ -70,7 +70,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 	
 	/**
 	 * computes the enthalpy and entropy for the duplex initiation with the Environment 'environment'.
-	 * @param Environment environment
+	 * @param environment
 	 * @return ThermoResult containing the enthalpy and entropy which contain the duplex initiation penalty.
 	 */
 	public ThermoResult computesHybridizationInitiation(Environment environment){

@@ -25,18 +25,18 @@ public interface SodiumEquivalentMethod {
 	/**
 	 * This method is called to convert an initial sodium concentration in a new equivalent sodium concentration
 	 * which takes in account the other cation concentrations.
-	 * @param int Na : sodium concentration entered by the user
-	 * @param int Mg : magnesium concentration entered by the user
-	 * @param int K : potassium concentration entered by the user
-	 * @param int Tris : Tris buffer concentration entered by the user.
-	 * @param int dNTP : dNTP concentration entered by the user
+	 * @param Na : sodium concentration entered by the user
+	 * @param Mg : magnesium concentration entered by the user
+	 * @param K : potassium concentration entered by the user
+	 * @param Tris : Tris buffer concentration entered by the user.
+	 * @param dNTP : dNTP concentration entered by the user
 	 * @return double NaEq. It is the equivalent sodium computed concentration
 	 */
 	public double computeSodiumEquivalent(double Na, double Mg, double K, double Tris, double dNTP);
 	
 	/**
 	 * Check if the model to compute an equivalent sodium cencentration is applicable with the options entered by the user.
-	 * @param HashMap<String, String> options which contains the options. (default options and options entered by the user)
+	 * @param options which contains the options. (default options and options entered by the user)
 	 * @return false if one of the options entered by the user make the model inapplicable. If one of the options can make the results
 	 * less reliable, a warning message will appear.
 	 */

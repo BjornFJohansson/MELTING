@@ -89,7 +89,7 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 
 	/**
 	 * represents the function associated with the electrostatic folding free energy per base stack.
-	 * @param Environment environment
+	 * @param environment
 	 * @return double g2 which represents the result of the function associated with the electrostatic folding free energy per base stack.
 	 */
 	public static double computeFreeEnergyPerBaseStack(Environment environment){

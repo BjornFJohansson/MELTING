@@ -499,7 +499,7 @@ public class RegisterMethods {
 	/**
 	 * This method is called to get the appropriate HashMap of RegisterMethods. It registers all
 	 * the possible method names for the model 'optionName'.
-	 * @param String optionName : method or model name
+	 * @param  optionName : method or model name
 	 * @return the appropriate HashMap of the RegisterMethods object. It registers all
 	 * the possible method names for the model 'optionName'.
 	 * If the option name doesn't exist, a NoExistingMethodException is thrown.
@@ -517,8 +517,8 @@ public class RegisterMethods {
 	/**
 	 * This method is called to get the PatternComputationMethod which represents the method 'methodName'
 	 * entered with the option 'optionName'.
-	 * @param String optionName : option name
-	 * @param String methodName : method or model name
+	 * @param  optionName : option name
+	 * @param  methodName : method or model name
 	 * @return PatternComputationMethod object which represents the method 'methodName'
 	 * entered with the option 'optionName'.
 	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
@@ -551,7 +551,7 @@ public class RegisterMethods {
 	/**
 	 * This method is called to get the SodiumEquivalentMethod which represents the method or model
 	 * for the sodium equivalence in the HashMap 'optionSet'.
-	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
+	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return SodiumEquivalentMethod object which represents the method or model
 	 * for the sodium equivalence in the HashMap 'optionSet'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
@@ -590,7 +590,7 @@ public class RegisterMethods {
 	 * used for the ion correction in the environment 'environment'.
 	 * If no ion correction method is specified by the user, the ion correction will be selected
 	 * depending on the algorithm from Owczarzy et al. (2008)
-	 * @param Environment environment
+	 * @param environment
 	 * @return CorrectionMethod object which represents the method or model
 	 * used for the ion correction in the environment 'environment'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
@@ -686,7 +686,7 @@ public class RegisterMethods {
 	/**
 	 * This method is called to get the MeltingComputationMethod which represents the method or model
 	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
-	 * @param HashMap<String, String> optionSet : contains the options (default options and options entered by the user)
+	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return MeltingComputationMethod object which represents the method or model
 	 * for the enthalpy, entropy and melting temperature computation in the HashMap 'optionSet'.
 	 * If there is no SodiumEquivalentMethod for the method 'methodName' entered with the option 'optionName', 
@@ -763,8 +763,8 @@ public class RegisterMethods {
 	/**
 	 * This method is called to get the CorrectionMethod which represents the method 'methodName'
 	 * entered with the option 'optionName'.
-	 * @param String optionName : option name
-	 * @param String methodName : method or model name
+	 * @param  optionName : option name
+	 * @param  methodName : method or model name
 	 * @return CorrectionMethod object which represents the method 'methodName'
 	 * entered with the option 'optionName'.
 	 * If there is no PatternComputationMethod for the method 'methodName' entered with the option 'optionName', 
@@ -793,7 +793,7 @@ public class RegisterMethods {
 	
 	/**
 	 * corrects the melting temperature if other agents are present in the solution (formamide, DMSO, ...)
-	 * @param Environment environment
+	 * @param environment
 	 * @return ThermoResult which contains the corrected melting temperature.
 	 */
 	public ThermoResult computeOtherMeltingCorrections(Environment environment){

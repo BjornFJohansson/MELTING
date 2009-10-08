@@ -88,7 +88,7 @@ public class Environment {
 	 * initialises the different instance variables of the Environment object.
 	 * If the options HashMap is null, an OptionSyntaxError is thrown.
 	 * If all the required ion concentrations (Na, Mg, K, Tris) are 0, an OptionSyntaxError is thrown.
-	 * @param HashMap<String, String> options : contains the options (default options and options entered by the user)
+	 * @param options : contains the options (default options and options entered by the user)
 	 */
 	public Environment(HashMap<String, String> options){
 		this.options = options;
@@ -133,9 +133,9 @@ public class Environment {
 	 * and the complementary sequence (3'5') a RNA sequence. In case of mRNA/RNA type of hybridization, the sequence (5'3') must be a mRNA sequence
 	 * and the complementary sequence (3'5') a RNA sequence.
 	 * Then creates the sequences NucleotidSequences of the Environment object.
-	 * @param String hybridization : type of hybridization. Precise the nature of each sequence (DNA, RNA or mRNA)
-	 * @param String firstSequence : sequence (5'3')
-	 * @param String secondSequence : complementary sequence (3'5')
+	 * @param  hybridization : type of hybridization. Precise the nature of each sequence (DNA, RNA or mRNA)
+	 * @param  firstSequence : sequence (5'3')
+	 * @param  secondSequence : complementary sequence (3'5')
 	 */
 	public void sortSquences(String hybridization, String firstSequence, String secondSequence){
 		if (hybridization.equals("rnadna") || hybridization.equals("rnamrna")){
@@ -156,7 +156,7 @@ public class Environment {
 	
 	/**
 	 * changes the factor value of Environment.
-	 * @param int factor : new factor value
+	 * @param factor : new factor value
 	 */
 	public void setFactor(int factor) {
 		this.factor = factor;
@@ -196,7 +196,7 @@ public class Environment {
 	
 	/**
 	 * changes the boolean value of the isSelfComplementarity boolean.
-	 * @param boolean b
+	 * @param b
 	 */
 	public void setSelfComplementarity(boolean b){
 		this.IsSelfComplementarity = b;
@@ -242,7 +242,7 @@ public class Environment {
 	
 	/**
 	 * changes the magnesium concentration in the environment
-	 * @param double Mg : new magnesium concentration
+	 * @param Mg : new magnesium concentration
 	 */
 	public void setMg(double Mg){
 		this.concentrations.put("Mg", Mg);
@@ -302,7 +302,7 @@ public class Environment {
 	
 	/**
 	 * changes the sodium concentration in the environment
-	 * @param double Na : new sodium concentration
+	 * @param Na : new sodium concentration
 	 */
 	public void setNa(double na) {
 		concentrations.put("Na", na);
@@ -311,8 +311,8 @@ public class Environment {
 	/**
 	 * increments the ThermoResult enthalpy and ThermoResult entropy of Environment.
 	 * with the specified double enthalpy and double entropy.  
-	 * @param double enthalpy : enthalpy incrementation value
-	 * @param double entropy : entropy incrementation value
+	 * @param enthalpy : enthalpy incrementation value
+	 * @param entropy : entropy incrementation value
 	 */
 	public void addResult(double enthalpy, double entropy){
 		this.result.setEnthalpy(this.result.getEnthalpy() + enthalpy);
@@ -321,7 +321,7 @@ public class Environment {
 	
 	/**
 	 * changes the melting temperature of ThermoResult.
-	 * @param double temperature : new melting temperature
+	 * @param temperature : new melting temperature
 	 */
 	public void setResult(double temperature){
 		this.result.setTm(temperature);
@@ -329,7 +329,7 @@ public class Environment {
 	
 	/**
 	 * changes the result ThermoResult of Environment.
-	 * @param ThermoResult result : new ThermoResult object.
+	 * @param result : new ThermoResult object.
 	 */
 	public void setResult(ThermoResult result){
 		this.result=result;

@@ -21,7 +21,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * This class represents the model schdot. It extedns ApproximativeMode.
+ * This class represents the model schdot. It extends ApproximativeMode.
  * 
  * James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
 *1991, Critical reviews in biochemistry and molecular biology, 26, 227-259
