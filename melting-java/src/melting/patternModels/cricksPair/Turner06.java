@@ -150,9 +150,9 @@ public class Turner06 extends CricksNNMethod {
 	/**
 	 * computes the entropy value in 1M Na from the initial entropy value in 0.1M Na using the sodium correction of Santalucia 1998_2004.
 	 * (model san04).
-	 * @param double entropy0_1MNa : entropy value for 0.1M Na. (from the article of Turner et al 2006)
-	 * @param int pos1 : starting position of the subsequence containing the Crick's pairs.
-	 * @param int pos2 : ending position of the subsequence containing the Crick's pairs.
+	 * @param entropy0_1MNa : entropy value for 0.1M Na. (from the article of Turner et al 2006)
+	 * @param pos1 : starting position of the subsequence containing the Crick's pairs.
+	 * @param pos2 : ending position of the subsequence containing the Crick's pairs.
 	 * @return double entropy corresponding to the entropy value in 1M Na.
 	 */
 	private double computesEntropy1MNa(double entropy0_1MNa, int pos1, int pos2){

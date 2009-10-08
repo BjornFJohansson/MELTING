@@ -314,7 +314,7 @@ public class CompatibleMain {
 	}
 		
 	/**
-	 * @param String [] args : contains the options entered by the user.
+	 * @param args : contains the options entered by the user.
 	 */
 	public static void main(String[] args) {
 		try{

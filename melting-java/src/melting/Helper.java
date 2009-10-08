@@ -28,7 +28,7 @@ public class Helper {
 	/**
 	 * to check if the user wants to use another thermodynamic parameters file with the used model.
 	 * The new file name is specified in the methodName, preceded by the model name and ":"
-	 * @param String methodName : the method or model option entered by the user.
+	 * @param  methodName : the method or model option entered by the user.
 	 * @return true if the methodName String contains ":". (a new file name has been entered by the user)
 	 * Ex : san04 => the model name (no specified file name, the default file name of the san04 model is used)
 	 * Ex : san04:file.xml => the model name followed by a new file name. (the san04 model will be used with the 
@@ -43,7 +43,7 @@ public class Helper {
 	
 	/**
 	 * This method is called to extract the new file name to the method or model option entered by the user.
-	 * @param String methodName : the method or model option entered by the user.
+	 * @param  methodName : the method or model option entered by the user.
 	 * @return String new file name (or pathway + new file name) containing the thermodynamic parameters.
 	 */
 	public static String extractsOptionFileName(String methodName){
@@ -52,7 +52,7 @@ public class Helper {
 	
 	/**
 	 * This method is called to extract the method or model name to the method or model option entered by the user.
-	 * @param String methodName : the method or model option entered by the user.
+	 * @param  methodName : the method or model option entered by the user.
 	 * @return String method or model name.
 	 */
 	public static String extractsOptionMethodName(String methodName){
@@ -61,7 +61,7 @@ public class Helper {
 	
 	/**
 	 * computes a sodium equivalent concentration from the different ion concentrations of the Environment object.
-	 * @param Environment environment
+	 * @param environment
 	 * @return double sodium equivalent concentration.
 	 */
 	public static double computesNaEquivalent(Environment environment){

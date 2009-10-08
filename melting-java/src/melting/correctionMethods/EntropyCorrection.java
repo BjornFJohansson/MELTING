@@ -45,7 +45,7 @@ public abstract class EntropyCorrection implements CorrectionMethod{
 	
 	/**
 	 * corrects the computed entropy (delta S (Na = 1M)).
-	 * @param Environment environment
+	 * @param environment
 	 * @return double : corrected entropy;
 	 */
 	protected double correctEntropy(Environment environment){

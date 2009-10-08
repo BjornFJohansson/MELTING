@@ -195,9 +195,9 @@ public class Znosko071x2Loop extends PatternComputation {
 	/**
 	 * corrects the pattern positions in the duplex to have the adjacent
 	 * base pair of the pattern included in the subsequence between the positions pos1 and pos2
-	 * @param int pos1 : starting position of the internal loop
-	 * @param int pos2 : ending position of the internal loop
-	 * @param int duplexLength : total length of the duplex
+	 * @param pos1 : starting position of the internal loop
+	 * @param pos2 : ending position of the internal loop
+	 * @param duplexLength : total length of the duplex
 	 * @return int [] positions : new positions of the subsequence to have the pattern surrounded by the
 	 * adjacent base pairs in the duplex.
 	 */

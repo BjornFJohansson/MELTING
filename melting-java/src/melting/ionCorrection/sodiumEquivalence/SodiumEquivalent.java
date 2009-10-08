@@ -43,12 +43,12 @@ public abstract class SodiumEquivalent implements SodiumEquivalentMethod{
 	
 	/**
 	 * This method is called to get a sodium equivalent concentration when other cations are present.
-	 * @param double Na : sodium concentration
-	 * @param double Mg : magnesium concentration
-	 * @param double K : potassium concentration
-	 * @param double Tris : Tris buffer concentration
-	 * @param double dNTP : dNTP concentration
-	 * @param double b : a formula parameter depending on the model.
+	 * @param Na : sodium concentration
+	 * @param Mg : magnesium concentration
+	 * @param K : potassium concentration
+	 * @param Tris : Tris buffer concentration
+	 * @param dNTP : dNTP concentration
+	 * @param b : a formula parameter depending on the model.
 	 * @return double NaEq : the sodium equivalent concentration which takes in account the other cation concentrations.
 	 */
 	public double getSodiumEquivalent(double Na, double Mg, double K, double Tris,

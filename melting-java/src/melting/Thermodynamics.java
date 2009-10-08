@@ -53,7 +53,7 @@ public class Thermodynamics {
 	
 	/**
 	 * This method is called to change the enthalpy of Thermodynamics.
-	 * @param double enthalpy : new enthalpy value
+	 * @param enthalpy : new enthalpy value
 	 */
 	public void setEnthalpy(double enthalpy) {
 		this.enthalpy = enthalpy;
@@ -69,7 +69,7 @@ public class Thermodynamics {
 	
 	/**
 	 * This method is called to change the entropy of Thermodynamics.
-	 * @param double entropy : new entropy value
+	 * @param entropy : new entropy value
 	 */
 	public void setEntropy(double entropy) {
 		this.entropy = entropy;

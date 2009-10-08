@@ -43,7 +43,7 @@ public class DataCollect {
 
 	/**
 	 * add all of the mappings from the specified HashMap to the data of DataCollect.
-	 * @param HashMap<String, Thermodynamics> parameters : contains the new mappings to add to the data 
+	 * @param<String, Thermodynamics> parameters : contains the new mappings to add to the data 
 	 * of DataCollect.
 	 */
 	public void addData(HashMap<String, Thermodynamics> parameters) {
@@ -54,7 +54,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics containing the parameters for the specified type of terminal base pair.
-	 * @param String type : type of the terminal base pair.
+	 * @param  type : type of the terminal base pair.
 	 * @return Thermodynamics object containing the parameters for the specified type of terminal base pair.
 	 */
 	public Thermodynamics getTerminal(String type){
@@ -64,8 +64,8 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics containing the parameters for the crick's pair composed of the String seq1 and the String seq2.
-	 * @param String seq1 : nucleic acids from the sequence (5'3') in the Crick's pair.
-	 * @param String seq2 : nucleic acids from the complementary sequence (3'5') in the Crick's pair. 
+	 * @param  seq1 : nucleic acids from the sequence (5'3') in the Crick's pair.
+	 * @param  seq2 : nucleic acids from the complementary sequence (3'5') in the Crick's pair. 
 	 * @return Thermodynamics object containing the parameters for the crick's pair composed of the String seq1 and the String seq2.
 	 */
 	public Thermodynamics getNNvalue(String seq1, String seq2){
@@ -87,7 +87,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the initiation with the specified type of initiation.
-	 * @param String type : type of initiation
+	 * @param  type : type of initiation
 	 * @return Thermodynamics object containing the parameters for the initiation with the specified type of initiation.
 	 */
 	public Thermodynamics getInitiation(String type){
@@ -109,8 +109,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the crick's pair composed of the String seq1 and the String seq2 with
 	 * one of the sequences containing a specific nucleic acid.
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the crick's pair composed of the String seq1 and the String seq2 with
 	 * one of the sequences containing a specific nucleic acid.
 	 */
@@ -126,9 +126,9 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a specific
 	 * nucleic acid and a dangling end.
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
-	 * @param String sens : sens of the dangling end
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
+	 * @param  sens : sens of the dangling end
 	 * @return Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a specific
 	 * nucleic acid and a dangling end.
 	 */
@@ -143,8 +143,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing an
 	 * azobenzene ("X_C" or "X_T"). 
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing an
 	 * azobenzene ("X_C" or "X_T").
 	 */
@@ -170,8 +170,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a
 	 * locked nucleic acid ("AL", "TL", "GL" or "CL"). 
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a
 	 * locked nucleic acid ("AL", "TL", "GL" or "CL"). 
 	 */
@@ -188,8 +188,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a
 	 * hydroxyadenine ("A*"). 
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the String seq1 and the String seq2 with one of the sequences containing a
 	 * hydroxyadenine ("A*"). 
 	 */
@@ -216,9 +216,9 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the dangling end present in the duplex
 	 * composed of seq1 and seq2 with the specified sens.
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
-	 * @param String sens : sens of the dangling end 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
+	 * @param  sens : sens of the dangling end 
 	 * @return Thermodynamics object containing the parameters for the dangling end present in the duplex
 	 * composed of seq1 and seq2 with the specified sens. 
 	 */
@@ -236,8 +236,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the dangling end present in the duplex
 	 * composed of seq1 and seq2.
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the dangling end present in the duplex
 	 * composed of seq1 and seq2. 
 	 */
@@ -258,8 +258,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the mismatch(es) present in the duplex
 	 * composed of seq1 and seq2.
-	 * @param String seq1 : sequence (5'3').
-	 * @param String seq2 : complementary sequence (3'5'). 
+	 * @param  seq1 : sequence (5'3').
+	 * @param  seq2 : complementary sequence (3'5'). 
 	 * @return Thermodynamics object containing the parameters for the mismatch(es) present in the duplex
 	 * composed of seq1 and seq2. 
 	 */
@@ -273,7 +273,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for an internal loop with a specified size.
-	 * @param String size : size of the internal loop.
+	 * @param  size : size of the internal loop.
 	 * @return Thermodynamics object containing the parameters for an internal loop with a specified size
 	 */
 	public Thermodynamics getInternalLoopValue(String size){
@@ -283,7 +283,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the initiation of an internal loop with a specified size.
-	 * @param String size : size of the internal loop.
+	 * @param  size : size of the internal loop.
 	 * @return Thermodynamics object containing the parameters for the initiation of an internal loop with a specified size
 	 */
 	public Thermodynamics getInitiationLoopValue(String size){
@@ -302,8 +302,8 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the mismatching base pair (base1, base2).
-	 * @param string base1 : from the sequence (5'3')
-	 * @param string base2 : from the complementary sequence (3'5')
+	 * @param  base1 : from the sequence (5'3')
+	 * @param  base2 : from the complementary sequence (3'5')
 	 * @return Thermodynamics object containing the parameters for the mismatching base pair (base1, base2).
 	 */
 	public Thermodynamics getMismatchParameterValue(String base1, String base2){
@@ -316,8 +316,8 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the base pair (base1, base2) next to the mismatching base pair.
-	 * @param string base1 : from the sequence (5'3')
-	 * @param string base2 : from the complementary sequence (3'5')
+	 * @param  base1 : from the sequence (5'3')
+	 * @param  base2 : from the complementary sequence (3'5')
 	 * @return Thermodynamics object containing the parameters for the base pair (base1, base2) next to the mismatching base pair.
 	 */
 	public Thermodynamics getClosureValue(String base1, String base2){
@@ -328,8 +328,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the the duplex composed of seq1 and seq2 with the
 	 * specified type of closing base pairs.
-	 * @param String seq1 : from the sequence (5'3')
-	 * @param String seq2 : from the complementary sequence (3'5')
+	 * @param  seq1 : from the sequence (5'3')
+	 * @param  seq2 : from the complementary sequence (3'5')
 	 * @param closing : type of the base pair next to the mismatching base pair..
 	 * @return Thermodynamics object containing the parameters for the the duplex composed of seq1 and seq2 with the
 	 * specified type of closing base pairs.
@@ -344,7 +344,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the penalty of type 'type'.
-	 * @param String type : type of the penalty
+	 * @param  type : type of the penalty
 	 * @return Thermodynamics object containing the penalty of type 'type'.
 	 */
 	public Thermodynamics getPenalty(String type){
@@ -363,9 +363,9 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the first non canonical pair in the internal loop.
-	 * @param String seq1 : from the sequence (5'3')
-	 * @param String seq2 : from the complementary sequence (3'5')
-	 * @param String loop : type of internal loop.
+	 * @param  seq1 : from the sequence (5'3')
+	 * @param  seq2 : from the complementary sequence (3'5')
+	 * @param  loop : type of internal loop.
 	 * @return Thermodynamics object containing the parameters for the first non canonical pair in the internal loop.
 	 */
 	public Thermodynamics getFirstMismatch(String seq1, String seq2, String loop){
@@ -380,7 +380,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for a Hairpin loop of size 'size'.
-	 * @param String size : size of the hairpin loop.
+	 * @param  size : size of the hairpin loop.
 	 * @return Thermodynamics object containing the parameters for a Hairpin loop of size 'size'.
 	 */
 	public Thermodynamics getHairpinLoopvalue(String size){
@@ -391,10 +391,10 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for a Hairpin loop 'seqLoop' preceded
 	 * by the base 'base1' and followed by the base 'lastBase'.
-	 * @param String base1 : base preceding the hairpin loop. (from the sequence (5'3'))
-	 * @param String lastBase : base following the hairpin loop. (from the sequence (5'3')) 
-	 * @param String seqLoop : hairpin loop sequence.
-	 * @param String type : type of hairpin loop
+	 * @param  base1 : base preceding the hairpin loop. (from the sequence (5'3'))
+	 * @param  lastBase : base following the hairpin loop. (from the sequence (5'3')) 
+	 * @param  seqLoop : hairpin loop sequence.
+	 * @param  type : type of hairpin loop
 	 * @return Thermodynamics object containing the parameters for a Hairpin loop 'seqLoop' preceded
 	 * by the base 'base1' and followed by the base 'lastBase'.
 	 */
@@ -409,8 +409,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for a penalty of type 'type'
 	 * for the specified parameter.
-	 * @param String type : type of penalty
-	 * @param String parameter
+	 * @param  type : type of penalty
+	 * @param  parameter
 	 * @return Thermodynamics object containing the parameters for a penalty of type 'type'
 	 * for the specified parameter.
 	 */
@@ -422,8 +422,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the terminal mismatching base pair (seq1, seq2)
 	 * of a hairpin loop.
-	 * @param String seq1 : (5'3') orientation
-	 * @param String seq2 : (3'5') orientation
+	 * @param  seq1 : (5'3') orientation
+	 * @param  seq2 : (3'5') orientation
 	 * @return Thermodynamics object containing the parameters for the terminal mismatching base pair (seq1, seq2)
 	 * of a hairpin loop.
 	 */
@@ -440,8 +440,8 @@ public class DataCollect {
 	/**
 	 * to get the Thermodynamics object containing the parameters for the CNG pattern 'seq1'. 'repeats'
 	 * is the number of CNG repeats in the sequence.
-	 * @param String repeats : number of CNG repeats in the sequence.
-	 * @param String seq1 : CNG pattern (5'3')
+	 * @param  repeats : number of CNG repeats in the sequence.
+	 * @param  seq1 : CNG pattern (5'3')
 	 * @return Thermodynamics object containing the parameters for the CNG pattern 'seq1'.
 	 */
 	public Thermodynamics getCNGvalue(String repeats, String seq1){
@@ -453,8 +453,8 @@ public class DataCollect {
 
 	/**
 	 * to get the Thermodynamics object containing the parameters for the single bulge (seq1, seq2).
-	 * @param String seq1 : from the sequence (5'3')
-	 * @param String seq2 : from the complementary sequence (3'5')
+	 * @param  seq1 : from the sequence (5'3')
+	 * @param  seq2 : from the complementary sequence (3'5')
 	 * @return Thermodynamics object containing the parameters for the single bulge (seq1, seq2).
 	 */
 	public Thermodynamics getSingleBulgeLoopvalue(String seq1, String seq2){
@@ -470,7 +470,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for a bulge loop of size 'size'.
-	 * @param String size : size of the bulge loop
+	 * @param  size : size of the bulge loop
 	 * @return Thermodynamics object containing the parameters for a bulge loop of size 'size'.
 	 */
 	public Thermodynamics getBulgeLoopvalue(String size){
@@ -480,7 +480,7 @@ public class DataCollect {
 	
 	/**
 	 * to get the Thermodynamics object containing the parameters for the initiation of a bulge loop of size 'size'.
-	 * @param String size : size of the bulge loop
+	 * @param  size : size of the bulge loop
 	 * @return Thermodynamics object containing the parameters for the initiation of a bulge loop of size 'size'.
 	 */
 	public Thermodynamics getInitiationBulgevalue(String size){
@@ -492,8 +492,8 @@ public class DataCollect {
 	
 	/**
 	 * builds the symmetric duplex (5'3' orientation) from the String seq1 and seq2
-	 * @param String seq1 : a sequence (5'3')
-	 * @param String seq2 : a complementary sequence (3'5')
+	 * @param  seq1 : a sequence (5'3')
+	 * @param  seq2 : a complementary sequence (3'5')
 	 * @return String symmetric duplex (5'3' orientation).
 	 * Ex :
 	 * seq1 = "AC" (5'3')
@@ -509,8 +509,8 @@ public class DataCollect {
 	/**
 	 * builds the symmetric duplex (5'3' orientation) from the String seq1 and seq2 with one of
 	 * the sequences containing an azobenzene ("X_C" or "X_T")
-	 * @param String seq1 : a sequence (5'3')
-	 * @param String seq2 : a complementary sequence (3'5')
+	 * @param  seq1 : a sequence (5'3')
+	 * @param  seq2 : a complementary sequence (3'5')
 	 * @return String symmetric duplex (5'3' orientation) containing the azobenzene.
 	 */
 	private String getSymetricAzobenzeneSequencePairs(String seq1, String seq2){
@@ -528,8 +528,8 @@ public class DataCollect {
 	/**
 	 * builds the symmetric duplex (5'3' orientation) from the String seq1 and seq2 with one of
 	 * the sequences containing a locked nucleic acid ("AL", "TL", "GL", "CL" or "UL")
-	 * @param String seq1 : a sequence (5'3')
-	 * @param String seq2 : a complementary sequence (3'5')
+	 * @param  seq1 : a sequence (5'3')
+	 * @param  seq2 : a complementary sequence (3'5')
 	 * @return String symmetric duplex (5'3' orientation) containing the locked nucleic acid.
 	 */
 	private String getSymetricLockedSequencePairs(String seq1, String seq2){
@@ -554,8 +554,8 @@ public class DataCollect {
 	/**
 	 * builds the symmetric duplex (5'3' orientation) from the String seq1 and seq2 with one of
 	 * the sequences containing a hydroxyadenine ("A*")
-	 * @param String seq1 : a sequence (5'3')
-	 * @param String seq2 : a complementary sequence (3'5')
+	 * @param  seq1 : a sequence (5'3')
+	 * @param  seq2 : a complementary sequence (3'5')
 	 * @return String symmetric duplex (5'3' orientation) containing a hydroxyadenine.
 	 */
 	private String getSymetricHydroxyadenineSequencePairs(String seq1, String seq2){

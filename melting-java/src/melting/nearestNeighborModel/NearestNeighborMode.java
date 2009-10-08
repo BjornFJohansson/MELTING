@@ -231,7 +231,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	/**
 	 * This method is called to determine the terminal position of a pattern (perfectly matching sequences or not perfectly matching sequences)
 	 * from the position pos1 in the duplex
-	 * @param int pos1 : starting position of a pattern in the duplex.
+	 * @param pos1 : starting position of a pattern in the duplex.
 	 * @return int [] which contains the positions of the pattern in the duplex. ('pos1' is the starting position of the pattern in the duplex)
 	 */
 	private int [] getPositionsPattern(int pos1){
@@ -291,7 +291,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	
 	/**
 	 * defines which method is appropriate to compute the energy of the pattern at the positions 'positions' in the duplex. 
-	 * @param int [] positions : contains the positions of a pattern in the duplex
+	 * @param positions : contains the positions of a pattern in the duplex
 	 * @return the appropriate PatternComputationMethod to compute the energy of the pattern at the positions 'positions' in the duplex.
 	 * If no appropriate PatternComputationMethod exists to compute the energy of the pattern at the positions 'positions' in the duplex,
 	 * it returns null.
@@ -554,8 +554,8 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	/**
 	 * initialises the PatternComputationMethod which represents the model 'methodName' entered
 	 * with the option 'optionName'
-	 * @param String optionName : option name
-	 * @param String methodName : method or model name
+	 * @param  optionName : option name
+	 * @param  methodName : method or model name
 	 * @return the initialised PatternComputationMethod.
 	 */
 	private PatternComputationMethod initialiseMethod(String optionName, String methodName){
@@ -603,7 +603,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	}
 	
 	/**
-	 * analyzes the sequences. Check all the necessary methods and models to compute the enthalpy, entropy and melting temperature of the duplex
+	 * analyses the sequences. Check all the necessary methods and models to compute the enthalpy, entropy and melting temperature of the duplex
 	 * are applicable.
 	 * If one of the methods or models is not applicable, a MethodNotApplicableException is thrown.
 	 */
@@ -617,7 +617,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 
 	/**
 	 * computes the melting temperature of a hairpin loop (when there is more than 4 CNG repeats in a sequence)
-	 * @param Environment environment
+	 * @param environment
 	 * @return double melting temperature of a hairpin loop for the Environment 'environment'.
 	 */
 	public static double computesHairpinTemperature(Environment environment){
@@ -629,7 +629,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	
 	/**
 	 * computes the melting temperature for for the Environment 'environment'.
-	 * @param Environment environment
+	 * @param environment
 	 * @return double melting temperature for for the Environment 'environment'.
 	 */
 	public static double computesMeltingTemperature(Environment environment){

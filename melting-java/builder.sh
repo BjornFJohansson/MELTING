@@ -20,11 +20,12 @@ cp -Rf executable ${DSTFOLDER}
 
 echo "Copying miscellaneous"
 cp -Rf testResults ${DSTFOLDER}
-cp ChangeLog GeneralPublicLicence Install.unices README ${DSTFOLDER}
+cp ChangeLog GeneralPublicLicence Install.unices README build.xml buildProject.sh ${DSTFOLDER}
 
 echo "Adding execution rights"
 chmod a+x ${DSTFOLDER}/executable/*
 chmod a+x ${DSTFOLDER}/Install.unices
+chmod a+x ${DSTFOLDER}/buildProject.sh
 
 cd ${DSTFOLDER}
 find -name .svn -prune -exec rm -Rf '{}' \;

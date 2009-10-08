@@ -72,7 +72,7 @@ public class ThermoHandler extends NodeHandler{
 
 	/**
 	 * creates a ThermoHandler object and initialises the instance variables of this object.
-	 * @param String nodeName : node name
+	 * @param  nodeName : node name
 	 */
 	public ThermoHandler(String nodeName){
 		
