@@ -144,9 +144,7 @@ int main(int argc, char *argv[]){
 
     /* read the environment variable specifying the repository directory */
     if ( (ps_getenv = getenv("NN_PATH")) == NULL){ 
-	fprintf(ERROR," The environment variable NN_PATH is not defined. I will\n"
-		" therefore use the default value defined during the compilation\n"
-		" to look for the file containing the regular parameters.\n");
+	
 	ps_getenv = NN_BASE;
     }
 
