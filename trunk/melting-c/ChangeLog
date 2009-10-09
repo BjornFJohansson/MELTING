@@ -1,3 +1,6 @@
+[09/10/2009] Marine Dumousseau (marine@ebi.ac.uk)
+	bug fixed in tkmelting.pl.
+	removed the warning message when no NN_PATH has been specified by the user.
 [01/JUN/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	tkmelting.1, tkmelting.1.xml and melting-gui.desktop added.
 	acknoledgements updated in the different documentation files.
