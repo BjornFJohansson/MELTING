@@ -537,7 +537,7 @@ sub compute {
 # C'est parti
 #-------------
     
-    @results=`./melting4_4-linuxi386 $options -v -q 2>&1`;
+    @results=`melting $options -v -q 2>&1`;
     print "@results";
 
 #------------------------
