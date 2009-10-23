@@ -159,7 +159,7 @@
 	    </modified>
 	    <modified sequence="IT/GA">
 	        <enthalpy>100.0</enthalpy>
-            <entropy>-1.0</entropy>
+            <entropy>-1.8</entropy>
 	    </modified>
 	    <modified sequence="IG/GI">
 	        <enthalpy>3200.0</enthalpy>
@@ -186,8 +186,8 @@
             <entropy>-31.1</entropy>
 	    </modified>
 	    <modified sequence="IC/IG">
-	         <enthalpy>-12100.0</enthalpy>
-             <entropy>-36.3</entropy>
+	         <enthalpy>-500.0</enthalpy>
+             <entropy>-1.3</entropy>
 	    </modified>
 	    <modified sequence="IG/IC">
 	        <enthalpy>1300.0</enthalpy>

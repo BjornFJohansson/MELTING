@@ -362,7 +362,7 @@ public class OptionManagement {
 	 * initialises the DNADefaultOptions of OptionManagement.
 	 */
 	private void initialisesDNADefaultOptions() {
-		this.DNADefaultOptions.put(NNMethod, "san04");
+		this.DNADefaultOptions.put(NNMethod, "all97");
 		this.DNADefaultOptions.put(singleMismatchMethod, "allsanpey");
 		this.DNADefaultOptions.put(tandemMismatchMethod, "allsanpey");
 		this.DNADefaultOptions.put(internalLoopMethod, "san04");

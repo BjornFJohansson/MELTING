@@ -33,6 +33,7 @@ import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.MeltingComputationMethod;
+import melting.sequences.NucleotidSequences;
 
 /**
  * This class contains the different method tests.
@@ -243,8 +244,88 @@ public class MainTest {
 			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
 
 			for (int i=0; i < methodNames.size(); i++){
-				String [] argsOption = {"-H", hybridization, "-E", solution, "-P", nucleotides, "-S", sequences[0], "-C", sequences[1], option, methodNames.get(i)}; 
+				String [] argsOption = {"-H", hybridization, "-E", solution, "-P", nucleotides, "-S", sequences[0], "-C", sequences[1], option, methodNames.get(i), "-nn"}; 
 				double Tm = MainTest.getMeltingTest(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * In the experimental data, the complementary sequence is given.
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  solution : contains the different ion and agent concentrations
+	 * @param  nucleotides : oligomer concentration
+	 * @param  option : option name for the pattern computation method.
+	 */
+	public static void displayResultsInosineMelting4_3WithComplementarySequence(Properties properties, ArrayList<String> methodNames, String hybridization, String solution, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			String [] sequences = pairs.getKey().toString().split("/");
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+solution + " " + "-P"+nucleotides + " " + "-S"+sequences[0] + " " + "-C"+sequences[1] + " " + "-i"+methodNames.get(i); 
+				double Tm = MainTest.getC4_3MeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for single mismatches. (melting 4.2)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  ion : contains the different ion concentrations
+	 * @param  nucleotides : oligomer concentration
+	 */
+	public static void displayResultsMismatchMeltingCWithComplementarySequence(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			String [] sequences = pairs.getKey().toString().split("/");
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+sequences[0] + " " + "-C"+sequences[1] + " " + "-M"+methodNames.get(i); 
+				double Tm = MainTest.getCMeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for single dangling ends. (melting 4.2)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  ion : contains the different ion concentrations
+	 * @param  nucleotides : oligomer concentration
+	 */
+	public static void displayResultsDanglingEndMeltingC(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			String complementary = NucleotidSequences.getInversedSequence(pairs.getKey().toString());
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+pairs.getKey().toString() + " " + "-C"+complementary + " " + "-D"+methodNames.get(i) +  " " + "-F1"; 
+				double Tm = MainTest.getCMeltingResult(argsOption);
 				System.out.print("\t" + format.format(Tm));
 			}
 		}
@@ -283,12 +364,47 @@ public class MainTest {
 	 * @return double : computed melting temperature
 	 */
 	public static double getCMeltingResult(String args) {
-		String path = "/home/compneur/Desktop/meltin_c/MELTING_SOURCE/";
+		String path = "/home/compneur/Desktop/MELTING_Project/meltin_c/MELTING_SOURCE/";
 		File execDir = new File(path + "BIN");
 
 		try {
 			ProcessBuilder pb = new ProcessBuilder((path
 					+ "BIN/melting4_2h-linuxi386 " + args).split(" "));
+			
+			pb.directory(execDir).environment()
+					.put("NN_PATH", path + "NNFILES");
+			final Process meltProcess = pb.redirectErrorStream(true).start();
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					meltProcess.getInputStream()));
+
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				int ind = line.indexOf("Melting temperature");
+				if (ind != -1) {
+					ind += "Melting temperature: ".length();
+					int endInd = line.indexOf("C", ind) - 4;
+					String resultValue = line.substring(ind, endInd);
+					return Double.parseDouble(resultValue);
+				}
+			}
+
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		throw new RuntimeException("No value found");
+	}
+	
+	/**
+	 * to run melting 4.3 and get the results
+	 * @param args : contains test options
+	 * @return double : computed melting temperature
+	 */
+	public static double getC4_3MeltingResult(String args) {
+		String path = "/home/compneur/workspace/Melting-C/";
+		File execDir = new File(path + "BIN");
+
+		try {
+			ProcessBuilder pb = new ProcessBuilder((path + "BIN/melting4_3-linuxi386 " + args).split(" "));
 			pb.directory(execDir).environment()
 					.put("NN_PATH", path + "NNFILES");
 			final Process meltProcess = pb.redirectErrorStream(true).start();
@@ -338,6 +454,86 @@ public class MainTest {
 	}
 	
 	/**
+	 * displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.2)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  ion : contains the different ion concentrations
+	 * @param  nucleotides : oligomer concentration
+	 */
+	public static void displayResultsDNA_RNAMeltingC(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			String sequence = NucleotidSequences.getInversedSequence(NucleotidSequences.getComplementarySequence(pairs.getKey().toString(), "rnadna"));
+			String complementary = NucleotidSequences.getInversedSequence(pairs.getKey().toString());
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+sequence + " " + "-C"+complementary + " " + "-A"+methodNames.get(i); 
+				double Tm = MainTest.getCMeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.3)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  ion : contains the different ion concentrations
+	 * @param  nucleotides : oligomer concentration
+	 */
+	public static void displayResultsDNA_RNAMelting4_3(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			String sequence = NucleotidSequences.getInversedSequence(NucleotidSequences.getComplementarySequence(pairs.getKey().toString(), "rnadna"));
+			String complementary = NucleotidSequences.getInversedSequence(pairs.getKey().toString());
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+sequence + " " + "-C"+complementary + " " + "-A"+methodNames.get(i); 
+				double Tm = MainTest.getC4_3MeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+
+	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  ion : contains the different ion concentrations
+	 * @param  nucleotides : oligomer concentration
+	 */
+	public static void displayResultsMeltingC4_3(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+pairs.getKey().toString() + " " + "-A"+methodNames.get(i); 
+				double Tm = MainTest.getC4_3MeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
 	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
@@ -358,6 +554,32 @@ public class MainTest {
 			for (int i=0; i < methodNames.size(); i++){
 				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+pairs.getKey().toString() + " " + "-A"+methodNames.get(i) + " " + "-F1"; 
 				double Tm = MainTest.getCMeltingResult(argsOption);
+				System.out.print("\t" + format.format(Tm));
+			}
+		}
+	}
+	
+	/**
+	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  solution : contains the different ion and agent concentrations
+	 * @param  nucleotides : oligomer concentration
+	 * @param  option : option name for the pattern computation method.
+	 */
+	public static void displayResultsMeltingC4_3SelfComplementary(Properties properties, ArrayList<String> methodNames, String hybridization, String ion, String nucleotides){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+			System.out.print("\n" + pairs.getKey() + "\t" + pairs.getValue());
+
+			for (int i=0; i < methodNames.size(); i++){
+				String argsOption = "-H"+hybridization + " " + "-N"+ion + " " + "-P"+nucleotides + " " + "-S"+pairs.getKey().toString() + " " + "-A"+methodNames.get(i) + " " + "-F1"; 
+				double Tm = MainTest.getC4_3MeltingResult(argsOption);
 				System.out.print("\t" + format.format(Tm));
 			}
 		}

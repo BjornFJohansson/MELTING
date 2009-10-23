@@ -1389,7 +1389,7 @@ public class NucleotidSequences {
 			return "5";
 		}
 		else if (seq1.contains("-") == false && seq2.contains("-") == false){
-			throw new SequenceException("\n We cannot determine the sens of the dangling end " + seq1 + "/" + seq2 + ".");
+			return null;
 		}
 		throw new SequenceException("\n We cannot determine the sens of the dangling end " + seq1 + "/" + seq2 + ".");
 	}

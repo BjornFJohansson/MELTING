@@ -195,7 +195,6 @@ public class DataCollect {
 	 */
 	public Thermodynamics getHydroxyadenosineValue(String seq1, String seq2){
 		String sens = NucleotidSequences.getDanglingSens(seq1, seq2);
-
 		String [] sequences = NucleotidSequences.decodeSequences(seq1, seq2);
 		
 		if (sens == null){
@@ -206,7 +205,7 @@ public class DataCollect {
 			return s;
 		}
 		else {
-			Thermodynamics s = getModifiedvalue(sequences[0], sequences[0], sens);
+			Thermodynamics s = getModifiedvalue(sequences[0], sequences[1], sens);
 			return s;
 		}
 	}
