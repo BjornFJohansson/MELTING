@@ -82,9 +82,9 @@ neighbor model is used.
 -nn [optional name]
 	Forces to use a specific nearest neighbor model. You can use one of the following : 
 		(DNA)
-			all97 (from Allawi and Santalucia 1997)
+			all97 (from Allawi and Santalucia 1997) (by default)
 			bre86 (from Breslauer et al. 1986)
-			san04 (from Santalucia 2004)  (by default)
+			san04 (from Santalucia 2004)  
 			san96 (from Santalucia et al. 1996)
 			sug96 (from Sugimoto et al 1996)
 			tan04 (from Tanaka et al. 2004)

@@ -9,7 +9,7 @@
  * You should have received a copy of the GNU General Public License along with this program; if not, 
  * write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA                                                                  
 
- *       Marine Dumousseau and Nicolas Lenovere                                                   
+ *       Marine Dumousseau and Nicolas Le Novere                                                   
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 /**
- * This class exists to test the different nearest neighbor parameters with Melting 4.2.
+ * This class exists to test the different nearest neighbor parameters with Melting 4.3.
  */
-public class MainTestMeltingCPerfectMatching {
+public class MainTestMeltingC4_3PerfectMatching {
 
 	public static void main(String[] args) {
 		ArrayList<String> DNAmethods = new ArrayList<String>();
@@ -29,6 +29,7 @@ public class MainTestMeltingCPerfectMatching {
 		DNAmethods.add("bre86a.nn");
 		DNAmethods.add("san96a.nn");
 		DNAmethods.add("sug96a.nn");
+		DNAmethods.add("san04a.nn");
 		
 		ArrayList<String> RNAmethods = new ArrayList<String>();
 		RNAmethods.add("fre86a.nn");
@@ -45,25 +46,25 @@ public class MainTestMeltingCPerfectMatching {
 		
 		Properties DNARNASequences = MainTest.loadSequencesTest("src/examples/test/DNARNADuplexes.txt");
 				
-		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \t san04a.nn \n");
 
-		MainTest.displayResultsMeltingC(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0004");
+		MainTest.displayResultsMeltingC4_3(DNANoSelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0004");
 		
-		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t all97a.nn \t bre86a.nn \t san96a.nn \t sug96a.nn \t san04a.nn \n");
 
-		MainTest.displayResultsMeltingCSelfComplementary(DNASelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0001");
+		MainTest.displayResultsMeltingC4_3SelfComplementary(DNASelfComplementarySequences, DNAmethods, "dnadna", "1", "0.0001");
 
 		System.out.print("\n\n melting.sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
 		
-		MainTest.displayResultsMeltingC(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0002");
+		MainTest.displayResultsMeltingC4_3(RNANoSelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0002");
 
 		System.out.print("\n\n melting.sequences \t TmExp \t fre86a.nn \t xia98a.nn \n");
 		
-		MainTest.displayResultsMeltingCSelfComplementary(RNASelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0001");
+		MainTest.displayResultsMeltingC4_3SelfComplementary(RNASelfComplementarySequences, RNAmethods, "rnarna", "1", "0.0001");
 
 		System.out.print("\n\n melting.sequences \t TmExp \t sug95a.nn \n");
 
-		MainTest.displayResultsDNA_RNAMeltingC(DNARNASequences, DNARNAmethods, "rnadna", "1", "0.0001");
+		MainTest.displayResultsDNA_RNAMelting4_3(DNARNASequences, DNARNAmethods, "rnadna", "1", "0.0001");
 
 	}
 

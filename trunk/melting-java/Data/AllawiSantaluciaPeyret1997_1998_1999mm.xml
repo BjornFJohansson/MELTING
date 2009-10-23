@@ -155,8 +155,8 @@
                	<entropy>3.7</entropy>
 	    	</mismatch> 
 	   		<mismatch sequence="CT/AA">
-	       		<enthalpy>-9100.0</enthalpy>
-              	<entropy>-24.0</entropy>
+	       		<enthalpy>2300.0</enthalpy>
+              	<entropy>4.6</entropy>
 	    	</mismatch>
 	    	<mismatch sequence="CA/TT">
 	       		<enthalpy>1000.0</enthalpy>
