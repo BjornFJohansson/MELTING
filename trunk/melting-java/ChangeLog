@@ -4,6 +4,7 @@
 	Changed the JAR File.
 	Fixed a bug for the hydroxyadenine model.
 	Put by 'all97' as default DNA Crick's pair thermodynamic model
+	version 5.0.2
 [14/10/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	Fixed some bugs in the melting.bib file.
 	version 5.0.1
