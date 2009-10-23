@@ -20,7 +20,7 @@
 /*       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 */
 /*       USA                                                                  */
 
-/*       Nicolas Le Novère  and Marine Dumousseau                             */
+/*       Nicolas Le Novï¿½re  and Marine Dumousseau                             */
 /*       EMBL-EBI, Wellcome-Trust Genome Campus                               */
 /*       Hinxton Cambridge, CB10 1SD, UK                                      */
 /*      lenov@ebi.ac.uk                                                       */
@@ -89,7 +89,6 @@ IC/AG  99999 99999
 IC/GG  99999 99999
 IC/CI  99999 99999
 IC/II  99999 99999
-
 CT/IA  99999 99999
 AT/IA  99999 99999
 TT/IA  99999 99999
@@ -104,7 +103,8 @@ IA/IT  99999 99999
 II/IT  99999 99999
 CG/IC  99999 99999
 AG/IC  99999 99999
-TG/IC  99999 99999
+TG/IC  -11990.0  -36.2
+CI/GT  -11990.0  -36.2
 GG/IC  99999 99999
 IG/IC  99999 99999
 II/IC  99999 99999
@@ -126,7 +126,7 @@ AG/TI  99999 99999
 II/TI  99999 99999
 CC/GI  99999 99999
 CA/GI  99999 99999
-CT/GI  99999 99999
+CT/GI -13380.0  -39.3
 CG/GI  99999 99999
 II/GI  99999 99999
 GC/CI  99999 99999
