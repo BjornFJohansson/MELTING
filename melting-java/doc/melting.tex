@@ -196,12 +196,12 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{ahs01}] (from Ahsen et al. 2001)
-    \item [\textit{che93}] (from Marmur, Chester and al. 1962, 1993)
-    \item [\textit{che93corr}] (from Ahsen et al. 2001 and from Marmur, Chester and al. 1962, 1993)
+    \item [\textit{ahs01}] (from von Ahsen et al. 2001)
+    \item [\textit{che93}] (from Marmur 1962,, Chester and al. 1993)
+    \item [\textit{che93corr}] (from von Ahsen et al. 2001, Marmur 1962, Chester and al. 1993)
     \item [\textit{schdot}] (Marmur-Schildkraut-Doty formula)
     \item [\textit{owe69}] (from Owen et al. 1969)
-    \item [\textit{san98}] (from Santalucia et al. 1998)
+    \item [\textit{san98}] (from Allawi and Santalucia. 1998)
     \item [\textit{wetdna91}] (from Wetmur 1991)  (by default)
     \end{itemize}
   \textsc{RNA duplexes}
@@ -238,7 +238,7 @@ neighbor model is used.
     \begin{itemize}
     \item [\textit{all97}] (from Allawi and Santalucia 1997)  (by default)
     \item [\textit{bre86}] (from Breslauer et al. 1986)
-    \item [\textit{san04}] (from Santalucia 2004)
+    \item [\textit{san04}] (from Hicks and Santalucia 2004)
     \item [\textit{san96}] (from Santalucia et al. 1996)
     \item [\textit{sug96}] (from Sugimoto et al 1996)
     \item [\textit{tan04}] (from Tanaka et al. 2004)		 
@@ -254,7 +254,7 @@ neighbor model is used.
     \end{itemize}
   \textsc{mRNA/RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur06}] (from Turner et al. 2006)  (by default)
+    \item [\textit{tur06}] (from Kierzek et al. 2006)  (by default)
     \end{itemize}
   If there is no formula name after the option \textbf{-nn}, we will compute the melting temperature with the default nearest neighbor model. 
   Each nearest neighbor model uses a specific xml file containing the thermodynamic values. If you want to use another file, write the file name or the file pathway preceded by ':' (-nn [optionalname:optionalfile]).
@@ -296,9 +296,9 @@ neighbor model is used.
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur06}] (from Turner et al. 2006)
-    \item [\textit{zno07}] (from Znosko et al. 2007)  (by default)
-    \item [\textit{zno08}] (from Znosko et al. 2008)		 		 
+    \item [\textit{tur06}] (from Lu et al. 2006)
+    \item [\textit{zno07}] (from Davis et al. 2007)  (by default)
+    \item [\textit{zno08}] (from Davis et al. 2008)		 		 
     \end{itemize}
   To change the file containing the thermodynamic parameters for single mismatch computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single mismatches are not taken into account by the approximative mode.
@@ -308,7 +308,7 @@ neighbor model is used.
   
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur99}] (from Turner et al. 1999) (by default)		 		 
+    \item [\textit{tur99}] (from Mathews et al. 1999) (by default)		 		 
     \end{itemize}
   To change the file containing the thermodynamic parameters for GU base pair computation, the same syntax as the one for the \textbf{-nn} option is used.
   GU base pairs are not taken into account by the approximative mode.
@@ -322,7 +322,7 @@ neighbor model is used.
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur99}] (from Turner et al. 1999) (by default)		 		 
+    \item [\textit{tur99}] (from Mathews et al. 1999) (by default)		 		 
     \end{itemize}
   To change the file containing the thermodynamic parameters for tandem mismatch computation, the same syntax as the one for the \textbf{-nn} option is used.
   Tandem mismatches are not taken into account by the approximative mode. Note that not all the mismatched Crick's pairs have been investigated. 
@@ -332,12 +332,12 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{san04}] (from Santalucia 2004)  (by default) 
+    \item [\textit{san04}] (from Hicks and Santalucia 2004)  (by default) 
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur06}] (from Turner et al. 2006) (by default)
-    \item [\textit{zno07}] (from Znosko et al. 2007, only for 1x2 loop)  
+    \item [\textit{tur06}] (from Lu et al. 2006) (by default)
+    \item [\textit{zno07}] (from Badhwar et al. 2007, only for 1x2 loop)  
     \end{itemize}
   To change the file containing the thermodynamic parameters for internal loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Internal loops are not taken into account by the approximative mode.   
@@ -348,12 +348,12 @@ neighbor model is used.
   \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{bom00}] (from Bommarito et al. 2000)  (by default) 
-    \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)      
+    \item [\textit{sugdna02}] (from Ohmichi et al. 2002, only for polyA dangling ends)      
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
-    \item [\textit{ser08}] (from Serra et al. 2008)  (by default) 		  
+    \item [\textit{sugrna02}] (from Ohmichi et al. 2002, only for polyA dangling ends)
+    \item [\textit{ser08}] (from Miller et al. 2008)  (by default) 		  
     \end{itemize}
   To change the file containing the thermodynamic parameters for single dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single dangling ends are not taken into account by the approximative mode.   
@@ -363,13 +363,13 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
+    \item [\textit{sugdna02}] (from Ohmichi et al. 2002, only for polyA dangling ends) (by default)     
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
-    \item [\textit{ser05}] (from Serra et al. 2005) 	
-    \item [\textit{ser06}] (from Serra et al. 2006) (by default) 			 
+    \item [\textit{sugrna02}] (from Ohmichi et al. 2002, only for polyA dangling ends)
+    \item [\textit{ser05}] (from O'toole et al. 2005) 	
+    \item [\textit{ser06}] (from O'toole et al. 2006) (by default) 			 
     \end{itemize}
   To change the file containing the thermodynamic parameters for double dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Double dangling ends are not taken into account by the approximative mode.  
@@ -379,11 +379,11 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{sugdna02}] (from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
+    \item [\textit{sugdna02}] (from Ohmichi et al. 2002, only for polyA dangling ends) (by default)     
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{sugrna02}] (from Sugimoto et al. 2002, only for polyA dangling ends)
+    \item [\textit{sugrna02}] (from Ohmichi et al. 2002, only for polyA dangling ends)
     \end{itemize}
   To change the file containing the thermodynamic parameters for long dangling end computation, the same syntax as the one for the \textbf{-nn} option is used.
   Long dangling ends are not taken into account by the approximative mode.  
@@ -398,8 +398,8 @@ neighbor model is used.
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{ser07}] (from Serra et al. 2007)
-    \item [\textit{tur06}] (from Turner et al. 1999 and 2006)  (by default) 			 			 
+    \item [\textit{ser07}] (from Blose et al. 2007)
+    \item [\textit{tur06}] (from Lu et al. 1999 and 2006)  (by default) 			 			 
     \end{itemize}
   To change the file containing the thermodynamic parameters for single bulge loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Single bulge loops are not taken into account by the approximative mode. 
@@ -409,11 +409,11 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{san04}] (from Santalucia 2004) (by default)
+    \item [\textit{san04}] (from Hicks and Santalucia 2004) (by default)
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur06}] (from Turner et al. 1999 and 2006)  (by default) 			 			 
+    \item [\textit{tur06}] (from Mathews et al. 1999 and Lu et al 2006)  (by default) 			 			 
     \end{itemize}
   To change the file containing the thermodynamic parameters for long bulge loop computation, the same syntax as the one for the \textbf{-nn} option is used.
   Long bulge loops are not taken into account by the approximative mode.
@@ -424,7 +424,7 @@ neighbor model is used.
   
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{bro05}] (from Broda et al. 2005) (by default)			 			 
+    \item [\textit{bro05}] (from Magdalena et al. 2005) (by default)			 			 
     \end{itemize}
   To change the file containing the thermodynamic parameters for CNG repeats computation, the same syntax as the one for the \textbf{-nn} option is used.
   CNG repeats are not taken into account by the approximative mode. 
@@ -435,11 +435,11 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{san05}] (from Santalucia et al. 2005)  (by default)
+    \item [\textit{san05}] (from Watkins and Santalucia 2005)  (by default)
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{zno07}] (from Znosco et al. 2007, only IU base pairs)  (by default)  			 			 
+    \item [\textit{zno07}] (from Wright et al. 2007, only IU base pairs)  (by default)  			 			 
     \end{itemize}
   To change the file containing the thermodynamic parameters for inosine bases computation, the same syntax as the one for the \textbf{-nn} option is used.
   Inosine bases (I) are not taken into account by the approximative mode. 
@@ -449,7 +449,7 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{sug01}] (from Sugimoto et al. 2001) (by default)
+    \item [\textit{sug01}] (from Kawakami et al. 2001) (by default)
     \end{itemize}
   To change the file containing the thermodynamic parameters for hydroxyadenine bases computation, the same syntax as the one for the \textbf{-nn} option is used.
   Hydroxyadenine bases (A*) are not taken into account by the approximative mode.
@@ -482,8 +482,8 @@ neighbor model is used.
     
     \textsc{DNA duplexes}
       \begin{itemize}
-      \item [\textit{ahs01}] (from Ahsen et al. 2001)
-      \item [\textit{kam71}] (from Frank Kamenetskii et al 2001)
+      \item [\textit{ahs01}] (from von Ahsen et al. 2001)
+      \item [\textit{kam71}] (from Frank-Kamenetskii 2001)
       \item [\textit{owc1904}] (equation 19 from Owczarzy et al. 2004)
       \item [\textit{owc2004}] (equation 20 from Owczarzy et al. 2004)
       \item [\textit{owc2104}] (equation 21 from Owczarzy et al. 2004)
@@ -491,12 +491,12 @@ neighbor model is used.
       \item [\textit{san96}] (from Santalucia et al. 1996)
       \item [\textit{san04}] (from Santalucia et al. 1998, 2004)
       \item [\textit{schlif}] (from Schildkraut and Lifson 1965)
-      \item [\textit{tanna06}] (from Zhi-Jie Tan et al. 2006)
+      \item [\textit{tanna06}] (from Tan et al. 2006)
       \item [\textit{wetdna91}] (from wetmur 1991)	 
       \end{itemize}
     \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
-      \item [\textit{tanna07}] (from Zhi-Jie Tan et al. 2007)  (by default)
+      \item [\textit{tanna07}] (from Tan et al. 2007)  (by default)
       \item [\textit{wetrna91}] (from wetmur 1991)	 
       \end{itemize}
     \textsc{DNA/RNA duplexes}
@@ -509,11 +509,11 @@ neighbor model is used.
     \textsc{DNA duplexes}
       \begin{itemize}
       \item [\textit{owcmg08}] (from Owczarzy et al. 2008)  (by default)
-      \item [\textit{tanmg06}] (from Zhi-Jie Tan et al. 2006)	  
+      \item [\textit{tanmg06}] (from Tan et al. 2006)	  
       \end{itemize}
     \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
-      \item [\textit{tanmg07}] (from Zhi-Jie Tan et al. 2007)  (by default)
+      \item [\textit{tanmg07}] (from Tan et al. 2007)  (by default)
       \end{itemize}
     
   \textbf{Mixed Na Mg corrections}
@@ -521,11 +521,11 @@ neighbor model is used.
     \textsc{DNA duplexes}
       \begin{itemize}
       \item [\textit{owcmix08}] (from Owczarzy et al. 2008)  (by default)
-      \item [\textit{tanmix07}] (from Zhi-Jie Tan et al. 2007)	 	  
+      \item [\textit{tanmix07}] (from Tan et al. 2007)	 	  
       \end{itemize}
     \textsc{RNA duplexes or mRNA/RNA duplexes}
       \begin{itemize}
-      \item [\textit{tanmix07}] (from Zhi-Jie Tan et al. 2007)  (by default)
+      \item [\textit{tanmix07}] (from Tan et al. 2007)  (by default)
       \end{itemize}
   The effect of ions on  thermodynamic  stability  of nucleic  acid duplexes is complex, and the correcting 
   functions are  at  best rough  approximations.
@@ -554,7 +554,7 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{ahs01}] (from Ahsen et al 2001)  (by default)
+    \item [\textit{ahs01}] (from von Ahsen et al 2001)  (by default)
     \item [\textit{mit96}] (from Mitsuhashi et al. 1996)
     \item [\textit{pey00}] (from Peyret 2000)		 
     \end{itemize}
@@ -585,7 +585,7 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{ahs01}] (from Ahsen et al 2001)  (by default)
+    \item [\textit{ahs01}] (from von Ahsen et al 2001)  (by default)
     \item [\textit{mus81}] (from Musielski et al. 1981)
     \item [\textit{cul76}] (from Cullen et al. 1976)	
     \item [\textit{esc80}] (from Escara et al. 1980)		 	 
@@ -607,7 +607,7 @@ neighbor model is used.
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{bla96}] (from Blake et al 1996) with formamide concentration in mol/L  (by default)
+    \item [\textit{bla96}] (from Blake 1996) with formamide concentration in mol/L  (by default)
     \item [\textit{lincorr}] (linear correction) with a \% of formamide volume		  	 
     \end{itemize}
   For the other types of hybridization, the DNA default correction is used but there is no guaranty of accuracy.
@@ -689,7 +689,7 @@ The initiation computation is not the same for each following model.
 bre86 & DNA & Breslauer et al. (1986) \\
  & & Proc Natl Acad Sci USA 83 : 3746-3750 \\
  \hline
-san04 & DNA & Santalucia et al (2004) \\
+san04 & DNA & Santalucia and Hicks (2004) \\
  & & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 \\
  \hline
 san96 & DNA & SantaLucia et al.(1996) \\
@@ -698,7 +698,7 @@ san96 & DNA & SantaLucia et al.(1996) \\
 sug96 & DNA & Sugimoto et al. (1996)\\
  & & Nuc Acids Res 24 : 4501-4505 \\
  \hline
-tan04 & DNA & Tanaka Fumiaki et al (2004)\\
+tan04 & DNA & Tanaka et al (2004)\\
  & & Biochemistry 43 : 7143-7150  \\
  \hline
 fre86 & RNA & Freier et al (1986) \\
@@ -710,7 +710,7 @@ fre86 & RNA & Freier et al (1986) \\
 \textbf{sug95} & DNA/RNA & SantaLucia et al.(1996) \\
  & & Biochemistry 35 : 3555-3562 \\
  \hline
-\textbf{tur06} & DNA & Turner et al (2006) \\
+\textbf{tur06} & mRNA/RNA & Kierzeck et al (2006) \\
  & A sodium & Nucleic acids research 34: 3609-3614 \\
  & correction (san04) & \\
  & is automatically & \\
@@ -781,7 +781,7 @@ For further information, see the referenced article.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
-\textbf{bro05} & RNA & Broda et al (2005) \\
+\textbf{bro05} & RNA & Magdalena et al (2005) \\
  & Self complementary sequences & Biochemistry 44: 10873-10882\\
  & 2 to 7 CNG repeats & \\
  \hline
@@ -935,13 +935,13 @@ For further information, see the referenced articles.
  & & Peyret et al. (1999)\\
  & & Biochemistry 38: 3468-3477 \\
  \hline 
-tur06 & RNA & Douglas M Turner et al (2006)\\
+tur06 & RNA & Lu et al (2006)\\
  & & Nucleic Acids Research 34: 4912-4924 \\
  \hline
-zno07 & RNA & Brent M Znosko et al (2007)\\
+zno07 & RNA & Davis and Znosko (2007)\\
  & & Biochemistry 46: 13425-13436 \\
  \hline
-\textbf{zno08} & RNA & Brent M Znosko et al (2008)\\
+\textbf{zno08} & RNA & Davis and Znosko (2008)\\
  & at least & Biochemistry 47: 10178-10187 \\
  & one adjacent & \\
  & GU base pair & \\
@@ -1060,7 +1060,7 @@ For further information, see the referenced articles.
  & & Peyret et al. (1999) \\
  & & Biochemistry 38: 3468-3477\\
  \hline
-\textbf{tur99} & RNA & Douglas M Turner et al (1999) \\
+\textbf{tur99} & RNA & Mathiews et al (1999) \\
  & no adjacent & J.Mol.Biol.  288: 911-940 \\
  & GU or UG base & \\
  &  pairs & \\
@@ -1167,14 +1167,14 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{san04} & DNA & Santalucia et al (2004) \\
+\textbf{san04} & DNA & Santalucia and Hicks (2004) \\
  & missing asymmetry & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & penalty, & \\
  & not tested & \\
  & with experimental & \\
  & results & \\
  \hline
-\textbf{tur06} & RNA & Douglas M Turner et al (2006) \\
+\textbf{tur06} & RNA & Lu et al (2006) \\
  & not tested & Nucleic Acids Research 34: 4912-4924 \\
  & with experimental & \\
  & results & \\
@@ -1227,7 +1227,7 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \hline
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
-\textbf{tur99} & RNA & Douglas M Turner et al (1999) \\
+\textbf{tur99} & RNA & Mathiews et al (1999) \\
  & & J.Mol.Biol.  288: 911-940 \\
 \hline
 \end{tabular}
@@ -1280,20 +1280,20 @@ For further information, see the referenced articles.
 \textbf{bom00} & DNA & Bommarito et al. (2000) \\
  & & Nuc Acids Res 28: 1929-1934 \\
 \hline
-sugdna02 & DNA & Sugimoto et al. (2002) \\
+sugdna02 & DNA & Ohmichi et al. (2002) \\
  & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
  \hline
-sugrna02 & RNA & Sugimoto et al. (2002) \\
+sugrna02 & RNA & Ohmichi et al. (2002) \\
  & only terminal poly A & J. Am. Chem. Soc. 124: 10367-10372 \\
  & self complementary & \\
  & sequences & \\
  \hline
-\textbf{ser08} & RNA & Martin J Serra et al. (2006) \\
+\textbf{ser08} & RNA & O'tool et al. (2006) \\
  & only 3' UA, & Nucleic Acids research 34: 3338-3344 \\
- & GU and UG terminal & Martin J Serra et al. (2008) \\
+ & GU and UG terminal & Miller et al. (2008) \\
  & base pairs & Nucleic Acids research 36: 5652-5659 \\
  & only 5' UG and GU & \\
  & terminal base pairs & \\
@@ -1342,19 +1342,19 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-sugdna02 & DNA & Sugimoto et al. (2002)\\
+sugdna02 & DNA & Ohmichi et al. (2002)\\
  & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
  \hline
-sugrna02 & RNA & Sugimoto et al. (2002)\\
+sugrna02 & RNA & Ohmichi et al. (2002)\\
  & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
  \hline
-ser05 & RNA & Martin J Serra et al. (2005)\\
+ser05 & RNA & O'toole et al. (2005)\\
  & depends on & RNA 11: 512-516 \\
  & the available & \\
  & thermodynamic & \\
@@ -1362,7 +1362,7 @@ ser05 & RNA & Martin J Serra et al. (2005)\\
  & single dangling & \\
  & ends & \\
  \hline
-\textbf{ser06} & RNA & Martin J Serra et al. (2006)\\
+\textbf{ser06} & RNA & O'toole et al. (2006)\\
  & & Nucleic Acids research 34: 3338-3344 \\
 \hline
 \end{tabular}
@@ -1410,13 +1410,13 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{sugdna02} & DNA & Sugimoto et al. (2002)\\
+\textbf{sugdna02} & DNA & Ohmichi et al. (2002)\\
  & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
  & sequences & \\
  \hline
-\textbf{sugrna02} & RNA & Sugimoto et al. (2002)\\
+\textbf{sugrna02} & RNA & Ohmichi et al. (2002)\\
  & only terminal & J. Am. Chem. Soc. 124: 10367-10372 \\
  & poly A & \\
  & self complementary & \\
@@ -1538,21 +1538,21 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{tan04} & DNA & Tanaka Fumiaki et al (2004)\\
+\textbf{tan04} & DNA & Tanaka et al (2004)\\
  & & Biochemistry 43 : 7143-7150 \\
 \hline
-san04 & DNA & Santalucia et al (2004)\\
+san04 & DNA & Santalucia and Hicks (2004)\\
  & missing & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & closing AT & \\
  & penalty & \\
  \hline
-ser07 & RNA & Martin J Serra et al (2007)\\
+ser07 & RNA & Blose et al (2007)\\
  & les reliable & Biochemistry 46 : 15123-15135 \\
  & results & \\
  & some missing & \\
  & parameters & \\
  \hline
-\textbf{tur06} & RNA & Douglas M Turner et al (2006)\\
+\textbf{tur06} & RNA & Lu et al (2006)\\
  & & Nucleic Acids Research 34: 4912-4924 \\
 \hline
 \end{tabular}
@@ -1636,14 +1636,14 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{san04} & DNA & Santalucia et al (2004)\\
+\textbf{san04} & DNA & Santalucia and Hicks (2004)\\
  & missing closing & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & AT penalty & \\
  & not tested & \\
  & with experimental & \\
  & results & \\
  \hline
-\textbf{tur06} & RNA & Douglas M Turner et al (2006)\\
+\textbf{tur06} & RNA & Lu et al (2006)\\
  & not tested & Nucleic Acids Research 34: 4912-4924 \\
  & with experimental & \\
  & results & \\
@@ -1690,14 +1690,14 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{san05} & DNA & Santalucia et al.(2005)\\
+\textbf{san05} & DNA & Watkins and Santalucia (2005)\\
  & missing parameters & Nucleic acids research 33 : 6258-6267 \\
  & for tandem & \\
  & base pairs & \\
  & containing & \\
  & inosine bases & \\
  \hline
-\textbf{zno07} & RNA & Brent M Znosko et al. (2005)\\
+\textbf{zno07} & RNA & Wright et al. (2007)\\
  & only IU base & Biochemistry 46 : 4625-4634 \\
  & pairs & \\
  \hline
@@ -1800,7 +1800,7 @@ For further information, see the referenced articles.
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
-\textbf{sug01} & DNA & Sugimoto et al.(2001)\\
+\textbf{sug01} & DNA & Kawakami et al.(2001)\\
  & only in 5' & Nucleic acids research 29 : 3289-3296\\
  & GA*C 3' & \\
  & and 5' TA*A & \\
@@ -2024,7 +2024,7 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{contexts} & \textbf{Article} \\
 \hline
-ahs01 & DNA & Nicolas Von Ahsen et al ,2001 \\
+ahs01 & DNA & von Ahsen et al ,2001 \\
  & Na>0 & Clinical Chemistry, 47, 1956-1961.\\
  \hline
 kam71 & DNA & Frank-Kamenetskii et al. 1971 \\
@@ -2036,25 +2036,25 @@ marschdot & DNA & Marmur, J., and Doty, P. (1962) \\
  & Na<=1.02 & Blake and Delcourt. (1998) Nucleic Acids Res. 26, 3323-3332 \\ 
  & & and corrigendum.\\
  \hline
-owc1904 & DNA & Richard Owczarzy et al.,2004  \\
+owc1904 & DNA & Owczarzy et al.,2004  \\
  & Na>0 & Biochemistry,43, 3537-3554.\\
  \hline
-owc2004 & DNA & Richard Owczarzy et al., 2004 \\
+owc2004 & DNA & Owczarzy et al., 2004 \\
  & Na>0 & Biochemistry, 43, 3537-3554.\\ 
  \hline
-owc2104 & DNA & Richard Owczarzy et al., 2004 \\
+owc2104 & DNA & Owczarzy et al., 2004 \\
  & Na>0 & Biochemistry, 43, 3537-3554.\\
  \hline 
-\textbf{owc2204} & DNA & Richard Owczarzy et al., 2004 \\
+\textbf{owc2204} & DNA & Owczarzy et al., 2004 \\
  & Na>0 & Biochemistry, 43, 3537-3554.\\
  \hline
-\textbf{owc2204} & DNA & Richard Owczarzy et al., 2004 \\
+\textbf{owc2204} & DNA & Owczarzy et al., 2004 \\
  & Na>0 & Biochemistry,43, 3537-3554.\\
  \hline
 san96 & DNA & SantaLucia et al.(1996) \\
  & Na>=0.1 & Biochemistry 35 : 3555-3562\\
  \hline
-san04 & DNA & Santalucia et al (2004) \\
+san04 & DNA & Santalucia and Hicks (2004) \\
  & Na>=0.05 & Annu. Rev. Biophys. Biomol. Struct 33 : 415-440\\
  & Na<=1.1 & John Santalucia, Jr., 1998 \\
  & & Proc. Natl. Acad. Sci. USA, 95, 1460-1465 \\
@@ -2065,15 +2065,15 @@ schlif & DNA & Schildkraut, C., and Lifson, S. (1965) \\
  & Na>=0.07 & Biopolymers 3, 195-208. \\
  & Na<=0.12 & \\
  \hline
-tanna06 & DNA & Zhi-Jie Tan et al. 2006,  \\
+tanna06 & DNA & Tan et al. 2006,  \\
  & Na>=0.001 & Biophysical Journal, 90, 1175-1190. \\
  & Na<=1 & \\
  \hline
-\textbf{tanna07} & RNA & Zhi-Jie Tan et al, 2007 \\
+\textbf{tanna07} & RNA & Tan et al, 2007 \\
  & Na>=0.003 & Biophysical Journal, 92, 3615-3632. \\
  & Na<=1 & \\
  \hline
-\textbf{wet91} & RNA, DNA & James G. Wetmur 1991 \\
+\textbf{wet91} & RNA, DNA & Wetmur 1991 \\
  & and RNA/DNA & Critical reviews in biochemistry and molecular \\
  & Na>0 & biology, 26, 227-259 \\
   \hline
@@ -2136,11 +2136,11 @@ tanna06 & DNA & Zhi-Jie Tan et al. 2006,  \\
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
-\textbf{oxcmg08} & DNA & Richard Owczarzy et al.,2008 \\
+\textbf{oxcmg08} & DNA & Owczarzy et al.,2008 \\
  & Mg>=0.0005 & Biochemistry, 47, 5336-5353. \\
  & Mg<=0.6 & \\
  \hline
-tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
+tanmg06 & DNA & Tan et al. 2006 \\
  & Mg>=0.0001 & Biophysical Journal, 90, 1175-1190. \\
  & Mg<=1 & \\
  & oligomer & \\
@@ -2148,7 +2148,7 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
  & superior to & \\
  & 6 base pairs & \\
  \hline
-\textbf{tanmg07} & RNA & Zhi-Jie Tan et al, 2007 \\
+\textbf{tanmg07} & RNA & Tan et al, 2007 \\
  & Mg>=0.1 & Biophysical Journal, 92, 3615-3632. \\
  & Mg<=0.3 & \\
  \hline
@@ -2204,12 +2204,12 @@ tanmg06 & DNA & Zhi-Jie Tan et al. 2006 \\
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
-\textbf{oxcmix08} & DNA & Richard Owczarzy et al.,2008 \\
+\textbf{oxcmix08} & DNA & Owczarzy et al.,2008 \\
  & Mg>=0.0005 & Biochemistry, 47, 5336-5353. \\
  & Mg<=0.6 & \\
  & Na+K+Tris/2>0 & \\
  \hline
-\textbf{tanmix07} & DNA & Zhi-Jie Tan et al, 2007 \\
+\textbf{tanmix07} & DNA & Tan et al, 2007 \\
  & and RNA & Biophysical Journal, 92, 3615-3632.\\
  & Mg>=0.1 & \\
  & Mg<=0.3 & \\
@@ -2265,13 +2265,13 @@ For further information, see the referenced articles :
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
-\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001 \\
+\textbf{ahs01} & DNA & von Ahsen et al. 2001 \\
  & & Clinical Chemistry, 47, 1956-1961. \\
 \hline
-mit96 & DNA & Mitsuhashi M. et al, 1996 \\
+mit96 & DNA & Mitsuhashi. et al, 1996 \\
  & & J. Clin. Lab. Anal, 10, 277-284.\\
 \hline
-pey00 & DNA & Peyret N., 2000 \\
+pey00 & DNA & Peyret, 2000 \\
  & & Ph.D Thesis, Section .5.4.2, 128, Wayne State \\
  & & University, Detroit, MI\\
  \hline
@@ -2309,22 +2309,22 @@ For further information, see the referenced articles :
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
-\textbf{ahs01} & DNA & Nicolas Von Ahsen et al. 2001 \\
+\textbf{ahs01} & DNA & von Ahsen et al. 2001 \\
  & not tested & Clinical Chemistry, 47, 1956-1961. \\
  & with experimental & \\
  & values & \\
  \hline
-cul76 & DNA & Cullen Br et al., 1976 \\
+cul76 & DNA & Cullen et al., 1976 \\
  & not tested & 3, 49-62.\\
  & with experimental & \\
  & values & \\
  \hline
-esc80 & DNA & Escara JF et al., 1980 \\
+esc80 & DNA & Escara et al., 1980 \\
  & not tested & 19, 1315-1327.\\
  & with experimental & \\
  & values & \\
  \hline
-mus80 & DNA & Musielski H. et al., 1981 \\
+mus80 & DNA & Musielski et al., 1981 \\
  & not tested & Z allg Microbiol 1981; 21, 447-456.\\
  & with experimental & \\
  & values & \\
@@ -2353,7 +2353,7 @@ For further information, see the referenced articles :
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
-\textbf{bla96} & DNA & R. D. Blake et al., 1996 \\
+\textbf{bla96} & DNA & Blake and Delcourt, 1996 \\
  & not tested & Vol. 24, No. 11 2095-2103 \\
  & with experimental & \\
  & values & \\
@@ -2363,9 +2363,9 @@ lincorr & DNA & McConaughy et al., 1969 \\
  & not tested & Biochemistry 8, 3289-3295. \\
  & with experimental & Record, M.T., Jr, 1967 \\
  & in \% & Biopolymers, 5, 975-992. \\
- & values & Casey J. et al, 1977 \\
+ & values & Casey et al, 1977 \\
  & Formamide in & Nucleic acids research, 4, 1539-1532. \\
- & \% & Hutton Jr, 1977 \\
+ & \% & Hutton, 1977 \\
  & & Nucleic acids research, 4, 3537-3555. \\
  \hline
 \end{tabular}
@@ -2430,64 +2430,64 @@ For further information, see the referenced articles :
 \begin{tabular}[h]{| c | c | c |}
 \textbf{formula} & \textbf{limits} & \textbf{Article} \\ 
 \hline
-ahs01 & DNA & Nicolas Von Ahsen et al. 2001\\
+ahs01 & DNA & von Ahsen et al. 2001\\
  & no mismatch & Clinical Chemistry, 47, 1956-1961. \\
  \hline
-che93 & DNA & Marmur J et al., 1962\\
+che93 & DNA & Marmur et al., 1962\\
  & no mismatch & Journal of molecular biology, 5, 109-118. \\
  & Na=0 & Chester N et al. 1993\\
  & Mg=0.0015 & Analytical Biochemistry, 209, 284-290. \\
  & Tris=0.01 & \\ 
  & K=0.05 & \\
  \hline
-che93corr & DNA & Marmur J et al., 1962\\
+che93corr & DNA & Marmur et al., 1962\\
  & no mismatch & Journal of molecular biology, 5, 109-118. \\
  & Na=0 & Chester N et al. 1993\\
  & Mg=0.0015 & Analytical Biochemistry, 209, 284-290. \\
  & Tris=0.01 & Nicolas Von Ahsen et al. 2001\\
  & K=0.05 & Clinical Chemistry, 47, 1956-1961. \\
  \hline
-marschdot & DNA & James G. Wetmur,1991\\
+marschdot & DNA & Wetmur,1991\\
  & no mismatch & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
- & & Marmur J et al., 1962\\
+ & & Marmur et al., 1962\\
  & & Journal of molecular biology, 5, 109-118. \\
- & & Chester N et al., 1993\\
+ & & Chester et al., 1993\\
  & & Analytical Biochemistry, 209, 284-290. \\
- & & Schildkraut C et al., 1965\\
+ & & Schildkraut et al., 1965\\
  & & Biopolymers, 3, 95-110. \\
- & & Wahl GM et al., 1987\\
+ & & Wahl et al., 1987\\
  & & Methods Enzymol;152:399 - 407. \\
- & & Britten RJ et al.,1974\\
+ & & Britten et al.,1974\\
  & & Methods Enzymol ;29:363-418. \\
- & & Hall TJ et al., 1980\\
+ & & Hall et al., 1980\\
  & & J Mol Evol ;16:95-110.\\
  \hline
-owe69 & DNA & Owen RJ et al., 1969\\
+owe69 & DNA & Owen et al., 1969\\
  & no mismatch & Biopolymers, 7:503-16. \\
- & & Frank-Kamenetskii MD.,1971 \\
+ & & Frank-Kamenetskii,1971 \\
  & & Biopolymers;10:2623- 4. \\
- & & Blake RD, 1996\\
+ & & Blake, 1996\\
  & & Encyclopedia of molecular biology and \\
  & & molecular medicine, Vol. 2., :1-19. \\
- & & Blake RD et al.,1998\\
+ & & Blake et al.,1998\\
  & & Nucleic Acids Res;26:3323-32. \\
  \hline
-san98 & DNA & Santalucia J Jr, 1998\\
+san98 & DNA & Santalucia, 1998\\
  & no mismatch & Proc Nacl Acad Sci USA \\
  & & 95, 1460-1465. \\
- & & Nicolas Von Ahsen et al. 2001, \\
+ & & von Ahsen et al. 2001, \\
  & & Clinical Chemistry, 47, 1956-1961. \\
  \hline
-wetdna91 & DNA & James G. Wetmur,1991, \\
+wetdna91 & DNA & Wetmur,1991, \\
  & & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
  \hline
-wetrna91 & RNA & James G. Wetmur,1991, \\
+wetrna91 & RNA & Wetmur,1991, \\
  & & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
  \hline
-wetdnarna91 & DNA/RNA & James G. Wetmur,1991, \\
+wetdnarna91 & DNA/RNA & Wetmur,1991, \\
  & & Critical reviews in biochemistry \\
  & & and molecular biology, 26, 227-259 \\
  \hline
@@ -2552,7 +2552,7 @@ Nicolas Joly is an efficient and kind debugger and advisor. Catherine
 Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
 Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee Hong, Ivano
 Zara for their bug fixes and comments. Thanks to Richard Owczarzy for his magnesium 
-correction. Thanks to Charles Plessy for the graphical interface files. Finally thanks
+correction. Thanks to Charles Plessy for the graphical interface files. Thanks to Nicolas Rodriguez for the current web interface and finally thanks
 to the usenet helpers, particularly Olivier Dehon and Nicolas Chuche.
 
    

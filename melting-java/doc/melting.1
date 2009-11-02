@@ -208,13 +208,13 @@ Forces to use a specific approximative formula, based on G+C content. You can us
 DNA duplexes
 .br
 .I ahs01
-(from Ahsen et al. 2001)
+(from von Ahsen et al. 2001)
 .br
 .I che93
-(from Marmur, Chester and al. 1962, 1993)
+(from Marmur 1962, Chester et al. 1993)
 .br
 .I che93corr
-(from Ahsen et al. 2001 and from Marmur, Chester and al. 1962, 1993)
+(from von Ahsen et al. 2001, Marmur 1962, Chester et al. 1993)
 .br
 .I schdot
 (Marmur-Schildkraut-Doty formula)
@@ -259,13 +259,13 @@ Forces to use a specific nearest neighbor model. You can use one of the followin
  DNA duplexes
 .br
 .I all97
-(from Allawi and Santalucia 1997)
+(from Allawi and Santalucia 1997)  (by default)
 .br
 .I bre86
 (from Breslauer et al. 1986)
 .br
 .I san04
-(from Santalucia 2004)  (by default)
+(from Hicks and Santalucia 2004)
 .br
 .I san96
 (from Santalucia et al. 1996)
@@ -292,7 +292,7 @@ DNA/RNA duplexes
 mRNA/RNA duplexes
 .br
 .I tur06
-(from Turner et al. 2006)  (by default)
+(from Kierzeck et al. 2006)  (by default)
   
 If there is no formula name after the option 
 .B \-nn
@@ -324,12 +324,12 @@ DNA duplexes
 RNA duplexes
 .br
 .I tur06
-(from Turner et al. 2006)
+(from Lu et al. 2006)
 .br
 .I zno07
-(from Znosko et al. 2007)  (by default)
+(from Davis et al. 2007)  (by default)
 .br
-.I zno08}] (from Znosko et al. 2008)		 		 
+.I zno08}] (from Davis et al. 2008)		 		 
 
 To change the file containing the thermodynamic parameters for single mismatch computation, the same syntax as the one for the 
 .B \-nn
@@ -343,7 +343,7 @@ You can use one of the following :
 RNA duplexes
 .br
 .I tur99
-(from Turner et al. 1999) (by default)		 		 
+(from Mathews et al. 1999) (by default)		 		 
 
 To change the file containing the thermodynamic parameters for GU base pair computation, the same syntax as the one for the 
 .B \-nn
@@ -362,7 +362,7 @@ DNA duplexes
 RNA duplexes
 .br
 .I tur99
-(from Turner et al. 1999) (by default)		 		 
+(from Mathews et al. 1999) (by default)		 		 
 
 To change the file containing the thermodynamic parameters for tandem mismatch computation, the same syntax as the one for the 
 .B \-nn
@@ -376,15 +376,15 @@ You can use one of the following :
 DNA duplexes}]
 .br
 .I san04
-(from Santalucia 2004)  (by default) 
+(from Hicks and Santalucia 2004)  (by default) 
 
 RNA duplexes
 .br
 .I tur06
-(from Turner et al. 2006) (by default)
+(from Lu et al. 2006) (by default)
 .br
 .I zno07
-(from Znosko et al. 2007, only for 1x2 loop)  
+(from Badhwarr et al. 2007, only for 1x2 loop)
   
 To change the file containing the thermodynamic parameters for internal loop computation, the same syntax as the one for the 
 .B \-nn
@@ -401,15 +401,15 @@ DNA duplexes
 (from Bommarito et al. 2000)  (by default) 
 .br
 .I sugdna02
-(from Sugimoto et al. 2002, only for polyA dangling ends)      
+(from Ohmichi et al. 2002, only for polyA dangling ends)      
 
 RNA duplexes
 .br
 .I sugrna02
-(from Sugimoto et al. 2002, only for polyA dangling ends)
+(from Ohmichi et al. 2002, only for polyA dangling ends)
 .br
 .I ser08
-(from Serra et al. 2008)  (by default) 		  
+(from Miller et al. 2008)  (by default) 		  
   
 To change the file containing the thermodynamic parameters for single dangling end computation, the same syntax as the one for the 
 .B \-nn
@@ -423,18 +423,18 @@ You can use one of the following :
 DNA duplexes
 .br 
 .I sugdna02
-(from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
+(from Ohmichi et al. 2002, only for polyA dangling ends) (by default)     
 
 RNA duplexes
 .br
 .I sugrna02
-(from Sugimoto et al. 2002, only for polyA dangling ends)
+(from Ohmichi et al. 2002, only for polyA dangling ends)
 .br
 .I ser05
-(from Serra et al. 2005) 	
+(from O'toole et al. 2005) 	
 .br
 .I ser06
-(from Serra et al. 2006) (by default) 			 
+(from O'toole et al. 2006) (by default) 			 
 
 To change the file containing the thermodynamic parameters for double dangling end computation, the same syntax as the one for the 
 .B \-nn
@@ -447,12 +447,12 @@ You can use one of the following :
 DNA duplexes
 .br
 .I sugdna02
-(from Sugimoto et al. 2002, only for polyA dangling ends) (by default)     
+(from Ohmichi et al. 2002, only for polyA dangling ends) (by default)     
 
 RNA duplexes
 .br
 .I sugrna02
-(from Sugimoto et al. 2002, only for polyA dangling ends)
+(from Ohmichi et al. 2002, only for polyA dangling ends)
 
 To change the file containing the thermodynamic parameters for long dangling end computation, the same syntax as the one for the 
 .B \-nn
@@ -466,7 +466,7 @@ You can use one of the following :
 DNA duplexes
 .br
 .I san04
-(from Santalucia 2004) 
+(from Hicks and Santalucia 2004) 
 .br
 .I tan04
 (from Tanaka et al. 2004)  (by default) 	    
@@ -474,10 +474,10 @@ DNA duplexes
 RNA duplexes
 .br
 .I ser07
-(from Serra et al. 2007)
+(from Blose et al. 2007)
 .br
 .I tur06
-(from Turner et al. 1999 and 2006)  (by default) 			 			 
+(from Lu et al. 1999 and 2006)  (by default) 			 			 
 
 To change the file containing the thermodynamic parameters for single bulge loop computation, the same syntax as the one for the 
 .B \-nn
@@ -491,12 +491,12 @@ You can use one of the following :
 DNA duplexes
 .br 
 .I san04
-(from Santalucia 2004) (by default)
+(from Hicks and Santalucia 2004) (by default)
 
 RNA duplexes
 .br
 .I tur06
-(from Turner et al. 1999 and 2006)  (by default) 			 			 
+(from Lu et al. 1999 and 2006)  (by default) 			 			 
 
 To change the file containing the thermodynamic parameters for long bulge loop computation, the same syntax as the one for the 
 .B \-nn
@@ -510,7 +510,7 @@ You can use one of the following :
 RNA duplexes
 .br
 .I bro05
-(from Broda et al. 2005) (by default)			 			 
+(from Magdalena et al. 2005) (by default)			 			 
 
 To change the file containing the thermodynamic parameters for CNG repeats computation, the same syntax as the one for the 
 .B \-nn
@@ -525,12 +525,12 @@ You can use one of the following :
 DNA duplexes
 .br
 .I san05
-(from Santalucia et al. 2005)  (by default)
+(from Watkins and Santalucia et al. 2005)  (by default)
 
 RNA duplexes
 .br
 .I zno07
-(from Znosco et al. 2007, only IU base pairs)  (by default)  			 			 
+(from Wright et al. 2007)  (by default) 			 			 
 
 To change the file containing the thermodynamic parameters for inosine bases computation, the same syntax as the one for the 
 .B \-nn
@@ -544,7 +544,7 @@ You can use one of the following :
 DNA duplexes
 .br
 .I sug01
-(from Sugimoto et al. 2001) (by default)
+(from Kawakami et al. 2001)
 
 To change the file containing the thermodynamic parameters for hydroxyadenine bases computation, the same syntax as the one for the 
 .B \-nn
@@ -589,10 +589,10 @@ Sodium corrections
 DNA duplexes
 .br
 .I ahs01
-(from Ahsen et al. 2001)
+(from von Ahsen et al. 2001)
 .br
 .I kam71
-(from Frank Kamenetskii et al 2001)
+(from Frank-Kamenetskii et al 2001)
 .br
 .I owc1904
 (equation 19 from Owczarzy et al. 2004)
@@ -616,23 +616,23 @@ DNA duplexes
 (from Schildkraut and Lifson 1965)
 .br
 .I tanna06
-(from Zhi-Jie Tan et al. 2006)
+(from Tan et al. 2006)
 .br
 .I wetdna91
-(from wetmur 1991)	 
+(from Wetmur 1991)	 
 
 RNA duplexes or mRNA/RNA duplexes
 .br
 .I tanna07
-(from Zhi-Jie Tan et al. 2007)  (by default)
+(from Tan et al. 2007)  (by default)
 .br
 .I wetrna91
-(from wetmur 1991)	 
+(from Wetmur 1991)	 
 
 DNA/RNA duplexes
 .br
 .I wetdnarna91
-(from wetmur 1991)	 
+(from Wetmur 1991)	 
 
 Magnesium corrections
 
@@ -642,12 +642,12 @@ DNA duplexes
 (from Owczarzy et al. 2008)  (by default)
 .br
 .I tanmg06
-(from Zhi-Jie Tan et al. 2006)	  
+(from Tan et al. 2006)	  
 
 RNA duplexes or mRNA/RNA duplexes
 .br
 .I tanmg07
-(from Zhi-Jie Tan et al. 2007)  (by default)
+(from Tan et al. 2007)  (by default)
 
 Mixed Na Mg corrections
 
@@ -657,12 +657,12 @@ DNA duplexes
 (from Owczarzy et al. 2008)  (by default)
 .br
 .I tanmix07
-(from Zhi-Jie Tan et al. 2007)	 	  
+(from Tan et al. 2007)	 	  
 
 RNA duplexes or mRNA/RNA duplexes}]
 .br
 .I tanmix07
-(from Zhi-Jie Tan et al. 2007)  (by default)
+(from Tan et al. 2007)  (by default)
 
 The effect of ions on  thermodynamic  stability  of nucleic  acid duplexes is complex, and the correcting 
 functions are  at  best rough  approximations.
@@ -688,7 +688,7 @@ You can use one of the following :
 DNA duplexes
 .br
 .I ahs01
-(from Ahsen et al 2001)  (by default)
+(from von Ahsen et al 2001)  (by default)
 .br
 .I mit96
 (from Mitsuhashi et al. 1996)
@@ -719,7 +719,7 @@ You can use one of the following :
 DNA duplexes}]
 .br
 .I ahs01
-(from Ahsen et al 2001)  (by default)
+(from von Ahsen et al 2001)  (by default)
 .br
 .I mus81
 (from Musielski et al. 1981)

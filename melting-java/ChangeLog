@@ -1,3 +1,6 @@
+[02/11/2009] Marine Dumousseau (marine@ebi.ac.uk)
+	Changed the MELTING 5 documentations (references and acknoledgement)
+	Changed the files in the testResults folder.
 [23/10/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	Fixed some bugs in the inosine and single mismatch files.
 	Added other tests.
