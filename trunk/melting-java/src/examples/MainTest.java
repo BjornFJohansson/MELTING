@@ -198,6 +198,31 @@ public class MainTest {
 	}
 	
 	/**
+	 * displays the computed and experimental melting temperature with MELTING 4.2 approximative formula and with different magnesium concentrations.
+	 * @param properties : contains the experimental data.
+	 * @param methodNames : contains all the method or model to test with the experimental data.
+	 * @param  hybridization : type of hybridization
+	 * @param  nucleotides : oligomer concentration
+	 * @param  option : option name for the pattern computation method.
+	 */
+	public static void displayResultsNaEq(Properties properties, String hybridization){
+		NumberFormat format = NumberFormat.getInstance(); 
+		format.setMaximumFractionDigits(2);
+		Iterator<Map.Entry<Object, Object>> entry = properties.entrySet().iterator();
+		while (entry.hasNext()){
+			Map.Entry<Object, Object> pairs = entry.next();
+
+			//String [] coupleValues = pairs.getKey().toString().split("/");
+			//System.out.print("\n" + coupleValues[0] + "\t" + pairs.getValue());
+				
+			System.out.print("\n" + pairs.getKey().toString() + "\t" + pairs.getValue());
+			String argsOption = "-H"+hybridization + " " + "-N1"+ " " + "-S"+pairs.getKey().toString() + " " + "-x"; 
+			double Tm = MainTest.getCMeltingResult(argsOption);
+			System.out.print("\t" + format.format(Tm));
+		}
+	}
+	
+	/**
 	 * displays the computed and experimental melting temperature for each dangling end method or model.
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.

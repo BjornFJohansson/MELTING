@@ -66,9 +66,9 @@ neighbor model is used.
 -am [optional name]
 	Forces to use a specific approximative formula. You can use one of the following : 
 		(DNA)
-			ahs01 (from Ahsen et al. 2001)
-			che93 (from Marmur, Chester and al. 1962, 1993)
-			che93corr (from Ahsen et al. 2001 and Marmur, Chester and al. 1962, 1993)
+			ahs01 (from von Ahsen et al. 2001)
+			che93 (from Marmur 1962, Chester et al. 1993)
+			che93corr (from von Ahsen et al. 2001, Marmur 1962, Chester et al. 1993)
 			schdot (Marmur-Schildkraut-Doty formula)
 			owe69 (from Owen et al. 1969)
 			san98 (from Santalucia et al. 1998)
@@ -84,7 +84,7 @@ neighbor model is used.
 		(DNA)
 			all97 (from Allawi and Santalucia 1997) (by default)
 			bre86 (from Breslauer et al. 1986)
-			san04 (from Santalucia 2004)  
+			san04 (from Hicks and Santalucia 2004)  
 			san96 (from Santalucia et al. 1996)
 			sug96 (from Sugimoto et al 1996)
 			tan04 (from Tanaka et al. 2004)
@@ -94,7 +94,7 @@ neighbor model is used.
 		(DNA/RNA)
 			sug95 (from Sugimoto et al. 1995)  (by default)
 		(mRNA/RNA)
-			tur06 (from Turner et al. 2006)  (by default)
+			tur06 (from Kierzek et al. 2006)  (by default)
 
 	If there is no formula name after the option -nn, we will compute the melting temperature with the default nearest neighbor model. 
 	Each nearest neighbor model uses a specific xml file containing the thermodynamic values. If you want to use another file, write the file name or the file pathway preceded by ':' (-nn [optionalname:optionalfile]).
@@ -106,9 +106,9 @@ neighbor model is used.
 		(DNA)
 			allsanpey (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default)
 		(RNA)
-			tur06 (from Turner et al. 2006)
-			zno07 (from Znosko et al. 2007)  (by default)
-			zno08 (from Znosko et al. 2008)
+			tur06 (from Lu et al. 2006)
+			zno07 (from Davis et al. 2007)  (by default)
+			zno08 (from Davis et al. 2008)
 
 	To change the file containing the thermodynamic parameters for single mismatch computation, the same syntax as the one for the -nn option is used.
 
@@ -121,17 +121,17 @@ neighbor model is used.
 		(DNA)
 			allsanpey (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default)
 		(RNA)
-			tur99 (from Turner et al. 1999)  (by default)
+			tur99 (from Mathews et al. 1999)  (by default)
 
 	To change the file containing the thermodynamic parameters for tandem mismatches computation, the same syntax as the one for the -nn option is used. 
 
 -intLP [name]
 	Forces to use a specific nearest neighbor model for internal loop in the sequences. You can use one of the following :
 		(DNA)
-			san04 (from Santalucia 2004)  (by default)
+			san04 (from Hicks and Santalucia 2004)  (by default)
 		(RNA)
-			tur06 (from Turner et al. 2006)  (by default)
-			zno07 (from Znosko et al. 2007, only for 1x2 loop)
+			tur06 (from Lu et al. 2006)  (by default)
+			zno07 (from Badhwarr et al. 2007, only for 1x2 loop)
 
 	To change the file containing the thermodynamic parameters for internal loop computation, the same syntax as the one for the -nn option is used.
 
@@ -139,68 +139,68 @@ neighbor model is used.
 	Forces to use a specific nearest neighbor model for single dangling end(s) in the sequences. You can use one of the following :
 		(DNA)
 			bom00 (from Bommarito et al. 2000)  (by default)
-			sugdna02 (from Sugimoto et al. 2002, only for polyA dangling ends)
+			sugdna02 (from Ohmichi et al. 2002, only for polyA dangling ends)
 		(RNA)
-			sugrna02 (from Sugimoto et al. 2002, only for polyA dangling ends)
-			ser08 (from Serra et al. 2008)  (by default)
+			sugrna02 (from Ohmichi et al. 2002, only for polyA dangling ends)
+			ser08 (from Miller et al. 2008)  (by default)
 
 	To change the file containing the thermodynamic parameters for single dangling end computation, the same syntax as the one for the -nn option is used. 
 
 -secDE [name]
 	Forces to use a specific nearest neighbor model for second dangling end(s) in the sequences. You can use one of the following :
 		(DNA)
-			sugdna02 (from Sugimoto et al. 2002, only for polyA dangling ends)  (by default)
+			sugdna02 (from Ohmichi et al. 2002, only for polyA dangling ends)  (by default)
 		(RNA)
-			sugrna02 (from Sugimoto et al. 2002, only for polyA dangling ends)
-			ser05 (from Serra et al. 2005)
-			ser06 (from Serra et al. 2006)  (by default)
+			sugrna02 (from Ohmichi et al. 2002, only for polyA dangling ends)
+			ser05 (from O'toole et al. 2005)
+			ser06 (from O'toole et al. 2006)  (by default)
 
 	To change the file containing the thermodynamic parameters for second dangling end computation, the same syntax as the one for the -nn option is used. 
 
 -lonDE [name]
 	Forces to use a specific nearest neighbor model for long dangling end(s) in the sequences (self complementary sequences). You can use one of the following :
 		(DNA)
-			sugdna02 (from Sugimoto et al. 2002, only for polyA dangling ends)  (by default)
+			sugdna02 (from Ohmichi et al. 2002, only for polyA dangling ends)  (by default)
 		(RNA)
-			sugrna02 (from Sugimoto et al. 2002, only for polyA dangling ends)  (by default)
+			sugrna02 (from Ohmichi et al. 2002, only for polyA dangling ends)  (by default)
 
 	To change the file containing the thermodynamic parameters for long dangling end computation, the same syntax as the one for the -nn option is used. 
 
 -sinBU [name]
 	Forces to use a specific nearest neighbor model for single bulge loop(s) in the sequences. You can use one of the following :
 		(DNA)
-			san04 (from Santalucia 2004)
+			san04 (from Hicks and Santalucia 2004)
 			tan04 (from Tanaka et al. 2004)  (by default)
 		(RNA)
-			ser07 (from Serra et al. 2007)
-			tur06 (from Turner et al. 1999 and 2006)  (by default)
+			ser07 (from Blose et al. 2007)
+			tur06 (from Lu et al. 1999 and 2006)  (by default)
 
 	To change the file containing the thermodynamic parameters for single bulge loop computation, the same syntax as the one for the -nn option is used. 
 
 -lonBU [name]
 	Forces to use a specific nearest neighbor model for long bulge loop(s) in the sequences. You can use one of the following :
 		(DNA) 
-			san04 (from Santalucia 2004)  (by default)
+			san04 (from Hicks and Santalucia 2004)  (by default)
 		(RNA)
-			tur06 (from Turner et al. 1999 and 2006)  (by default)
+			tur06 (from Mathews et al. 1999 and Lu et al 2006)  (by default)
 			
 	To change the file containing the thermodynamic parameters for long bulge loop computation, the same syntax as the one for the -nn option is used. 
 
 -CNG [name]
-	Forces to use a specific nearest neighbor model for RNA sequences composed of CNG repeats (G(CNG)xC where N is a single N/N mismatch). You can only use bro05 (from Broda et al. 2005).
+	Forces to use a specific nearest neighbor model for RNA sequences composed of CNG repeats (G(CNG)xC where N is a single N/N mismatch). You can only use bro05 (from Magdalena et al. 2005).
 	To change the file containing the thermodynamic parameters for RNA sequences composed of CNG repeats computation, the same syntax as the one for the -nn option is used. 
 
 -ino [name]
 	Forces to use a specific nearest neighbor model for inosine base (I) in the sequences. You can use one of the following :
 		(DNA)
-			san05 (from Santalucia et al. 2005)  (by default)
+			san05 (from Watkins and Santalucia 2005)  (by default)
 		(RNA)
-			zno07 (from Znosco et al. 2007)  (by default)
+			zno07 (from Wright et al. 2007)  (by default)
 			
 	To change the file containing the thermodynamic parameters for inosine base computation, the same syntax as the one for the -nn option is used. 
 
 -ha [name]
-	Forces to use a specific nearest neighbor model for hydroxyadenine base (A*) in DNA sequences. You can only use sug01 (from Sugimoto et al. 2001).
+	Forces to use a specific nearest neighbor model for hydroxyadenine base (A*) in DNA sequences. You can only use sug01 (from Kawakami et al. 2001).
 	To change the file containing the thermodynamic parameters for hydroxyadenine base computation, the same syntax as the one for the -nn option is used. 
 
 -azo [name]
@@ -217,8 +217,8 @@ neighbor model is used.
 	Forces to use a specific ion correction. You can use one of the following corrections : 
 	Sodium corrections :
 		(DNA)
-			ahs01 (from Ahsen et al. 2001)
-			kam71 (from Frank Kamenetskii et al 2001)
+			ahs01 (from von Ahsen et al. 2001)
+			kam71 (from Frank-Kamenetskii et al 2001)
 			owc1904 (equation 19 from Owczarzy et al. 2004)
 			owc2004 (equation 20 from Owczarzy et al. 2004)
 			owc2104 (equation 21 from Owczarzy et al. 2004)
@@ -226,25 +226,25 @@ neighbor model is used.
 			san96 (from Santalucia et al. 1996)
 			san04 (from Santalucia et al. 1998, 2004)
 			schlif (from Schildkraut and Lifson 1965)
-			tanna06 (from Zhi-Jie Tan et al. 2006)
-			wetdna91 (from wetmur 1991)
+			tanna06 (from Tan et al. 2006)
+			wetdna91 (from Wetmur 1991)
 		(RNA or 2-o methyl RNA)
-			tanna07 (from Zhi-Jie Tan et al. 2007)  (by default)
-			wetrna91 (from wetmur 1991)
+			tanna07 (from Tan et al. 2007)  (by default)
+			wetrna91 (from Wetmur 1991)
 		(RNA/DNA)
-			wetdnarna91 (from wetmur 1991)  (by default)
+			wetdnarna91 (from Wetmur 1991)  (by default)
 	Magnesium corrections : 
 		(DNA)
 			owcmg08 (from Owczarzy et al. 2008)  (by default)
-			tanmg06 (from Zhi-Jie Tan et al. 2006)
+			tanmg06 (from Tan et al. 2006)
 		(RNA or 2-o methyl RNA)
-			tanmg07 (from Zhi-Jie Tan et al. 2007)  (by default)
+			tanmg07 (from Tan et al. 2007)  (by default)
 	Mixed Na Mg corrections
 		(DNA)
 			owcmix08 (from Owczarzy et al. 2008)  (by default)
-			tanmix07 (from Zhi-Jie Tan et al. 2007)
+			tanmix07 (from Tan et al. 2007)
 		(RNA or 2-o methyl RNA)
-			tanmix07 (from Zhi-Jie Tan et al. 2007)  (by default)
+			tanmix07 (from Tan et al. 2007)  (by default)
 
 	By default, the program use the algorithm from Owczarzy et al 2008 : ratio = Mg^0.5 and monovalent = Na + Tris + K
 		if monovalent = 0, a magnesium correction is used.
@@ -255,7 +255,7 @@ neighbor model is used.
 -naeq [name]
 	Forces to use a specific ion correction which gives a sodium equivalent concentration if other cations are present. You can use one of the following :
 		(DNA)
-			ahs01 (from Ahsen et al 2001)  (by default)
+			ahs01 (from von Ahsen et al 2001)  (by default)
 			mit96 (from Mitsuhashi et al. 1996)
 			pey00 (from Peyret 2000) 
 
@@ -264,7 +264,7 @@ neighbor model is used.
 -DMSO [name]
 	Forces to use a specific DMSO correction (DMSO is always in percent). You can use one of the following : 
 		(DNA)
-			ahs01 (from Ahsen et al 2001)  (by default)
+			ahs01 (from von Ahsen et al 2001)  (by default)
 			mus81 (from Musielski et al. 1981)
 			cul76 (from Cullen et al. 1976)
 			esc80 (from Escara et al. 1980). 
