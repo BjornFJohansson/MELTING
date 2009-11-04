@@ -14,7 +14,7 @@ public static void main(String[] args) {
 		//MainTest.displayResultsNaEq(DNASequences,  "dnadna");
 		
 		Properties DNANoSelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNANoSelfComplementary.txt");
-		Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNASelfComplementary.txt");
+		//Properties DNASelfComplementarySequences = MainTest.loadSequencesTest("src/examples/test/DNASelfComplementary.txt");
 		System.out.print("\n\n melting.sequences \t TmExp \t wet91 \n");
 		MainTest.displayResultsNaEq(DNANoSelfComplementarySequences,  "dnadna");
 	}
