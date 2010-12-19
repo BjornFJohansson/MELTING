@@ -88,7 +88,11 @@ public class Main {
 	
 		OptionManagement optionManager = new OptionManagement();
 		
-		if (optionManager.isMeltingInformationOption(args)){
+		if (args.length == 0){
+			optionManager.initialiseLogger();
+			optionManager.readMeltingHelp();
+		}
+		else if (optionManager.isMeltingInformationOption(args)){
 			try {
 				optionManager.readOptions(args);
 

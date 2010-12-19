@@ -1,6 +1,6 @@
 	MELTING 5 help
 		
-More information is available in the user-guide. Type `man melting to access it or consult one of the 
+More information is available in the user-guide. Type `man melting' to access it or consult one of the 
 melting.xxx files, where xxx states for ps (postscript), pdf or html.
 		
 	Information about MELTING 5 : 
