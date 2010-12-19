@@ -512,7 +512,7 @@ public class OptionManagement {
 	 * displays Melting help documentation.
 	 * If a FileNotFoundException or a IOException is caught, a FileException is thrown.
 	 */
-	private void readMeltingHelp(){
+	public void readMeltingHelp(){
 		try {
 			InputStream help = Main.class.getResourceAsStream("help.txt");
 			BufferedReader buffer = new BufferedReader(new InputStreamReader(help));
@@ -708,7 +708,7 @@ public class OptionManagement {
 	/**
 	 * initialises the meltingLogger.
 	 */
-	private void initialiseLogger(){
+	public void initialiseLogger(){
 		StreamHandler handler = new StreamHandler(System.out, new MeltingFormatter());
 		meltingLogger.setUseParentHandlers(false);
 		meltingLogger.addHandler(handler);
