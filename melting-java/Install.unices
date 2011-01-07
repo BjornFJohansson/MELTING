@@ -26,30 +26,82 @@
 #      Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk
 #*/
 
+
+default_prefix=/usr/local
+default_bindir='${prefix}/bin'
+default_mandir=/usr/share/man
+default_docdir='${prefix}/doc/MELTING'
+default_srcdir='${prefix}/MELTING/src'
+default_NNDIR='${prefix}/share/MELTING/Data'
+
+
+#get values from arguments
+while true
+do
+  case $# in 0) break ;; esac
+  case $1 in
+    --prefix) shift; prefix=$1; shift ;;
+    --bindir) shift; bindir=$1; shift ;;
+    --mandir) shift; mandir=$1 ;;
+    --docdir) shift; docdir=$1 ;;
+    --nndir) shift; NNDIR=$1 ;;
+    -h|--help) cat <<______EOF >&2; exit 0 ;;
+Available options:
+    --prefix directory (defaults to $default_prefix)
+    --bindir directory (defaults to $default_bindir)
+    --mandir directory (defaults to $default_mandir)
+    --docdir directory (defaults to $default_docdir)
+    --srcdir directory (defaults to $default_srcdir)
+    --nndir directory (defaults to $default_NNDIR)
+    --help
+______EOF
+    -*) cat <<______EOF >&2; exit 2 ;;
+Invalid option $1.  Try $0 --help to see available options.
+______EOF
+    *) break ;;
+  esac
+done
+
 # MUST EXIST
-prefix=/usr/local
-exec_prefix=${prefix}
+prefix=${prefix:="/usr/local"}
 # where to put the executables
-bindir=${exec_prefix}/bin
-mandir=/usr/share/man
-# MUST EXIST
-docdir=${prefix}/doc/MELTING
-srcdir=src
+bindir=${bindir:=${prefix}"/bin"}
+mandir=${mandir:="/usr/share/man"}
+docdir=${docdir:=${prefix}"/doc/MELTING"}
+srcdir=${srcdir:=${prefix}"/MELTING/src"}
 
 # where to find the files containing the sets of nearest_neighbor parameters. 
 # This one is to initialise the default value of melting. 
-NNDIR=${prefix}/share/MELTING/Data
+NNDIR=${NNDIR:=${prefix}"/share/MELTING/Data"}
 
+for d in $mandir $bindir $docdir $srcdir $NNDIR $mandir/man1 ; do
+  if [ -d $d ] && [ ! -w $d ] ; then
+    echo "Can't write to" $d": Permission denied" ; exit 2;
+  fi ;
+done
 
-cp executable/melting ${bindir}/
-cp executable/melting5.jar ${bindir}/
-cp doc/melting.1 ${mandir}/man1/melting.1
-if test -e ${prefix}/share/MELTING ; then echo '${prefix}/share/MELTING is already present'; else mkdir ${prefix}/share/MELTING; fi
-if test -e ${prefix}/share/MELTING/Data; then echo '${prefix}/share/MELTING/Data is already present'; else mkdir ${prefix}/share/MELTING/Data; fi
-cd Data
-cp * ${NNDIR}/
+for d in $mandir/man1 $bindir $docdir $srcdir $NNDIR ; do
+  mkdir -p $d || exit 2 ;
+done
+cp -f executable/melting ${bindir}/ || exit 2
+cp -f executable/melting5.jar ${bindir}/ || exit 2
+cp -f doc/melting.1 ${mandir}/man1 || exit 2
+cp -i Data/* ${NNDIR}/ || exit 2
+if [ $(id -u) -eq 0 ] ; then
+  profile=/etc/profile ;
+else if [ -f ~/.bash_profile ] ; then
+  profile=~/.bash_profile ;
+else 
+  profile=~/.profile ;
+fi
+fi
 
+echo "" >> $profile ;
+echo "export NNDIR="$NNDIR >> $profile ;
 
+export NNDIR
+echo "Don't forget to set environment variable NNDIR to" $NNDIR "in your current shell (it is however set in $profile for your convenience)"
+echo "MELTING successfully installed"
 
 
 
