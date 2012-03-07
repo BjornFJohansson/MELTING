@@ -1,3 +1,11 @@
+[07/03/2012]Marine Dumousseau (marine@ebi.ac.uk)
+	Updated the documentation. The factor F cannot be 2 when the oligonucleotides are not self complementary and
+	one strand is in excess. In this case, F should be 1.
+	version 5.0.5
+[07/01/2011]Marine Dumousseau (marine@ebi.ac.uk)
+	Changed the installation script
+	When melting is used without arguments, now displays the help
+	version 5.0.4
 [02/11/2009] Marine Dumousseau (marine@ebi.ac.uk)
 	Changed the MELTING 5 documentations (references and acknoledgement)
 	Changed the files in the testResults folder.
