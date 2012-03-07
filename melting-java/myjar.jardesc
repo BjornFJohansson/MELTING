@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="/home/compneur/workspace/melting-java/melting5.jar"/>
+    <jar path="melting-java/executable/melting5.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/melting-java/myjar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
@@ -11,8 +11,38 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.ionCorrection.mixedNaMgCorrections"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.approximativeMethods"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.ionCorrection"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.singleMismatch"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.tandemMismatches"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.handlers"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;examples.test"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.longBulge"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.methodInterfaces"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.otherCorrections"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.ionCorrection.sodiumEquivalence"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.ionCorrection.magnesiumCorrections"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.wobble"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.longDanglingEnds"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.exceptions"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.singleDanglingEnds"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.cricksPair"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.configuration"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.sequences"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.nearestNeighborModel"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.cngPatterns"/>
         <folder path="/melting-java/javadoc"/>
-        <javaElement handleIdentifier="=melting-java/src"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.otherCorrections.formamideCorrections"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.specificAcids"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.otherCorrections.dmsoCorrections"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.correctionMethods"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;examples"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.singleBulge"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.secondDanglingEnds"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels.InternalLoops"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.patternModels"/>
+        <javaElement handleIdentifier="=melting-java/src&lt;melting.ionCorrection.sodiumCorrections"/>
     </selectedElements>
-    <fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
 </jardesc>
