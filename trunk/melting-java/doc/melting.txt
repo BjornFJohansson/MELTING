@@ -181,7 +181,7 @@ to see if you can get something interesting).
  \item [\textbf{-F} \textit{factor}  ]\mbox{}\\
   This is the correction factor used to modulate the effect of the nucleic acid concentration in the computation of the melting temperature. 
   See section ALGORITHM for details. If the sequences are automatically recognized as self complementary sequences or if the option \textbf{-self}
-  is used, the factor correction is automatically 1. Otherwise F is 4 if the both strands are present in equivalent amount and 2 if one strand is in excess. 
+  is used, the factor correction is automatically 1. Otherwise F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. 
   The default factor value is 4.
 \end{description}
 
