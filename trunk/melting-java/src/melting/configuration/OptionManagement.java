@@ -16,6 +16,7 @@
 package melting.configuration;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -259,7 +260,7 @@ public class OptionManagement {
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
 	 * the thermodynamic parameters.)
 	 */
-	public static String dataPathwayValue = (System.getenv("NN_PATH") != null)?System.getenv("NN_PATH"):"Data";
+	public static String dataPathwayValue = (System.getenv("NN_PATH") != null)?System.getenv("NN_PATH"):".."+File.pathSeparator+"Data";
 	
 	/**
 	 * int thresholdValue : the threshold value. It is the maximum oligonucleotides length for which we
