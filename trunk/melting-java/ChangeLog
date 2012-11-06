@@ -1,3 +1,6 @@
+[06/11/2012]Marine Dumousseau (marine@ebi.ac.uk)
+	Fix default path to NN files
+	version 5.0.6
 [07/03/2012]Marine Dumousseau (marine@ebi.ac.uk)
 	Updated the documentation. The factor F cannot be 2 when the oligonucleotides are not self complementary and
 	one strand is in excess. In this case, F should be 1.
