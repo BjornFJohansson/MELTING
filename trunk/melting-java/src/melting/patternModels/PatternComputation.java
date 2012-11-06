@@ -82,7 +82,7 @@ public abstract class PatternComputation implements PatternComputationMethod{
 	
 	public void loadFile(String name, DataCollect collector){
 
-		File dataFile = new File(OptionManagement.dataPathwayValue + File.pathSeparator + name);
+		File dataFile = new File(OptionManagement.dataPathwayValue + File.separatorChar + name);
 		try {
 			collector.addData(FileReader.readFile(dataFile));
 
