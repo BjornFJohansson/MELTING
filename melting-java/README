@@ -47,7 +47,8 @@ variable in order to use the programme wherever you are. The environment
 variable NN_PATH can be set to the directory containing your personal 
 nearest-neighbor parameters. For instance in the bash:
 
-export NN_PATH=$HOME/LIB/MELTING/Data
+export NN_PATH=$HOME/LIB/MELTING/Data (UNIX)
+set NN_PATH=%USERPROFILE%/MELTING/Data (WINDOWS)
 
 In a graphical environment you can also launch melting by clicking on an 
 icon linked to the program (the command-line options can then be entered 
