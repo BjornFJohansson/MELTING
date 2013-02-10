@@ -123,8 +123,8 @@
                 <entropy>10.4</entropy>
 			</dangling>				
 			<dangling sequence="GA/C" sens="3">
-               	<enthalpy>4700.0</enthalpy>
-                <entropy>12.9</entropy>
+               	<enthalpy>-2100.0</enthalpy>
+                <entropy>-3.9</entropy>
 	    	</dangling>
 	    	<dangling sequence="GC/C" sens="3">
 	        	<enthalpy>-200.0</enthalpy>

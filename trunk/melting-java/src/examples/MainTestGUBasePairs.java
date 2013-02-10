@@ -26,13 +26,15 @@ public class MainTestGUBasePairs {
 	public static void main(String[] args) {
 		ArrayList<String> GUmethods = new ArrayList<String>();
 		GUmethods.add("tur99");
+        GUmethods.add("ser12");
 		
 		Properties GUSequences = MainTest.loadSequencesTest("src/examples/test/RNAGUSequences.txt");
-		
-		System.out.print("\n\n melting.sequences \t TmExp \t tur99 \n");
+
+        System.out.print("\n\n melting.sequences \t TmExp \t tur99 \t ser12 \n");
 
 		MainTest.displayResultsWithComplementarySequence(GUSequences, GUmethods, "rnarna", "Na=1", "0.0001", "-GU");
-		
-	}
+
+
+    }
 
 }

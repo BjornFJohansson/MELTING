@@ -15,22 +15,6 @@
 
 package melting.configuration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
-
 import melting.Environment;
 import melting.Helper;
 import melting.Main;
@@ -40,6 +24,13 @@ import melting.exceptions.NoExistingOutputFileException;
 import melting.exceptions.OptionSyntaxError;
 import melting.sequences.BasePair;
 import melting.sequences.NucleotidSequences;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.*;
 
 /**
  * This class contains all the methods necessary to manage the options entered by the user.
@@ -254,7 +245,7 @@ public class OptionManagement {
 	/**
 	 * String version : current Melting version number.
 	 */
-	private static final String version = "5.0.6";
+	private static final String version = "5.1.0";
 	
 	/**
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
@@ -389,7 +380,7 @@ public class OptionManagement {
 	private void initialiseRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "xia98");
 		this.RNADefaultOptions.put(singleMismatchMethod, "zno07");
-		this.RNADefaultOptions.put(wobbleBaseMethod, "tur99");
+		this.RNADefaultOptions.put(wobbleBaseMethod, "ser12");
 		this.RNADefaultOptions.put(tandemMismatchMethod, "tur06");
 		this.RNADefaultOptions.put(internalLoopMethod, "tur06");
 		this.RNADefaultOptions.put(singleBulgeLoopMethod, "tur06");

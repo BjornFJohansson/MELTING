@@ -15,20 +15,10 @@
 
 package melting.configuration;
 
-import java.util.HashMap;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
-import melting.approximativeMethods.Ahsen01;
-import melting.approximativeMethods.ApproximativeMode;
-import melting.approximativeMethods.MarmurChester62_93;
-import melting.approximativeMethods.MarmurSchildkrautDoty;
-import melting.approximativeMethods.Owen69;
-import melting.approximativeMethods.Santalucia98;
-import melting.approximativeMethods.WetmurDNA91;
-import melting.approximativeMethods.WetmurDNARNA91;
-import melting.approximativeMethods.WetmurRNA91;
+import melting.approximativeMethods.*;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
@@ -36,24 +26,12 @@ import melting.ionCorrection.magnesiumCorrections.Tan06MagnesiumCorrection;
 import melting.ionCorrection.magnesiumCorrections.Tan07MagnesiumCorrection;
 import melting.ionCorrection.mixedNaMgCorrections.Owczarzy08MixedNaMgCorrection;
 import melting.ionCorrection.mixedNaMgCorrections.Tan07MixedNaMgCorrection;
-import melting.ionCorrection.sodiumCorrections.Ahsen01SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.FrankKamenetskii71SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.MarmurSchildkrautDoty98_62SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection19;
-import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection20;
-import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection21;
-import melting.ionCorrection.sodiumCorrections.Owczarzy04SodiumCorrection22;
-import melting.ionCorrection.sodiumCorrections.Santalucia96SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.Santalucia98_04SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.SchildkrautLifson65SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.Tan06SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.Tan07SodiumCorrection;
-import melting.ionCorrection.sodiumCorrections.Wetmur91SodiumCorrection;
+import melting.ionCorrection.sodiumCorrections.*;
 import melting.ionCorrection.sodiumEquivalence.Ahsen01_NaEquivalent;
 import melting.ionCorrection.sodiumEquivalence.Mitsuhashi96NaEquivalent;
 import melting.ionCorrection.sodiumEquivalence.Peyret00_NaEquivalent;
-import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.methodInterfaces.SodiumEquivalentMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
@@ -67,16 +45,7 @@ import melting.patternModels.InternalLoops.Santalucia04InternalLoop;
 import melting.patternModels.InternalLoops.Turner06InternalLoop;
 import melting.patternModels.InternalLoops.Znosko071x2Loop;
 import melting.patternModels.cngPatterns.Broda05CNGRepeats;
-import melting.patternModels.cricksPair.AllawiSantalucia97;
-import melting.patternModels.cricksPair.Breslauer86;
-import melting.patternModels.cricksPair.Freier86;
-import melting.patternModels.cricksPair.Santalucia04;
-import melting.patternModels.cricksPair.Santalucia96;
-import melting.patternModels.cricksPair.Sugimoto95;
-import melting.patternModels.cricksPair.Sugimoto96;
-import melting.patternModels.cricksPair.Tanaka04;
-import melting.patternModels.cricksPair.Turner06;
-import melting.patternModels.cricksPair.Xia98;
+import melting.patternModels.cricksPair.*;
 import melting.patternModels.longBulge.Santalucia04LongBulgeLoop;
 import melting.patternModels.longBulge.Turner99_06LongBulgeLoop;
 import melting.patternModels.longDanglingEnds.Sugimoto02DNADanglingEnd;
@@ -99,8 +68,11 @@ import melting.patternModels.specificAcids.Sugimoto01Hydroxyadenine;
 import melting.patternModels.tandemMismatches.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.patternModels.tandemMismatches.Turner99_06tanmm;
 import melting.patternModels.wobble.Santalucia05Inosine;
+import melting.patternModels.wobble.Serra12Wobble;
 import melting.patternModels.wobble.Turner99Wobble;
 import melting.patternModels.wobble.Znosko07Inosine;
+
+import java.util.HashMap;
 
 /**
  * This class registers all the methods and models implemented by Melting.
@@ -329,6 +301,7 @@ public class RegisterMethods {
 	 */
 	private void initialiseWobbleMismatchMethods(){
 		wobbleMethod.put("tur99", Turner99Wobble.class);
+        wobbleMethod.put("ser12", Serra12Wobble.class);
 	}
 	
 	/**

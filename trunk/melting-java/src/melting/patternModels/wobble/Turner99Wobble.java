@@ -15,15 +15,14 @@
 
 package melting.patternModels.wobble;
 
-import java.util.logging.Level;
-
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+
+import java.util.logging.Level;
 
 /**
  * This class represents the GU base pair model tur99. It extends PatternComputation.
@@ -55,48 +54,53 @@ public class Turner99Wobble extends PatternComputation{
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength(), sequences);
-		pos1 = positions[0];
-		pos2 = positions[1];
-		
-		NucleotidSequences newSequence = sequences.getEquivalentSequences("rna");
 		
 		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Turner et al. (1999) : ");
 		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
 
-		double enthalpy = result.getEnthalpy();
-		double entropy = result.getEntropy();
-		
-		Thermodynamics mismatchValue;
-		String closing = "not_G/C";
-		
-		if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence(pos1,pos2).equals("GGUC") && newSequence.getComplementary(pos1,pos2).equals("CUGG")){
-			closing = "G/C";
-			mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(pos1, pos2), newSequence.getComplementary(pos1, pos2), closing);
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
-			
-			enthalpy += mismatchValue.getEnthalpy();
-			entropy += mismatchValue.getEntropy(); 
-		}
-		else{
-			for (int i = pos1; i < pos2; i++){
-				if (newSequence.getSequenceNNPair(i).equals("GU") && newSequence.getComplementaryNNPair(i).equals("UG")){
-					mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i), closing);
-				}
-				else {
-					mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
-				}
-				OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
-				
-				enthalpy += mismatchValue.getEnthalpy();
-				entropy += mismatchValue.getEntropy(); 
-			}
-		}
-		
-		result.setEnthalpy(enthalpy);
-		result.setEntropy(entropy);
-		return result;
+		return getGUThermoResult(sequences, pos1, pos2, result);
 	}
+
+    protected ThermoResult getGUThermoResult(NucleotidSequences sequences, int pos1, int pos2, ThermoResult result) {
+        int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength(), sequences);
+        pos1 = positions[0];
+        pos2 = positions[1];
+
+        NucleotidSequences newSequence = sequences.getEquivalentSequences("rna");
+
+        double enthalpy = result.getEnthalpy();
+        double entropy = result.getEntropy();
+
+        Thermodynamics mismatchValue;
+        String closing = "not_G/C";
+
+        if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence(pos1,pos2).equals("GGUC") && newSequence.getComplementary(pos1,pos2).equals("CUGG")){
+            closing = "G/C";
+            mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(pos1, pos2), newSequence.getComplementary(pos1, pos2), closing);
+            OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+
+            enthalpy += mismatchValue.getEnthalpy();
+            entropy += mismatchValue.getEntropy();
+        }
+        else{
+            for (int i = pos1; i < pos2; i++){
+                if (newSequence.getSequenceNNPair(i).equals("GU") && newSequence.getComplementaryNNPair(i).equals("UG")){
+                    mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i), closing);
+                }
+                else {
+                    mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
+                }
+                OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+
+                enthalpy += mismatchValue.getEnthalpy();
+                entropy += mismatchValue.getEntropy();
+            }
+        }
+
+        result.setEnthalpy(enthalpy);
+        result.setEntropy(entropy);
+        return result;
+    }
 
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
