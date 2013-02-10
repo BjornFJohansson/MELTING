@@ -115,4 +115,6 @@ Zhi John Lu, Douglas H. Turner and David H. Mathews (2006). A set of nearest nei
 
 SantaLucia  J., Hicks Donald (2004) The Thermodynamics of DNA structural motifs. \textit{Annu. Rev. Biophys. Struct} 33: 415-440 
   
- ********************Wetmur J.G. (1991) DNA probes: applications of the principles of nucleic acid hybridization. \textit{Crit Rev Biochem Mol Biol} 26: 227-259   
+ ********************Wetmur J.G. (1991) DNA probes: applications of the principles of nucleic acid hybridization. \textit{Crit Rev Biochem Mol Biol} 26: 227-259
+
+ Jonathan L. Chen,† Abigael L. Dishler, Scott D. Kennedy, Ilyas Yildirim, Biao Liu, Douglas H. Turner and Martin J. Serra (2012), Testing the Nearest Neighbor Model for Canonical RNA Base Pairs: Revision of GU Parameters. \textit{Biochemistry} 51: 3508–3522.

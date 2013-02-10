@@ -308,7 +308,8 @@ neighbor model is used.
   
   \textsc{RNA duplexes}
     \begin{itemize}
-    \item [\textit{tur99}] (from Mathews et al. 1999) (by default)		 		 
+    \item [\textit{tur99}] (from Mathews et al. 1999)
+    \item [\textit{ser12}] (from Serra et al. 2012) (by default)
     \end{itemize}
   To change the file containing the thermodynamic parameters for GU base pair computation, the same syntax as the one for the \textbf{-nn} option is used.
   GU base pairs are not taken into account by the approximative mode.
@@ -1229,6 +1230,11 @@ For further information, see the referenced articles.
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \textbf{tur99} & RNA & Mathiews et al (1999) \\
  & & J.Mol.Biol.  288: 911-940 \\
+\hline
+\hline
+\textbf{model} & \textbf{limits} & \textbf{Article} \\
+\textbf{ser12} & RNA & Serra et al (2012) \\
+ & & Biochemistry  51: 3508–3522 \\
 \hline
 \end{tabular}
 \end{table}
@@ -2546,6 +2552,7 @@ along with this program; if not, write to the Free Software Foundation,
 Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA   
    
 \section{Acknowledgements}
+Thanks to Richard Owczarzy for reporting typos in several thermodynamic parameters and reporting new public parameters.
 Nicolas Joly is an efficient and kind debugger and advisor. Catherine
 Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
 Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee Hong, Ivano
