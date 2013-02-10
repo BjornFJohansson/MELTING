@@ -96,8 +96,8 @@
 				<entropy>5.3</entropy>
 			</dangling>
 			<dangling sequence="CG/U" sens="5">
-				<enthalpy>-500.0</enthalpy>
-				<entropy>-1.6</entropy>
+				<enthalpy>500.0</enthalpy>
+				<entropy>1.6</entropy>
 			</dangling>
 			<dangling sequence="GG/U" sens="5">
 				<enthalpy>-600.0</enthalpy>
