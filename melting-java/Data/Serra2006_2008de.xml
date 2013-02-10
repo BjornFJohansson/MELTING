@@ -76,35 +76,35 @@
 				<entropy>-5.4</entropy>
 			</dangling>			
 			<dangling sequence="AU/G" sens="5">
-				<enthalpy>-2800.0</enthalpy>
-				<entropy>-9.7</entropy>
+				<enthalpy>2800.0</enthalpy>
+				<entropy>9.7</entropy>
 			</dangling>
 			<dangling sequence="CU/G" sens="5">
-				<enthalpy>-400.0</enthalpy>
-				<entropy>-4.6</entropy>
+				<enthalpy>400.0</enthalpy>
+				<entropy>4.6</entropy>
 			</dangling>
 			<dangling sequence="GU/G" sens="5">
-				<enthalpy>-1400.0</enthalpy>
-				<entropy>-5.3</entropy>
+				<enthalpy>1400.0</enthalpy>
+				<entropy>5.3</entropy>
 			</dangling>
 			<dangling sequence="UU/G" sens="5">
-				<enthalpy>-4300.0</enthalpy>
-				<entropy>-14.0</entropy>
+				<enthalpy>4300.0</enthalpy>
+				<entropy>14.0</entropy>
 			</dangling>			
 			<dangling sequence="AG/U" sens="5">
-				<enthalpy>-1600.0</enthalpy>
-				<entropy>-5.3</entropy>
+				<enthalpy>1600.0</enthalpy>
+				<entropy>5.3</entropy>
 			</dangling>
 			<dangling sequence="CG/U" sens="5">
 				<enthalpy>-500.0</enthalpy>
 				<entropy>-1.6</entropy>
 			</dangling>
 			<dangling sequence="GG/U" sens="5">
-				<enthalpy>600.0</enthalpy>
-				<entropy>1.7</entropy>
+				<enthalpy>-600.0</enthalpy>
+				<entropy>-1.7</entropy>
 			</dangling>
 			<dangling sequence="UG/U" sens="5">
-				<enthalpy>-2200.0</enthalpy>
-				<entropy>-6.8</entropy>
+				<enthalpy>2200.0</enthalpy>
+				<entropy>6.8</entropy>
 			</dangling>
 		</data>
