@@ -112,7 +112,7 @@ public class Turner99Wobble extends PatternComputation{
             }
 		}
         if (pos2 == sequences.getDuplexLength() -1){
-            BasePair lastTerminalBasePair = sequences.getDuplex().get(pos1);
+            BasePair lastTerminalBasePair = sequences.getDuplex().get(pos2);
 
             if (lastTerminalBasePair.isBasePairEqualTo("G", "U")){
                 Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
