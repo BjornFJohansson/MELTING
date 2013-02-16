@@ -81,7 +81,7 @@
 			</dangling>
 			<dangling sequence="CU/G" sens="5">
 				<enthalpy>400.0</enthalpy>
-				<entropy>4.6</entropy>
+				<entropy>2.3</entropy>
 			</dangling>
 			<dangling sequence="GU/G" sens="5">
 				<enthalpy>1400.0</enthalpy>
