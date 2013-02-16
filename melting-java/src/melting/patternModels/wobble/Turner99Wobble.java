@@ -96,6 +96,22 @@ public class Turner99Wobble extends PatternComputation{
                 entropy += mismatchValue.getEntropy();
             }
         }
+        
+        // add terminal GU penalty
+		int [] truncatedPositions = sequences.removeTerminalUnpairedNucleotides();
+
+		if (pos1 == truncatedPositions[0] || pos2 == truncatedPositions[1]){
+            double numberTerminalGU = sequences.calculateNumberOfTerminal("G", "U", truncatedPositions[0], truncatedPositions[1]);
+
+            if (numberTerminalGU != 0){
+                Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
+
+                OptionManagement.meltingLogger.log(Level.FINE, "\n " + numberTerminalGU + " x Initiation per G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
+
+                enthalpy += numberTerminalGU * initiationGU.getEnthalpy();
+                entropy += numberTerminalGU * initiationGU.getEntropy();
+            }
+		}
 
         result.setEnthalpy(enthalpy);
         result.setEntropy(entropy);
@@ -135,7 +151,15 @@ public class Turner99Wobble extends PatternComputation{
 				}
 			}
 		}
-		return super.isMissingParameters(newSequences, pos1, pos2);
+
+        int [] truncatedPositions = sequences.removeTerminalUnpairedNucleotides();
+        double numberTerminalGU = sequences.calculateNumberOfTerminal("G", "U", truncatedPositions[0], truncatedPositions[1]);
+
+        if (numberTerminalGU > 0 && this.collector.getTerminal("per_G/U") == null){
+            OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for terminal GU is missing. Check the parameters for wobble base pairs.");
+            return true;
+        }
+        return super.isMissingParameters(newSequences, pos1, pos2);
 	}
 	
 	@Override

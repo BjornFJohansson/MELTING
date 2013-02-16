@@ -15,10 +15,6 @@
 
 package melting.nearestNeighborModel;
 
-import java.util.HashMap;
-import java.util.logging.Level;
-
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
@@ -26,11 +22,14 @@ import melting.configuration.RegisterMethods;
 import melting.exceptions.MethodNotApplicableException;
 import melting.exceptions.NoExistingMethodException;
 import melting.exceptions.SequenceException;
-import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.cricksPair.CricksNNMethod;
 import melting.sequences.SpecificAcidNames;
+
+import java.util.HashMap;
+import java.util.logging.Level;
 
 /**
  * This class represents the nearest neighbor model. It implements the MelitngComputationMethod Interface
@@ -328,6 +327,12 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				else {
 					throw new SequenceException("\n We don't recognize the structure " + environment.getSequences().getSequence(positions[0], positions[1]) + "/" + environment.getSequences().getComplementary(positions[0], positions[1]));
 				}
+			}
+			else if (environment.getSequences().isGUSequences(positions[0], positions[1])){
+				if (this.wobbleMethod == null){
+					initialiseWobbleMethod();
+				}
+				return this.wobbleMethod;
 			}
 		else if (environment.getSequences().isMismatchPair(positions[0]) || environment.getSequences().isMismatchPair(positions[1])){
 			throw new NoExistingMethodException("\n No method for terminal mismatches has been implemented yet.");
