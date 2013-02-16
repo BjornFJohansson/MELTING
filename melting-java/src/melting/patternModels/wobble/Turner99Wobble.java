@@ -20,6 +20,7 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
+import melting.sequences.BasePair;
 import melting.sequences.NucleotidSequences;
 
 import java.util.logging.Level;
@@ -98,20 +99,30 @@ public class Turner99Wobble extends PatternComputation{
         }
         
         // add terminal GU penalty
-		int [] truncatedPositions = sequences.removeTerminalUnpairedNucleotides();
+		if (pos1 == 0){
+            BasePair firstTerminalBasePair = sequences.getDuplex().get(pos1);
 
-		if (pos1 == truncatedPositions[0] || pos2 == truncatedPositions[1]){
-            double numberTerminalGU = sequences.calculateNumberOfTerminal("G", "U", truncatedPositions[0], truncatedPositions[1]);
-
-            if (numberTerminalGU != 0){
+            if (firstTerminalBasePair.isBasePairEqualTo("G", "U")){
                 Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
 
-                OptionManagement.meltingLogger.log(Level.FINE, "\n " + numberTerminalGU + " x Initiation per G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
+                OptionManagement.meltingLogger.log(Level.FINE, "\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
 
-                enthalpy += numberTerminalGU * initiationGU.getEnthalpy();
-                entropy += numberTerminalGU * initiationGU.getEntropy();
+                enthalpy += initiationGU.getEnthalpy();
+                entropy += initiationGU.getEntropy();
             }
 		}
+        if (pos2 == sequences.getDuplexLength() -1){
+            BasePair lastTerminalBasePair = sequences.getDuplex().get(pos1);
+
+            if (lastTerminalBasePair.isBasePairEqualTo("G", "U")){
+                Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
+
+                OptionManagement.meltingLogger.log(Level.FINE, "\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
+
+                enthalpy += initiationGU.getEnthalpy();
+                entropy += initiationGU.getEntropy();
+            }
+        }
 
         result.setEnthalpy(enthalpy);
         result.setEntropy(entropy);
