@@ -5,7 +5,7 @@ eval '(exit $?0)' && eval 'exec perl -S $0 ${1+ "$@"}' && eval 'exec perl -S $0 
 # This program   computes for a nucleotide probe, the enthalpie, the entropy #
 # of the helix-coil transition, and then its melting temperature.            #
 # Three types of hybridisation are possible: DNA/DNA, DNA/RNA, and RNA/RNA.  #
-#         Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2009   #
+#         Copyright (C) Nicolas Le Novère and Marine Dumousseau 1997-2013    #
 ##############################################################################
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -21,9 +21,15 @@ eval '(exit $?0)' && eval 'exec perl -S $0 ${1+ "$@"}' && eval 'exec perl -S $0 
 #     along with this program; if not, write to the Free Software
 #     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA#
 #
-#     Nicolas Le Novere and Marine Dumousseau
-#     Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
-#     Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk  
+#     Nicolas Le Novere
+#     Babraham Institute, Babraham Research Campus
+#     Babraham CB22 3AT Cambridge United-Kingdom.
+#     n.lenovere@gmail.com
+#      
+#     Marine Dumousseau
+#     EMBL-EBI, Wellcome-Trust Genome Campus
+#     Hinxton CB10 1SD Cambridge United-Kingdom. 
+#     marine@ebi.ac.uk  
 
 
 use strict;
@@ -272,7 +278,7 @@ $saltCorrFrame->Label(-text => "[salt] correction <option -K> (if only Na+ are p
 		      )->pack(-side => 'left'
 			      );
 
-foreach (qw(san98a san96a wet91a)){
+foreach (qw(san98a san96a wet91a owc08)){ # added explicit Owc salt correction (MP)
     $saltCorrFrame->Radiobutton(-text        => $_, 
 				-value       => $_, 
 				-variable    => \$Korrection,
@@ -481,19 +487,21 @@ sub compute {
     $type =~ s!/!!;
     $type =~ tr/A-Z/a-z/;
     $options = "-H$type";
+    if ($Korrection ne "owc08"){
+    	$options.=" -K$Korrection";} # pass salt correction method to command line (MP)
 
     if ($altNN ne ""){
 	$options.=" -A$altNN";
     }
     
-    if ($sequence =~ /[^agctu-]/i or $sequence eq ""){
-	message("error","error","The sequence is empty or contains one or more illegal digits. The only legal digits are a,A,c,C,g,G,t,T,u,U");
+    if ($sequence =~ /[^agctui-]/i or $sequence eq ""){ # allow inosine (MP)
+	message("error","error","The sequence is empty or contains one or more illegal digits. The only legal digits are a,A,c,C,g,G,i,I,t,T,u,U");
 	return;
     } else {$options.=" -S$sequence";}
     
     if ($complement ne ""){
-	if ($complement =~ /[^agctu-]/i){
-	    message("error","error","The complementary sequence contains one or more illegal digits. The only legal digits are a,A,c,C,g,G,t,T,u,U");
+	if ($complement =~ /[^agctui-]/i){ # allow inosine (MP)
+	    message("error","error","The complementary sequence contains one or more illegal digits. The only legal digits are a,A,c,C,g,G,i,I,t,T,u,U");
 	    return;
 	} elsif (length $sequence != length $complement){
 	    message("error","error","The sequence and its complement have different length");
@@ -514,17 +522,17 @@ sub compute {
     if ($potassium < 0){
 	message("error","error","The concentration of potassium must be positive.");
 	return;
-    } else {$options.=" -k$potassium";}
+    } elsif ($potassium > 0) {$options.=" -k$potassium";} # Check for non-zero before passing to command line (MP)
     
     if ($tris < 0){
 	message("error","error","The concentration of tris must be positive.");
 	return;
-    } else {$options.=" -t$tris";}
+    } elsif ($tris > 0){$options.=" -t$tris";}  # Check for non-zero before passing to command line (MP)
     
     if ($magnesium < 0){
 	message("error","error","The concentration of magnesium must be positive.");
 	return;
-    } else {$options.=" -G$magnesium";}
+    } elsif ($magnesium > 0 or $Korrection eq "owc08") {$options.=" -G$magnesium";}  # Check for non-zero before passing to command line. Also force Owc by passing magnesium even if zero (MP)
     
     if ($factor ne "" and $factor ne "default"){
 	if ($factor =~ /\D/){
