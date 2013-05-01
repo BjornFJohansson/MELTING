@@ -25,9 +25,15 @@
       along with this program; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-      Nicolas Le Novère and Marine Dumousseau 
-      Computational Neurobiology, EMBL-EBI, Wellcome-Trust Genome Campus
-      Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk  
+      Nicolas Le Novère
+      Babraham Institute, Babraham Research Campus
+      Babraham CB22 3AT Cambridge United-Kingdom.
+      n.lenovere@gmail.com
+       
+      Marine Dumousseau
+      EMBL-EBI, Wellcome-Trust Genome Campus
+      Hinxton CB10 1SD Cambridge United-Kingdom. 
+      marine@ebi.ac.uk  
 
 */
 
