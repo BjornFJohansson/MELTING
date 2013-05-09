@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{times}
 \usepackage{mathtime}
@@ -25,11 +25,16 @@ open-source. In addition it is coded in ISO C and can be compiled on any
 operating system. Some perl scripts are provided to show how melting can be used
 as a block to construct more ambitious programs.
 
-If you use \textsc{melting}, please quote
+If you use \textsc{melting}, please quote one of:
 
 \begin{quote}
-  Le Nov\`ere. \textsc{melting}, a free tool to compute the
+  Le Nov\`ere N (2001) \textsc{melting}, a free tool to compute the
     melting temperature of nucleic acid duplex. \emph{Bioinformatics}, 17: 1226-1227. 
+\end{quote}
+
+\begin{quote}
+ Dumousseau M, Rodriguez N, Juty N, Le Nov\`e{}re N (2012) \textsc{melting}, a flexible platform to predict the melting temperatures of nucleic acids. 
+\emph{BMC Bioinformatics}, 13:101.
 \end{quote}
 
 \section{Options }
@@ -268,7 +273,7 @@ account.
 \Delta H {\mbox{\texttt{A}} \choose \mbox{\texttt{T}} }_\mathrm{init} \\ +
 \Delta H {\mbox{\texttt{GC}} \choose \mbox{\texttt{CG}} } +
 \Delta H {\mbox{\texttt{CG}} \choose \mbox{\texttt{GC}} } +
-2x \Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CT}} } +
+2 \times \Delta H {\mbox{\texttt{GA}} \choose \mbox{\texttt{CT}} } +
 \Delta H {\mbox{\texttt{AA}} \choose \mbox{\texttt{TT}} } \\ +
 \Delta H {\mbox{\texttt{A\underline{T}}} \choose \mbox{\texttt{T\underline{G}}} } +
 \Delta H {\mbox{\texttt{\underline{T}G}} \choose \mbox{\texttt{\underline{G}C}} }
@@ -570,7 +575,7 @@ could actually be a mistyped base).
    
 \section{Copyright }
 Melting is copyright 
-\copyright 1997, 2009 by Nicolas Le Nov\`ere and Marine Dumousseau.  
+\copyright 1997, 2013 by Nicolas Le Nov\`ere and Marine Dumousseau.  
 
 This program is free software; 
 you can redistribute it and/or modify it under the terms of the GNU General 
@@ -590,16 +595,21 @@ Nicolas Joly is an efficient and kind debugger and advisor.  Catherine
 Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
 Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee Hong, Ivano
 Zara for their bug fixes and comments. Thanks to Richard Owczarzy for his magnesium 
-correction. Thanks to Charles Plessy for the graphical interface files. Finally thanks
+correction. Thanks to Charles Plessy for the graphical interface files. Markus Piotrowski updated TkMELTING to cover version 4.3. Finally thanks
 to the usenet helpers, particularly Olivier Dehon and Nicolas Chuche.
 
    
 \section{Authors }
-Nicolas Le Nov\`ere and Marine Dumousseau, \\
-EMBL-EBI, 
-Wellcome-Trust Genome Campus
-Hinxton Cambridge, CB10 1SD, UK
-lenov@ebi.ac.uk
+       Nicolas Le Novère\\
+       Babraham Institute, Babraham Research Campus\\
+       Babraham CB22 3AT Cambridge United-Kingdom.\\
+       n.lenovere@gmail.com
+       
+       Marine Dumousseau\\
+       EMBL-EBI, Wellcome-Trust Genome Campus\\
+       Hinxton CB10 1SD Cambridge United-Kingdom. \\
+       marine@ebi.ac.uk  
+
   
 \section{History }
 
