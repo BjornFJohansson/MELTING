@@ -45,6 +45,11 @@ public class OptionManagement {
 	 * Option name for the melting help documentation.
 	 */
 	public static final String meltingHelp = "-h";
+
+        /**
+	 * Alternative option name for the melting help documentation.
+	 */
+	public static final String meltingHelpAlt = "-?";
 	
 	/**
 	 * Option name for the melting legal information.
@@ -402,6 +407,7 @@ public class OptionManagement {
 	 */
 	private void initialiseHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "sug95");
+    this.hybridDefaultOptions.put(singleMismatchMethod, "wat10");
 		this.hybridDefaultOptions.put(approximativeMode, "Wetdnarna91");
 		this.hybridDefaultOptions.put(NaEquivalentMethod, "ahs01");
 		this.hybridDefaultOptions.put(DMSOCorrection, "ahs01");
@@ -897,7 +903,8 @@ public class OptionManagement {
 		for (int i = 0;i < args.length; i++){
 			String option = args[i];
 			if (isAnOptionValue(option) == false){
-				if (option.equals(meltingHelp)){
+				if (option.equals(meltingHelp) || 
+                                    option.equals(meltingHelpAlt)){
 					return true;
 				}
 				else if (option.equals(legalInformation)){
@@ -929,7 +936,8 @@ public class OptionManagement {
 			String option = args[i];
 				
 			if (isAnOptionValue(option) == false){
-				if (option.equals(meltingHelp)){
+				if (option.equals(meltingHelp) ||
+				    option.equals(meltingHelpAlt)){
 					readMeltingHelp();
 				}
 				else if (option.equals(legalInformation)){

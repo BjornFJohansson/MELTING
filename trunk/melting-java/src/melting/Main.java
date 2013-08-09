@@ -31,31 +31,59 @@ public class Main {
 	// private static methods
 	
 	/**
-	 * compute the entropy, enthalpy and the melting temperature and display the results. 
+	 * Compute the entropy, enthalpy and the melting temperature and display the results. 
 	 * @param args : contains the options entered by the user.
 	 * @param OptionManagement optionManager : the OptionManegement which allows to manage
 	 * the different options entered by the user.
 	 */
-	private static void runMelting(String [] args, OptionManagement optionManager){
+	private static ThermoResult runMelting(String [] args, OptionManagement optionManager){
 		try {
-			NumberFormat format = NumberFormat.getInstance(); 
-			format.setMaximumFractionDigits(2);
-
-			Environment environment = optionManager.createEnvironment(args);
-			RegisterMethods register = new RegisterMethods();
-			MeltingComputationMethod calculMethod = register.getMeltingComputationMethod(environment.getOptions());
-			ThermoResult results = calculMethod.computesThermodynamics();
-			environment.setResult(results);
-
-			results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);
-				
-			environment.setResult(results);
-			displaysMeltingResults(environment.getResult(), calculMethod);
+                        ThermoResult results = 
+                                        getMeltingResults(args, optionManager);
+			displaysMeltingResults(results);
+                        return results;
 			
 		} catch (Exception e) {
 			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
+                        return null;
 		}
 	}
+        
+        /**
+         * Compute the entropy, enthalpy and melting temperature, and return 
+         * these results.
+         * @param args options (entered by the user) that determine the
+         *             sequence, hybridization type and other features of the
+         *             environment.
+         * @param optionManager the {@link 
+         *                           melting.configuration.OptionManagement 
+         *                           <code>OptionManagement</code>} which
+         *                      allows the program to manage the different
+         *                      options entered by the user.  
+         * @return The results of the Melting computation.
+         */
+        public static ThermoResult getMeltingResults(String[] args,
+                                                OptionManagement optionManager)
+        {
+            NumberFormat format = NumberFormat.getInstance();
+            format.setMaximumFractionDigits(2);
+            
+            // Set up the environment from the supplied arguments and get the 
+            // results.
+            Environment environment = optionManager.createEnvironment(args);
+            RegisterMethods register = new RegisterMethods();
+            MeltingComputationMethod calculMethod = 
+                register.getMeltingComputationMethod(environment.getOptions());
+            ThermoResult results = calculMethod.computesThermodynamics();
+            results.setCalculMethod(calculMethod);
+            environment.setResult(results);
+            
+            // Apply corrections to the results.
+            results = calculMethod.getRegister().
+                                   computeOtherMeltingCorrections(environment);
+            environment.setResult(results);
+            return environment.getResult();
+        }
 	
 	/**
 	 * displays the results of Melting : the computed enthalpy and entropy (in cal/mol and J/mol), and the computed 
@@ -64,9 +92,12 @@ public class Main {
 	 * melting temperature
 	 * @param MeltingComputationMethod calculMethod : the melting computation method (Approximative or nearest neighbor computation)
 	 */
-	private static void displaysMeltingResults(ThermoResult results, MeltingComputationMethod calculMethod){
+	private static void displaysMeltingResults(ThermoResult results)
+        {
 		NumberFormat format = NumberFormat.getInstance(); 
 		format.setMaximumFractionDigits(2);
+                MeltingComputationMethod calculMethod = 
+                                                     results.getCalculMethod();
 		
 		double enthalpy = results.getEnthalpy();
 		double entropy = results.getEntropy();
@@ -74,9 +105,9 @@ public class Main {
 		OptionManagement.meltingLogger.log(Level.INFO, "\n The MELTING results are : ");
 		if (calculMethod instanceof NearestNeighborMode){
 			OptionManagement.meltingLogger.log(Level.INFO, "Enthalpy : " + format.format(enthalpy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(enthalpy)) + " J /mol)");
-			OptionManagement.meltingLogger.log(Level.INFO, "Entropy : " + format.format(entropy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(entropy)) + " J /mol)");
+			OptionManagement.meltingLogger.log(Level.INFO, "Entropy : " + format.format(entropy) + " cal/mol-K ( " + format.format(results.getEnergyValueInJ(entropy)) + " J /mol-K)");
 		}
-		OptionManagement.meltingLogger.log(Level.INFO, "Melting temperature : " + format.format(results.getTm()) + " degres C.");
+		OptionManagement.meltingLogger.log(Level.INFO, "Melting temperature : " + format.format(results.getTm()) + " degrees C.\n");
 	}
 	
 	// public static main method

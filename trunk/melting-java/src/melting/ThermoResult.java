@@ -15,6 +15,8 @@
 
 package melting;
 
+import melting.methodInterfaces.MeltingComputationMethod;
+
 /**
  * This class extends Thermodynamics. It represents the computed thermodynamic results of Melting
  * It contains a Tm double and a salIndependentEntropy double value as instance variables in addition to the instance variables
@@ -34,6 +36,11 @@ public class ThermoResult extends Thermodynamics{
 	 * which is independent of the salt concentration. No salt correction will be applied to the entropy value.
 	 */
 	private double saltIndependentEntropy;
+  
+  /**
+   * The method that was used to calculate the results.
+   */
+  private MeltingComputationMethod calculMethod;
 	
 	// ThermoResult constructor
 	
@@ -82,6 +89,24 @@ public class ThermoResult extends Thermodynamics{
 	public void setSaltIndependentEntropy(double saltIndependentEntropy) {
 		this.saltIndependentEntropy = saltIndependentEntropy;
 	}
+  
+  /**
+   * Gets the calculation method of the <code>ThermoResult</code>.
+   * @return the caluculation method.
+   */
+  public MeltingComputationMethod getCalculMethod()
+  {
+      return calculMethod;
+  }
+  
+  /**
+   * Changes the calculation method in the <code>ThermoResult</code>.  
+   * @param calculMethod : the new calculation method.
+   */
+  public void setCalculMethod(MeltingComputationMethod calculMethod)
+  {
+      this.calculMethod = calculMethod;
+  }
 
 	/**
 	 * converts the energyValy double in cal/mol into an energy value in J/mol.
