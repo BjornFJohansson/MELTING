@@ -39,9 +39,9 @@ public class MainTestSingleMismatches {
 		
 		ArrayList<String> RNASingleMismatchesMethods2 = new ArrayList<String>();
 		RNASingleMismatchesMethods2.add("zno07");
-		RNASingleMismatchesMethods2.add("zno08");
-		RNASingleMismatchesMethods2.add("tur06");
-		
+    RNASingleMismatchesMethods2.add("zno08");
+    RNASingleMismatchesMethods2.add("tur06");
+    
 		Properties RNASingleMismatches1 = MainTest.loadSequencesTest("src/examples/test/RNASingleMismatchesSequences1.txt");
 		Properties RNASingleMismatches2 = MainTest.loadSequencesTest("src/examples/test/RNASingleMismatchesSequences2.txt");
 
@@ -52,6 +52,15 @@ public class MainTestSingleMismatches {
 		System.out.print("\n\n melting.sequences \t TmExp \t zno07 \t zno08 \t tur06 \n");
 
 		MainTest.displayResultsWithComplementarySequence(RNASingleMismatches2, RNASingleMismatchesMethods2, "rnarna", "Na=1", "0.0001", "-sinMM");
+    
+    ArrayList<String> DNARNASingleMismatchesMethods = new ArrayList<String>();
+    DNARNASingleMismatchesMethods.add("wat10");
+    
+    Properties DNARNASingleMismatches = MainTest.loadSequencesTest("src/examples/test/DNARNASingleMismatchesSequences.txt");
+    
+    System.out.print("\n\n melting.sequences \t TmExp \t wat10 \n");
+    
+    MainTest.displayResultsWithComplementarySequence(DNARNASingleMismatches, DNARNASingleMismatchesMethods, "rnadna", "Na=1", "0.0001", "-sinMM");
 
 	}
 

@@ -59,6 +59,7 @@ import melting.patternModels.singleBulge.Turner99_06SingleBulgeLoop;
 import melting.patternModels.singleDanglingEnds.Bommarito00SingleDanglingEnd;
 import melting.patternModels.singleDanglingEnds.Serra06_08SingleDanglingEnd;
 import melting.patternModels.singleMismatch.AllawiSantaluciaPeyret97_98_99mm;
+import melting.patternModels.singleMismatch.Watkins10mm;
 import melting.patternModels.singleMismatch.Turner06mm;
 import melting.patternModels.singleMismatch.Znosko07mm;
 import melting.patternModels.singleMismatch.Znosko08mm;
@@ -283,6 +284,7 @@ public class RegisterMethods {
 	 */
 	private void initialiseSingleMismatchMethods(){
 		singleMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99mm.class);
+                singleMismatchMethod.put("wat10", Watkins10mm.class);
 		singleMismatchMethod.put("zno07", Znosko07mm.class);
 		singleMismatchMethod.put("zno08", Znosko08mm.class);
 		singleMismatchMethod.put("tur06", Turner06mm.class);
