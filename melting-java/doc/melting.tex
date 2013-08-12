@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{times}
+\usepackage{mathptmx}
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{alltt}
@@ -293,6 +293,10 @@ neighbor model is used.
   \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{allsanpey}] (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default) 
+    \end{itemize}
+  \textsc{DNA/RNA duplexes}
+    \begin{itemize}
+    \item [\textit{wat10}] (from Watkins et al. 2010) (by default)
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
@@ -856,6 +860,26 @@ parameters of each Crick's pair containing the single mismatch.
  DNA sequences containing one single mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}
 
+For DNA/RNA duplexes, the same model is used, taking parameters from Watkins
+et al. (2010).  The only mismatches permitted are \texttt{dA/rA},
+ \texttt{dT/rU}, \texttt{dC/rC} and \texttt{dG/rG}.  \\
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{CAT}} \choose \mbox{\texttt{GAU}}} = 
+\Delta H {\mbox{\texttt{CA}} \choose \mbox{\texttt{GA}} } +
+\Delta H {\mbox{\texttt{AT}} \choose \mbox{\texttt{AU}} } \\
+\end{multline*}
+
+(The same computation is performed for $\Delta S$)\\
+
+\begin{figure}[h]
+\includegraphics[width=1\linewidth]{images/DNARNASingleMismatch}
+\caption{Comparison of experimental and computed Tm for various sets of
+ DNA/RNA sequences containing one single mismatch.  
+$[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
+\end{figure}
+
 For RNA duplexes, the different models to computes the thermodynamic contribution of single mismatch to the helix coil 
 stability are more complex.
 
@@ -935,6 +959,8 @@ For further information, see the referenced articles.
  & & Biochemistry 37: 9435-9444 \\
  & & Peyret et al. (1999)\\
  & & Biochemistry 38: 3468-3477 \\
+ \hline
+\textbf{wat10} & DNA/RNA & Watkins et al. (2010) \\
  \hline 
 tur06 & RNA & Lu et al (2006)\\
  & & Nucleic Acids Research 34: 4912-4924 \\
