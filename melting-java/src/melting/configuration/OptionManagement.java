@@ -408,7 +408,7 @@ public class OptionManagement {
 	private void initialiseHybridDefaultOptions() {
 		this.hybridDefaultOptions.put(NNMethod, "sug95");
     this.hybridDefaultOptions.put(singleMismatchMethod, "wat10");
-		this.hybridDefaultOptions.put(approximativeMode, "Wetdnarna91");
+		this.hybridDefaultOptions.put(approximativeMode, "wetdnarna91");
 		this.hybridDefaultOptions.put(NaEquivalentMethod, "ahs01");
 		this.hybridDefaultOptions.put(DMSOCorrection, "ahs01");
 		this.hybridDefaultOptions.put(formamideCorrection, "bla96");
