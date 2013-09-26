@@ -29,12 +29,12 @@ import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class represents the DNA/RNA single mismatch model wat10. It extends
+ * This class represents the DNA/RNA single mismatch model wat11. It extends
  * PatternComputation.
  *
- * Watkins et al. (2010). Nucleic Acids Research 39: 1894 - 1902.
+ * Watkins et al. (2011). Nucleic Acids Research 39: 1894 - 1902.
  */
-public class Watkins10mm extends PatternComputation
+public class Watkins11mm extends PatternComputation
 {
   // Instance variables
 
@@ -42,7 +42,7 @@ public class Watkins10mm extends PatternComputation
    * Default name for the xml file containing the thermodynamic parameters for
    * a single mismatch in a DNA/RNA duplex.
    */
-  public static String defaultFileName = "Watkins2010mm.xml";
+  public static final String defaultFileName = "Watkins2011mm.xml";
 
   // PatternComputationMethod interface implementation
 
