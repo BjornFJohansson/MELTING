@@ -24,7 +24,7 @@ import javax.swing.*;
 
 /**
  * A text area for use with the MELTING program.  Implements
- * {@link WidgetInterface <code>WidgetInterface</code>}.  
+ * {@link InputWidgetInterface <code>InputWidgetInterface</code>}.  
  * @author John Gowers
  */
 public class MeltingTextArea extends JTextArea
