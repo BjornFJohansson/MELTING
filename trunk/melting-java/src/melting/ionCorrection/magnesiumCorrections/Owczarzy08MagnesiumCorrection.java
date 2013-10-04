@@ -13,24 +13,23 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
 package melting.ionCorrection.magnesiumCorrections;
-
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the magnesium correction model owc08. It implements the CorrectionMethod interface
  * 
  * Richard Owczarzy, Bernardo G Moreira, Yong You, Mark A Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
- * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
+* containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
  */
-public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
-	
+public class Owczarzy08MagnesiumCorrection
+  implements CorrectionMethod, NamedMethod
+{	
 	// Instance variables
 	
 	protected double a = 3.92 / 100000;
@@ -51,23 +50,28 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	 * temperature formula
 	 */
 	protected static String temperatureCorrection = "1 / Tm(Mg) = 1 / Tm(Na = 1M) + a +b x ln(Mg) + Fgc x (c + d x ln(Mg)) + 1 / (2 x (duplexLength - 1)) x (e + f x ln(Mg) + g x (ln(mg)))^2"; 
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Owczarzy et al. (2008)";
 	
 	// CorrectionMethod interface implementation
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		if (environment.getMg() == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The magnesium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (environment.getMg() < 0.0005 || environment.getMg() > 0.6){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Owczarzy et al. " +
+			OptionManagement.logWarning("\n The magnesium correction of Owczarzy et al. " +
 			"(2008) is accurate in the magnesium concentration range of 0.5mM to 600mM.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Owczarzy et al. " +
+			OptionManagement.logWarning("\n The magnesium correction of Owczarzy et al. " +
 					"(2008) is originally established for DNA duplexes.");
 		}
 		return isApplicable;
@@ -89,13 +93,14 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	 * @return double corrected melting temperature
 	 */
 	protected double correctTemperature(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Owkzarzy et al. (2008) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
-		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "b = " + this.b);
-		OptionManagement.meltingLogger.log(Level.FINE, "c = " + this.c);
-		OptionManagement.meltingLogger.log(Level.FINE, "e = " + this.e);
-		OptionManagement.meltingLogger.log(Level.FINE, "f = " + this.f);
+		OptionManagement.logMessage("\n The magnesium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
+		OptionManagement.logMessage("where : ");
+		OptionManagement.logMessage("b = " + this.b);
+		OptionManagement.logMessage("c = " + this.c);
+		OptionManagement.logMessage("e = " + this.e);
+		OptionManagement.logMessage("f = " + this.f);
 		displayVariable();
 
 		double Mg = environment.getMg() - environment.getDNTP();
@@ -110,9 +115,18 @@ public class Owczarzy08MagnesiumCorrection implements CorrectionMethod{
 	 * logs the a, d and g variables.
 	 */
 	protected void displayVariable(){
-		OptionManagement.meltingLogger.log(Level.FINE, "a = " + this.a);
-		OptionManagement.meltingLogger.log(Level.FINE, "d = " + this.d);
-		OptionManagement.meltingLogger.log(Level.FINE, "g = " + this.g);
+		OptionManagement.logMessage("a = " + this.a);
+		OptionManagement.logMessage("d = " + this.d);
+		OptionManagement.logMessage("g = " + this.g);
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

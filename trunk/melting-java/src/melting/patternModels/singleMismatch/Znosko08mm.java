@@ -15,27 +15,33 @@
 
 package melting.patternModels.singleMismatch;
 
-import java.util.logging.Level;
 
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single mismatch model zno08. It extends ZnoskoMethod.
  * 
  * Brent M Znosko et al (2008). Biochemistry 47: 10178-10187.
  */
-public class Znosko08mm extends ZnoskoMethod {
-	
+public class Znosko08mm extends ZnoskoMethod
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single mismatch
 	 */
 	public static String defaultFileName = "Znosko2008mm.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Znosko et al. (2008)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -51,7 +57,7 @@ public class Znosko08mm extends ZnoskoMethod {
 		NucleotidSequences mismatch = environment.getSequences().getEquivalentSequences("rna");
 		
 		if (mismatch.calculateNumberOfTerminal("G", "U", pos1, pos2) == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters of Znosco (2008)" +
+			OptionManagement.logWarning("\n The thermodynamic parameters of Znosko (2008)" +
 			"are originally established for single mismatches with GU nearest neighbors.");
 			isApplicable = false;
 		}
@@ -68,9 +74,10 @@ public class Znosko08mm extends ZnoskoMethod {
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Znosco et al. (2008) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(formulaEnthalpy + 
+                                " (entropy formula is similar)");
+    OptionManagement.logFileName(this.fileName);
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
@@ -83,4 +90,14 @@ public class Znosko08mm extends ZnoskoMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

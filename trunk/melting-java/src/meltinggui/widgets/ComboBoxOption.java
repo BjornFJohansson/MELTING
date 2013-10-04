@@ -18,8 +18,6 @@
 
 package meltinggui.widgets;
 
-import javax.swing.*;
-
 /**
  * An option on a combo box used to select additional MELTING options.
  * @author John Gowers

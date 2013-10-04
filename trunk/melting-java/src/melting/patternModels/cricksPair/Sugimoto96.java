@@ -15,26 +15,32 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model sug96. It extends CricksNNMethod.
  * 
  * Sugimoto et al. (1996). Nuc Acids Res 24 : 4501-4505
  */
-public class Sugimoto96 extends CricksNNMethod {
+public class Sugimoto96 extends CricksNNMethod
+  implements NamedMethod
+{
 		
-	// Instance variable
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Sugimoto1996nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Sugimoto et al. (1996)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -42,7 +48,7 @@ public class Sugimoto96 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Sugimoto et al (1996)" +
+			OptionManagement.logWarning("\n The model of Sugimoto et al (1996)" +
 					"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -51,8 +57,8 @@ public class Sugimoto96 extends CricksNNMethod {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Sugimoto et al (1996).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
@@ -75,4 +81,14 @@ public class Sugimoto96 extends CricksNNMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

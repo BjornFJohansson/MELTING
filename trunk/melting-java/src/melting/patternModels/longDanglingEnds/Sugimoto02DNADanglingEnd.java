@@ -15,26 +15,31 @@
 
 package melting.patternModels.longDanglingEnds;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the long dangling end model sugdna02 (for long poly A only). It extends SugimotoLongDanglingEndMethod.
  */
-public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
-	
-	// Instance variable
+public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod
+  implements NamedMethod
+{	
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for long dangling end
 	 * (just long poly A)
 	 */
 	public static String defaultFileName = "Sugimoto2002longdde.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Omichi et al. (2002) (DNA duplexes)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -43,7 +48,7 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 			int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The following thermodynamic parameters for long dangling end of Sugimoto et al." +
+			OptionManagement.logWarning("\n The following thermodynamic parameters for long dangling end of Sugimoto et al." +
 					"(2002) are established for DNA sequences.");
 		}
 		
@@ -83,4 +88,14 @@ public class Sugimoto02DNADanglingEnd extends SugimotoLongDanglingEndMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

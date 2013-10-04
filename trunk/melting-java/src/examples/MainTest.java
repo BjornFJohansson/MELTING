@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -88,7 +87,7 @@ public class MainTest {
 					
 			return environment.getResult().getTm();
 		} catch (Exception e) {
-			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage(), e);
+			OptionManagement.logError(e.getMessage(), e);
 		}
 		return 0.0;
 	}

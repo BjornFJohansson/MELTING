@@ -15,8 +15,6 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
@@ -32,7 +30,7 @@ public abstract class Wetmur91 extends ApproximativeMode{
 	@Override
 	public ThermoResult computesThermodynamics() {
 		ThermoResult result = super.computesThermodynamics();
-		OptionManagement.meltingLogger.log(Level.FINE, " from Wetmur (1991)");
+		OptionManagement.logMessage(" from Wetmur (1991)");
 		
 		return result;
 	}

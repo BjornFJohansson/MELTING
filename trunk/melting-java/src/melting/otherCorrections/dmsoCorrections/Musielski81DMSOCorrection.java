@@ -15,12 +15,11 @@
 
 package melting.otherCorrections.dmsoCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the DMSO correction model mus81. It extends DNADMSOCorrections.
@@ -28,8 +27,9 @@ import melting.correctionMethods.DNADMSOCorrections;
  * Musielski H., Mann W, Laue R, Michel S, "Influence of dimethylsulfoxide
  * on transcription by bacteriophage T3-induced RNA polymerase.", Z allg Microbiol 1981; 21, 447-456.
  */
-public class Musielski81DMSOCorrection extends DNADMSOCorrections {
-
+public class Musielski81DMSOCorrection extends DNADMSOCorrections
+  implements NamedMethod
+{
 	// Instance variables
 
 	private static double parameter = 0.6;
@@ -38,14 +38,29 @@ public class Musielski81DMSOCorrection extends DNADMSOCorrections {
 	 * String temperatureCorrection : formula for the temperature correction
 	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.6 * x % DMSO";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Musielski et al. (1981)";
 	
 	// CorrectionMethod interface implementation
 
 	public ThermoResult correctMeltingResults(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Musielski et al.(1981) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The DMSO correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

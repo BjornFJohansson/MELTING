@@ -19,7 +19,6 @@
 package melting.patternModels.singleMismatch;
 
 import java.text.MessageFormat;
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -27,14 +26,18 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the DNA/RNA single mismatch model wat11. It extends
  * PatternComputation.
  *
  * Watkins et al. (2011). Nucleic Acids Research 39: 1894 - 1902.
+ *
+ * @author John Gowers
  */
 public class Watkins11mm extends PatternComputation
+  implements NamedMethod
 {
   // Instance variables
 
@@ -44,6 +47,11 @@ public class Watkins11mm extends PatternComputation
    */
   public static final String defaultFileName = "Watkins2011mm.xml";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Watkins et al. (2011)";
+
   // PatternComputationMethod interface implementation
 
   @Override
@@ -51,10 +59,9 @@ public class Watkins11mm extends PatternComputation
   {
     if ((environment.getHybridization().equals("dnarna") == false) &&
         (environment.getHybridization().equals("rnadna") == false)) {
-      OptionManagement.meltingLogger.log(Level.WARNING,
-                                         "The single mismatch parameters of" +
-                                         "Watkins et al. are originally" +
-                                         "established for DNA/RNA duplexes.");
+      OptionManagement.logWarning("The single mismatch parameters of" +
+                                  "Watkins et al. are originally" +
+                                  "established for DNA/RNA duplexes.");
     }
 
     return super.isApplicable(environment, pos1, pos2);
@@ -73,14 +80,8 @@ public class Watkins11mm extends PatternComputation
     pos1 = positions[0];
     pos2 = positions[1];
 
-    OptionManagement.meltingLogger.log(Level.FINE,
-                                       "\n The nearest neighbor model for" +
-                                       "single mismatches in DNA/RNA" +
-                                       "duplexes is from Watkins et al." +
-                                       "(2010) : ");
-    OptionManagement.meltingLogger.log(Level.FINE, 
-                  MessageFormat.format("\n File name: {0}",
-                                       this.fileName));
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
     double enthalpy = result.getEnthalpy();
     double entropy = result.getEntropy();
@@ -90,7 +91,7 @@ public class Watkins11mm extends PatternComputation
             collector.getMismatchValue("d" + sequences.getSequenceNNPair(i),
                                     "r" + sequences.getComplementaryNNPair(i));
 
-      OptionManagement.meltingLogger.log(Level.FINE,
+      OptionManagement.logMessage(
              MessageFormat.format("\nd{0}/r{1} : enthalpy = {2} entropy = {3}",
                                   new Object[] {
                                     sequences.getSequenceNNPair(i),
@@ -123,7 +124,7 @@ public class Watkins11mm extends PatternComputation
       if ((this.collector.getMismatchValue("d" + 
                                            sequences.getSequenceNNPair(i),
                          "r" + sequences.getComplementaryNNPair(i))) == null) {
-        OptionManagement.meltingLogger.log(Level.WARNING,
+        OptionManagement.logWarning(
                    MessageFormat.format("\n The thermodynamic parameters for" +
                                         " d{0}/r{1} are missing.  Check the" +
                                         " single mismatch parameters.",
@@ -169,9 +170,14 @@ public class Watkins11mm extends PatternComputation
     int[] positions = {pos1, pos2};
     return positions;
   }
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }
-
-
-
-
-

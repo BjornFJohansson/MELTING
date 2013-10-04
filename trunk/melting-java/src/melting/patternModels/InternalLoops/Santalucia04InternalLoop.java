@@ -16,8 +16,6 @@
 package melting.patternModels.InternalLoops;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -27,14 +25,16 @@ import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the internal loop model san04. It extends PatternComputation.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440 
  */
-public class Santalucia04InternalLoop extends PatternComputation{
-	
+public class Santalucia04InternalLoop extends PatternComputation
+  implements NamedMethod
+{	
 	// Instance variable
 	
 	/**
@@ -52,6 +52,11 @@ public class Santalucia04InternalLoop extends PatternComputation{
 	 */
 	private static String formulaEntropy = "delat S = S(right terminal mismath) + S(left terminal mismatch) + S(asymmetric loop) + S(loop)";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia (2004)";
+
 	// PatternComputationMethod interface implementation
 
 	@Override
@@ -62,7 +67,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		pos2 = positions[1];
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The internal loop parameters of " +
+			OptionManagement.logWarning("\n The internal loop parameters of " +
 					"Santalucia (2004) are originally established " +
 					"for DNA sequences.");
 		}
@@ -70,7 +75,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 
 		if (environment.getSequences().computesInternalLoopLength(pos1, pos2) == 2){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
+			OptionManagement.logWarning("\n The internal loop parameter of Santalucia (2004) are not estblished for single mismatches.");
 			isApplicable = false;
 		}
 		
@@ -84,20 +89,21 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		OptionManagement.meltingLogger.log(Level.WARNING, "\n The internal loop model san04 has not been tested with experimental values.");
+		OptionManagement.logWarning("\n The internal loop model san04 has not been tested with experimental values.");
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The internal loop model is from Santalucia (2004) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, formulaEnthalpy);
-		OptionManagement.meltingLogger.log(Level.FINE, formulaEntropy);
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The internal loop model is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(formulaEnthalpy);
+		OptionManagement.logMessage(formulaEntropy);
+    OptionManagement.logFileName(this.fileName);
 
 		Thermodynamics rightMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos1), newSequences.getComplementaryNNPair(pos1));
 		Thermodynamics leftMismatch =  collector.getMismatchValue(newSequences.getSequenceNNPair(pos2 - 1), newSequences.getComplementaryNNPair(pos2 - 1));
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Right terminal mismatch : " + newSequences.getSequenceNNPair(pos1) + "/" + newSequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
-		OptionManagement.meltingLogger.log(Level.FINE, "Left terminal mismatch : " + newSequences.getSequenceNNPair(pos2 - 1) + "/" + newSequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
+		OptionManagement.logMessage("\n Right terminal mismatch : " + newSequences.getSequenceNNPair(pos1) + "/" + newSequences.getComplementaryNNPair(pos1) + " : enthalpy = " + rightMismatch.getEnthalpy() + "  entropy = " + rightMismatch.getEntropy());
+		OptionManagement.logMessage("Left terminal mismatch : " + newSequences.getSequenceNNPair(pos2 - 1) + "/" + newSequences.getComplementaryNNPair(pos2 - 1) + " : enthalpy = " + leftMismatch.getEnthalpy() + "  entropy = " + leftMismatch.getEntropy());
 
 		double saltIndependentEntropy = result.getSaltIndependentEntropy();
 		double enthalpy = result.getEnthalpy() + rightMismatch.getEnthalpy() + leftMismatch.getEnthalpy();
@@ -106,7 +112,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		int loopLength = newSequences.computesInternalLoopLength(pos1, pos2);
 		Thermodynamics internalLoop = collector.getInternalLoopValue(Integer.toString(loopLength));
 		if (internalLoop != null){
-			OptionManagement.meltingLogger.log(Level.FINE, "\n Internal loop of" + loopLength + " :  enthalpy = " + internalLoop.getEnthalpy() + "  entropy = " + internalLoop.getEntropy());
+			OptionManagement.logMessage("\n Internal loop of" + loopLength + " :  enthalpy = " + internalLoop.getEnthalpy() + "  entropy = " + internalLoop.getEntropy());
 			
 			if (loopLength > 4){
 				saltIndependentEntropy += internalLoop.getEntropy();
@@ -118,7 +124,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		else {
 			double value = collector.getInternalLoopValue("30").getEntropy() + 2.44 * 1.99 * Math.log(loopLength/30.0);
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n Internal loop of" + loopLength + " :  enthalpy = 0" + "  entropy = " + value);
+			OptionManagement.logMessage("\n Internal loop of" + loopLength + " :  enthalpy = 0" + "  entropy = " + value);
 
 			if (loopLength > 4){				
 				saltIndependentEntropy += value;
@@ -132,7 +138,7 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		if (newSequences.isAsymetricInternalLoop(pos1, pos2)){
 			Thermodynamics asymmetry = collector.getAsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
+			OptionManagement.logMessage("\n asymmetry : enthalpy = " + asymmetry.getEnthalpy() + "  entropy = " + asymmetry.getEntropy());
 				
 			enthalpy += asymmetry.getEnthalpy();
 
@@ -164,14 +170,14 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		
 		if (this.collector.getInternalLoopValue(Integer.toString(newSequences.computesInternalLoopLength(pos1,pos2))) == null){
 			if (this.collector.getInitiationLoopValue("30") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for internal loop of 30 are missing. Check the internal loop parameters.");
+				OptionManagement.logWarning("\n The thermodynamic parameters for internal loop of 30 are missing. Check the internal loop parameters.");
 
 				return true;
 			}
 		}
 		if (newSequences.isAsymetricInternalLoop(pos1, pos2)){
 			if (collector.getAsymmetry() == null) {
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for loop asymetry are missing. Check the internal loop parameters.");
+				OptionManagement.logWarning("\n The thermodynamic parameters for loop asymetry are missing. Check the internal loop parameters.");
 				isMissingParameters = true;
 			}
 		}
@@ -224,4 +230,13 @@ public class Santalucia04InternalLoop extends PatternComputation{
 		return positions;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

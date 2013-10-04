@@ -18,8 +18,6 @@
 
 package meltinggui.widgets;
 
-import javax.swing.*;
-
 /**
  * A dialog where the user can specify a particular hybridization type.  
  * Four types of hybridization are possible:

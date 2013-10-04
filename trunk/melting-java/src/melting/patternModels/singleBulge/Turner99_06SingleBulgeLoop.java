@@ -16,7 +16,6 @@
 package melting.patternModels.singleBulge;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -25,6 +24,7 @@ import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.longBulge.Turner99_06LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single bulge loop model tur06. It extends Turner99_06LongBulgeLoop.
@@ -33,14 +33,20 @@ import melting.sequences.NucleotidSequences;
  * 
  * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940.
  */
-public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
-	
+public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * StringBuffer formulaH : the enthalpy formula
 	 */
 	private static String formulaH = "delat H = H(bulge of 1 initiation) + H(NN intervening)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Turner et al. (1999, 2006)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -53,9 +59,11 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Turner et al. (1999-2006) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, formulaH + " (entropy formula is similar)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for single" +
+                                " bulge loop is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(formulaH + " (entropy formula is similar)");
+    OptionManagement.logFileName(this.fileName);
 
 		result = super.computeThermodynamics(newSequences, pos1, pos2, result);
 		
@@ -72,7 +80,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 
-		OptionManagement.meltingLogger.log(Level.FINE, "\n" + NNNeighbors[0] + "/" + NNNeighbors[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+		OptionManagement.logMessage("\n" + NNNeighbors[0] + "/" + NNNeighbors[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -92,7 +100,7 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 
 		if (this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]) == null && this.collector.getMismatchValue(NNNeighbors[0], NNNeighbors[1]) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop thermodynamic parameters.");
+			OptionManagement.logWarning("\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop thermodynamic parameters.");
 
 			return true;
 		}
@@ -128,4 +136,13 @@ public class Turner99_06SingleBulgeLoop extends Turner99_06LongBulgeLoop{
 		return false;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

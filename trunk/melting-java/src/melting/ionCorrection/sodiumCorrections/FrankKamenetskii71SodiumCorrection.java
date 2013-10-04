@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model kam71. It implements the CorrectionMethod interface.
@@ -31,8 +30,9 @@ import melting.methodInterfaces.CorrectionMethod;
  * and concentration of sodium ions in solution, Biopolymers 10,
  * 2623-2624.
  */
-public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
-	
+public class FrankKamenetskii71SodiumCorrection
+  implements CorrectionMethod, NamedMethod
+{	
 	// Instance variables
 	
 	/**
@@ -40,22 +40,27 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (7.95 - 3.06 x Fgc) x ln(Na)";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Frank-Kamenetskii (1971)";
+
 	// CorrectionMethod interface implementation
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		else if (NaEq < 0.069 || NaEq > 1.02){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Frank Kamenetskii (1971)" +
+			OptionManagement.logWarning("\n The sodium correction of Frank Kamenetskii (1971)" +
 					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Frank Kamenetskii (1971) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Frank Kamenetskii (1971) is originally established for " +
 			"DNA duplexes.");		}
 		
 		return isApplicable;
@@ -63,8 +68,9 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Frank Kamenetskii et al. (1971) : "); 
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
@@ -75,4 +81,13 @@ public class FrankKamenetskii71SodiumCorrection implements CorrectionMethod {
 		return environment.getResult();
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

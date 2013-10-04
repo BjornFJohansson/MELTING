@@ -34,7 +34,6 @@ public class MainTestGUBasePairs {
 
 		MainTest.displayResultsWithComplementarySequence(GUSequences, GUmethods, "rnarna", "Na=1", "0.0001", "-GU");
 
-
     }
 
 }

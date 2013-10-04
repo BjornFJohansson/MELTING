@@ -18,7 +18,6 @@ package melting.sequences;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import melting.configuration.OptionManagement;
 import melting.exceptions.SequenceException;
 

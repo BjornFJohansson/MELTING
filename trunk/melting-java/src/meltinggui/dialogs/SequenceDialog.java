@@ -18,8 +18,6 @@
 
 package meltinggui.dialogs;
 
-import javax.swing.*;
-
 import meltinggui.widgets.*;
 
 /**
@@ -84,13 +82,18 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
   {
     String commandLineFlags = " -S ";
 
-    commandLineFlags = commandLineFlags.concat(getSequenceText());
+    // Remove all white space from the sequences.
+    String sequenceText = getSequenceText().replaceAll("[ \\t\\n]", "");
+    String complementaryText =
+                     getComplementaryText().replaceAll("[ \\t\\n]", "");
+
+    commandLineFlags = commandLineFlags.concat(sequenceText);
     
     // Only give the flag for the complementary sequence if the user has
     // entered a complementary sequence.
     if (!(getComplementaryText().equals(""))) {
       commandLineFlags += " -C ";
-      commandLineFlags += getComplementaryText();
+      commandLineFlags += complementaryText;
     }
 
     return commandLineFlags;

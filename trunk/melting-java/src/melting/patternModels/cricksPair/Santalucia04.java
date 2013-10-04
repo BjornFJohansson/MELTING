@@ -16,28 +16,34 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model san04. It extends CricksNNMethod.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
  */
-public class Santalucia04 extends CricksNNMethod {
+public class Santalucia04 extends CricksNNMethod
+  implements NamedMethod
+{
 	
-	// Instance variable
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Santalucia2004nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia (2004)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -45,7 +51,7 @@ public class Santalucia04 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Santalucia (2004)" +
+			OptionManagement.logWarning("\n The model of Santalucia (2004)" +
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -54,8 +60,8 @@ public class Santalucia04 extends CricksNNMethod {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Santalucia et al (2004).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
@@ -76,7 +82,7 @@ public class Santalucia04 extends CricksNNMethod {
 		if (numberTerminalAT != 0){
 			if(this.collector.getTerminal("per_A/T") == null){
 				isMissing = true;
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for terminal AT base pair are missing.");
+				OptionManagement.logWarning("\n The thermodynamic parameters for terminal AT base pair are missing.");
 			}
 		}
 		return isMissing;
@@ -109,7 +115,7 @@ public class Santalucia04 extends CricksNNMethod {
 		if (numberTerminalAT != 0){
 			Thermodynamics terminalAT = this.collector.getTerminal("per_A/T");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
+			OptionManagement.logMessage("\n" + numberTerminalAT + " x penalty per terminal AT : enthalpy = " + terminalAT.getEnthalpy() + "  entropy = " + terminalAT.getEntropy());
 			
 			enthalpy += numberTerminalAT * terminalAT.getEnthalpy();
 			entropy += numberTerminalAT * terminalAT.getEntropy();
@@ -121,4 +127,13 @@ public class Santalucia04 extends CricksNNMethod {
 		
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

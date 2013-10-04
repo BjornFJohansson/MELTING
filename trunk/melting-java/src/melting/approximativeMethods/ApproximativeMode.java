@@ -16,7 +16,6 @@
 package melting.approximativeMethods;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -47,7 +46,7 @@ public class ApproximativeMode implements MeltingComputationMethod{
 	// MeltingComputationMethod interface implementation
 	
 	public ThermoResult computesThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Approximative method : ");
+		OptionManagement.logMessage("\n Approximative method : ");
 		
 		return environment.getResult();
 	}
@@ -56,7 +55,7 @@ public class ApproximativeMode implements MeltingComputationMethod{
 		boolean isApplicable = true;
 		
 		if (environment.getSequences().computesPercentMismatching() != 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The approximative mode formulas" +
+			OptionManagement.logWarning("\n The approximative mode formulas" +
 					"cannot properly account for the presence of mismatches" +
 					" and unpaired nucleotides.");
 		}
@@ -65,7 +64,7 @@ public class ApproximativeMode implements MeltingComputationMethod{
 			if (environment.getOptions().get(OptionManagement.globalMethod).equals("def")){
 				isApplicable = false;
 			}
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The approximative equations " +
+			OptionManagement.logWarning("\n The approximative equations " +
 			"were originally established for long DNA duplexes. (length superior to " +
 			 environment.getOptions().get(OptionManagement.threshold) +").");
 		}

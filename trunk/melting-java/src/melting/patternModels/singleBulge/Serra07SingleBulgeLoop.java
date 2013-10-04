@@ -15,26 +15,31 @@
 
 package melting.patternModels.singleBulge;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single bulge loop model ser07. It extends GlobalSingleBulgeLoopMethod.
  * 
  * Martin J Serra et al (2007). Biochemistry 46 : 15123-15135
  */
-public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
-	
+public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single bulge loop
 	 */
 	public static String defaultFileName = "Serra2007bulge.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Serra et al. (2007)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -43,7 +48,7 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single bulge loop parameters of " +
+			OptionManagement.logWarning("\n The single bulge loop parameters of " +
 					"Serra et al. (2007) are originally established " +
 					"for RNA sequences.");
 		}
@@ -60,8 +65,10 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Serra et al. (2007) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for single" +
+                                " bulge loop is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
@@ -87,4 +94,13 @@ public class Serra07SingleBulgeLoop extends GlobalSingleBulgeLoopMethod{
 		}
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

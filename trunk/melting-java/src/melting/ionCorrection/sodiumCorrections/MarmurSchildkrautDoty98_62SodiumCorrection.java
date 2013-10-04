@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model marschdot. It implements the CorrectionMethod interface.
@@ -33,8 +32,9 @@ import melting.methodInterfaces.CorrectionMethod;
  *  composition of deoxyribonucleic acid from its thermal denaturation
  *  temperature, J. Mol. Biol. 5, 109-118.
  */
-public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMethod{
-	
+public class MarmurSchildkrautDoty98_62SodiumCorrection
+  implements CorrectionMethod, NamedMethod
+{	
 	// Instance variables
 	
 	/**
@@ -42,23 +42,29 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (8.75 - 2.83 x Fgc) x ln(Na)";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Marmur, Schildkraut and Doty" +
+                                     "(1962, 1988)";
+
 	// CorrectionMethod interface implementation
 
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.069 || NaEq > 1.02){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Marmur Schildkraut and Doty (1962, 1998)" +
+			OptionManagement.logWarning("\n The sodium correction of Marmur Schildkraut and Doty (1962, 1998)" +
 					" is originally established for sodium concentrations between 0.069 and 1.02M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Marmur Schildkraut and Doty (1962, 1998) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Marmur Schildkraut and Doty (1962, 1998) is originally established for " +
 			"DNA duplexes.");
 		}
 		
@@ -67,8 +73,9 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Marmur, Schildkraut and Doty. (1962, 1998) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 
 		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
@@ -79,4 +86,13 @@ public class MarmurSchildkrautDoty98_62SodiumCorrection implements CorrectionMet
 		return environment.getResult();
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

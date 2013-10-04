@@ -15,10 +15,9 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model schdot. It extends ApproximativeMode.
@@ -47,7 +46,9 @@ import melting.configuration.OptionManagement;
  *  Hall TJ, Grula JW, Davidson EH, Britten RJ. Evolution of sea urchin
  *  non-repetitive DNA. J Mol Evol 1980;16:95–110.
  */
-public class MarmurSchildkrautDoty extends ApproximativeMode{
+public class MarmurSchildkrautDoty extends ApproximativeMode
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -55,6 +56,12 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 	 * temperature formula
 	 */
 	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na) + 0.41 * percentGC - 675 / duplexLength.";
+
+  /**
+   * The name of the method.
+   */
+  private static String methodName =
+                   "Marmur, Schildkraut and Doty (1965 - 1993)";
 	
 	// public methods
 	
@@ -65,8 +72,8 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur, Schildkraut and Doty (1965 - 1993)");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return this.environment.getResult();
 	}
@@ -80,11 +87,20 @@ public class MarmurSchildkrautDoty extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Marmur-Schildkraut-Doty equation" +
+			OptionManagement.logWarning("\n The Marmur-Schildkraut-Doty equation" +
 					"was originally established for DNA duplexes.");
 		}
 		
 		return isApplicable;
 	}
-	
+
+	/**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

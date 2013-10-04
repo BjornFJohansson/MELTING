@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model san04. It extends EntropyCorrection.
@@ -31,14 +30,20 @@ import melting.correctionMethods.EntropyCorrection;
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
  */
-public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
-
+public class Santalucia98_04SodiumCorrection extends EntropyCorrection
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String entropyCorrection : formula for the entropy correction.
 	 */
 	private static String entropyCorrection = "delta S(Na) = delta S(Na = 1M) + 0.368 * (duplexLength - 1) x ln(Na)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "SantaLucia et al. (1998, 2004)";
 
 	// CorrectionMethod interface implementation
 
@@ -47,22 +52,22 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.05 || NaEq > 1.1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1998 - 2004) is only reliable for " +
+			OptionManagement.logWarning("\n The sodium correction of Santalucia et al. (1998 - 2004) is only reliable for " +
 					"sodium concentrations between 0.015M and 1.1M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1998 - 2004) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Santalucia et al. (1998 - 2004) is originally established for " +
 			"DNA duplexes.");
 		}
 		
 		if (environment.getSequences().getDuplexLength() > 16){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1998 - 2004) begins to break down for " +
+			OptionManagement.logWarning("\n The sodium correction of Santalucia et al. (1998 - 2004) begins to break down for " +
 			"DNA duplexes longer than 16 bp.");
 		}
 		return isApplicable;
@@ -81,12 +86,23 @@ public class Santalucia98_04SodiumCorrection extends EntropyCorrection {
 	@Override
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n he sodium correction is from Santalucia et al. (1998) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(entropyCorrection);
 
 		double Na = environment.getNa();
 		double entropy = 0.368 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log(Na);
 		
 		return entropy;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

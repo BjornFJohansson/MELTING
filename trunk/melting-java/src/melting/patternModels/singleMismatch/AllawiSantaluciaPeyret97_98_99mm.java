@@ -15,14 +15,13 @@
 
 package melting.patternModels.singleMismatch;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single mismatch model allsanpey. It extends PatternComputation.
@@ -37,7 +36,9 @@ import melting.sequences.NucleotidSequences;
  * 
  * Peyret et al. (1999). Biochemistry 38: 3468-3477
  */
-public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
+public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -45,6 +46,12 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single mismatch
 	 */
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999mm.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Allawi, Santalucia and Peyret" +
+                                     " (1997,1998,1999)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -53,7 +60,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 
 		if (environment.getHybridization().equals("dnadna") == false){
 				
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The single mismatch parameters of " +
+			OptionManagement.logWarning("\n The single mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
 		}
@@ -70,8 +77,8 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single mismatches is from Allawi, Santalucia and Peyret. (1997, 1998, 1999) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -79,7 +86,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		for (int i = pos1; i < pos2; i++){
 			mismatchValue =  collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.logMessage("\n" + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();		
@@ -101,7 +108,7 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		
 		for (int i = pos1; i < pos2; i++){
 			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
+				OptionManagement.logWarning("\n The thermodynamic parameters for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the single mismatch parameters");
 				return true;
 			}
 		}
@@ -138,4 +145,14 @@ public class AllawiSantaluciaPeyret97_98_99mm extends PatternComputation{
 		int [] positions = {pos1, pos2};
 		return positions;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

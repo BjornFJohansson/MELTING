@@ -16,27 +16,33 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model bre86. It extends GlobalInitiation.
  * 
  * Breslauer et al. (1986). Proc Natl Acad Sci USA 83 : 3746-3750 
  */
-public class Breslauer86 extends GlobalInitiation{
+public class Breslauer86 extends GlobalInitiation
+  implements NamedMethod
+{
 	
-	// Instance variable
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Breslauer1986nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Breslauer et al (1986)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -44,7 +50,7 @@ public class Breslauer86 extends GlobalInitiation{
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Breslauer86 et al (1986)" +
+			OptionManagement.logWarning("\n The model of Breslauer et al (1986)" +
 					"is established for DNA sequences.");			
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -53,9 +59,9 @@ public class Breslauer86 extends GlobalInitiation{
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Breslauer86 et al (1986).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
-		
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
+
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 				
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
@@ -77,4 +83,14 @@ public class Breslauer86 extends GlobalInitiation{
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

@@ -398,7 +398,6 @@
   </nearest_neighbor>
 </hybridization>
 
-
 <hybridization type="dnarna">
   <nearest_neighbor type="NN">
 	<origine article="Sugimoto_1995">
@@ -478,7 +477,6 @@
     </origine>
   </nearest_neighbor>
 </hybridization>
-
 
 <hybridization type="rnarna">
   <nearest_neighbor type="NN">
@@ -692,6 +690,5 @@
     </origine>
   </nearest_neighbor>
 </hybridization>
-
 
 

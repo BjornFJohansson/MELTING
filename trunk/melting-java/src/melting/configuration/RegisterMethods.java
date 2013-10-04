@@ -34,6 +34,7 @@ import melting.methodInterfaces.CorrectionMethod;
 import melting.methodInterfaces.MeltingComputationMethod;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.methodInterfaces.SodiumEquivalentMethod;
+import melting.methodInterfaces.NamedMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
 import melting.otherCorrections.dmsoCorrections.Ahsen01DMSOCorrection;
 import melting.otherCorrections.dmsoCorrections.Cullen76DMSOCorrection;
@@ -73,7 +74,9 @@ import melting.patternModels.wobble.Serra12Wobble;
 import melting.patternModels.wobble.Turner99Wobble;
 import melting.patternModels.wobble.Znosko07Inosine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class registers all the methods and models implemented by Melting.
@@ -81,7 +84,7 @@ import java.util.HashMap;
 public class RegisterMethods {
 	
 	// Instance variables
-	
+  
 	/**
 	 * HasMap NaEqMethod : contains all the methods for sodium equivalence.
 	 */
@@ -253,8 +256,8 @@ public class RegisterMethods {
 	 */
 	private void initialiseApproximativeMethods(){
 		approximativeMethod.put("ahs01", Ahsen01.class);
-		approximativeMethod.put("che93", MarmurChester62_93.class);//650
-		approximativeMethod.put("che93corr", MarmurChester62_93.class);//535
+		approximativeMethod.put("che93", MarmurChester62_93.class);
+		approximativeMethod.put("che93corr", MarmurChester62_93_corr.class);
 		approximativeMethod.put("schdot", MarmurSchildkrautDoty.class);
 		approximativeMethod.put("owe69", Owen69.class);
 		approximativeMethod.put("san98", Santalucia98.class);
@@ -284,7 +287,7 @@ public class RegisterMethods {
 	 */
 	private void initialiseSingleMismatchMethods(){
 		singleMismatchMethod.put("allsanpey", AllawiSantaluciaPeyret97_98_99mm.class);
-                singleMismatchMethod.put("wat11", Watkins11mm.class);
+    singleMismatchMethod.put("wat11", Watkins11mm.class);
 		singleMismatchMethod.put("zno07", Znosko07mm.class);
 		singleMismatchMethod.put("zno08", Znosko08mm.class);
 		singleMismatchMethod.put("tur06", Turner06mm.class);
@@ -801,4 +804,138 @@ public class RegisterMethods {
 		
 		return environment.getResult();
 	}
+
+  /**
+   * Represents a particular type of method (e.g., approximative method, 
+   * double dangling end method, Mg/Na mix correction method).  This enum
+   * provides a (Java) method to get a list of all the (thermodynamic) methods
+   * of that type.
+   */
+  public enum MethodType
+  {
+    NA_EQUATION(NaEqMethod),
+    APPROXIMATIVE(approximativeMethod),
+    CRICKS(cricksMethod),
+    SINGLE_MISMATCH(singleMismatchMethod),
+    TANDEM_MISMATCH(tandemMismatchMethod),
+    WOBBLE(wobbleMethod),
+    INTERNAL_LOOP(internalLoopMethod),
+    SINGLE_BULGE_LOOP(singleBulgeLoopMethod),
+    LONG_BULGE_LOOP(longBulgeLoopMethod),
+    SINGLE_DANGLING_END(singleDanglingEndMethod),
+    DOUBLE_DANGLING_END(doubleDanglingEndMethod),
+    LONG_DANGLING_END(longDanglingEndMethod),
+    INOSINE(inosineMethod),
+    CNG_REPEATS(CNGRepeatsMethod),
+    AZOBENZENE(azobenzeneMethod),
+    LOCKED_ACID(lockedAcidMethod),
+    HYDROXYADENOSINE(hydroxyadenosineMethod),
+    ION_CORRECTION(ionCorrection),
+    DMSO_CORRECTION(DMSOCorrection),
+    FORMAMIDE_CORRECTION(formamideCorrection),
+    OTHER_CORRECTION(otherCorrection);
+
+    /**
+     * Hashmap registering all the methods of that type.
+     */
+    private HashMap<String, Class<? extends NamedMethod>> namedMethodsMap;
+
+    /**
+     * Fills in the named methods map with values from one of the hash maps in
+     * the <code>RegisterMethods</code> class.
+     * @param methodsMap The hash map containing the different methods.
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    MethodType(HashMap methodsMap)
+    {
+      namedMethodsMap = new HashMap<String, Class<? extends NamedMethod>>();
+      namedMethodsMap.putAll(methodsMap);
+    }
+
+    /**
+     * Gets a list of the text representations of methods of this type.
+     * @return A list of the full names and argument codes for all the methods
+     * of this type.
+     */
+    public ArrayList<MethodText> getMethodTextList()
+    {
+      ArrayList<MethodText> methodTextList = new ArrayList<MethodText>();
+      for (Map.Entry<String, Class<? extends NamedMethod>> methodEntry :
+             namedMethodsMap.entrySet()) {
+        String methodCommandLineFlag = methodEntry.getKey();
+        String methodName;
+
+        if (NamedMethod.class.isAssignableFrom(methodEntry.getValue())) {
+          Class<? extends NamedMethod> methodClass = methodEntry.getValue();
+          methodName = getName(methodClass);
+          if (methodName != null) {
+            methodTextList.add(new MethodText(methodName,
+                                              methodCommandLineFlag));
+          }
+          else {
+            OptionManagement.logWarning("We were unable to access the class.");
+          }
+        }
+        else {
+          OptionManagement.logWarning("A method is not named and has been" +
+                                      " left out.");
+        }
+      }
+      
+      return methodTextList;
+    }
+
+    /**
+     * Gets the full name of a method implementing the
+     * {@link ../methodInterfaces/namedInterface <code>NamedInterface</code>}
+     * interface.
+     * @param   methodClass   The Java class for that method.
+     * @return  The full name of the method.
+     */
+    private String getName(Class<? extends NamedMethod> methodClass)
+    {
+      String methodName;
+
+      // Instantiate the class, and then call its getName method.
+      try {
+        methodName = methodClass.newInstance().getName();
+      }
+      catch (InstantiationException exception) {
+        methodName = null;
+      }
+      catch (IllegalAccessException exception) {
+        methodName = null;
+      }
+      
+      return methodName;
+    }
+  }
+
+  /**
+   * Instance of the new enum, for access to non-final hashmaps.
+   */
+  private MethodType methodType;
+
+  /**
+   * Gets an instance of the <code>MethodType</code> enum from the current 
+   * instance of <code>RegisterMethods</code>.  
+   * @return An instance of the <code>MethodType</code> enum, with non-final
+   *         values filled in.
+   */
+  public MethodType getMethodType()
+  {
+    return methodType;
+  }
+
+  /**
+   * Creates an instance of the <code>MethodType</code> enum, initialized with
+   * all the (non-final) methods from the <code>RegisterMethods</code> class.
+   * @return An instance of the <code>MethodType</code> enum, with non-final
+   *         values filled in.
+   */
+  public static MethodType makeMethodList()
+  {
+    RegisterMethods registerMethods = new RegisterMethods();
+    return registerMethods.getMethodType();
+  }
 }

@@ -34,7 +34,6 @@ import meltinggui.ArgsMessage;
 import meltinggui.MeltingLayout;
 import meltinggui.MeltingObservable;
 import meltinggui.dialogs.*;
-import meltinggui.widgets.*;
 
 /**
  * The frame that opens when the user runs the GUI.
@@ -111,6 +110,7 @@ public class MeltingFrame extends JInternalFrame
     });
     commandLineTextArea.setBackground(new Color(0, 0, 0, 0));
     commandLineTextArea.setEditable(false);
+    commandLineTextArea.setLineWrap(true);
 
     mainPanel.setLayout(new GridBagLayout());
     sequencesPanel.setLayout(new GridLayout(1, 1));
@@ -136,14 +136,14 @@ public class MeltingFrame extends JInternalFrame
     resultsPanelPanel.add(resultsPanel);
 
     constraints = getGridBagRow(0);
-    constraints.weighty = 1.0;
+    constraints.weighty = 0.5;
     mainPanel.add(sequencesPanel, constraints);
     mainPanel.add(hybridizationPanel, getGridBagRow(1));
     mainPanel.add(oligomerConcentrationPanel, getGridBagRow(2));
     mainPanel.add(ionConcentrationsPanel, getGridBagRow(3));
     mainPanel.add(buttonsPanel, getGridBagRow(4));
     constraints = getGridBagRow(5);
-    constraints.weighty = 0.5;
+    constraints.weighty = 1.0;
     mainPanel.add(commandLinePanel, constraints);
     mainPanel.add(resultsPanelPanel, getGridBagRow(6));
 

@@ -29,7 +29,6 @@ import melting.patternModels.cricksPair.CricksNNMethod;
 import melting.sequences.SpecificAcidNames;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 /**
  * This class represents the nearest neighbor model. It implements the MelitngComputationMethod Interface
@@ -127,7 +126,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	// MeltingComputationMethod interface implementation
 	
 	public ThermoResult computesThermodynamics() {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Nearest-Neighbor method :");
+		OptionManagement.logMessage("\n Nearest-Neighbor method :");
 
 		analyzeSequence();
 		int pos1 = 0; 
@@ -200,7 +199,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	public boolean isApplicable() {
 		boolean isApplicable = true;
 		if (Integer.parseInt(this.environment.getOptions().get(OptionManagement.threshold)) <= this.environment.getSequences().getDuplexLength()){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Nearest Neighbor model is accurate for " +
+			OptionManagement.logWarning("\n The Nearest Neighbor model is accurate for " +
 			"shorter sequences. (length superior to 6 and inferior to" +
 			 this.environment.getOptions().get(OptionManagement.threshold) +")");
 			
@@ -209,7 +208,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 			}
 		}
 		if (this.environment.getOptions().get(OptionManagement.selfComplementarity).equals("true") && Integer.parseInt(this.environment.getOptions().get(OptionManagement.factor)) != 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
+			OptionManagement.logWarning("\n When the oligonucleotides are self-complementary, the correction factor F must be equal to 1.");
 			isApplicable = false;
 		}
 		
@@ -599,7 +598,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				throw new NoExistingMethodException("\n We don't have a method to compute the energy for the positions from " + pos1 + " to " + pos2 );
 			}
 			if (necessaryMethod.isApplicable(this.environment, pos1, pos2) == false){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n We cannot comput the melting temperature, the method to compute the structure from" + pos1 + " to " + pos2 + " is not applicable with the chosen options.");
+				OptionManagement.logWarning("\n We cannot comput the melting temperature, the method to compute the structure from" + pos1 + " to " + pos2 + " is not applicable with the chosen options.");
 				isApplicableMethod = false;
 			}
 				pos1 = pos2 + 1;
@@ -627,7 +626,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	 */
 	public static double computesHairpinTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / environment.getResult().getEntropy() - 273.15;
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / delta - 273.15");
+		OptionManagement.logMessage("\n Melting temperature : Tm = delta H / delta - 273.15");
 		
 		return Tm;
 	}
@@ -639,7 +638,7 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	 */
 	public static double computesMeltingTemperature(Environment environment){
 		double Tm = environment.getResult().getEnthalpy() / (environment.getResult().getEntropy() + 1.99 * Math.log( environment.getNucleotides() / environment.getFactor() )) - 273.15;
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Melting temperature : Tm = delta H / (delta S + 1.99 x ln([nucleotides] / F)) - 273.15");
+		OptionManagement.logMessage("\n Melting temperature : Tm = delta H / (delta S + 1.99 x ln([nucleotides] / F)) - 273.15");
 		return Tm;
 	}
 

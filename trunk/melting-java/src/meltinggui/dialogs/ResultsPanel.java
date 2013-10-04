@@ -19,7 +19,6 @@
 package meltinggui.dialogs;
 
 import javax.swing.*;
-import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import melting.ThermoResult;

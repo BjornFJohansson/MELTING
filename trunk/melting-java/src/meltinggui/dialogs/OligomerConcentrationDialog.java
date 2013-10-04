@@ -59,4 +59,3 @@ public class OligomerConcentrationDialog extends InputField<MeltingTextField>
   }
 }
 
-

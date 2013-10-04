@@ -16,7 +16,6 @@
 package melting.patternModels.tandemMismatches;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -26,6 +25,7 @@ import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the tandem mismatches model allsanpey. It extends PatternComputation.
@@ -40,14 +40,21 @@ import melting.sequences.NucleotidSequences;
  * 
  * Peyret et al. (1999). Biochemistry 38: 3468-3477
  */
-public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
-	
+public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for tandem mismatches
 	 */
 	public static String defaultFileName = "AllawiSantaluciaPeyret1997_1998_1999tanmm.xml";
+  
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Allawi, Santalucia and Peyret" +
+                                     "(1997, 1998, 1999)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -56,7 +63,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 			int pos2) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
+			OptionManagement.logWarning("\n The tandem mismatch parameters of " +
 					"Allawi, Santalucia and Peyret are originally established " +
 					"for DNA duplexes.");
 		}
@@ -70,8 +77,10 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		pos1 = positions[0];
 		pos2 = positions[1];
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for tandem mismatches is from Allawi, Santalucia and Peyret (1997, 1998, 1999)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for tandem" +
+                                " mismatches is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
@@ -81,7 +90,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		for (int i = pos1; i < pos2; i++){
 			mismatchValue = this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
+			OptionManagement.logMessage(newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue);
 
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();
@@ -103,7 +112,7 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		
 		for (int i = pos1; i < pos2; i++){
 			if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the parameters for tandem mismatches.");
+				OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " are missing. Check the parameters for tandem mismatches.");
 				return true;
 			}
 		}
@@ -153,4 +162,14 @@ public class AllawiSantaluciaPeyret97_98_99tanmm extends PatternComputation{
 		int [] positions = {pos1, pos2};
 		return positions;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

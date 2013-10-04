@@ -15,12 +15,11 @@
 
 package melting.patternModels.singleDanglingEnds;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single dangling end model ser08. It extends SingleDanglingEndMethod.
@@ -29,14 +28,20 @@ import melting.sequences.NucleotidSequences;
  * 
  * Martin J Serra et al. (2008). Nucleic Acids research 36: 5652-5659 
  */
-public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
-	
+public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single dangling end
 	 */
 	public static String defaultFileName = "Serra2006_2008de.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Serra et al. (2006, 2008)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -45,7 +50,7 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for dangling ends" +
+			OptionManagement.logWarning("\n The thermodynamic parameters for dangling ends" +
 					" of Serra et al. (2006 - 2008) are established for RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -60,8 +65,10 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single dangling end is from Serra et al. (2006, 2008) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for single" +
+                                " dangling end is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
@@ -86,4 +93,14 @@ public class Serra06_08SingleDanglingEnd extends SingleDanglingEndMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

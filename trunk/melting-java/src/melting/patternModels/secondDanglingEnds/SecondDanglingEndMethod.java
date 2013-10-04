@@ -16,8 +16,6 @@
 package melting.patternModels.secondDanglingEnds;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -45,13 +43,13 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		pos2 = positions[1];
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for second dangling end of Serra et al." +
+			OptionManagement.logWarning("\n The thermodynamic parameters for second dangling end of Serra et al." +
 					"(2005 and 2006) is established for RNA sequences.");
 		}
 				
 		if (NucleotidSequences.getDanglingSens(environment.getSequences().getSequence(pos1, pos2), environment.getSequences().getComplementary(pos1, pos2)).equals("5")){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for second dangling end of Serra et al." +
+			OptionManagement.logWarning("\n The thermodynamic parameters for second dangling end of Serra et al." +
 					"(2005 and 2006) is only established for 3' second dangling end.");
 		}
 		
@@ -72,13 +70,13 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		
 		if (gapSequence.charAt(0) == '-'){
 			if (this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
+				OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
 				return true;
 			}
 		}
 		else{
 			if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2 - 1),sequences.getComplementary(pos1, pos2 - 1)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
+				OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequence(pos1 + 1, pos2) + "/" + sequences.getComplementary(pos1 + 1, pos2) + " are missing. Check the single dangling ends parameters.");
 				return true;
 			}
 		}
@@ -149,7 +147,7 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
 		double entropy = result.getEntropy() + danglingValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+		OptionManagement.logMessage("\n" + sequences.getSequence(pos1, pos2 - 1) + "/" + sequences.getComplementary(pos1, pos2 - 1) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);

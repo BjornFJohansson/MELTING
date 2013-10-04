@@ -15,8 +15,6 @@
 
 package melting.patternModels.singleDanglingEnds;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -44,7 +42,7 @@ public abstract class SingleDanglingEndMethod extends PatternComputation {
 		
 		if (pos1 != 0 && pos2 != environment.getSequences().getDuplexLength() - 1){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n It is possible to use Thermodynamic parameters only for dangling" +
+			OptionManagement.logWarning("\n It is possible to use Thermodynamic parameters only for dangling" +
 					"ends.");
 		}
 		return isApplicable;
@@ -58,7 +56,7 @@ public abstract class SingleDanglingEndMethod extends PatternComputation {
 		double enthalpy = result.getEnthalpy() + danglingValue.getEnthalpy();
 		double entropy = result.getEntropy() + danglingValue.getEntropy();		
 			
-		OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
+		OptionManagement.logMessage("\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + danglingValue.getEnthalpy() + "  entropy = " + danglingValue.getEntropy());
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -70,7 +68,7 @@ public abstract class SingleDanglingEndMethod extends PatternComputation {
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1, int pos2){
 		
 		if (this.collector.getDanglingValue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the dangling ends prameters.");
+			OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the dangling ends prameters.");
 			return true;
 		}
 		return super.isMissingParameters(sequences, pos1, pos2);

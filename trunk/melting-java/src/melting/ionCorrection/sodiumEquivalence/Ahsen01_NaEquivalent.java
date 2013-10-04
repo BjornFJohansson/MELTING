@@ -15,9 +15,8 @@
 
 package melting.ionCorrection.sodiumEquivalence;
 
-import java.util.logging.Level;
-
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model for a sodium equivalence ahs01. It extends SodiumEquivalent.
@@ -27,8 +26,9 @@ import melting.configuration.OptionManagement;
  * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
  * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
  */
-public class Ahsen01_NaEquivalent extends SodiumEquivalent{
-	
+public class Ahsen01_NaEquivalent extends SodiumEquivalent
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	private static double parameter = 3.79;
@@ -38,15 +38,30 @@ public class Ahsen01_NaEquivalent extends SodiumEquivalent{
 	 */
 	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 3.79 x sqrt(Mg - dNTP)";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Ahsen, Wittzer and Schutz (2001)";
+
 	// SodiumEquivalentMethod interface implementation
 	
 	public double computeSodiumEquivalent(double Na, double Mg, double K, double Tris,
 			double dNTP) {
 		double NaEq = super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "from Ahsen et al. (2001) : " + NaCorrection);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logMessage(NaCorrection);
 
 		return NaEq;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

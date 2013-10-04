@@ -15,8 +15,6 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -24,13 +22,16 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.exceptions.MethodNotApplicableException;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model tur06. It extends CricksNNMethod.
  * 
  * Turner et al (2006) Nucleic acids research 34: 3609-3614
  */
-public class Turner06 extends CricksNNMethod {
+public class Turner06 extends CricksNNMethod
+  implements NamedMethod
+{
 	
 	// Instance variable
 	
@@ -38,6 +39,11 @@ public class Turner06 extends CricksNNMethod {
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Turner2006nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Turner et al. (2006)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -46,7 +52,7 @@ public class Turner06 extends CricksNNMethod {
 		boolean isApplicable = super.isApplicable(environment, pos1, pos2);
 		if (environment.getHybridization().equals("mrnarna") == false && environment.getHybridization().equals("rnamrna") == false){
 			isApplicable = false;
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Turner et al. (2006)" +
+			OptionManagement.logWarning("\n The model of Turner et al. (2006)" +
 			"is established for 2-0-methyl RNA/RNA sequences.");
 		}
 		
@@ -65,14 +71,14 @@ public class Turner06 extends CricksNNMethod {
 		
 		Thermodynamics NNValue;
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Turner et al. (2006)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
  
 		for (int i = pos1; i <= pos2 - 1; i++){
 			
 			NNValue = this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "m"+ sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.logMessage("m"+ sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 			
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
@@ -98,12 +104,12 @@ public class Turner06 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			if (this.collector.getTerminal("per_A/U") == null){
 				isMissing = true;
-				OptionManagement.meltingLogger.log(Level.WARNING, "/n The thermodynamic parameters for terminal AU base pair are missing.");
+				OptionManagement.logWarning("/n The thermodynamic parameters for terminal AU base pair are missing.");
 			}	
 		}
 		for (int i = pos1; i <= pos2 - 1; i++){
 			if (this.collector.getNNvalue("m" + sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for m" + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + "are missing.");	
+				OptionManagement.logWarning("\n The thermodynamic parameters for m" + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + "are missing.");	
 				isMissing = true;
 			}
 		}
@@ -134,7 +140,7 @@ public class Turner06 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "/n" + numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.logMessage("/n" + numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();
@@ -162,4 +168,13 @@ public class Turner06 extends CricksNNMethod {
 		return entropy1MNa;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

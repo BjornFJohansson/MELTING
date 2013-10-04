@@ -15,26 +15,31 @@
 
 package melting.patternModels.singleDanglingEnds;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single dangling end model bom00. It extends SingleDanglingEndMethod.
  * 
  * Bommarito et al. (2000). Nuc Acids Res 28: 1929-1934
  */
-public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
-	
+public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single dangling end
 	 */
 	public static String defaultFileName = "Bommarito2000de.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Bommarito et al. (2000)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -43,7 +48,7 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 			int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for dangling ends" +
+			OptionManagement.logWarning("\n The thermodynamic parameters for dangling ends" +
 					"of Bommarito (2000) are established for DNA sequences.");
 			
 			}
@@ -59,8 +64,10 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighor model for single dangling end is from Bommarito et al. (2000) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighor model for single" +
+                                " dangling end is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
@@ -85,4 +92,14 @@ public class Bommarito00SingleDanglingEnd extends SingleDanglingEndMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

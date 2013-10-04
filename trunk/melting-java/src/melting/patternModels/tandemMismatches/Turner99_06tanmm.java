@@ -15,7 +15,6 @@
 
 package melting.patternModels.tandemMismatches;
 
-import java.util.logging.Level;
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -23,6 +22,7 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the tandem mismatches model tur06. It extends PatternComputation.
@@ -31,8 +31,9 @@ import melting.sequences.NucleotidSequences;
  * 
  * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940
  */
-public class Turner99_06tanmm extends PatternComputation{
-	
+public class Turner99_06tanmm extends PatternComputation
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
@@ -45,6 +46,11 @@ public class Turner99_06tanmm extends PatternComputation{
 	 */
 	private static String enthalpyFormula = "delta H(5'PXYS/3'QWZT) = (H(5'PXWQ/3'QWXP) + H(5'TZYS/3'SYZT)) / 2 + penalty1( = H(GG pair adjacent to an AA or any non canonical pair with a pyrimidine) + penalty2 (= H(AG or GA pair adjacent to UC,CU or CC pairs or with a UU pair adjacent to a AA.))";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Turner et al. (1999, 2006)";
+
 	// PatternComputationMethod interface implementation
 
 	@Override
@@ -53,7 +59,7 @@ public class Turner99_06tanmm extends PatternComputation{
 
 		if (environment.getHybridization().equals("rnarna") == false){
 			
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The tandem mismatch parameters of " +
+			OptionManagement.logWarning("\n The tandem mismatch parameters of " +
 					"Turner (1999-2006) are originally established " +
 					"for RNA sequences.");
 		}
@@ -70,9 +76,12 @@ public class Turner99_06tanmm extends PatternComputation{
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for tandem mismatches is from Turner et al. (1999, 2006). If the sequences are not symmetric, we use this formula : ");
-		OptionManagement.meltingLogger.log(Level.FINE,enthalpyFormula + "(entropy formula is similar.)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for tandem" +
+                                " mismatches is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(enthalpyFormula +
+                                "(entropy formula is similar.)");
+    OptionManagement.logFileName(this.fileName);
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -85,7 +94,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			Thermodynamics mismatchValue = this.collector.getMismatchValue(newSequences.getSequence(pos1+1, pos2-1), newSequences.getComplementary(pos1+1,pos2-1), closing.toString());
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+			OptionManagement.logMessage("\n symmetric tandem mismatches " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 			
 			enthalpy += mismatchValue.getEnthalpy();
 			entropy += mismatchValue.getEntropy();
@@ -95,7 +104,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			NucleotidSequences sequences1 = NucleotidSequences.buildSymetricSequences(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
 			NucleotidSequences sequences2 = NucleotidSequences.buildSymetricSequences(NucleotidSequences.getInversedSequence(newSequences.getComplementary(pos1,pos2)),NucleotidSequences.getInversedSequence(newSequences.getSequence(pos1,pos2)));
 
-			OptionManagement.meltingLogger.log(Level.FINE, "\n asymmetric tandem mismatches (other formula used): ");
+			OptionManagement.logMessage("\n asymmetric tandem mismatches (other formula used): ");
 
 			ThermoResult result1 = new ThermoResult(0,0,0);
 			ThermoResult result2 = new ThermoResult(0,0,0);
@@ -108,7 +117,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				Thermodynamics penalty1 = this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine");
-				OptionManagement.meltingLogger.log(Level.FINE, "\n penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
+				OptionManagement.logMessage("\n penalty1 : enthalpy = " + penalty1.getEnthalpy() + "  entropy = " + penalty1.getEntropy());
 				enthalpy += penalty1.getEnthalpy();
 				entropy += penalty1.getEntropy();
 			}
@@ -118,7 +127,7 @@ public class Turner99_06tanmm extends PatternComputation{
 				
 				enthalpy += penalty2.getEnthalpy();
 				entropy += penalty2.getEntropy();
-				OptionManagement.meltingLogger.log(Level.FINE, "\n penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
+				OptionManagement.logMessage("\n penalty2 : enthalpy = " + penalty2.getEnthalpy() + "  entropy = " + penalty2.getEntropy());
 			}
 		}
 		result.setEnthalpy(enthalpy);
@@ -149,7 +158,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			}
 			if (newSequences.isTandemMismatchGGPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("G/G_adjacent_AA_or_nonCanonicalPyrimidine") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
+					OptionManagement.logWarning("\n The penalty for G/G adjacent to AA or a non canonical base pair with pyrimidine is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -157,7 +166,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			
 			else if (newSequences.isTandemMismatchDeltaPPenaltyNecessary(pos1+1)){
 				if (this.collector.getPenalty("AG_GA_UU_adjacent_UU_CU_CC_AA") == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
+					OptionManagement.logWarning("\n The penalty for AG, GA or UU adjacent to UU, CU, CC or AA is missing. Check the tandem mismatch parameters.");
 					return true;
 				}
 				
@@ -170,7 +179,7 @@ public class Turner99_06tanmm extends PatternComputation{
 			closing.append("/");
 			closing.append(newSequences.getComplementary(pos1,pos2).charAt(0));
 			if (this.collector.getMismatchValue(newSequences.getSequence(pos1+1, pos2-1), newSequences.getComplementary(pos1+1, pos2-1), closing.toString()) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "The thermodynamic parameters for " + newSequences.getSequence(pos1+1, pos2-1) + "and" + newSequences.getComplementary(pos1+1, pos2-1) + " is missing. Check the tandem mismatch parameters.");
+				OptionManagement.logWarning("The thermodynamic parameters for " + newSequences.getSequence(pos1+1, pos2-1) + "and" + newSequences.getComplementary(pos1+1, pos2-1) + " is missing. Check the tandem mismatch parameters.");
 				return true;
 			}
 		}
@@ -208,4 +217,14 @@ public class Turner99_06tanmm extends PatternComputation{
 		int [] positions = {pos1, pos2};
 		return positions;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

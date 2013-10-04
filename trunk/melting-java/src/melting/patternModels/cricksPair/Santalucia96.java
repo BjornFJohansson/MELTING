@@ -13,10 +13,7 @@
  *       EMBL-EBI, neurobiology computational group,                          
  *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
 
-
 package melting.patternModels.cricksPair;
-
-import java.util.logging.Level;
 
 
 import melting.Environment;
@@ -24,20 +21,28 @@ import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model san96. It extends GlobalInitiation.
  * 
  * SantaLucia et al.(1996). Biochemistry 35 : 3555-3562
  */
-public class Santalucia96 extends GlobalInitiation {
+public class Santalucia96 extends GlobalInitiation
+  implements NamedMethod
+{
 	
-	// Instance variable
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Santalucia1996nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia (1996)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -45,7 +50,7 @@ public class Santalucia96 extends GlobalInitiation {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Santalucia (1996)" +
+			OptionManagement.logWarning("\n The model of Santalucia (1996)" +
 			"is established for DNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -54,8 +59,8 @@ public class Santalucia96 extends GlobalInitiation {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Santalucia et al (1996).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 
@@ -76,7 +81,7 @@ public class Santalucia96 extends GlobalInitiation {
 		if (number5AT > 0) {
 			if (this.collector.getTerminal("5_T/A") == null){
 				isMissing = true;
-				OptionManagement.meltingLogger.log(Level.FINE,"\n The thermodynamic parameters for terminal 5'TA base pair are missing.");
+				OptionManagement.logMessage("\n The thermodynamic parameters for terminal 5'TA base pair are missing.");
 			}
 		}
 		return isMissing;
@@ -107,7 +112,7 @@ public class Santalucia96 extends GlobalInitiation {
 		
 		if (number5AT > 0) {
 			Thermodynamics terminal5AT = this.collector.getTerminal("5_T/A");
-			OptionManagement.meltingLogger.log(Level.FINE,"\n" + number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
+			OptionManagement.logMessage("\n" + number5AT + " x  penalty for 5' terminal AT : enthalpy = " + terminal5AT.getEnthalpy() + "  entropy = " + terminal5AT.getEntropy());
 			
 			enthalpy += number5AT * terminal5AT.getEnthalpy();
 			entropy += number5AT * terminal5AT.getEntropy();
@@ -115,4 +120,14 @@ public class Santalucia96 extends GlobalInitiation {
 		environment.addResult(enthalpy, entropy);
 		return environment.getResult();
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

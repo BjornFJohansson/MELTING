@@ -15,9 +15,8 @@
 
 package melting.ionCorrection.sodiumEquivalence;
 
-import java.util.logging.Level;
-
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model for a sodium equivalence mit96. It extends SodiumEquivalent.
@@ -25,8 +24,9 @@ import melting.configuration.OptionManagement;
  *  Mitsuhashi M., 1996, "Technical report: Part 1. Basic requirements for designing optimal 
  * oligonucleotide probe sequences.", J. Clin. Lab. Anal, 10, 277-284.
  */
-public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
-	
+public class Mitsuhashi96NaEquivalent extends SodiumEquivalent
+  implements NamedMethod
+{	
 	// Instance variables
 
 	private static double parameter = 4;
@@ -35,6 +35,11 @@ public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
 	 * String NaCorrection : formula to compute a sodium equivalence.
 	 */
 	private static String NaCorrection = "NaEquivalent = Na + K + Tris / 2 + 4 x sqrt(Mg - dNTP)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Mitsuhashi (1996)";
 	
 	// SodiumEquivalentMethod interface implementation
 
@@ -43,8 +48,19 @@ public class Mitsuhashi96NaEquivalent extends SodiumEquivalent {
 	
 		double NaEq = super.getSodiumEquivalent(Na, Mg, K, Tris, dNTP, parameter);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "from Mitsuhashi et al. (1996) : " + NaCorrection);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logMessage(NaCorrection);
 
 		return NaEq;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

@@ -229,7 +229,7 @@ public class OptionManagement {
 	/**
 	 * Logger meltingLogger : Logger object to print the Melting warning, severe or/and info messages
 	 */
-	public static final Logger meltingLogger = Logger.getLogger("melting");
+	private static final Logger meltingLogger = Logger.getLogger("melting");
 	
 	/**
 	 * ArrayList registerPatternModels : contains the option names to choose a pattern model.
@@ -963,27 +963,100 @@ public class OptionManagement {
 		HashMap<String, String> optionDictionnary = collectOptions(args);
 		Environment environment = new Environment(optionDictionnary);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n Environment : ");
+		OptionManagement.logMessage("\n Environment : ");
 		Iterator<Map.Entry<String, Double>> entry = environment.getConcentrations().entrySet().iterator();
 		while (entry.hasNext()){
 			Map.Entry<String, Double> couple = entry.next();
 			String ion = couple.getKey();
 			Double concentration = couple.getValue();
-			OptionManagement.meltingLogger.log(Level.FINE, ion + " = " + concentration + " mol / L");
+			OptionManagement.logMessage(ion + " = " + concentration + " mol / L");
 		}
-		OptionManagement.meltingLogger.log(Level.FINE, "hybridization type : " + environment.getHybridization());
-		OptionManagement.meltingLogger.log(Level.FINE, "probe concentration : " + environment.getNucleotides() + "mol/L");
-		OptionManagement.meltingLogger.log(Level.FINE, "correction factor F : " + environment.getFactor());
+		OptionManagement.logMessage("hybridization type : " + environment.getHybridization());
+		OptionManagement.logMessage("probe concentration : " + environment.getNucleotides() + "mol/L");
+		OptionManagement.logMessage("correction factor F : " + environment.getFactor());
 		if (environment.isSelfComplementarity()){
-			OptionManagement.meltingLogger.log(Level.FINE, "self complementarity ");
+			OptionManagement.logMessage("self complementarity ");
 		}
 		else{
-			OptionManagement.meltingLogger.log(Level.FINE, "no self complementarity ");
+			OptionManagement.logMessage("no self complementarity ");
 		}
-		OptionManagement.meltingLogger.log(Level.FINE, "sequence : " + environment.getSequences().getSequence());
-		OptionManagement.meltingLogger.log(Level.FINE, "complementary sequence : " + environment.getSequences().getComplementary());
+		OptionManagement.logMessage("sequence : " + environment.getSequences().getSequence());
+		OptionManagement.logMessage("complementary sequence : " + environment.getSequences().getComplementary());
 		
 		return environment;
 	}
 
+  /**
+   * Logs an error to the melting logger.
+   * @param errorText The text of the error.
+   */
+  public static void logError(String errorText)
+  {
+    meltingLogger.log(Level.SEVERE, errorText);
+  }
+
+  /**
+   * Logs an error message to the melting logger, along with the error itself.
+   * @param errorText The text of the error.
+   * @param throwable The error itself.
+   */
+  public static void logError(String errorText, Throwable throwable)
+  {
+    meltingLogger.log(Level.SEVERE, errorText, throwable);
+  }
+
+  /**
+   * Logs a warning to the melting logger.
+   * @param warningText The text of the warning.
+   */
+  public static void logWarning(String warningText)
+  {
+    meltingLogger.log(Level.WARNING, warningText);
+  }
+
+  /**
+   * Logs information to the melting logger.
+   * @param infoText The information to log.
+   */
+  public static void logInfo(String infoText)
+  {
+    meltingLogger.log(Level.INFO, infoText);
+  }
+
+  /**
+   * Logs a message to the melting logger.
+   * @param messageText The text of the message.
+   */
+  public static void logMessage(String messageText)
+  {
+    meltingLogger.log(Level.FINE, messageText);
+  }
+
+  /**
+   * Logs the name of a method to the melting logger.
+   * @param methodName The method name.
+   */
+  public static void logMethodName(String methodName)
+  {
+    logMessage(" from " + methodName + ".");
+  }
+
+  /**
+   * Logs a file name to the melting logger.
+   * @param fileName The file name to log.
+   */
+  public static void logFileName(String fileName)
+  {
+    logMessage("\n File name : " + fileName);
+  }
+
+  /**
+   * Logs a temperature equation to the melting logger.
+   * @param temperatureEquation The temperature equation to log.
+   */
+  public static void logTemperatureEquation(String temperatureEquation)
+  {
+    logMessage("Temperature equation: ");
+    logMessage(temperatureEquation);
+  }
 }

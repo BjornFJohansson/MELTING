@@ -19,7 +19,6 @@
 package meltinggui.frames;
 
 import java.io.Serializable;
-import javax.swing.*;
 
 /**
  * The locations on the screen of the GUI and all the components it contains.  
@@ -73,7 +72,6 @@ public class GuiScreenPositions
     errorFrameScreenPosition.setScreenPosition(errorFrame);
   }
 }
-
 
 
 

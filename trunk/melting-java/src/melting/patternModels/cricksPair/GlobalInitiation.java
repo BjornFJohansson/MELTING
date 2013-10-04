@@ -15,8 +15,6 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -43,7 +41,7 @@ public abstract class GlobalInitiation extends CricksNNMethod {
 		if (environment.getSequences().isOneGCBasePair()){
 			Thermodynamics initiationOneGC = this.collector.getInitiation("one_GC_Pair");
 
-			OptionManagement.meltingLogger.log(Level.FINE, "\n The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
+			OptionManagement.logMessage("\n The initiation if there is at least one GC base pair : enthalpy = " + initiationOneGC.getEnthalpy() + "  entropy = " + initiationOneGC.getEntropy());
 
 			enthalpy += initiationOneGC.getEnthalpy();
 			entropy += initiationOneGC.getEntropy();
@@ -52,7 +50,7 @@ public abstract class GlobalInitiation extends CricksNNMethod {
 		else {
 			Thermodynamics initiationAllAT = this.collector.getInitiation("all_AT_pairs");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
+			OptionManagement.logMessage("\n The initiation if there is only AT base pairs : enthalpy = " + initiationAllAT.getEnthalpy() + "  entropy = " + initiationAllAT.getEntropy());
 			enthalpy += initiationAllAT.getEnthalpy();
 			entropy += initiationAllAT.getEntropy();
 		}

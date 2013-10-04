@@ -17,7 +17,6 @@ package melting.methodInterfaces;
 
 import java.util.HashMap;
 
-
 import melting.DataCollect;
 import melting.Environment;
 import melting.ThermoResult;

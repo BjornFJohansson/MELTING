@@ -15,15 +15,16 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model wetdnarna91. It extends Wetmur91.
  */
-public class WetmurDNARNA91 extends Wetmur91 {
+public class WetmurDNARNA91 extends Wetmur91
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -31,6 +32,11 @@ public class WetmurDNARNA91 extends Wetmur91 {
 	 * Temperature formula
 	 */
 	private static String temperatureEquation = "Tm = 67 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.8 * percentGC - 500 / duplexLength - percentMismatching";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Wetmur (1991) (DNA / RNA duplexes)";
 	
 	// public methods
 
@@ -45,7 +51,8 @@ public class WetmurDNARNA91 extends Wetmur91 {
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return this.environment.getResult();
 	}
@@ -54,9 +61,19 @@ public class WetmurDNARNA91 extends Wetmur91 {
 	public boolean isApplicable() {
 		
 		if (this.environment.getHybridization().equals("dnarna") == false && this.environment.getHybridization().equals("rnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The wetmur equation used here was originally established for hybrid DNA/RNA duplexes.");
+			OptionManagement.logWarning("\n The wetmur equation used here was originally established for hybrid DNA/RNA duplexes.");
 		}
 		
 		return super.isApplicable();
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

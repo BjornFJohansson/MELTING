@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model owc1904. It implements the CorrectionMethod interface.
@@ -30,14 +29,20 @@ import melting.methodInterfaces.CorrectionMethod;
  * A.Walder, "Effects of sodium ions on DNA duplex oligomers: Improved predictions of melting temperatures",
  * Biochemistry, 2004, 43, 3537-3554.
  */
-public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
-	
+public class Owczarzy04SodiumCorrection19
+  implements CorrectionMethod, NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String temperatureCorrection : formula for the temperature correction.
 	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + (-3.22 x Fgc - 6.39) x ln(Na)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Owczarzy et al. (2004) (19)";
 	
 	// CorrectionMethod interface implementation
 
@@ -46,12 +51,12 @@ public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be strictly positive.");
+			OptionManagement.logWarning("\n The sodium concentration must be strictly positive.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Owczarzy et al. (2004) 19 is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Owczarzy et al. (2004) 19 is originally established for " +
 			"DNA duplexes.");
 		}
 		
@@ -61,8 +66,9 @@ public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction (19) is from Owczarzy et al. (2008) : "); 
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		double NaEq = Helper.computesNaEquivalent(environment);
 		double Fgc = environment.getSequences().computesPercentGC() / 100.0;
@@ -73,4 +79,13 @@ public class Owczarzy04SodiumCorrection19 implements CorrectionMethod {
 		return environment.getResult();
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

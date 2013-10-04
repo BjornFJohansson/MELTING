@@ -15,10 +15,9 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model san98. It extends ApproximativeMode.
@@ -27,14 +26,20 @@ import melting.configuration.OptionManagement;
  * oligonucleotide DNA nearest-neighbor thermodynamics", Proc
  * Nacl Acad Sci USA 1998, 95, 1460-1465.
  * */
-public class Santalucia98 extends ApproximativeMode{
-	
+public class Santalucia98 extends ApproximativeMode
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * Temperature formula
 	 */
 	private static String temperatureEquation = "Tm = 77.1 + 11.7 * log10(Na) + 0.41 * PercentGC - 528 / duplexLength.";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia et al. (1998)";
 
 	// public methods
 	
@@ -45,8 +50,8 @@ public class Santalucia98 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Santalucia et al. (1998)");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return this.environment.getResult();
 	}
@@ -60,10 +65,20 @@ public class Santalucia98 extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Santalucia equation for polymers" +
+			OptionManagement.logWarning("\n The Santalucia equation for polymers" +
 					"was originally established for DNA duplexes.");
 		}
 		
 		return isApplicable;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

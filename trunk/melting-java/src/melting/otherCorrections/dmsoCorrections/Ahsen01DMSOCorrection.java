@@ -15,12 +15,11 @@
 
 package melting.otherCorrections.dmsoCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the DMSO correction model ahs01. It extends DNADMSOCorrections.
@@ -30,8 +29,9 @@ import melting.correctionMethods.DNADMSOCorrections;
  * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
  * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
  */
-public class Ahsen01DMSOCorrection extends DNADMSOCorrections {
-
+public class Ahsen01DMSOCorrection extends DNADMSOCorrections
+  implements NamedMethod
+{
 	// Instance variables
 	
 	private static double parameter = 0.75;
@@ -40,14 +40,29 @@ public class Ahsen01DMSOCorrection extends DNADMSOCorrections {
 	 * String temperatureCorrection : formula for the temperature correction
 	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.75 * x % DMSO";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Ahsen et al. (2001)";
 	
 	// CorrectionMethod interface implementation
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Ahsen et al. (2001) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The DMSO correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

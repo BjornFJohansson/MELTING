@@ -22,22 +22,27 @@ import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.BasePair;
 import melting.sequences.NucleotidSequences;
-
-import java.util.logging.Level;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the GU base pair model tur99. It extends PatternComputation.
  * 
  * Douglas M Turner et al (1999). J.Mol.Biol.  288: 911_940 
  */
-public class Turner99Wobble extends PatternComputation{
-	
+public class Turner99Wobble extends PatternComputation
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for GU base pairs
 	 */
 	public static String defaultFileName = "Turner1999wobble.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Turner et al. (1999)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -45,7 +50,7 @@ public class Turner99Wobble extends PatternComputation{
 	public boolean isApplicable(Environment environment, int pos1,
 			int pos2) {
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of " +
+			OptionManagement.logWarning("\n The model of " +
 					"Turner (1999) is only established " +
 					"for RNA sequences.");
 		}
@@ -56,13 +61,13 @@ public class Turner99Wobble extends PatternComputation{
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Turner et al. (1999) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for GU base" +
+                                " pairs is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		return getGUThermoResult(sequences, pos1, pos2, result);
-	}
-
-    protected ThermoResult getGUThermoResult(NucleotidSequences sequences, int pos1, int pos2, ThermoResult result) {
+	} protected ThermoResult getGUThermoResult(NucleotidSequences sequences, int pos1, int pos2, ThermoResult result) {
         int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength(), sequences);
         pos1 = positions[0];
         pos2 = positions[1];
@@ -78,7 +83,7 @@ public class Turner99Wobble extends PatternComputation{
         if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence(pos1,pos2).equals("GGUC") && newSequence.getComplementary(pos1,pos2).equals("CUGG")){
             closing = "G/C";
             mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(pos1, pos2), newSequence.getComplementary(pos1, pos2), closing);
-            OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+            OptionManagement.logMessage("\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
             enthalpy += mismatchValue.getEnthalpy();
             entropy += mismatchValue.getEntropy();
@@ -91,7 +96,7 @@ public class Turner99Wobble extends PatternComputation{
                 else {
                     mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
                 }
-                OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+                OptionManagement.logMessage("\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
                 enthalpy += mismatchValue.getEnthalpy();
                 entropy += mismatchValue.getEntropy();
@@ -105,7 +110,7 @@ public class Turner99Wobble extends PatternComputation{
             if (firstTerminalBasePair.isBasePairEqualTo("G", "U")){
                 Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
 
-                OptionManagement.meltingLogger.log(Level.FINE, "\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
+                OptionManagement.logMessage("\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
 
                 enthalpy += initiationGU.getEnthalpy();
                 entropy += initiationGU.getEntropy();
@@ -117,7 +122,7 @@ public class Turner99Wobble extends PatternComputation{
             if (lastTerminalBasePair.isBasePairEqualTo("G", "U")){
                 Thermodynamics initiationGU = this.collector.getTerminal("per_G/U");
 
-                OptionManagement.meltingLogger.log(Level.FINE, "\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
+                OptionManagement.logMessage("\n first base pair is G/U, Penalty per terminal G/U : enthalpy = " + initiationGU.getEnthalpy() + "  entropy = " + initiationGU.getEntropy());
 
                 enthalpy += initiationGU.getEnthalpy();
                 entropy += initiationGU.getEntropy();
@@ -143,7 +148,7 @@ public class Turner99Wobble extends PatternComputation{
 		if (pos2-pos1 == 4 && newSequences.getSequence(pos1, pos2).equals("GGUC") && newSequences.getComplementary(pos1, pos2).equals("CUGG")){
 			closing = "G/C";
 			if (this.collector.getMismatchValue(newSequences.getSequence(pos1, pos2), newSequences.getComplementary(pos1, pos2), closing) == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequence(pos1, pos2) + "/" + newSequences.getComplementary(pos1, pos2) + " is missing. Check the parameters for wobble base pairs.");
+				OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequence(pos1, pos2) + "/" + newSequences.getComplementary(pos1, pos2) + " is missing. Check the parameters for wobble base pairs.");
 				return true;
 			}
 			return super.isMissingParameters(newSequences, pos1, pos2);
@@ -151,13 +156,13 @@ public class Turner99Wobble extends PatternComputation{
 		for (int i = pos1; i < pos2; i++){
 			if (newSequences.getSequenceNNPair(i).equals("GU") && newSequences.getComplementaryNNPair(i).equals("UG")){
 				if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i), closing) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
+					OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
 					return true;
 				}
 			}
 			else{
 				if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
+					OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
 					return true;
 				}
 			}
@@ -167,7 +172,7 @@ public class Turner99Wobble extends PatternComputation{
         double numberTerminalGU = sequences.calculateNumberOfTerminal("G", "U", truncatedPositions[0], truncatedPositions[1]);
 
         if (numberTerminalGU > 0 && this.collector.getTerminal("per_G/U") == null){
-            OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for terminal GU is missing. Check the parameters for wobble base pairs.");
+            OptionManagement.logWarning("\n The thermodynamic parameter for terminal GU is missing. Check the parameters for wobble base pairs.");
             return true;
         }
         return super.isMissingParameters(newSequences, pos1, pos2);
@@ -219,4 +224,13 @@ public class Turner99Wobble extends PatternComputation{
 		return positions;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

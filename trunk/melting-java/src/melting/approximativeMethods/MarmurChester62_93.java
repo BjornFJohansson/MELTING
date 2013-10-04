@@ -16,11 +16,10 @@
 package melting.approximativeMethods;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
-import melting.exceptions.NoExistingMethodException;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model che93. It extends ApproximativeMode.
@@ -33,7 +32,9 @@ import melting.exceptions.NoExistingMethodException;
  * a method for analyzing the role of renaturation temperature in the polymerase 
  * chain reaction", 1993, Analytical Biochemistry, 209, 284-290.
  */
-public class MarmurChester62_93 extends ApproximativeMode{
+public class MarmurChester62_93 extends ApproximativeMode
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -46,6 +47,35 @@ public class MarmurChester62_93 extends ApproximativeMode{
 	 * temperature formula
 	 */
 	private String temperatureEquation = "Tm = 69.3 + 0.41 * PercentGC - parameter / duplexLength.";
+
+  /**
+   * The full name of the method
+   */
+  private String methodName;
+
+  // public constructor
+
+  /**
+   * Sets up the private variables: <code>parameter</code> and
+   * <code>methodName</code>.  
+   * @param   parameter   535 for the corrected version, 
+   *                      650 for the uncorrected version.
+   * @param   methodName  The name of the method.
+   */
+  public MarmurChester62_93(double parameter, String methodName)
+  {
+    this.parameter = parameter;
+    this.methodName = methodName;
+  }
+
+  /**
+   * Sets up the private variables for the uncorrected version.
+   * The parameter for the uncorrected version is 650.
+   */
+  public MarmurChester62_93()
+  {
+    this(650, "Marmur 1962, Chester et al. 1993");
+  }
 	
 	// public methods
 	
@@ -57,9 +87,9 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Marmur et al. (1962) and Chester et al (1993)");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
-		OptionManagement.meltingLogger.log(Level.FINE, "Where parameter = " + parameter);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
+		OptionManagement.logMessage("Where parameter = " + parameter);
 
 		return this.environment.getResult();
 	}
@@ -73,11 +103,11 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The formula of Marmur, Doty, Chester " +
+			OptionManagement.logWarning("\n The formula of Marmur, Doty, Chester " +
 					"and Marshak is originally established for DNA duplexes.");
 		}
 		if (this.environment.getNa() != 0.0 || this.environment.getMg() != 0.0015 || this.environment.getTris() != 0.01 || this.environment.getK() != 0.05){
-		   OptionManagement.meltingLogger.log(Level.WARNING,"\n The formula of Marmur, Doty, Chester " +
+		   OptionManagement.logWarning("\n The formula of Marmur, Doty, Chester " +
 			"and Marshak is originally established at a given ionic strength : " +
 			"Na = 0 M, Mg = 0.0015 M, Tris = 0.01 M and k = 0.05 M");
 		}
@@ -90,17 +120,16 @@ public class MarmurChester62_93 extends ApproximativeMode{
 		String method = options.get(OptionManagement.approximativeMode);
 		
 		super.setUpVariables(options);
-		if (method.equals("che93corr")){
-			parameter = 535;
-		}
-		else if (method.equals("che93")){
-			parameter = 650;
-		}
-		else {
-			throw new NoExistingMethodException("\n The two possible methods for Marmur and Chester, 1962-1993 are MarmurChester62_93_corr and MarmurChester62_93." +
-					"The formula is the same but one factor value change : 535 or 650.");
-		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  public String getName()
+  {
+    return methodName;
+  }
 	
 	// protected method
 	
