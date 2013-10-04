@@ -15,27 +15,32 @@
 
 package melting.patternModels.wobble;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the inosine model zno07. It extends InosineNNMethod.
  * 
  * Brent M Znosko et al. (2005). Biochemistry 46 : 4625-4634
  */
-public class Znosko07Inosine extends InosineNNMethod {
-	
+public class Znosko07Inosine extends InosineNNMethod
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for inosine
 	 */
 	public static String defaultFileName = "Znosko2007inomn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Znosko et al. (2005)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -45,7 +50,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		NucleotidSequences inosine = environment.getSequences().getEquivalentSequences("rna");
 		
 		if (environment.getHybridization().equals("rnarna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for inosine base of" +
+			OptionManagement.logWarning("\n The thermodynamic parameters for inosine base of" +
 					"Znosco (2007) are established for RNA sequences.");
 		
 		}
@@ -54,7 +59,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		for (int i = 0; i < inosine.getDuplexLength() - 1; i++){
 			if ((inosine.getSequence().charAt(i) == 'I' || inosine.getComplementary().charAt(i) == 'I') && inosine.getDuplex().get(i).isBasePairEqualTo("I", "U") == false){
 				isApplicable = false;
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters of Znosco" +
+				OptionManagement.logWarning("\n The thermodynamic parameters of Znosco" +
 						"(2007) are only established for IU base pairs.");
 				break;
 			}
@@ -71,8 +76,10 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		NucleotidSequences inosine = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for inosine is from Znosco et al. (2007) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for inosine" +
+                                " is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		result = super.computeThermodynamics(inosine, pos1, pos2, result);
 		
@@ -82,7 +89,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == sequences.getDuplexLength() - 1) && numberIU > 0) {
 			Thermodynamics terminaIU = this.collector.getTerminal("per_I/U");
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
+			OptionManagement.logMessage("\n" + numberIU + " x terminal IU : enthalpy = " + terminaIU.getEnthalpy() + "  entropy = " + terminaIU.getEntropy());
 
 			enthalpy += numberIU * terminaIU.getEnthalpy();
 			entropy += numberIU * terminaIU.getEntropy();
@@ -106,7 +113,7 @@ public class Znosko07Inosine extends InosineNNMethod {
 		
 		if ((pos1 == 0 || pos2 == inosine.getDuplexLength() - 1) && numberIU > 0){
 			if (this.collector.getTerminal("per_I/U") == null){
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for terminal IU base pair is missing.");
+				OptionManagement.logWarning("\n The thermodynamic parameter for terminal IU base pair is missing.");
 				return true;
 			}
 		}
@@ -122,4 +129,13 @@ public class Znosko07Inosine extends InosineNNMethod {
 		}
 	}
 	
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

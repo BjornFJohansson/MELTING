@@ -22,8 +22,6 @@ import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.*;
-import java.awt.Toolkit;
-import java.awt.Dimension;
 
 import meltinggui.frames.*;
 

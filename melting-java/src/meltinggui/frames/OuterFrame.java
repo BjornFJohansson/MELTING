@@ -19,10 +19,10 @@
 package meltinggui.frames;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -30,10 +30,7 @@ import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observer;
-import java.util.Properties;
 import javax.swing.*;
-
-import meltinggui.MeltingObservable;
 
 public class OuterFrame
   extends JFrame
@@ -60,11 +57,30 @@ public class OuterFrame
                                                     "gui-screen-positions.ser";
 
   /**
+   * Directory name to hold the file in.
+   */
+  private static final String meltingDir = ".melting";
+
+  /**
+   * The full path to the screen positions file.
+   */
+  private String screenPositionsPath;
+
+  /**
    * Sets up the GUI and displays the main MELTING frame.
    */
   public OuterFrame()
   {
     super("Melting v5.0");
+
+    // Set up the path for storing screen positions.
+    String userHome = System.getProperty("user.home");
+    String slash = System.getProperty("file.separator");
+    String screenPositionsDirectory = userHome + slash +
+                                      meltingDir;
+    new File(screenPositionsDirectory).mkdir();
+    screenPositionsPath = screenPositionsDirectory + slash +
+                          screenPositionsFileName;
 
     desktopPane = new JDesktopPane();
 
@@ -95,7 +111,6 @@ public class OuterFrame
 
     setVisible(true);
   }
-
 
   /**
    * Adds an observer to the melting frame.
@@ -135,7 +150,7 @@ public class OuterFrame
                                                                 errorFrame);
     try {
       FileOutputStream fileOutputStream =
-                                 new FileOutputStream(screenPositionsFileName);
+                                 new FileOutputStream(screenPositionsPath);
       ObjectOutputStream objectOutputStream =
                                  new ObjectOutputStream(fileOutputStream);
       objectOutputStream.writeObject(screenPositions);
@@ -154,10 +169,10 @@ public class OuterFrame
    */
   public void restoreScreenPositions()
   {
-    GuiScreenPositions screenPositions = null;
+    GuiScreenPositions screenPositions;
     try {
       FileInputStream fileInputStream =
-                                  new FileInputStream(screenPositionsFileName);
+                                  new FileInputStream(screenPositionsPath);
       ObjectInputStream objectInputStream =
                                   new ObjectInputStream(fileInputStream);
       screenPositions = (GuiScreenPositions) objectInputStream.readObject();
@@ -165,7 +180,6 @@ public class OuterFrame
       fileInputStream.close();
     }
     catch (ClassNotFoundException exception) {
-      exception.printStackTrace();
       return;
     }
     catch (FileNotFoundException exception) {
@@ -173,7 +187,6 @@ public class OuterFrame
       return;
     }
     catch (IOException exception) {
-      exception.printStackTrace();
       return;
     }
 

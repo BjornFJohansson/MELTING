@@ -104,4 +104,15 @@ public class MeltingTextArea extends JTextArea
     }
     return preferredSize;
   }
+  
+  /**
+   * Override the <code>getMinimumSize</code> method to return the preferred 
+   * size - these text areas should never be any smaller than their preferred
+   * size.
+   */
+  @Override
+  public Dimension getMinimumSize()
+  {
+    return getPreferredSize();
+  }
 }

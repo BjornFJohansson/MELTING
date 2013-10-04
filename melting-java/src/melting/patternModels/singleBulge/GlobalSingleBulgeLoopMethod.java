@@ -15,8 +15,6 @@
 
 package melting.patternModels.singleBulge;
 
-import java.util.logging.Level;
-
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -44,7 +42,7 @@ public abstract class GlobalSingleBulgeLoopMethod extends PatternComputation{
 		double enthalpy = result.getEnthalpy() + singleBulge.getEnthalpy();
 		double entropy = result.getEntropy() + singleBulge.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + singleBulge.getEnthalpy() + "  entropy = " + singleBulge.getEntropy());
+		OptionManagement.logMessage("\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + singleBulge.getEnthalpy() + "  entropy = " + singleBulge.getEntropy());
 		
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -57,7 +55,7 @@ public abstract class GlobalSingleBulgeLoopMethod extends PatternComputation{
 			int pos2) {
 		
 		if (this.collector.getSingleBulgeLoopvalue(sequences.getSequence(pos1, pos2), sequences.getComplementary(pos1, pos2)) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the single bulge loop parameters.");
+			OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " are missing. Check the single bulge loop parameters.");
 
 			return true;
 		}

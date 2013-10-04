@@ -16,8 +16,6 @@
 package melting.patternModels.singleBulge;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -26,14 +24,16 @@ import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.longBulge.Santalucia04LongBulgeLoop;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single bulge loop model san04. It extends Santalucia04LongBulgeLoop.
  * 
  * Santalucia et al (2004). Annu. Rev. Biophys. Biomol. Struct 33 : 415-440
  */
-public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
-	
+public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
@@ -45,6 +45,11 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 	 * StringBuffer formulaS : the entropy formula
 	 */
 	private static StringBuffer formulaS = new StringBuffer();
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia et al. (2004)";
 	
 	// Santalucia04SingleBulgeLoop constructor
 	
@@ -68,8 +73,10 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for single bulge loop is from Santalucia (2004) : " + formulaH.toString() + "and" + formulaS.toString());
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The nearest neighbor model for single" +
+                                " bulge loop is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		result = super.computeThermodynamics(newSequences, pos1, pos2, result);
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
@@ -78,7 +85,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		double enthalpy = result.getEnthalpy() + NNValue.getEnthalpy();
 		double entropy = result.getEntropy() + NNValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n NN intervening"+ NNNeighbors[0] + "/" + NNNeighbors[1] +" :  enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+		OptionManagement.logMessage("\n NN intervening"+ NNNeighbors[0] + "/" + NNNeighbors[1] +" :  enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -98,7 +105,7 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		String[] NNNeighbors = newSequences.getSingleBulgeNeighbors(pos1);
 
 		if (this.collector.getNNvalue(NNNeighbors[0], NNNeighbors[1]) == null){
-			OptionManagement.meltingLogger.log(Level.FINE, "\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop parameters.");
+			OptionManagement.logMessage("\n The thermodynamic parameters for " + NNNeighbors[0] + "/" + NNNeighbors[1] + " are missing. Check the single bulge loop parameters.");
 
 			return true;
 		}
@@ -119,4 +126,14 @@ public class Santalucia04SingleBulgeLoop extends Santalucia04LongBulgeLoop{
 		
 		loadFile(NNfile, this.collector);
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

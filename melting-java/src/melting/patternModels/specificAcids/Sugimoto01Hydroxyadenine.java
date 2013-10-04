@@ -16,8 +16,6 @@
 package melting.patternModels.specificAcids;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -27,20 +25,27 @@ import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.PatternComputationMethod;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the hydroxyadenine (A*) model sug01. It extends PatternComputation.
  * 
  * Sugimoto et al.(2001). Nucleic acids research 29 : 3289-3296
  */
-public class Sugimoto01Hydroxyadenine extends PatternComputation{
-	
+public class Sugimoto01Hydroxyadenine extends PatternComputation
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for hydroxyadenine mismatch
 	 */
 	public static String defaultFileName = "Sugimoto2001hydroxyAmn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Sugimoto et al. (2001)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -56,7 +61,7 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for 2-hydroxyadenine base of" +
+			OptionManagement.logWarning("\n The thermodynamic parameters for 2-hydroxyadenine base of" +
 					"Sugimoto (2001) are established for DNA sequences.");
 					}
 				
@@ -66,25 +71,25 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 						
 			if (seq.equals("TA*A")== false && seq.equals("GA*C") == false){
 				isApplicable = false;
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for 2-hydroxyadenine terminal base of" +
+				OptionManagement.logWarning("\n The thermodynamic parameters for 2-hydroxyadenine terminal base of" +
 				"Sugimoto (2001) are established for TA*A/AT or GA*C/CG sequences.");
 			}
 			else if ((seq.equals("TA*A")== true && comp.matches("A[AUTGC] T") == false) || (seq.equals("GA*C") == true && comp.matches("C[ATCGU] G") == false)){
 				isApplicable = false;
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for 2-hydroxyadenine terminal base of" +
+				OptionManagement.logWarning("\n The thermodynamic parameters for 2-hydroxyadenine terminal base of" +
 				"Sugimoto (2001) are established for TA*A/AT or GA*C/CG sequences.");
 			}
 			
 			else {
 				if ((modified.getDuplex().get(pos1).getTopAcid().equals("T") == false && modified.getDuplex().get(pos1).getTopAcid().equals("G") == false) || (modified.getDuplex().get(pos2).getTopAcid().equals("A") == false && modified.getDuplex().get(pos2).getTopAcid().equals("C") == false)){
 					isApplicable = false;
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for 2-hydroxyadenine base of" +
+					OptionManagement.logWarning("\n The thermodynamic parameters for 2-hydroxyadenine base of" +
 					"Sugimoto (2001) are established for TA*A/ANT or GA*C/CNG sequences.");
 				}
 				else {
 					if (modified.getDuplex().get(pos1).isComplementaryBasePair() == false || modified.getDuplex().get(pos1).isComplementaryBasePair() == false){
 						isApplicable = false;
-						OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for 2-hydroxyadenine base of" +
+						OptionManagement.logWarning("\n The thermodynamic parameters for 2-hydroxyadenine base of" +
 						"Sugimoto (2001) are established for TA*A/ANT or GA*C/CNG sequences.");
 					}
 				}
@@ -103,15 +108,16 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The hydroxyadenine model is from Sugimoto et al. (2001) (delta delta H and delta delta S): ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The hydroxyadenine model is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		result = computeThermodynamicsWithoutHydroxyadenine(newSequences, pos1, pos2, result);
 		Thermodynamics hydroxyAdenineValue = this.collector.getHydroxyadenosineValue(newSequences.getSequence(pos1,pos2), newSequences.getComplementary(pos1,pos2));
 		double enthalpy = result.getEnthalpy() + hydroxyAdenineValue.getEnthalpy();
 		double entropy = result.getEntropy() + hydroxyAdenineValue.getEntropy();
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
+		OptionManagement.logMessage("\n" + sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : incremented enthalpy = " + hydroxyAdenineValue.getEnthalpy() + "  incremented entropy = " + hydroxyAdenineValue.getEntropy());
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
@@ -133,7 +139,7 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 			for (int i = pos1; i < pos2; i++){
 				String[] pair = newSequences.getNNPairWithoutHydroxyA(i);
 				if (this.collector.getNNvalue(pair[0], pair[1]) == null){
-					OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + pair[0] + "/" + pair[1] + " are missing. Check the hydroxyadenine parameters.");
+					OptionManagement.logWarning("\n The thermodynamic parameters for " + pair[0] + "/" + pair[1] + " are missing. Check the hydroxyadenine parameters.");
 					return true;
 				}
 			}
@@ -143,7 +149,7 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		}
 		
 		if (this.collector.getHydroxyadenosineValue(newSequences.getSequence(pos1, pos2), newSequences.getComplementary(pos1,pos2)) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2) + " are missing. Check the hydroxyadenine parameters.");
+			OptionManagement.logWarning("\n The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2) + " are missing. Check the hydroxyadenine parameters.");
 
 			return true;
 		}
@@ -199,7 +205,7 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + pair[0] + "/" + pair[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.logMessage("\n" + pair[0] + "/" + pair[1] + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 		}
 	
 		result.setEnthalpy(enthalpy);
@@ -227,4 +233,13 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation{
 		return positions;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

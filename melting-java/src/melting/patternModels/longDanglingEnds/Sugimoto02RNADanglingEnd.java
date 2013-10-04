@@ -15,19 +15,19 @@
 
 package melting.patternModels.longDanglingEnds;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the long dangling end model sugrna02 (for long poly A only). It extends SugimotoLongDanglingEndMethod.
  */
-public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
-	
+public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod
+  implements NamedMethod
+{	
 	// Instance variable
 	
 	/**
@@ -35,6 +35,11 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 	 * (just long poly A)
 	 */
 	public static String defaultFileName = "Sugimoto2002longrde.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Omichi et al. (2002) (RNA duplexes)";
 	
 	// PatternComputationMethod interface implementation
 	
@@ -43,7 +48,7 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 			int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The following thermodynamic parameters for long dangling end of Sugimoto et al." +
+			OptionManagement.logWarning("\n The following thermodynamic parameters for long dangling end of Sugimoto et al." +
 			"(2002) are established for RNA sequences.");
 		
 		}
@@ -84,4 +89,14 @@ public class Sugimoto02RNADanglingEnd extends SugimotoLongDanglingEndMethod {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

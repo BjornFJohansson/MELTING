@@ -15,10 +15,9 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model owe69. It extends Approximative.
@@ -38,7 +37,9 @@ import melting.configuration.OptionManagement;
  * Blake RD, Delcourt SG. Thermal stability of DNA. Nucleic Acids
  * Res 1998;26:3323–32.
 */
-public class Owen69 extends ApproximativeMode{
+public class Owen69 extends ApproximativeMode
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -46,6 +47,11 @@ public class Owen69 extends ApproximativeMode{
 	 * temperature formula
 	 */
 	private static String temperatureEquation = "Tm = 87.16 + 0.345 * percentGC + log10(Na) * (20.17 - 0.066 * percentGC)";
+
+  /**
+   * The full name of the method.
+   */
+  private static String methodName = "Owen et al. (1969)";
 	
 	// public methods
 	
@@ -57,8 +63,8 @@ public class Owen69 extends ApproximativeMode{
 		
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, " from Owen et al. (1969)");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return this.environment.getResult();
 	}
@@ -72,12 +78,21 @@ public class Owen69 extends ApproximativeMode{
 		}
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Owen et al. equation" +
+			OptionManagement.logWarning("\n The Owen et al. equation" +
 					"was originally established for DNA duplexes.");
 			
 		}
 		
 		return isApplicable;
 	}
-	
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

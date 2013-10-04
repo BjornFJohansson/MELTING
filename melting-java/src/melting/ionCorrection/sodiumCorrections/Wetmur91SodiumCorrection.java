@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model wet91. It implements the CorrectionMethod interface.
@@ -29,14 +28,20 @@ import melting.methodInterfaces.CorrectionMethod;
  * James G. Wetmur, "DNA Probes : applications of the principles of nucleic acid hybridization",
  * 1991, Critical reviews in biochemistry and molecular biology, 26, 227-259
  */
-public class Wetmur91SodiumCorrection implements CorrectionMethod{
-	
+public class Wetmur91SodiumCorrection
+  implements CorrectionMethod, NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String temperatureCorrection : formula for the temperature correction.
 	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 16.6 x log10(Na / (1.0 + 0.7 * Na)) + 3.83";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Wetmur (1991)";
 	
 	// CorrectionMethod interface implementation
 
@@ -45,7 +50,7 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Wetmur (1991) is applicable for " +
+			OptionManagement.logWarning("\n The sodium correction of Wetmur (1991) is applicable for " +
 					"strictky positive sodium concentrations.");
 			isApplicable = false;
 		}
@@ -54,8 +59,9 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Wetmur. (1991) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
@@ -65,4 +71,13 @@ public class Wetmur91SodiumCorrection implements CorrectionMethod{
 		return environment.getResult();
 	}
 	
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

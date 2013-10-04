@@ -17,7 +17,6 @@ package melting;
 
 import java.util.HashMap;
 
-
 import melting.configuration.OptionManagement;
 import melting.exceptions.OptionSyntaxError;
 import melting.sequences.NucleotidSequences;

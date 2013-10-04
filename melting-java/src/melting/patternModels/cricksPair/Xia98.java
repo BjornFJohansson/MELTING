@@ -15,28 +15,34 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model xia98. It extends CricksNNMethod.
  * 
  * Xia et al (1998) Biochemistry 37: 14719-14735
  */
-public class Xia98 extends CricksNNMethod {
+public class Xia98 extends CricksNNMethod
+  implements NamedMethod
+{
 	
-	// Instance variable
+	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
 	public static String defaultFileName = "Xia1998nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Xia et al. (1998)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -44,7 +50,7 @@ public class Xia98 extends CricksNNMethod {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Xia et al. (1998)" +
+			OptionManagement.logWarning("\n The model of Xia et al. (1998)" +
 			"is established for RNA/RNA sequences.");
 		}
 		return super.isApplicable(environment, pos1, pos2);
@@ -53,8 +59,8 @@ public class Xia98 extends CricksNNMethod {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is from Xia (1998).");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 				
@@ -74,7 +80,7 @@ public class Xia98 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			if (this.collector.getTerminal("per_A/U") == null){
 				isMissing = true;
-				OptionManagement.meltingLogger.log(Level.WARNING, "/n The thermodynamic parameters for terminal AU base pair are missing.");
+				OptionManagement.logWarning("/n The thermodynamic parameters for terminal AU base pair are missing.");
 			}	
 		}
 		
@@ -108,7 +114,7 @@ public class Xia98 extends CricksNNMethod {
 		if (numberTerminalAU != 0) {
 			Thermodynamics terminalAU = this.collector.getTerminal("per_A/U");
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
+			OptionManagement.logMessage("\n" + numberTerminalAU + " x penalty per terminal AU : enthalpy = " + terminalAU.getEnthalpy() + "  entropy = " + terminalAU.getEntropy());
 			
 			enthalpy += numberTerminalAU * terminalAU.getEnthalpy();
 			entropy += numberTerminalAU * terminalAU.getEntropy();
@@ -118,4 +124,14 @@ public class Xia98 extends CricksNNMethod {
 		
 		return environment.getResult();
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

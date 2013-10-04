@@ -15,12 +15,11 @@
 
 package melting.otherCorrections.dmsoCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.DNADMSOCorrections;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the DMSO correction model cul76. It extends DNADMSOCorrections.
@@ -28,8 +27,9 @@ import melting.correctionMethods.DNADMSOCorrections;
  * Cullen Br, Bick Md, "Thermal denaturation of DNA from bromodeoxyuridine substitued cells."
  * Nucleic acids research, 1976, 3, 49-62.
  */
-public class Cullen76DMSOCorrection extends DNADMSOCorrections {
-
+public class Cullen76DMSOCorrection extends DNADMSOCorrections
+  implements NamedMethod
+{
 	// Instance variables
 
 	private static double parameter = 0.5;
@@ -38,14 +38,29 @@ public class Cullen76DMSOCorrection extends DNADMSOCorrections {
 	 * String temperatureCorrection : formula for the temperature correction
 	 */
 	private static String temperatureCorrection = "Tm (x % DMSO) = Tm(0 % DMSO) - 0.5 * x % DMSO";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Cullen and Bick (1976)";
 	
 	// CorrectionMethod interface implementation
 
 	public ThermoResult correctMeltingResults(Environment environment) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The DMSO correction from Cullen et al.(1976) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,temperatureCorrection);
+		OptionManagement.logMessage("\n The DMSO correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 		
 		return super.correctMeltingResult(environment, parameter);
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

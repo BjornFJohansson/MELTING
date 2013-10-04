@@ -1,3 +1,21 @@
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public Licence as published by the Free
+// Software Foundation; either verison 2 of the Licence, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for
+// more details.  
+//
+// You should have received a copy of the GNU General Public Licence along with
+// this program; if not, write to the Free Software Foundation, Inc., 
+// 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
+// Marine Dumousseau, Nicolas Lenovere
+// EMBL-EBI, neurobiology computational group,             
+// Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk
+
 package melting.patternModels.wobble;
 
 import melting.Environment;
@@ -6,8 +24,7 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
-
-import java.util.logging.Level;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the GU base pair model ser12. It extends PatternComputation.
@@ -19,8 +36,9 @@ import java.util.logging.Level;
  * @since <pre>10/02/13</pre>
  */
 
-public class Serra12Wobble extends PatternComputation {
-
+public class Serra12Wobble extends PatternComputation
+  implements NamedMethod
+{
     // Instance variables
 
     /**
@@ -28,13 +46,18 @@ public class Serra12Wobble extends PatternComputation {
      */
     public static String defaultFileName = "Serra2012wobble.xml";
 
+    /**
+     * Full name of the method.
+     */
+    private static String methodName = "Serra et al. (2012)";
+
     // PatternComputationMethod interface implementation
 
     @Override
     public boolean isApplicable(Environment environment, int pos1,
                                 int pos2) {
         if (environment.getHybridization().equals("rnarna") == false){
-            OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of " +
+            OptionManagement.logWarning("\n The model of " +
                     "Serra (2012) is only established " +
                     "for RNA sequences.");
         }
@@ -44,8 +67,10 @@ public class Serra12Wobble extends PatternComputation {
     @Override
     public ThermoResult computeThermodynamics(NucleotidSequences sequences,
                                               int pos1, int pos2, ThermoResult result) {
-        OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model for GU base pairs is from Serra et al. (2012) : ");
-        OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+        OptionManagement.logMessage("\n The nearest neighbor model for GU" +
+                                    " base pairs is");
+        OptionManagement.logMethodName(methodName);
+        OptionManagement.logFileName(this.fileName);
 
         return getGUThermoResult(sequences, pos1, pos2, result);
     }
@@ -66,7 +91,7 @@ public class Serra12Wobble extends PatternComputation {
         if (newSequence.getDuplexLength() - 1 == 4 && newSequence.getSequence(pos1,pos2).equals("GGUC") && newSequence.getComplementary(pos1,pos2).equals("CUGG")){
             closing = "G/C";
             mismatchValue = this.collector.getMismatchValue(newSequence.getSequence(pos1, pos2), newSequence.getComplementary(pos1, pos2), closing);
-            OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+            OptionManagement.logMessage("\n" + newSequence.getSequence(pos1, pos2) + "/" + newSequence.getComplementary(pos1, pos2) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
             enthalpy += mismatchValue.getEnthalpy();
             entropy += mismatchValue.getEntropy();
@@ -79,7 +104,7 @@ public class Serra12Wobble extends PatternComputation {
                 else {
                     mismatchValue = this.collector.getMismatchValue(newSequence.getSequenceNNPair(i), newSequence.getComplementaryNNPair(i));
                 }
-                OptionManagement.meltingLogger.log(Level.FINE, "\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
+                OptionManagement.logMessage("\n" + newSequence.getSequenceNNPair(i) + "/" + newSequence.getComplementaryNNPair(i) + " : enthalpy = " + mismatchValue.getEnthalpy() + "  entropy = " + mismatchValue.getEntropy());
 
                 enthalpy += mismatchValue.getEnthalpy();
                 entropy += mismatchValue.getEntropy();
@@ -114,7 +139,7 @@ public class Serra12Wobble extends PatternComputation {
         if (pos2-pos1 == 4 && newSequences.getSequence(pos1, pos2).equals("GGUC") && newSequences.getComplementary(pos1, pos2).equals("CUGG")){
             closing = "G/C";
             if (this.collector.getMismatchValue(newSequences.getSequence(pos1, pos2), newSequences.getComplementary(pos1, pos2), closing) == null){
-                OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequence(pos1, pos2) + "/" + newSequences.getComplementary(pos1, pos2) + " is missing. Check the parameters for wobble base pairs.");
+                OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequence(pos1, pos2) + "/" + newSequences.getComplementary(pos1, pos2) + " is missing. Check the parameters for wobble base pairs.");
                 return true;
             }
             return super.isMissingParameters(newSequences, pos1, pos2);
@@ -122,13 +147,13 @@ public class Serra12Wobble extends PatternComputation {
         for (int i = pos1; i < pos2; i++){
             if (newSequences.getSequenceNNPair(i).equals("GU") && newSequences.getComplementaryNNPair(i).equals("UG")){
                 if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i), closing) == null){
-                    OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
+                    OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
                     return true;
                 }
             }
             else{
                 if (this.collector.getMismatchValue(newSequences.getSequenceNNPair(i), newSequences.getComplementaryNNPair(i)) == null){
-                    OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
+                    OptionManagement.logWarning("\n The thermodynamic parameter for " + newSequences.getSequenceNNPair(i) + "/" + newSequences.getComplementaryNNPair(i) + " is missing. Check the parameters for wobble base pairs.");
                     return true;
                 }
             }
@@ -136,7 +161,6 @@ public class Serra12Wobble extends PatternComputation {
 
         return super.isMissingParameters(newSequences, pos1, pos2);
     }
-
 
     // private method
     /**
@@ -172,5 +196,15 @@ public class Serra12Wobble extends PatternComputation {
         }
         int [] positions = {pos1, pos2};
         return positions;
+    }
+
+    /**
+     * Gets the full name of the method.
+     * @return The full name of the method.
+     */
+    @Override
+    public String getName()
+    {
+      return methodName;
     }
 }

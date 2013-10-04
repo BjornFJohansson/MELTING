@@ -461,7 +461,7 @@ public class MeltingLayout implements LayoutManager2, java.io.Serializable
       this.hgap = hgap;
       this.vgap = vgap;
 
-      wrapped = true;
+      wrapped = false;
     }
 
     /**
@@ -818,5 +818,4 @@ public class MeltingLayout implements LayoutManager2, java.io.Serializable
     }
   }
 }
-
 

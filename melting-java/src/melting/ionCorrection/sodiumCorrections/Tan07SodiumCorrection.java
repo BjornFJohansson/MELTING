@@ -15,13 +15,12 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model tanna07. It extends EntropyCorrection..
@@ -29,8 +28,9 @@ import melting.correctionMethods.EntropyCorrection;
  * Zhi-Jie Tan and Shi-Jie Chen," RNA helix stability in Mixed Na+/Mg2+ solutions", 2007, 
  * Biophysical Journal, 92, 3615-3632.
  */
-public class Tan07SodiumCorrection extends EntropyCorrection {
-	
+public class Tan07SodiumCorrection extends EntropyCorrection
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
@@ -41,11 +41,16 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 	private static String aFormula = "a1 = -0.075 x ln(Na) + 0.012 x ln(Mg)^2";
 	
 	private static String bFormula = "b1 = 0.018 x ln(Mg)^2";
-	
+
 	/**
 	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
 	 */
 	private static String gFormula = "g1 = a1 + b1 / duplexLength";
+	
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Zhi-Jie Tan et al. (2007)";
 	
 	// CorrectionMethod interface implementation
 
@@ -54,17 +59,17 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 		boolean isApplicable = super.isApplicable(environment);
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.003 && NaEq > 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Zhi-Jie Tan et al. (2007)" +
+			OptionManagement.logWarning("\n The sodium correction of Zhi-Jie Tan et al. (2007)" +
 					"is reliable for sodium concentrations between 0.003M and 1M.");
 		}
 		
 		if (environment.getHybridization().equals("rnarna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Zhi-Jie Tan et al. (2007) is originally established for " +
 			"RNA duplexes.");
 		}
 		return isApplicable;
@@ -73,8 +78,9 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 	@Override
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction from Zhi-Jie Tan et al. (2007) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(entropyCorrection);
 
 		double NaEq = Helper.computesNaEquivalent(environment);
 		environment.setNa(NaEq);
@@ -101,10 +107,10 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 	 */
 	public static double calculateFreeEnergyPerBaseStack(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
-		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, aFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, bFormula);
+		OptionManagement.logMessage("where : ");
+		OptionManagement.logMessage(gFormula);
+		OptionManagement.logMessage(aFormula);
+		OptionManagement.logMessage(bFormula);
 		
 		double Na = environment.getNa();
 		double square = Math.log(Na) * Math.log(Na);
@@ -115,4 +121,14 @@ public class Tan07SodiumCorrection extends EntropyCorrection {
 		
 		return g;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

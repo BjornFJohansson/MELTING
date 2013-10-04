@@ -15,27 +15,32 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the nearest neighbor model all97. It extends DecomposedInitiation.
  * 
  * Allawi and SantaLucia (1997). Biochemistry 36 : 10581-10594
  */
-public class AllawiSantalucia97 extends DecomposedInitiation {
-	
+public class AllawiSantalucia97 extends DecomposedInitiation
+  implements NamedMethod
+{
 	// Instance variable
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for each Crick's pair
 	 */
-	public static String defaultFileName = "AllawiSantalucia1997nn.xml";
+public static String defaultFileName = "AllawiSantalucia1997nn.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Allawi and Santalucia (1997)";
 
 	// PatternComputationMethod interface implementation
 	
@@ -43,7 +48,7 @@ public class AllawiSantalucia97 extends DecomposedInitiation {
 	public boolean isApplicable(Environment environment, int pos1, int pos2) {
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The model of Allawi and Santalucia (1997)" +
+			OptionManagement.logWarning("\n The model of Allawi and Santalucia (1997)" +
 					"is established for DNA sequences.");	
 			
 		}
@@ -53,8 +58,8 @@ public class AllawiSantalucia97 extends DecomposedInitiation {
 	@Override
 	public ThermoResult computeThermodynamics(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The nearest neighbor model is  from Allawi and Santalucia (1997). \n");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
@@ -77,4 +82,14 @@ public class AllawiSantalucia97 extends DecomposedInitiation {
 			this.fileName = defaultFileName;
 		}
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

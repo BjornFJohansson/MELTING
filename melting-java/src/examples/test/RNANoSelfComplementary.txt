@@ -1,7 +1,6 @@
 # Xia et al (1998) Biochemistry 37: 14719-14735
 # 0.0002 M oligomer concentration, 1M NaCl, ph=7.  
 
-
 ACGCA=29.4
 AGCGA=30.2
 CACAG=24.5

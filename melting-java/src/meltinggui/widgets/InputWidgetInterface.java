@@ -28,18 +28,17 @@ public interface InputWidgetInterface
    * Sets the value in the widget.
    * @param newValue The new value for the widget.
    */
-  public void setValue(String newValue);
+  void setValue(String newValue);
 
   /**
    * Gets the value given by the user.
    * @return That value.
    */
-  public String getValue();
+  String getValue();
 
   /**
    * Selects all the text in a widget.
    */
- public void selectAll(); 
+  void selectAll(); 
 }
-
 

@@ -15,12 +15,11 @@
 
 package melting.ionCorrection.mixedNaMgCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the mixed (Na,Mg) correction model owcmix08. It extends Owczarzy08MagnesiumCorrection.
@@ -29,8 +28,10 @@ import melting.ionCorrection.magnesiumCorrections.Owczarzy08MagnesiumCorrection;
  * Behlke, Joseph A walder, "Predicting stability of DNA duplexes in solutions
  * containing magnesium and monovalent cations", 2008, Biochemistry, 47, 5336-5353.
 */
-public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection{
-	
+public class Owczarzy08MixedNaMgCorrection
+  extends Owczarzy08MagnesiumCorrection
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	private static String aFormula = "a = -0.6 / duplexLength + 0.025 x ln(Mg) + 0.0068 x ln(Mg)^2";
@@ -38,6 +39,11 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 	private static String dFormula = "d = ln(Mg) + 0.38 x ln(Mg)^2";
 	
 	private static String gFormula = "g = a + b / (duplexLength^2)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Owczarzy et al. (2008)";
 
 	// CorrectionMethod interface implementation
 
@@ -61,8 +67,18 @@ public class Owczarzy08MixedNaMgCorrection extends Owczarzy08MagnesiumCorrection
 	
 	@Override
 	protected void displayVariable(){
-		OptionManagement.meltingLogger.log(Level.FINE, aFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, dFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
+		OptionManagement.logMessage(aFormula);
+		OptionManagement.logMessage(dFormula);
+		OptionManagement.logMessage(gFormula);
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

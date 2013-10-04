@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.logging.Level;
 import java.io.*;
 
 import melting.configuration.OptionManagement;
@@ -367,7 +366,7 @@ public class CompatibleMain {
 			
 			Main.main(convertedArgs.toString().split(" "));
 		}catch(Exception e){
-			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
+			OptionManagement.logError(e.getMessage());
 		}
 		
 	}

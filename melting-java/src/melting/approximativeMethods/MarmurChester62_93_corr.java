@@ -16,18 +16,25 @@
 // EMBL-EBI, neurobiology computational group,             
 // Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk
 
-package meltinggui.dialogs;
+package melting.approximativeMethods;
 
 /**
- * An interface that represents a dialog on the GUI.  Each dialog returns one
- * or more command-line flags corresponding to the flags the user would type
- * in were they to run MELTING 5 from the command-line.  
+ * This class represents the model che93corr.  It is a corrected version of the
+ * che93 model.  For more details, see {@link MarmurChester62_93}.  
+ *
+ * von Ahsen et al. 2001, Marmur 1962, Chester et al. 1993.
+ *
+ * @author John Gowers
  */
-public interface DialogInterface
+public class MarmurChester62_93_corr extends MarmurChester62_93
 {
   /**
-   * Gets the command-line flags from the dialog.
+   * Sets up the private variables for the corrected method.
+   * The parameter for the corrected version is 535.
    */
-  String getCommandLineFlags();
+  public MarmurChester62_93_corr()
+  {
+    super(535, "von Ahsen et al. 2001, Marmur 1962, Chester et al. 1993");
+  }
 }
 

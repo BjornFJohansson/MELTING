@@ -15,8 +15,6 @@
 
 package melting.patternModels.specificAcids;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -24,19 +22,26 @@ import melting.Thermodynamics;
 import melting.configuration.OptionManagement;
 import melting.patternModels.PatternComputation;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the azobenzene (X_C or X_T) model asa05. It extends PatternComputation.
  * 
  * Asanuma et al. (2005). Nucleic acids Symposium Series 49 : 35-36
  */
-public class Asanuma05Azobenzene extends PatternComputation{
-	
+public class Asanuma05Azobenzene extends PatternComputation
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for azobenzene
 	 */
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Asanuma et al. (2005)";
 	public static String defaultFileName = "Asanuma2005azobenmn.xml";
 	
 	// PatternComputationMethod interface implementation
@@ -53,12 +58,12 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		NucleotidSequences modified = environment.getSequences().getEquivalentSequences("dna");
 		
 		if (environment.getHybridization().equals("dnadna") == false) {
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for azobenzene of" +
+			OptionManagement.logWarning("\n The thermodynamic parameters for azobenzene of" +
 					"Asanuma (2005) are established for DNA sequences.");
 		}
 
 		if (modified.calculateNumberOfTerminal("X", " ", pos1, pos2) > 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamics parameters for azobenzene of " +
+			OptionManagement.logWarning("\n The thermodynamics parameters for azobenzene of " +
 					"Asanuma (2005) are not established for terminal benzenes.");
 			isApplicable = false;
 		}
@@ -74,10 +79,11 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		
 		Thermodynamics azobenzeneValue = this.collector.getAzobenzeneValue(sequences.getSequence(pos1, pos2,"dna"), sequences.getComplementary(pos1, pos2,"dna"));
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The azobenzene model is from Asanuma et al. (2005) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+		OptionManagement.logMessage("\n The azobenzene model is");
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logFileName(this.fileName);
 
-		OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
+		OptionManagement.logMessage(sequences.getSequence(pos1, pos2) + "/" + sequences.getComplementary(pos1, pos2) + " : enthalpy = " + azobenzeneValue.getEnthalpy() + "  entropy = " + azobenzeneValue.getEntropy());
 
 		double enthalpy = result.getEnthalpy() + azobenzeneValue.getEnthalpy();
 		double entropy = result.getEntropy() + azobenzeneValue.getEntropy();
@@ -98,7 +104,7 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		if (this.collector.getAzobenzeneValue(newSequences.getSequence(pos1,pos2),newSequences.getComplementary(pos1,pos2)) == null){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2)+ 
+			OptionManagement.logWarning("\n The thermodynamic parameters for " + newSequences.getSequence(pos1,pos2) + "/" + newSequences.getComplementary(pos1,pos2)+ 
 			" are missing. Check the azobenzene parameters.");
 			return true;
 		}
@@ -135,4 +141,14 @@ public class Asanuma05Azobenzene extends PatternComputation{
 		int [] positions = {pos1, pos2};
 		return positions;
 	}
+  
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

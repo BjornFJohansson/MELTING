@@ -15,8 +15,6 @@
 
 package melting.patternModels.cricksPair;
 
-import java.util.logging.Level;
-
 
 import melting.Environment;
 import melting.ThermoResult;
@@ -42,7 +40,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 		Thermodynamics NNValue;
 		for (int i = pos1; i <= pos2 - 1; i++){
 			NNValue = this.collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
-			OptionManagement.meltingLogger.log(Level.FINE, sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
+			OptionManagement.logMessage(sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + NNValue.getEnthalpy() + "  entropy = " + NNValue.getEntropy());
 			
 			enthalpy += NNValue.getEnthalpy();
 			entropy += NNValue.getEntropy();
@@ -59,7 +57,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 
 		for (int i = pos1; i <= pos2 - 1; i++){
 			if (collector.getNNvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic parameters for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing.");	
+				OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing.");	
 				return true;
 			}
 		}
@@ -81,7 +79,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 
 		
 		if (initiation != null) {
-			OptionManagement.meltingLogger.log(Level.FINE, "\n Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
+			OptionManagement.logMessage("\n Initiation : enthalpy = " + initiation.getEnthalpy() + "  entropy = " + initiation.getEntropy());
 			
 			enthalpy += initiation.getEnthalpy();
 			entropy += initiation.getEntropy();
@@ -90,7 +88,7 @@ public abstract class CricksNNMethod extends PatternComputation{
 		if (environment.isSelfComplementarity()){
 			Thermodynamics symmetry = this.collector.getsymmetry();
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
+			OptionManagement.logMessage("\n Self complementarity : enthalpy = " + symmetry.getEnthalpy() + "  entropy = " + symmetry.getEntropy());
 			
 			enthalpy += symmetry.getEnthalpy();
 			entropy += symmetry.getEntropy();

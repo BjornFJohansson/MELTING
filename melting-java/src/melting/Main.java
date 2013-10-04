@@ -16,7 +16,6 @@
 package melting;
 
 import java.text.NumberFormat;
-import java.util.logging.Level;
 
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
@@ -44,7 +43,7 @@ public class Main {
                         return results;
 			
 		} catch (Exception e) {
-			OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
+			OptionManagement.logError(e.getMessage());
                         return null;
 		}
 	}
@@ -102,12 +101,12 @@ public class Main {
 		double enthalpy = results.getEnthalpy();
 		double entropy = results.getEntropy();
 
-		OptionManagement.meltingLogger.log(Level.INFO, "\n The MELTING results are : ");
+		OptionManagement.logInfo("\n The MELTING results are : ");
 		if (calculMethod instanceof NearestNeighborMode){
-			OptionManagement.meltingLogger.log(Level.INFO, "Enthalpy : " + format.format(enthalpy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(enthalpy)) + " J /mol)");
-			OptionManagement.meltingLogger.log(Level.INFO, "Entropy : " + format.format(entropy) + " cal/mol-K ( " + format.format(results.getEnergyValueInJ(entropy)) + " J /mol-K)");
+			OptionManagement.logInfo("Enthalpy : " + format.format(enthalpy) + " cal/mol ( " + format.format(results.getEnergyValueInJ(enthalpy)) + " J /mol)");
+			OptionManagement.logInfo("Entropy : " + format.format(entropy) + " cal/mol-K ( " + format.format(results.getEnergyValueInJ(entropy)) + " J /mol-K)");
 		}
-		OptionManagement.meltingLogger.log(Level.INFO, "Melting temperature : " + format.format(results.getTm()) + " degrees C.\n");
+		OptionManagement.logInfo("Melting temperature : " + format.format(results.getTm()) + " degrees C.\n");
 	}
 	
 	// public static main method
@@ -128,7 +127,7 @@ public class Main {
 				optionManager.readOptions(args);
 
 			} catch (Exception e) {
-				OptionManagement.meltingLogger.log(Level.SEVERE, e.getMessage());
+				OptionManagement.logError(e.getMessage());
 			}
 		}
 		else {

@@ -16,18 +16,17 @@
 // EMBL-EBI, neurobiology computational group,             
 // Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk
 
-package meltinggui.dialogs;
+package melting.methodInterfaces;
 
 /**
- * An interface that represents a dialog on the GUI.  Each dialog returns one
- * or more command-line flags corresponding to the flags the user would type
- * in were they to run MELTING 5 from the command-line.  
+ * An interface representing a method that can be used in the MELTING software.
+ * The interface provides methods to get the full name of the method (usually
+ * the authors and date of a paper).  It is designed to be implemented at the
+ * level of the class describing the method itself.
+ * @author John Gowers
  */
-public interface DialogInterface
+public interface NamedMethod
 {
-  /**
-   * Gets the command-line flags from the dialog.
-   */
-  String getCommandLineFlags();
+  String getName();
 }
 

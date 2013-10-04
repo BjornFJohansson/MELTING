@@ -15,22 +15,27 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the model wetdna91. It extends Wetmur91.
  */
-public class WetmurDNA91 extends Wetmur91 {
-	
+public class WetmurDNA91 extends Wetmur91
+  implements NamedMethod
+{
 	// Instance variables
 	
 	/**
 	 * Temperature formula
 	 */
 	private static String temperatureEquation = "Tm = 81.5 + 16.6 * log10(Na / (1.0 + 0.7 * Na)) + 0.41 * percentGC - 500 / duplexLength - percentMismatching";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Wetmur (1991) (DNA duplexes)";
 	
 	// public methods
 	
@@ -45,7 +50,8 @@ public class WetmurDNA91 extends Wetmur91 {
 
 		this.environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return this.environment.getResult();
 	}
@@ -54,9 +60,19 @@ public class WetmurDNA91 extends Wetmur91 {
 	public boolean isApplicable() {
 		
 		if (this.environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The wetmur equation used here was originally established for DNA duplexes.");
+			OptionManagement.logWarning("\n The wetmur equation used here was originally established for DNA duplexes.");
 		}
 		
 		return super.isApplicable();
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

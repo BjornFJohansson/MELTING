@@ -15,11 +15,10 @@
 
 package melting.ionCorrection.magnesiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the magnesium correction model tanmg06. It extends EntropyCorrection.
@@ -27,8 +26,9 @@ import melting.correctionMethods.EntropyCorrection;
  *  Zhi-Jie Tan and Shi-Jie Chen, "Nucleic acid helix stability: effects of Salt concentration, 
  * cation valence and size, and chain length", 2006, Biophysical Journal, 90, 1175-1190. 
  */
-public class Tan06MagnesiumCorrection extends EntropyCorrection {
-	
+public class Tan06MagnesiumCorrection extends EntropyCorrection
+  implements NamedMethod
+{	
 	// Instance variables
 
 	/**
@@ -44,6 +44,11 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	 * String gFormula : function associated with the electrostatic folding free energy per base stack.
 	 */
 	protected static String gFormula = "g2 = a2 + b2 / (duplexLength^2)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Zhi-Jie Tan and Shi-Jie Chen (2006)";
 	
 	// CorrectionMethod interface implementation
 	
@@ -51,22 +56,22 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = super.isApplicable(environment);
 		if (environment.getMg() == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The magnesium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (environment.getMg() < 0.0001 && environment.getMg() > 1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
+			OptionManagement.logWarning("\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
 					"is reliable for magnesium concentrations between 0.001M and 1M.");
 		}
 		
 		if (environment.getSequences().getDuplexLength() < 6){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
+			OptionManagement.logWarning("\n The magnesium correction of Zhi-Jie Tan et al. (2006)" +
 			"is valid for oligonucleotides with a number of base pairs superior or equal to 6.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The magnesium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
+			OptionManagement.logWarning("\n The magnesium correction of Zhi-Jie Tan et al. (2006) is originally established for " +
 			"DNA duplexes.");
 		}
 		return isApplicable;
@@ -77,8 +82,9 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	@Override
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The magnesium correction from Zhi-Jie Tan et al. (2006) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,entropyCorrection);
+		OptionManagement.logMessage("\n The magnesium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(entropyCorrection);
 
 		double entropy = -3.22 * ((double)environment.getSequences().getDuplexLength() - 1) * computeFreeEnergyPerBaseStack(environment);
 		
@@ -93,10 +99,10 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 	 * @return double g2 which represents the result of the function associated with the electrostatic folding free energy per base stack.
 	 */
 	public static double computeFreeEnergyPerBaseStack(Environment environment){
-		OptionManagement.meltingLogger.log(Level.FINE, "where : ");
-		OptionManagement.meltingLogger.log(Level.FINE, gFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, aFormula);
-		OptionManagement.meltingLogger.log(Level.FINE, bFormula);
+		OptionManagement.logMessage("where : ");
+		OptionManagement.logMessage(gFormula);
+		OptionManagement.logMessage(aFormula);
+		OptionManagement.logMessage(bFormula);
 		
 		double Mg = environment.getMg() - environment.getDNTP();
 		double duplexLength = (double)environment.getSequences().getDuplexLength();
@@ -110,4 +116,13 @@ public class Tan06MagnesiumCorrection extends EntropyCorrection {
 		return g;
 	}
 
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

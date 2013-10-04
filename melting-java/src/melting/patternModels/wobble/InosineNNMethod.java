@@ -15,8 +15,6 @@
 
 package melting.patternModels.wobble;
 
-import java.util.logging.Level;
-
 
 import melting.ThermoResult;
 import melting.Thermodynamics;
@@ -42,7 +40,7 @@ public abstract class InosineNNMethod extends PatternComputation{
 		for (int i = pos1; i <= pos2 - 1; i++){
 			modifiedValue = this.collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i));
 			
-			OptionManagement.meltingLogger.log(Level.FINE, "\n" + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
+			OptionManagement.logMessage("\n" + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " : enthalpy = " + modifiedValue.getEnthalpy() + "  entropy = " + modifiedValue.getEntropy());
 
 			enthalpy += modifiedValue.getEnthalpy();
 			entropy += modifiedValue.getEntropy();
@@ -60,7 +58,7 @@ public abstract class InosineNNMethod extends PatternComputation{
 		for (int i = pos1; i <= pos2 - 1; i++){
 	
 			if (collector.getModifiedvalue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null) {
-				OptionManagement.meltingLogger.log(Level.WARNING, "\n The thermodynamic values for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing. Check the inosine file.");
+				OptionManagement.logWarning("\n The thermodynamic values for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) + " are missing. Check the inosine file.");
 
 				return true;
 			}

@@ -15,12 +15,11 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.configuration.OptionManagement;
 import melting.correctionMethods.EntropyCorrection;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model ahs01. It extends EntropyCorrection.
@@ -30,14 +29,20 @@ import melting.correctionMethods.EntropyCorrection;
  * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
  * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
 */
-public class Ahsen01SodiumCorrection extends EntropyCorrection {
-	
+public class Ahsen01SodiumCorrection extends EntropyCorrection
+  implements NamedMethod
+{	
 	// Instance variables
 	
 	/**
 	 * String entropyCorrection : formula for the entropy correction.
 	 */
 	private static String entropyCorrection = "delat S(Na) = delta S(Na = 1M) + 0.847 x (duplexLength - 1) x log10(Na)";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Ahsen et al. (2001)";
 	
 	// CorrectionMethod interface implementation
 	
@@ -47,12 +52,12 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be strictly positive.");
+			OptionManagement.logWarning("\n The sodium concentration must be strictly positive.");
 			isApplicable = false;
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Ahsen et al. (2001) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Ahsen et al. (2001) is originally established for " +
 			"DNA duplexes.");
 		}
 		return isApplicable;
@@ -63,11 +68,22 @@ public class Ahsen01SodiumCorrection extends EntropyCorrection {
 	@Override
 	protected double correctEntropy(Environment environment){
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Ahsen et al. (2001) : " );
-		OptionManagement.meltingLogger.log(Level.FINE, entropyCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(entropyCorrection);
 		
 		double entropy = 0.847 * ((double)environment.getSequences().getDuplexLength() - 1.0) * Math.log10(environment.getNa());
 
 		return entropy;
 	}
+
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

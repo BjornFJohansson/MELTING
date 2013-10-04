@@ -18,8 +18,6 @@
 
 package meltinggui.widgets;
 
-import javax.swing.*;
-
 /**
  * A label together with a non-editable text box for displaying results.
  */
@@ -36,6 +34,5 @@ public class OutputField extends InputField<MeltingTextField>
     widgets.get(0).setEditable(false);
   }
 }
-
 
 

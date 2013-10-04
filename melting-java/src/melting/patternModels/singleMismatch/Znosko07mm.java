@@ -15,19 +15,21 @@
 
 package melting.patternModels.singleMismatch;
 
-import java.util.logging.Level;
 
 
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.sequences.NucleotidSequences;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the single mismatch model zno07. It extends ZnoskoMethod.
  * 
  * Brent M Znosko et al (2007). Biochemistry 46: 13425-13436.
  */
-public class Znosko07mm extends ZnoskoMethod {
+public class Znosko07mm extends ZnoskoMethod
+  implements NamedMethod
+{
 	
 	// Instance variables
 	
@@ -35,6 +37,11 @@ public class Znosko07mm extends ZnoskoMethod {
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for single mismatch
 	 */
 	public static String defaultFileName = "Znosko2007mm.xml";
+
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Znosko et al. (2007)";
 	
 	// PatternComputationMethod interface implementation
 
@@ -47,9 +54,10 @@ public class Znosko07mm extends ZnoskoMethod {
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The model for single mismatches is from Znosco et al. (2007) : ");
-		OptionManagement.meltingLogger.log(Level.FINE,formulaEnthalpy + " (entropy formula is similar)");
-		OptionManagement.meltingLogger.log(Level.FINE, "\n File name : " + this.fileName);
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(formulaEnthalpy +
+                                " (entropy formula is similar)");
+    OptionManagement.logFileName(this.fileName);
 
 		return super.computeThermodynamics(newSequences, pos1, pos2, result);
 	}
@@ -63,5 +71,13 @@ public class Znosko07mm extends ZnoskoMethod {
 		}
 	}
 
-
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

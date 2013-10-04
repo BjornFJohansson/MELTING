@@ -15,10 +15,9 @@
 
 package melting.approximativeMethods;
 
-import java.util.logging.Level;
-
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
+import melting.methodInterfaces.NamedMethod;
 
 /** 
  * This class represents the approxiamtive model ahs01. It extends ApproximativeMode.
@@ -28,7 +27,9 @@ import melting.configuration.OptionManagement;
  * and Dimethyl sulfoxide concentrations with comparison to alternative empirical 
  * formulas", 2001, Clinical Chemistry, 47, 1956-1961.
  */
-public class Ahsen01 extends ApproximativeMode{
+public class Ahsen01 extends ApproximativeMode
+  implements NamedMethod
+{
 
 	// instance variables 
 	
@@ -36,6 +37,11 @@ public class Ahsen01 extends ApproximativeMode{
 	 * temperature formula.
 	 */
 	private static String temperatureEquation = "Tm = 80.4 + 0.345 * percentGC + log10(Na) * (17.0 - 0.135 * percentGC) - 550 / duplexLength.";
+
+  /**
+   * The full name of the method.
+   */
+  private static String methodName = "Ahsen et al. (2001)";
 	
 	// public methods 
 	
@@ -47,8 +53,8 @@ public class Ahsen01 extends ApproximativeMode{
 
 		environment.setResult(Tm);
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "from Ahsen et al. (2001)");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureEquation);
+    OptionManagement.logMethodName(methodName);
+    OptionManagement.logTemperatureEquation(temperatureEquation);
 		
 		return environment.getResult();
 	}
@@ -62,9 +68,19 @@ public class Ahsen01 extends ApproximativeMode{
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The Ahsen et al. equation" +
+			OptionManagement.logWarning("\n The Ahsen et al. equation" +
 					"was originally established for DNA duplexes.");
 		}
 		return isApplicable;
 	}
+
+  /**
+   * Gets the name of the method.
+   * @return The name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }

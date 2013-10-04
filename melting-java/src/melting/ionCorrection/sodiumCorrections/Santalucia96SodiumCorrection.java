@@ -15,21 +15,21 @@
 
 package melting.ionCorrection.sodiumCorrections;
 
-import java.util.logging.Level;
-
 import melting.Environment;
 import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 import melting.methodInterfaces.CorrectionMethod;
+import melting.methodInterfaces.NamedMethod;
 
 /**
  * This class represents the sodium correction model san96. It implements the CorrectionMethod interface.
  * 
  * SantaLucia et al.(1996). Biochemistry 35 : 3555-3562
  */
-public class Santalucia96SodiumCorrection implements CorrectionMethod {
-	
+public class Santalucia96SodiumCorrection
+  implements CorrectionMethod, NamedMethod
+{	
 	// Instance variables
 	
 	/**
@@ -37,24 +37,29 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 	 */
 	private static String temperatureCorrection = "Tm(Na) = Tm(Na = 1M) + 12.5 x log10(Na)";
 
+  /**
+   * Full name of the method.
+   */
+  private static String methodName = "Santalucia et al. (1996)";
+
 	// CorrectionMethod interface implementation
 	
 	public boolean isApplicable(Environment environment) {
 		boolean isApplicable = true;
 		double NaEq = Helper.computesNaEquivalent(environment);
 		if (NaEq == 0){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium concentration must be a positive numeric value.");
+			OptionManagement.logWarning("\n The sodium concentration must be a positive numeric value.");
 			isApplicable = false;
 		}
 		
 		else if (NaEq < 0.1){
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1996) is not reliable for " +
+			OptionManagement.logWarning("\n The sodium correction of Santalucia et al. (1996) is not reliable for " +
 					"sodium concentrations inferior to 0.1M.");
 		}
 		
 		if (environment.getHybridization().equals("dnadna") == false){
 
-			OptionManagement.meltingLogger.log(Level.WARNING, "\n The sodium correction of Santalucia et al. (1996) is originally established for " +
+			OptionManagement.logWarning("\n The sodium correction of Santalucia et al. (1996) is originally established for " +
 			"DNA duplexes.");
 		}
 		return isApplicable;
@@ -62,8 +67,9 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 	
 	public ThermoResult correctMeltingResults(Environment environment) {
 		
-		OptionManagement.meltingLogger.log(Level.FINE, "\n The sodium correction is from Santalucia et al. (1996) : ");
-		OptionManagement.meltingLogger.log(Level.FINE, temperatureCorrection);
+		OptionManagement.logMessage("\n The sodium correction is");
+    OptionManagement.logMethodName(methodName);
+		OptionManagement.logMessage(temperatureCorrection);
 
 		double NaEq = Helper.computesNaEquivalent(environment);
 		
@@ -72,4 +78,14 @@ public class Santalucia96SodiumCorrection implements CorrectionMethod {
 		
 		return environment.getResult();
 	}
+  
+  /**
+   * Gets the full name of the method.
+   * @return The full name of the method.
+   */
+  @Override
+  public String getName()
+  {
+    return methodName;
+  }
 }
