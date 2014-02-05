@@ -1,3 +1,8 @@
+[04/10/2013]William John Gowers (gowersj@babraham.ac.uk)
+   Added MELTING GUI for MELTING 5.x.
+   Updated version to 5.1.1
+[09/08/2013]William John Gowers (gowersj@babraham.ac.uk)
+   Added new thermodynamic parameters for DNA/RNA duplexes from Watkins et al. (2010). Nucl. Acids Res. 39, 1894-1902.
 [10/02/2013]Marine Dumousseau (marine@ebi.ac.uk)
 Thanks to Richard Owczarzy:
 	Fixed typos in some thermodynamic parameters:
