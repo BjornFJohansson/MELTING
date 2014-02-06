@@ -21,9 +21,9 @@
 #      along with this program; if not, write to the Free Software
 #      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #
-#      Nicolas Le Novère and Marine Dumousseau
+#      Nicolas Le Novère, Marine Dumousseau and William John Gowers
 #      Computational Neurobiology, EMBL-EBI, Genome Campus
-#      Hinxton CB10 1SD United-Kingdom. e-mail: lenov@ebi.ac.uk
+#      Hinxton CB10 1SD United-Kingdom. e-mail: n.lenovere@gmail.com
 #*/
 
 
@@ -44,7 +44,7 @@ do
     --bindir) shift; bindir=$1; shift ;;
     --mandir) shift; mandir=$1 ;;
     --docdir) shift; docdir=$1 ;;
-    --nndir) shift; NNDIR=$1 ;;
+    --nndir) shift; NN_PATH=$1 ;;
     -h|--help) cat <<______EOF >&2; exit 0 ;;
 Available options:
     --prefix directory (defaults to $default_prefix)
@@ -72,21 +72,21 @@ srcdir=${srcdir:=${prefix}"/MELTING/src"}
 
 # where to find the files containing the sets of nearest_neighbor parameters. 
 # This one is to initialise the default value of melting. 
-NNDIR=${NNDIR:=${prefix}"/share/MELTING/Data"}
+NN_PATH=${NN_PATH:=${prefix}"/share/MELTING/Data"}
 
-for d in $mandir $bindir $docdir $srcdir $NNDIR $mandir/man1 ; do
+for d in $mandir $bindir $docdir $srcdir $NN_PATH $mandir/man1 ; do
   if [ -d $d ] && [ ! -w $d ] ; then
     echo "Can't write to" $d": Permission denied" ; exit 2;
   fi ;
 done
 
-for d in $mandir/man1 $bindir $docdir $srcdir $NNDIR ; do
+for d in $mandir/man1 $bindir $docdir $srcdir $NN_PATH ; do
   mkdir -p $d || exit 2 ;
 done
 cp -f executable/melting ${bindir}/ || exit 2
 cp -f executable/melting5.jar ${bindir}/ || exit 2
 cp -f doc/melting.1 ${mandir}/man1 || exit 2
-cp -i Data/* ${NNDIR}/ || exit 2
+cp -i Data/* ${NN_PATH}/ || exit 2
 if [ $(id -u) -eq 0 ] ; then
   profile=/etc/profile ;
 else if [ -f ~/.bash_profile ] ; then
@@ -97,10 +97,10 @@ fi
 fi
 
 echo "" >> $profile ;
-echo "export NNDIR="$NNDIR >> $profile ;
+echo "export NN_PATH="$NN_PATH >> $profile ;
 
-export NNDIR
-echo "Don't forget to set environment variable NNDIR to" $NNDIR "in your current shell (it is however set in $profile for your convenience)"
+export NN_PATH
+echo "Don't forget to set environment variable NN_PATH to" $NN_PATH "in your current shell (it is however set in $profile for your convenience)"
 echo "MELTING successfully installed"
 
 

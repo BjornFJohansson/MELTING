@@ -18,19 +18,12 @@
 
 package meltinggui.frames;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Observer;
-import javax.swing.*;
 
 public class OuterFrame
   extends JFrame
@@ -207,5 +200,9 @@ public class OuterFrame
               screenSize.width - (inset * 2),
               screenSize.height - (inset * 2));
   }
+
+    public void clearErrors() {
+        errorFrame.clearErrors();
+    }
 }
 

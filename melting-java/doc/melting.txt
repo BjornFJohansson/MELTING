@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{times}
+\usepackage{mathptmx}
 \usepackage{url}
 \usepackage{amsmath}
 \usepackage{alltt}
@@ -9,9 +9,9 @@
 
 \begin{document}
 \title{\textsc{melting} - nearest-neighbor computation of nucleic acid hybridation}
-\author{Marine Dumousseau \and Nicolas Le Nov\`ere \\
-  \texttt{lenov@ebi.ac.uk}}
-\date{August 2009}
+\author{Marine Dumousseau, William John Gowers \and Nicolas Le Nov\`ere \\
+  \texttt{n.lenovere@gmail.com}}
+\date{February 2014}
 \maketitle
 
 \newpage
@@ -50,6 +50,12 @@ If you use \textsc{melting}, please quote
 \begin{quote}
   Le Nov\`ere. \textsc{melting}, a free tool to compute the
     melting temperature of nucleic acid duplex. \emph{Bioinformatics}, 17: 1226-1227. 
+\end{quote}
+
+\begin{quote}
+  Dumousseau M, Rodriguez N, Juty N, Le Nov\`ere N. \textsc{MELTING}, a flexible platform to predict the melting temperatures 
+  of nucleic acids. \emph{BMC Bioinformatics}, 16;13:101, PMID: 22591039. 
+
 \end{quote}
 
 \section{Usage}
@@ -293,6 +299,10 @@ neighbor model is used.
   \textsc{DNA duplexes}
     \begin{itemize}
     \item [\textit{allsanpey}] (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default) 
+    \end{itemize}
+  \textsc{DNA/RNA duplexes}
+    \begin{itemize}
+    \item [\textit{wat10}] (from Watkins et al. 2011) (by default)
     \end{itemize}
   \textsc{RNA duplexes}
     \begin{itemize}
@@ -856,6 +866,26 @@ parameters of each Crick's pair containing the single mismatch.
  DNA sequences containing one single mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
 \end{figure}
 
+For DNA/RNA duplexes, the same model is used, taking parameters from Watkins
+et al. (2011).  The only mismatches permitted are \texttt{dA/rA},
+ \texttt{dT/rU}, \texttt{dC/rC} and \texttt{dG/rG}.  \\
+
+\textbf{Example} :
+\begin{multline*}
+\Delta H {\mbox{\texttt{CAT}} \choose \mbox{\texttt{GAU}}} = 
+\Delta H {\mbox{\texttt{CA}} \choose \mbox{\texttt{GA}} } +
+\Delta H {\mbox{\texttt{AT}} \choose \mbox{\texttt{AU}} } \\
+\end{multline*}
+
+(The same computation is performed for $\Delta S$)\\
+
+\begin{figure}[h]
+\includegraphics[width=1\linewidth]{images/DNARNASingleMismatch}
+\caption{Comparison of experimental and computed Tm for various sets of
+ DNA/RNA sequences containing one single mismatch.  
+$[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 4\cdot{}10^{-4}$~M}
+\end{figure}
+
 For RNA duplexes, the different models to computes the thermodynamic contribution of single mismatch to the helix coil 
 stability are more complex.
 
@@ -935,6 +965,8 @@ For further information, see the referenced articles.
  & & Biochemistry 37: 9435-9444 \\
  & & Peyret et al. (1999)\\
  & & Biochemistry 38: 3468-3477 \\
+ \hline
+\textbf{wat11} & DNA/RNA & Watkins et al. (2011) \\
  \hline 
 tur06 & RNA & Lu et al (2006)\\
  & & Nucleic Acids Research 34: 4912-4924 \\
@@ -1234,7 +1266,7 @@ For further information, see the referenced articles.
 \hline
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \textbf{ser12} & RNA & Serra et al (2012) \\
- & & Biochemistry  51: 3508–3522 \\
+ & & Biochemistry  51: 3508-3522 \\
 \hline
 \end{tabular}
 \end{table}
@@ -1896,15 +1928,13 @@ Moreover, no ion correction will be applied to this formula.
 
 \textit{F} is 1 in the case of self-complementarity oligonucleotides. If the
 ODNs are not self-complementary, \textit{F} is 4 if both strands are present in
-equivalent amount and \textit{F} is 2 if one strand is in excess (for instance
-in \textsc{pcr} experiments).  Actually in the latter case, the formula would
-have to use the difference of concentrations rather than the total
-concentration. But if the excess is sufficient, the total concentration can be
-assumed to be identical to the concentration of the strand in excess. That is,
-if one strand is in excess, the actual formula is effectively $(C_{\mbox{max}} -
-C_{\mbox{min}})/2$ but if $C_{\mbox{max}} \gg C_{\mbox{min}}$, $C_{\mbox{max}}
-- C_{\mbox{min}}$ is close to the total concentration $C_T$.  If $C_{\mbox{max}}$ is close
-to $C_{\mbox{min}}$, $(C_{\mbox{max}} - C_{\mbox{min}})/2$ is equivalent to $C_T/4$, which is the default
+equivalent amount and \textit{F} is 1 if one strand is in excess (for instance
+in \textsc{pcr} experiments).  As a matter of facts, when the oligonucleotides are not self-complementary, 
+the formula in the denominator is $C_{\mbox{max}} - C_{\mbox{min}}/2$ where $C_{\mbox{max}}$ is the concentration of the strand in excess
+and $C_{\mbox{min}}$ the concentration of the other strand. If the excess is sufficient, the total concentration is equivalent to the concentration of the strand in excess. Therefore, if one strand is in excess, the actual formula is effectively $C_{\mbox{max}} -
+C_{\mbox{min}}/2$ but if $C_{\mbox{max}} \gg C_{\mbox{min}}$, $C_{\mbox{max}}
+- C_{\mbox{min}}/2$ is equivalent to the total concentration $C_T$.  If $C_{\mbox{max}}$ is close
+to $C_{\mbox{min}}$, $C_{\mbox{max}} - C_{\mbox{min}}/2$ is equivalent to $C_T/4$, which is the default
 correction.
 
 \textit{F} is 4 by default but note that \textsc{melting} can detect self complementary sequences 
@@ -2538,7 +2568,7 @@ You can use \textsc{melting} through a web server at
    
 \section{Copyright }
 Melting is copyright 
-\copyright 1997, 2009 by Nicolas Le Nov\`ere and Marine Dumousseau.  
+\copyright 1997, 2014 by Nicolas Le Nov\`ere, Marine Dumousseau and William John Gowers.
 
 This program is free software; 
 you can redistribute it and/or modify it under the terms of the GNU General 
@@ -2564,11 +2594,11 @@ to the usenet helpers, particularly Olivier Dehon and Nicolas Chuche.
 
    
 \section{Authors }
-Nicolas Le Nov\`ere and Marine Dumousseau, \\
+Nicolas Le Nov\`ere, Marine Dumousseau and William John Gowers, \\
 EMBL-EBI, 
 Wellcome-Trust Genome Campus
 Hinxton Cambridge, CB10 1SD, UK
-lenov@ebi.ac.uk
+n.lenovere@gmail.com
   
 \section{History }
 
