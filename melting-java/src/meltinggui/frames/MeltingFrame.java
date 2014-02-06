@@ -18,6 +18,7 @@
 
 package meltinggui.frames;
 
+import melting.configuration.OptionManagement;
 import meltinggui.ArgsMessage;
 import meltinggui.MeltingLayout;
 import meltinggui.MeltingObservable;
@@ -40,7 +41,7 @@ public class MeltingFrame extends JInternalFrame
    */
   public MeltingFrame()
   {
-    super("Melting v5.0", true, false, true, true);
+    super("Melting v"+ OptionManagement.versionNumber, true, false, true, true);
     initializeWidgets();
   }
   /**
@@ -140,6 +141,9 @@ public class MeltingFrame extends JInternalFrame
     constraints.weighty = 1.0;
     mainPanel.add(commandLinePanel, constraints);
     mainPanel.add(resultsPanelPanel, getGridBagRow(6));
+    JTextPane usageNotice = new JTextPane();
+    usageNotice.setText("Notice: for more options (more computation methods, melting4 interface, batch mode, ...), see commandline-based scripts in this package.");
+    mainPanel.add(usageNotice, getGridBagRow(7));
 
     Container contentPane = getContentPane();
     contentPane.add(Box.createRigidArea(new Dimension(532, 12)),
