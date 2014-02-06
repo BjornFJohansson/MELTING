@@ -250,7 +250,7 @@ public class OptionManagement {
 	/**
 	 * String version : current Melting version number.
 	 */
-	private static final String version = "5.1.1";
+	private static final String version = "5.1.";
 	
 	/**
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
@@ -471,6 +471,10 @@ public class OptionManagement {
 					if (option.equals(NN_Path)){
 						if (isAnOptionValue(value)){
 							dataPathwayValue = value;
+                            if (!new File(dataPathwayValue).exists()){
+                                throw new OptionSyntaxError("\n Cannot find where the thermodynamic parameters are located. "+NN_Path+" was:"+dataPathwayValue+". Please set " +
+                                        "a valid "+NN_Path+" option (path to the folder containing thermodynamic parameters)");
+                            }
 						}
 						else {
 							throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
@@ -692,9 +696,15 @@ public class OptionManagement {
 		else {
 			throw new OptionSyntaxError("\n The hybridization type is required. It can be dnadna, rnarna, rnadna (dnarna) or mrnarna (rnamrna).");
 		}
-		
+
 		optionSet.put(solutioncomposition, "Na=0:Mg=0:K=0:Tris=0:dNTP=0:DMSO=0:formamide=0");
-		optionSet.put(NN_Path, dataPathwayValue);
+
+        if (!new File(dataPathwayValue).exists()){
+            throw new OptionSyntaxError("\n Cannot find where the thermodynamic parameters are located. Actual NN_PATH:"+dataPathwayValue+". Please set " +
+                    "the NN_PATH environment variable (path to the folder containing thermodynamic parameters)");
+        }
+
+        optionSet.put(NN_Path, dataPathwayValue);
 		optionSet.put(threshold, Integer.toString(thresholdValue));
 		optionSet.put(factor, Integer.toString(factorValue));
 		optionSet.put(globalMethod, "def");
