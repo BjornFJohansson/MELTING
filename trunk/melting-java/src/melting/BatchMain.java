@@ -26,13 +26,16 @@ public class BatchMain {
 		} else {
 			// remove file from list of options, pass options to
 			// optionManager.isMeltingInformationOption(args)
-			String[] commonArgs = Arrays.copyOfRange(args, 0, args.length - 2);
+			String[] commonArgs = Arrays.copyOfRange(args, 0, args.length - 1);
 			String filename = args[args.length - 1];
 
-			InputStream is = null;
+            InputStream is = null;
+            OutputStream os = null;
 			try {
-				is = new FileInputStream(filename);
-				readFile(is, commonArgs);
+                is = new FileInputStream(filename);
+                os = new FileOutputStream(filename+".results.csv");
+                System.out.println("Results will be written to "+filename+".results.csv");
+				readFile(is, os, commonArgs);
 			} catch (FileNotFoundException e) {
 				System.err.print("File " + filename + " could not be opened");
 			} catch (IOException e) {
@@ -44,18 +47,24 @@ public class BatchMain {
 					} catch (IOException e) {
 					}
 				}
+                if (os != null) {
+                    try {
+                        os.close();
+                    } catch (IOException e) {
+                    }
+                }
 			}
 		}
 	}
 
-	public static void readFile(InputStream is, String[] defaultArgs)
+	public static void readFile(InputStream is, OutputStream os, String[] defaultArgs)
 			throws IOException {
 		BufferedReader bis = new BufferedReader(new InputStreamReader(is));
 
 		String line = null;
 		do {
 			line = bis.readLine();
-			String[] newArgs = line.split("[ \t]+");
+			String[] newArgs = (line != null)?line.split("[ \t]+"):new String[0];
 			if (newArgs.length == 1) {
 				// sequence is alone, prefix with -S
 				String[] newNewArgs = new String[2];
@@ -75,6 +84,7 @@ public class BatchMain {
 				newArgs = null;
 			} else {
 				System.err.print("Invalid line [" + line + "]");
+                newArgs = null;
 			}
 
 			if (newArgs != null) {
@@ -88,12 +98,12 @@ public class BatchMain {
 					completeArgs[i++] = arg;
 				}
 
-				runMelting(completeArgs);
+				runMelting(os, completeArgs);
 			}
 		} while (line != null);
 	}
 
-	public static void runMelting(String[] args) {
+	public static void runMelting(OutputStream os, String[] args) {
 		try {
 			OptionManagement manager = new OptionManagement();
 			Environment environment = manager.createEnvironment(args);
@@ -107,7 +117,7 @@ public class BatchMain {
 					.computeOtherMeltingCorrections(environment);
 
 			environment.setResult(results);
-			displaysMeltingResults(environment, environment.getResult(),
+			displaysMeltingResults(os, environment, environment.getResult(),
 					calculMethod);
 
 		} catch (Exception e) {
@@ -115,9 +125,10 @@ public class BatchMain {
 		}
 	}
 
-	private static void displaysMeltingResults(Environment environment,
-			ThermoResult results, MeltingComputationMethod calculMethod) {
-		displayColumnHeaders(calculMethod);
+	private static void displaysMeltingResults(OutputStream os, Environment environment,
+			ThermoResult results, MeltingComputationMethod calculMethod) throws IOException {
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+		displayColumnHeaders(osw, calculMethod);
 
 		NumberFormat format = NumberFormat.getInstance();
 		format.setMaximumFractionDigits(2);
@@ -126,36 +137,41 @@ public class BatchMain {
 		double entropy = results.getEntropy();
 
 		if (calculMethod instanceof NearestNeighborMode) {
-			OptionManagement.logInfo(environment
-					.getSequences().getSequence()
-					+ "\t"
-					+ environment.getSequences().getComplementary()
-					+ "\t"
-					+ format.format(results.getEnergyValueInJ(enthalpy))
-					+ "\t"
-					+ format.format(results.getEnergyValueInJ(entropy))
-					+ "\t"
-					+ format.format(results.getTm()));
+            osw.write(environment
+                    .getSequences().getSequence()
+                    + "\t"
+                    + environment.getSequences().getComplementary()
+                    + "\t"
+                    + format.format(results.getEnergyValueInJ(enthalpy))
+                    + "\t"
+                    + format.format(results.getEnergyValueInJ(entropy))
+                    + "\t"
+                    + format.format(results.getTm())
+                    + System.getProperty("line.separator"));
 		}
-		OptionManagement.logInfo(
+        else {
+            osw.write(
 				environment.getSequences().getSequence() + "\t"
 						+ environment.getSequences().getComplementary() + "\t"
-						+ format.format(results.getTm()));
+						+ format.format(results.getTm())+System.getProperty("line.separator"));
+        }
+        osw.flush();
 	}
 	
 	private static boolean areHeadersDisplayed = false;
 
-	private static void displayColumnHeaders(
-			MeltingComputationMethod calculMethod) {
+	private static void displayColumnHeaders(OutputStreamWriter osw,
+			MeltingComputationMethod calculMethod) throws IOException {
 		if (!areHeadersDisplayed) {
 			if (calculMethod instanceof NearestNeighborMode) {
-				OptionManagement.logInfo(
-						"Sequence\tComplementary\tDeltaH\rDeltaS\tTm (deg C)");
+				osw.write(
+                        "Sequence\tComplementary\tDeltaH\tDeltaS\tTm (deg C)"+System.getProperty("line.separator"));
 			} else {
-				OptionManagement.logInfo(
-						"Sequence\tComplementary\tTm (deg C)");
+                osw.write(
+                        "Sequence\tComplementary\tTm (deg C)"+System.getProperty("line.separator"));
 			}
 			areHeadersDisplayed = true;
+            osw.flush();
 		}
 	}
 }

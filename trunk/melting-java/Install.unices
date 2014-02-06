@@ -62,6 +62,10 @@ ______EOF
   esac
 done
 
+# where to find the files containing the sets of nearest_neighbor parameters.
+# This one is to initialise the default value of melting.
+NN_PATH=${NN_PATH:=${prefix:-"/usr/local/share/MELTING"}"/Data"}
+
 # MUST EXIST
 prefix=${prefix:="/usr/local"}
 # where to put the executables
@@ -70,9 +74,6 @@ mandir=${mandir:="/usr/share/man"}
 docdir=${docdir:=${prefix}"/doc/MELTING"}
 srcdir=${srcdir:=${prefix}"/MELTING/src"}
 
-# where to find the files containing the sets of nearest_neighbor parameters. 
-# This one is to initialise the default value of melting. 
-NN_PATH=${NN_PATH:=${prefix}"/share/MELTING/Data"}
 
 for d in $mandir $bindir $docdir $srcdir $NN_PATH $mandir/man1 ; do
   if [ -d $d ] && [ ! -w $d ] ; then
@@ -83,7 +84,10 @@ done
 for d in $mandir/man1 $bindir $docdir $srcdir $NN_PATH ; do
   mkdir -p $d || exit 2 ;
 done
-cp -f executable/melting ${bindir}/ || exit 2
+
+melting_execs="executable/melting executable/melting4 executable/melting5GUI executable/melting-batch"
+chmod +x ${melting_execs}
+cp -f ${melting_execs} ${bindir}/ || exit 2
 cp -f executable/melting5.jar ${bindir}/ || exit 2
 cp -f doc/melting.1 ${mandir}/man1 || exit 2
 cp -i Data/* ${NN_PATH}/ || exit 2
