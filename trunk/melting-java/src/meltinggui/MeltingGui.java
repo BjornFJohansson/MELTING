@@ -18,12 +18,14 @@
 
 package meltinggui;
 
+import meltinggui.frames.MeltingFrame;
+import meltinggui.frames.OuterFrame;
+
 import javax.swing.*;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.*;
-
-import meltinggui.frames.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Main class for the Melting GUI. 
@@ -64,7 +66,6 @@ public class MeltingGui
   /**
    * Receives command line options and sends out the MELTING results.
    */
-  @Override
   public void update(Observable observable, Object message)
   {
     String[] argsOption;
@@ -90,6 +91,7 @@ public class MeltingGui
 
     commandLineText = mandatoryCommandLineText + generalCommandLineText; 
     argsOption = commandLineText.trim().split(" +");
+    outerFrame.clearErrors();
     results = getMeltingResults(argsOption);
     outerFrame.displayMeltingResults(results);
   }
@@ -151,7 +153,6 @@ public class MeltingGui
     } 
 
     java.awt.EventQueue.invokeLater(new Runnable() {
-                    @Override
                     public void run()
                     {
                       new MeltingGui();

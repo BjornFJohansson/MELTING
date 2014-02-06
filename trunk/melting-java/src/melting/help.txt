@@ -105,6 +105,8 @@ neighbor model is used.
 	Forces to use a specific nearest neighbor model for single mismatch(es) in the sequences. You can use one of the following :
 		(DNA)
 			allsanpey (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default)
+	    (DNA/RNA)
+        	wat10 (from Watkins et al. 2011) (by default)
 		(RNA)
 			tur06 (from Lu et al. 2006)
 			zno07 (from Davis et al. 2007)  (by default)

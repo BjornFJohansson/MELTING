@@ -100,5 +100,9 @@ public class ErrorFrame extends JInternalFrame
   {
     exceptionLogTextArea.append(exception.getMessage() + "\n");
   }
+
+    public void clearErrors() {
+        exceptionLogTextArea.setText("");
+    }
 }
 

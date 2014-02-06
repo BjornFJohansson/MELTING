@@ -18,22 +18,16 @@
 
 package meltinggui.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.*;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import java.util.Observer;
-import javax.swing.*;
-
 import meltinggui.ArgsMessage;
 import meltinggui.MeltingLayout;
 import meltinggui.MeltingObservable;
 import meltinggui.dialogs.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observer;
 
 /**
  * The frame that opens when the user runs the GUI.
@@ -131,7 +125,7 @@ public class MeltingFrame extends JInternalFrame
                                MeltingLayout.INPUT_GROUP);
     buttonsPanel.add(getThermodynamicsButton, BorderLayout.WEST);
     buttonsPanel.add(Box.createHorizontalGlue());
-    buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
+    //TODO buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
     commandLinePanel.add(commandLineTextArea, BorderLayout.CENTER);
     resultsPanelPanel.add(resultsPanel);
 
