@@ -1,3 +1,3 @@
 @echo off
-java -jar melting5.jar melting.BatchMain %*
+java -cp melting5.jar melting.BatchMain %*
 @echo on

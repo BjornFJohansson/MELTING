@@ -4,4 +4,4 @@ cd $(dirname $0)
 if [ ! "$NN_PATH" ]; then
   NN_PATH=/usr/local/share/MELTING/Data
 fi
-java -jar melting5.jar melting.BatchMain $*
+java -cp melting5.jar melting.BatchMain $*

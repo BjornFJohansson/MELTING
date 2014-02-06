@@ -14,50 +14,64 @@
         <file path="/melting/Data/Santalucia2004longmm.xml"/>
         <file path="/melting/Data/Santalucia2005inomn.xml"/>
         <file path="/melting/buildProject.sh"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.sequences{BasePair.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Ahsen01SodiumCorrection.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.handlers{DataHandler.java"/>
         <file path="/melting/Data/Tanaka2004nn.xml"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.sequences"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{ThermodynamicParameterError.java"/>
         <file path="/melting/javadoc/allclasses-noframe.html"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.mixedNaMgCorrections"/>
         <file path="/melting/javadoc/serialized-form.html"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Santalucia98_04SodiumCorrection.java"/>
         <file path="/melting/Data/Tanaka2004bulge.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.handlers{ThermoHandler.java"/>
         <file path="/melting/Data/McTigue2004lockedmn.xml"/>
         <file path="/melting/Data/Turner1999wobble.xml"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumEquivalence"/>
-        <javaElement handleIdentifier="=melting/src&lt;melting.handlers"/>
         <javaElement handleIdentifier="=melting/src&lt;meltinggui.frames"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.singleBulge"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.mixedNaMgCorrections{Tan07MixedNaMgCorrection.java"/>
         <file path="/melting/Data/Bommarito2000de.xml"/>
         <file path="/melting/Data/Turner1999_2006longmm.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.magnesiumCorrections"/>
         <file path="/melting/javadoc/constant-values.html"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.secondDanglingEnds"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.sequences{SpecificAcidNames.java"/>
         <file path="/melting/Data/Serra2006doublede.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.specificAcids"/>
         <file path="/melting/Data/AllawiSantalucia1997nn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumEquivalence{SodiumEquivalent.java"/>
         <file path="/melting/Data/Asanuma2005azobenmn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Owczarzy04SodiumCorrection21.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{NoExistingOutputFileException.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.nearestNeighborModel"/>
         <file path="/melting/Data/Watkins2010mm.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Tan06SodiumCorrection.java"/>
         <file path="/melting/Data/Santalucia1996nn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{NoExistingMethodException.java"/>
         <file path="/melting/.project"/>
         <javaElement handleIdentifier="=melting/src&lt;meltinggui"/>
         <file path="/melting/Data/Serra2012wobble.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting"/>
-        <file path="/melting/Data/Serra1997_1998_2000_2006hairpin.xml"/>
         <file path="/melting/melting-java.iml"/>
+        <file path="/melting/Data/Serra1997_1998_2000_2006hairpin.xml"/>
         <file path="/melting/Data/Turner1999_2006hairpin.xml"/>
         <file path="/melting/Data/Santalucia2004hairpin.xml"/>
         <file path="/melting/Data/AllawiSantaluciaPeyret1997_1998_1999mm.xml"/>
         <file path="/melting/Data/Santalucia2004nn.xml"/>
-        <file path="/melting/Data/Modified_nucleotides.xml"/>
         <file path="/melting/Data/Turner2006nn.xml"/>
+        <file path="/melting/Data/Modified_nucleotides.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{FileException.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{SequenceException.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumEquivalence{Ahsen01_NaEquivalent.java"/>
         <file path="/melting/ChangeLog"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Tan07SodiumCorrection.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{NucleicAcidNotKnownException.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.otherCorrections.formamideCorrections"/>
         <file path="/melting/Data/Znosko20071x2loop.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.otherCorrections"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.singleMismatch"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Wetmur91SodiumCorrection.java"/>
         <folder path="/melting/javadoc/examples"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Santalucia96SodiumCorrection.java"/>
         <file path="/melting/Data/Nearest_Neighbor.xml"/>
         <file path="/melting/Install.unices"/>
         <file path="/melting/javadoc/stylesheet.css"/>
@@ -65,14 +79,17 @@
         <file path="/melting/Data/Mismatches.xml"/>
         <file path="/melting/javadoc/allclasses-frame.html"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.longDanglingEnds"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{SchildkrautLifson65SodiumCorrection.java"/>
         <file path="/melting/Data/Breslauer1986nn.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.cngPatterns"/>
         <file path="/melting/Data/Znosko2007inomn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{MarmurSchildkrautDoty98_62SodiumCorrection.java"/>
         <file path="/melting/javadoc/overview-tree.html"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.cricksPair"/>
         <file path="/melting/javadoc/deprecated-list.html"/>
         <file path="/melting/Data/Sugimoto2002longdde.xml"/>
         <file path="/melting/Data/Xia1998nn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{OptionSyntaxError.java"/>
         <javaElement handleIdentifier="=melting/src&lt;meltinggui.dialogs.moreoptions"/>
         <file path="/melting/javadoc/package-list"/>
         <javaElement handleIdentifier="=melting/src&lt;meltinggui.dialogs"/>
@@ -80,31 +97,40 @@
         <javaElement handleIdentifier="=melting/src&lt;meltinggui.moreoptions"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection"/>
         <file path="/melting/Data/Dangling_ends.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Owczarzy04SodiumCorrection19.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Owczarzy04SodiumCorrection20.java"/>
         <file path="/melting/Data/Serra2007bulge.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.methodInterfaces"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.handlers{NodeHandler.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.correctionMethods"/>
         <file path="/melting/Data/Sugimoto1995nn.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{FrankKamenetskii71SodiumCorrection.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.singleDanglingEnds"/>
         <file path="/melting/Data/Freier1986nn.xml"/>
         <file path="/melting/myjar.jardesc"/>
         <file path="/melting/.classpath"/>
         <file path="/melting/Data/AllawiSantaluciaPeyret1997_1998_1999tanmm.xml"/>
         <file path="/melting/javadoc/overview-summary.html"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumEquivalence{Mitsuhashi96NaEquivalent.java"/>
         <file path="/melting/Data/Znosko2007mm.xml"/>
         <file path="/melting/Data/Loop.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.InternalLoops"/>
         <file path="/melting/Data/Znosko2008mm.xml"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumCorrections{Owczarzy04SodiumCorrection22.java"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.sodiumEquivalence{Peyret00_NaEquivalent.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.tandemMismatches"/>
         <folder path="/melting/javadoc/melting"/>
         <file path="/melting/build.xml"/>
-        <file path="/melting/README"/>
         <file path="/melting/builder.sh"/>
+        <file path="/melting/README"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.handlers{EnergyHandler.java"/>
         <file path="/melting/Data/Santalucia2004longbulge.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.approximativeMethods"/>
         <javaElement handleIdentifier="=melting/src&lt;meltinggui.widgets"/>
         <file path="/melting/Data/Turner1999_2006longbulge.xml"/>
         <file path="/melting/Data/Sugimoto2001hydroxyAmn.xml"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels.wobble"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.exceptions{MethodNotApplicableException.java"/>
         <file path="/melting/Data/Serra2006_2008de.xml"/>
         <file path="/melting/javadoc/help-doc.html"/>
         <file path="/melting/GeneralPublicLicence"/>
@@ -113,11 +139,13 @@
         <javaElement handleIdentifier="=melting/src&lt;melting.configuration"/>
         <file path="/melting/Data/Sugimoto1996nn.xml"/>
         <file path="/melting/javadoc/overview-frame.html"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.ionCorrection.mixedNaMgCorrections{Owczarzy08MixedNaMgCorrection.java"/>
         <folder path="/melting/javadoc/meltinggui"/>
         <file path="/melting/Data/Turner1999_2006tanmm.xml"/>
         <file path="/melting/Data/Broda2005CNG.xml"/>
         <file path="/melting/Data/Sugimoto2002longrde.xml"/>
         <folder path="/melting/javadoc/resources"/>
+        <javaElement handleIdentifier="=melting/src&lt;melting.sequences{NucleotidSequences.java"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.patternModels"/>
         <javaElement handleIdentifier="=melting/src&lt;melting.otherCorrections.dmsoCorrections"/>
     </selectedElements>
