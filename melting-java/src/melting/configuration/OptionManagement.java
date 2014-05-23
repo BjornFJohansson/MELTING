@@ -250,7 +250,7 @@ public class OptionManagement {
 	/**
 	 * String version : current Melting version number.
 	 */
-	private static final String version = "5.1.";
+	private static final String version = "5.1.2";
 	
 	/**
 	 * String dataPathwayValue : default Melting data file pathway. (files containing
