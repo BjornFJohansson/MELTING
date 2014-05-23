@@ -1,5 +1,6 @@
 [23/05/2014]Marine Dumousseau (marine@ebi.ac.uk)
 	Fixed a bug in Locked nucleic acids formula which did not deal with terminal locked nucleic acids
+	Updated version to 5.1.2
 [06/02/2014]Marine Dumousseau (marine@ebi.ac.uk)
 	Update documentation
 	Added batch script to run MELTING 5 with a file containing different sequences
