@@ -832,7 +832,7 @@ public class NucleotidSequences {
 	 */
 	public String getSequence(int pos1, int pos2){
 		if (arePositionsOutOfRange(pos1, pos2)){
-			throw new SequenceException("\n The length of the duplex has to be inferior to " + pos2 + 1 + "and superior to 0.");
+			throw new SequenceException("\n The length of the duplex has to be inferior to " + (pos2 + 1) + " and superior to 0.");
 		}
 		
 		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);
@@ -850,7 +850,7 @@ public class NucleotidSequences {
 	 */
 	public String getComplementary(int pos1, int pos2){
 		if (pos1 < 0 || pos2 > getDuplexLength() - 1){
-			throw new SequenceException("\n The length of the duplex has to be inferior to " + pos2 + 1 + "and superior to 0.");
+			throw new SequenceException("\n The length of the duplex has to be inferior to " + (pos2 + 1) + " and superior to 0.");
 		}
 		
 		int [] positions = convertAcidPositionsIntoStringPositions(pos1, pos2);

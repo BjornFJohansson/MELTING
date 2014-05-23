@@ -109,16 +109,19 @@ public class McTigue04LockedAcid extends PatternComputation
 	@Override
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
+
+        int [] positions = correctPositions(pos1, pos2, sequences.getDuplexLength());
+        pos1 = positions[0];
+        pos2 = positions[1];
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
-		if (this.collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(pos1), newSequences.getComplementaryNNPairUnlocked(pos1)) == null || this.collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(pos1 + 1), newSequences.getComplementaryNNPairUnlocked(pos1 + 1)) == null){
-			OptionManagement.logWarning("\n The thermodynamic parameters for " + newSequences.getSequenceNNPairUnlocked(pos1) + "/" + newSequences.getComplementaryNNPairUnlocked(pos1) + " or " + newSequences.getSequenceNNPairUnlocked(pos1 + 1) + "/" + newSequences.getComplementaryNNPairUnlocked(pos1 + 1) +
-			" are missing. Check the locked nucleic acid parameters.");
-			return true;
-		}
-		
 		for (int i = pos1; i < pos2; i++){
+            if (this.collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(i), newSequences.getComplementaryNNPairUnlocked(i)) == null){
+                OptionManagement.logWarning("\n The thermodynamic parameters for " + newSequences.getSequenceNNPairUnlocked(i) + "/" + newSequences.getComplementaryNNPairUnlocked(i) +
+                        " are missing. Check the locked nucleic acid parameters.");
+                return true;
+            }
 			if (this.collector.getLockedAcidValue(sequences.getSequenceNNPair(i), sequences.getComplementaryNNPair(i)) == null){
 				OptionManagement.logWarning("\n The thermodynamic parameters for " + sequences.getSequenceNNPair(i) + "/" + sequences.getComplementaryNNPair(i) +
 				"are missing. Check the locked nucleic acid parameters.");
@@ -168,14 +171,16 @@ public class McTigue04LockedAcid extends PatternComputation
 			int pos1, int pos2, ThermoResult result){
 
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
-		
-		Thermodynamics firstNNValue = collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(pos1), newSequences.getComplementaryNNPairUnlocked(pos1));
-		Thermodynamics secondNNValue = collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(pos1 + 1), newSequences.getComplementaryNNPairUnlocked(pos1 + 1));
-		double enthalpy = result.getEnthalpy() + firstNNValue.getEnthalpy() + secondNNValue.getEnthalpy();
-		double entropy = result.getEntropy() + firstNNValue.getEntropy()  + secondNNValue.getEntropy();
-		
-		OptionManagement.logMessage("\n" + newSequences.getSequenceNNPairUnlocked(pos1) + "/" + newSequences.getComplementaryNNPairUnlocked(pos1) + " : enthalpy = " + firstNNValue.getEnthalpy() + "  entropy = " + firstNNValue.getEntropy());
-		OptionManagement.logMessage(newSequences.getSequenceNNPairUnlocked(pos1+1) + "/" + newSequences.getComplementaryNNPairUnlocked(pos1+1) + " : enthalpy = " + secondNNValue.getEnthalpy() + "  entropy = " + secondNNValue.getEntropy());
+        double enthalpy = result.getEnthalpy();
+        double entropy = result.getEntropy();
+
+        for (int i = pos1; i < pos2; i++){
+            Thermodynamics firstNNValue = collector.getNNvalue(newSequences.getSequenceNNPairUnlocked(i), newSequences.getComplementaryNNPairUnlocked(i));
+            OptionManagement.logMessage(newSequences.getSequenceNNPairUnlocked(i) + "/" + newSequences.getComplementaryNNPairUnlocked(i) + " : incremented enthalpy = " + firstNNValue.getEnthalpy() + "  incremented entropy = " + firstNNValue.getEntropy());
+
+            enthalpy += firstNNValue.getEnthalpy();
+            entropy += firstNNValue.getEntropy();
+        }
 
 		result.setEnthalpy(enthalpy);
 		result.setEntropy(entropy);
