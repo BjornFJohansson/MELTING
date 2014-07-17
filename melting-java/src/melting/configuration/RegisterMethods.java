@@ -64,9 +64,7 @@ import melting.patternModels.singleMismatch.Watkins11mm;
 import melting.patternModels.singleMismatch.Turner06mm;
 import melting.patternModels.singleMismatch.Znosko07mm;
 import melting.patternModels.singleMismatch.Znosko08mm;
-import melting.patternModels.specificAcids.Asanuma05Azobenzene;
-import melting.patternModels.specificAcids.McTigue04LockedAcid;
-import melting.patternModels.specificAcids.Sugimoto01Hydroxyadenine;
+import melting.patternModels.specificAcids.*;
 import melting.patternModels.tandemMismatches.AllawiSantaluciaPeyret97_98_99tanmm;
 import melting.patternModels.tandemMismatches.Turner99_06tanmm;
 import melting.patternModels.wobble.Santalucia05Inosine;
@@ -169,6 +167,16 @@ public class RegisterMethods {
 	 * HasMap lockedAcidMethod : contains all the methods for locked nucleic acid computation.
 	 */
 	private static HashMap<String, Class<? extends PatternComputationMethod>> lockedAcidMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+
+    /**
+     * HasMap lockedAcidMethod : contains all the methods for tandem locked nucleic acid computation.
+     */
+    private static HashMap<String, Class<? extends PatternComputationMethod>> tandemLockedAcidMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
+
+    /**
+     * HasMap lockedAcidMethod : contains all the methods for single mismatches and locked nucleic acid computation.
+     */
+    private static HashMap<String, Class<? extends PatternComputationMethod>> lockedAcidSingleMismatchMethod = new HashMap<String, Class<? extends PatternComputationMethod>>();
 	
 	/**
 	 * HasMap hydroxyadenosineMethod : contains all the methods for hydroxyadenine computation.
@@ -393,7 +401,22 @@ public class RegisterMethods {
 	 */
 	private void initialiseLockedAcidMethods(){
 		lockedAcidMethod.put("mct04", McTigue04LockedAcid.class);
+        lockedAcidMethod.put("owc11", Owczarzy11LockedAcid.class);
 	}
+
+    /**
+     * initialises the tandemLockedAcidMethod of RegisterMethods.
+     */
+    private void initialiseTandemLockedAcidMethods(){
+        tandemLockedAcidMethod.put("owc11", Owczarzy11TandemLockedAcid.class);
+    }
+
+    /**
+     * initialises the lockedAcidSigleMismatchMethod of RegisterMethods.
+     */
+    private void initialiseLockedAcidSingleMismatchMethods(){
+        lockedAcidMethod.put("owc11", Owczarzy11SingleMismatchLockedAcid.class);
+    }
 	
 	/**
 	 * initialises the hydroxyadenineMethod of RegisterMethods.
@@ -463,6 +486,8 @@ public class RegisterMethods {
 		PatternModel.put(OptionManagement.inosineMethod, inosineMethod);
 		PatternModel.put(OptionManagement.internalLoopMethod, internalLoopMethod);
 		PatternModel.put(OptionManagement.lockedAcidMethod, lockedAcidMethod);
+        PatternModel.put(OptionManagement.tandemLockedAcidMethod, tandemLockedAcidMethod);
+        PatternModel.put(OptionManagement.lockedAcidSingleMismatchMethod, lockedAcidSingleMismatchMethod);
 		PatternModel.put(OptionManagement.longBulgeLoopMethod, longBulgeLoopMethod);
 		PatternModel.put(OptionManagement.longDanglingEndMethod, longDanglingEndMethod);
 		PatternModel.put(OptionManagement.NNMethod, cricksMethod);
@@ -829,6 +854,8 @@ public class RegisterMethods {
     CNG_REPEATS(CNGRepeatsMethod),
     AZOBENZENE(azobenzeneMethod),
     LOCKED_ACID(lockedAcidMethod),
+    TANDEM_LOCKED_ACID(tandemLockedAcidMethod),
+    LOCKED_ACID_SINGLE_MISMATCH(lockedAcidSingleMismatchMethod),
     HYDROXYADENOSINE(hydroxyadenosineMethod),
     ION_CORRECTION(ionCorrection),
     DMSO_CORRECTION(DMSOCorrection),

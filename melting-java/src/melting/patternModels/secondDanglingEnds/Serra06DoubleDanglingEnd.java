@@ -62,8 +62,8 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
-		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
+		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContaining("-", pos1, pos2));
+		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContaining("-", pos1, pos2), pos1, pos2));
 		Thermodynamics doubleDanglingValue;
 
 		if (sequence.charAt(0) == '-'){
@@ -77,7 +77,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod
 			}
 		} 
 		
-		if (sequences.getSequenceSens(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2).equals("5'3'")){
+		if (sequences.getSequenceSens(sequences.getSequenceContaining("-", pos1, pos2), pos1, pos2).equals("5'3'")){
 			doubleDanglingValue = this.collector.getDanglingValue(sequence,complementary);
 		}
 		else{
@@ -105,8 +105,8 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContainig("-", pos1, pos2));
-		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2));
+		String sequence = NucleotidSequences.convertToPyr_Pur(sequences.getSequenceContaining("-", pos1, pos2));
+		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequences.getSequenceContaining("-", pos1, pos2), pos1, pos2));
 		
 		if (sequence.charAt(0) == '-'){
 
@@ -121,7 +121,7 @@ public class Serra06DoubleDanglingEnd extends SecondDanglingEndMethod
 
 		} 
 		
-		if (sequences.getSequenceSens(sequences.getSequenceContainig("-", pos1, pos2), pos1, pos2).equals("5'3'")){
+		if (sequences.getSequenceSens(sequences.getSequenceContaining("-", pos1, pos2), pos1, pos2).equals("5'3'")){
 			
 			if (this.collector.getDanglingValue(sequence,complementary) == null){
 				OptionManagement.logWarning("\n The thermodymamic parameters for " + sequence + "/" + complementary + " are missing. Check the second dangling ends parameters.");

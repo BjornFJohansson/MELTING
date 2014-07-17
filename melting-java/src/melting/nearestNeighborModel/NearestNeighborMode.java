@@ -82,6 +82,16 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 	 * PatternComputationMethod lockedAcidMethod : represents the model for locked acid nucleic
 	 */
 	private PatternComputationMethod lockedAcidMethod;
+
+    /**
+     * PatternComputationMethod tandemLockedAcidMethod : represents the model for consecutive locked acid nucleic
+     */
+    private PatternComputationMethod tandemLockedAcidMethod;
+
+    /**
+     * PatternComputationMethod singleLockedAcidMethod : represents the model for single mismatch with locked acid nucleic
+     */
+    private PatternComputationMethod lockedAcidMethodSingleMismatch;
 	
 	/**
 	 * PatternComputationMethod longBulgeLoopMethod : represents the model for long bulge loop 
@@ -256,6 +266,8 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		}
 			
 		else {
+            SpecificAcidNames acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(pos1));
+
 			if (environment.getSequences().getDuplex().get(pos1).isBasePairEqualTo("G", "U")){
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
@@ -270,6 +282,38 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				int [] positions = {pos1, position};
 				return positions;
 			}
+            else if (acidName == SpecificAcidNames.lockedNucleicAcid){
+                if (environment.getSequences().getDuplex().get(pos1).isComplementaryLockedPair()){
+                    while (position < environment.getSequences().getDuplexLength() - 1){
+                        int testPosition = position + 1;
+                        acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(testPosition));
+
+                        if (acidName == SpecificAcidNames.lockedNucleicAcid && environment.getSequences().getDuplex().get(testPosition).isComplementaryLockedPair()){
+                            position ++;
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    int [] positions = {pos1, position};
+                    return positions;
+                }
+                else{
+                    while (position < environment.getSequences().getDuplexLength() - 1){
+                        int testPosition = position + 1;
+                        acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(testPosition));
+                        if (acidName == SpecificAcidNames.lockedNucleicAcid && environment.getSequences().getDuplex().get(testPosition).isComplementaryLockedPair() == false){
+                            position ++;
+
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    int [] positions = {pos1, position};
+                    return positions;
+                }
+            }
 			else {
 				while (position < environment.getSequences().getDuplexLength() - 1){
 					int testPosition = position + 1;
@@ -405,10 +449,26 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 					}
 					return this.hydroxyadenosineMethod;
 				case lockedNucleicAcid:
-					if (this.lockedAcidMethod == null){
-						initialiseLockedAcidMethod();
-					}
-					return this.lockedAcidMethod;
+                    if (positions[1] - positions[0] + 1 == 1){
+                        if (environment.getSequences().getDuplex().get(positions[0]).isComplementaryLockedPair()){
+                            if (this.lockedAcidMethod == null){
+                                initialiseLockedAcidMethod();
+                            }
+                            return this.lockedAcidMethod;
+                        }
+                        else{
+                            if (this.lockedAcidMethodSingleMismatch == null){
+                                initialiseLockedAcidSingleMismatchMethod();
+                            }
+                            return this.lockedAcidMethodSingleMismatch;
+                        }
+                    }
+                    else {
+                        if (this.tandemLockedAcidMethod == null){
+                            initialiseTandemLockedAcidMethod();
+                        }
+                        return this.tandemLockedAcidMethod;
+                    }
 				default:
 					throw new SequenceException("\n" + acidName + " is unknown.");
 				}
@@ -490,6 +550,24 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 		String methodName = this.environment.getOptions().get(optionName);
 		this.lockedAcidMethod = initialiseMethod(optionName, methodName);
 	}
+
+    /**
+     * initialises the tandemLockedAcidMethod of NearestNeighborMode.
+     */
+    private void initialiseTandemLockedAcidMethod(){
+        String optionName = OptionManagement.tandemLockedAcidMethod;
+        String methodName = this.environment.getOptions().get(optionName);
+        this.tandemLockedAcidMethod = initialiseMethod(optionName, methodName);
+    }
+
+    /**
+     * initialises the lockedAcidSingleMismathMethod of NearestNeighborMode.
+     */
+    private void initialiseLockedAcidSingleMismatchMethod(){
+        String optionName = OptionManagement.lockedAcidSingleMismatchMethod;
+        String methodName = this.environment.getOptions().get(optionName);
+        this.lockedAcidMethodSingleMismatch = initialiseMethod(optionName, methodName);
+    }
 	
 	/**
 	 * initialises the longBulgeLoopMethod of NearestNeighborMode.

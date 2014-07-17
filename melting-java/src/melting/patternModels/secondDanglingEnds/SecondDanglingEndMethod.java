@@ -66,7 +66,7 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 	
 	public boolean isMissingParameters(NucleotidSequences sequences, int pos1,
 			int pos2) {
-		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
+		String gapSequence = sequences.getSequenceContaining("-", pos1, pos2);
 		
 		if (gapSequence.charAt(0) == '-'){
 			if (this.collector.getDanglingValue(sequences.getSequence(pos1 + 1, pos2),sequences.getComplementary(pos1 + 1, pos2)) == null){
@@ -134,7 +134,7 @@ public abstract class SecondDanglingEndMethod extends PatternComputation {
 	 */
 	private ThermoResult computesThermodynamicsSingleDanglingEnd(NucleotidSequences sequences,
 			int pos1, int pos2, ThermoResult result) {
-		String gapSequence = sequences.getSequenceContainig("-", pos1, pos2);
+		String gapSequence = sequences.getSequenceContaining("-", pos1, pos2);
 		
 		Thermodynamics danglingValue;
 		if (gapSequence.charAt(0) == '-'){

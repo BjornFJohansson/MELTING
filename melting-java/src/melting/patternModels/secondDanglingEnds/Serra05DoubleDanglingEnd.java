@@ -62,7 +62,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
 		
-		String sequence = sequences.getSequenceContainig("-", pos1, pos2);
+		String sequence = sequences.getSequenceContaining("-", pos1, pos2);
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
 		Thermodynamics doubleDanglingValue;
 		String sens;
@@ -120,7 +120,7 @@ public class Serra05DoubleDanglingEnd extends SecondDanglingEndMethod
 		
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("rna");
 		
-		String sequence = sequences.getSequenceContainig("-", pos1, pos2);
+		String sequence = sequences.getSequenceContaining("-", pos1, pos2);
 		String complementary = NucleotidSequences.convertToPyr_Pur(sequences.getComplementaryTo(sequence, pos1, pos2));
 		String sens;
 		if (complementary.charAt(1) == 'Y'){
