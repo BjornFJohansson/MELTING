@@ -66,7 +66,7 @@ public class Sugimoto01Hydroxyadenine extends PatternComputation
 					}
 				
 		if (pos1 != 0 && pos2 != modified.getDuplexLength() - 1){
-			String seq = modified.getSequenceContainig("A*", pos1, pos2);
+			String seq = modified.getSequenceContaining("A*", pos1, pos2);
 			String comp = modified.getComplementaryTo(seq.toString(), pos1, pos2);
 						
 			if (seq.equals("TA*A")== false && seq.equals("GA*C") == false){

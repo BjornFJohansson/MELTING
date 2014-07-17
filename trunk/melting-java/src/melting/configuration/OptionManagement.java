@@ -150,6 +150,16 @@ public class OptionManagement {
 	 * Option name for the choice of locked nucleic acid computation method.
 	 */
 	public static final String lockedAcidMethod = "-lck";
+
+    /**
+     * Option name for the choice of tandem locked nucleic acid computation method.
+     */
+    public static final String tandemLockedAcidMethod = "-tanLck";
+
+    /**
+     * Option name for the choice of locked nucleic acid with single mismatch computation method.
+     */
+    public static final String lockedAcidSingleMismatchMethod = "-sinMMLck";
 	
 	/**
 	 * Option name for the sequence (5'3'). Mandatory
@@ -326,6 +336,8 @@ public class OptionManagement {
 		registerPatternModels.add(hydroxyadenineMethod);
 		registerPatternModels.add(azobenzeneMethod);
 		registerPatternModels.add(lockedAcidMethod);
+        registerPatternModels.add(tandemLockedAcidMethod);
+        registerPatternModels.add(lockedAcidSingleMismatchMethod);
 	}
 	
 	/**
@@ -374,7 +386,9 @@ public class OptionManagement {
 		this.DNADefaultOptions.put(inosineMethod, "san05");
 		this.DNADefaultOptions.put(hydroxyadenineMethod, "sug01");
 		this.DNADefaultOptions.put(azobenzeneMethod, "asa05");
-		this.DNADefaultOptions.put(lockedAcidMethod, "mct04");
+		this.DNADefaultOptions.put(lockedAcidMethod, "owc11");
+        this.DNADefaultOptions.put(tandemLockedAcidMethod, "owc11");
+        this.DNADefaultOptions.put(lockedAcidSingleMismatchMethod, "owc11");
 		this.DNADefaultOptions.put(NaEquivalentMethod, "ahs01");
 
 	}

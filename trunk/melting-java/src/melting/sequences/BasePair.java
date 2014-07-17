@@ -145,6 +145,46 @@ public class BasePair {
 		}
 	}
 
+    /**
+     * To check if the two nucleic acids in the base pair are complementary when one of them is a locked nucleic acid.
+     * @return true if the TopAcid and BottomAcid are complementary. There is complementarity if
+     * the two acids (TopAcid, BottomAcid) of the base pair are (AL,T), (TL,A), (CL,G) or (GL,C).
+     */
+    public boolean isComplementaryLockedPair(){
+        if (topAcid.length() != 1 || bottomAcid.length() != 1){
+            return false;
+        }
+        else {
+            if (topAcid.equals("AL")) {
+                if (bottomAcid.equals("T")) {
+                    return true;
+                }
+                return false;
+            }
+            else if (topAcid.equals("TL")) {
+                if (bottomAcid.equals("A")) {
+                    return true;
+                }
+                return false;
+            }
+            else if (topAcid.equals("CL")) {
+                if (bottomAcid.equals("G")) {
+                    return true;
+                }
+                return false;
+            }
+            else if (topAcid.equals("GL")) {
+                if (bottomAcid.equals("C")) {
+                    return true;
+                }
+                return false;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+
 	/**
 	 * Check if the Nucleic acid TopAcid is a frequent nucleic acid. 
 	 * @return true if the TopAcid of BasePair is a frequent nucleic acid. A frequent
