@@ -28,21 +28,10 @@ import melting.sequences.NucleotidSequences;
  * 
  * McTigue et al.(2004). Biochemistry 43 : 5388-5405
  */
-public class Owczarzy11LockedAcid extends PatternComputation
+public abstract class LockedAcidNNMethod extends PatternComputation
   implements NamedMethod
 {	
-	// Instance variables
-	
-	/**
-	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for locked nucleic acid
-	 */
-	public static String defaultFileName = "Owczarzy2011lockedmn.xml";
 
-  /**
-   * Full name of the method.
-   */
-  private static String methodName = "Owczarzy et al. (2011)";
-	
 	// PatternComputationMethod interface implementation
 
 	@Override
@@ -78,8 +67,8 @@ public class Owczarzy11LockedAcid extends PatternComputation
 		NucleotidSequences newSequences = sequences.getEquivalentSequences("dna");
 		
 		OptionManagement.logMessage("\n The locked acid nuceic model is");
-        OptionManagement.logMethodName(methodName);
-        OptionManagement.logFileName(this.fileName);
+        OptionManagement.logMethodName(getName());
+        OptionManagement.logFileName(getDataFileName(getName()));
 
 		double enthalpy = result.getEnthalpy();
 		double entropy = result.getEntropy();
@@ -121,15 +110,6 @@ public class Owczarzy11LockedAcid extends PatternComputation
 
         return super.isMissingParameters(newSequences, pos1, pos2);
     }
-	
-	@Override
-	public void initialiseFileName(String methodName){
-		super.initialiseFileName(methodName);
-		
-		if (this.fileName == null){
-			this.fileName = defaultFileName;
-		}
-	}
 
 	// private methods
 	
@@ -158,8 +138,5 @@ public class Owczarzy11LockedAcid extends PatternComputation
    * @return The full name of the method.
    */
   @Override
-  public String getName()
-  {
-    return methodName;
-  }
+  public abstract String getName();
 }

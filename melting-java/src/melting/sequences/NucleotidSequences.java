@@ -221,7 +221,7 @@ public class NucleotidSequences {
 	 * between the positions pos1 and pos2. It returns null if neither the sequence String, nor the complementary String
 	 * contains the pattern "pattern" between pos1 and pos2.
 	 */
-	public String getSequenceContainig(String pattern, int pos1, int pos2){
+	public String getSequenceContaining(String pattern, int pos1, int pos2){
 		if (getSequence(pos1, pos2).contains(pattern)){
 			return getSequence(pos1, pos2);
 		}

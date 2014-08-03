@@ -232,6 +232,8 @@ public class RegisterMethods {
 		initialiseAzobenzeneMethods();
 		initialiseHydroxyadenosineMethods();
 		initialiseLockedAcidMethods();
+        initialiseTandemLockedAcidMethods();
+        initialiseLockedAcidSingleMismatchMethods();
 		initialisePatternModels();
 		initialiseIonCorrectionMethod();
 		initialiseDMSOCorrectionMethod();
@@ -415,7 +417,7 @@ public class RegisterMethods {
      * initialises the lockedAcidSigleMismatchMethod of RegisterMethods.
      */
     private void initialiseLockedAcidSingleMismatchMethods(){
-        lockedAcidMethod.put("owc11", Owczarzy11SingleMismatchLockedAcid.class);
+        lockedAcidSingleMismatchMethod.put("owc11", Owczarzy11SingleMismatchLockedAcid.class);
     }
 	
 	/**

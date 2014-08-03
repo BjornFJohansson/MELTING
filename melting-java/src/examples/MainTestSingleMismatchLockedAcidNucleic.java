@@ -31,7 +31,7 @@ public class MainTestSingleMismatchLockedAcidNucleic {
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t owc11 \n");
 
-		MainTest.displayResults(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000002", "-lck");
+		MainTest.displayResultsWithComplementarySequence(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000002", "-lck");
 	}
 
 }
