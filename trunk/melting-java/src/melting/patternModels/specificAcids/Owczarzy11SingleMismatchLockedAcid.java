@@ -35,7 +35,7 @@ public class Owczarzy11SingleMismatchLockedAcid extends LockedAcidNNMethod
 	/**
 	 * String defaultFileName : default name for the xml file containing the thermodynamic parameters for locked nucleic acid
 	 */
-	public static String defaultFileName = "Owczarzy2011lockedTandemmn.xml";
+	public static String defaultFileName = "Owczarzy2011lockedmmn.xml";
 
   /**
    * Full name of the method.
@@ -66,11 +66,19 @@ public class Owczarzy11SingleMismatchLockedAcid extends LockedAcidNNMethod
     public void loadData(HashMap<String, String> options) {
         super.loadData(options);
 
+        // load single mismatch parameters (fixed to owc11 because need the formula owc11)
         RegisterMethods register = new RegisterMethods();
         PatternComputationMethod singleMismatch = register.getPatternComputationMethod(OptionManagement.lockedAcidMethod, "owc11");
         singleMismatch.initialiseFileName("owc11");
         String fileSingleMismatch = singleMismatch.getDataFileName("owc11");
-
         loadFile(fileSingleMismatch, this.collector);
+
+        // load tandem parameters  (fixed to owc11 because need the formula owc11)
+        PatternComputationMethod tandemMismatch = register.getPatternComputationMethod(OptionManagement.tandemLockedAcidMethod, "owc11");
+        tandemMismatch.initialiseFileName("owc11");
+        String fileTandemMismatch = tandemMismatch.getDataFileName("owc11");
+
+        loadFile(fileTandemMismatch, this.collector);
+
     }
 }

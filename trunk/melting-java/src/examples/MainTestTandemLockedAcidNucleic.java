@@ -31,7 +31,7 @@ public class MainTestTandemLockedAcidNucleic {
 		
 		System.out.print("\n\n melting.sequences \t TmExp \t owc11 \n");
 
-		MainTest.displayResultsWithComplementarySequence(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000002", "-lck");
+		MainTest.displayResultsWithComplementarySequence(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000002", "-tanLck");
 	}
 
 }
