@@ -15,7 +15,12 @@
 
 package melting.patternModels.specificAcids;
 
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.NamedMethod;
+import melting.methodInterfaces.PatternComputationMethod;
+
+import java.util.HashMap;
 
 /**
  * This class represents the locked nucleic acid (AL, GL, CL or TL) model owc11. It extends PatternComputation.
@@ -46,6 +51,19 @@ public class Owczarzy11TandemLockedAcid extends LockedAcidNNMethod
 			this.fileName = defaultFileName;
 		}
 	}
+
+    @Override
+    public void loadData(HashMap<String, String> options) {
+        super.loadData(options);
+
+        String singleLockedName = options.get(OptionManagement.lockedAcidMethod);
+        RegisterMethods register = new RegisterMethods();
+        PatternComputationMethod singleMismatch = register.getPatternComputationMethod(OptionManagement.lockedAcidMethod, singleLockedName);
+        singleMismatch.initialiseFileName(singleLockedName);
+        String fileSingleMismatch = singleMismatch.getDataFileName(singleLockedName);
+
+        loadFile(fileSingleMismatch, this.collector);
+    }
 
   /**
    * Gets the full name of the method.
