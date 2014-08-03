@@ -212,8 +212,18 @@ neighbor model is used.
 	To change the file containing the thermodynamic parameters for azobenzene computation, the same syntax as the one for the -nn option is used.
 
 -lck [name]
-	Forces to use a specific nearest neighbor model for DNA sequences containing locked nucleic acid (Al, Tl, Cl or Gl). You can only use mct04 (from McTigue et al. 2004). 
-	To change the file containing the thermodynamic parameters for locked acid nucleic computation, the same syntax as the one for the -nn option is used. 
+	Forces to use a specific nearest neighbor model for DNA sequences containing locked nucleic acid (Al, Tl, Cl or Gl). You can use mct04 (from McTigue et al. 2004) or
+	owc11 (from Owczarzy et al. 2011, by default).
+	To change the file containing the thermodynamic parameters for locked acid nucleic computation, the same syntax as the one for the -nn option is used.
+
+-tanLck [name]
+	Forces to use a specific nearest neighbor model for DNA sequences containing consecutive locked nucleic acid (Al, Tl, Cl or Gl). You can only use owc11 (from Owczarzy et al. 2011, by default).
+	To change the file containing the thermodynamic parameters for locked acid nucleic computation, the same syntax as the one for the -nn option is used.
+
+-sinMMLck [name]
+	Forces to use a specific nearest neighbor model for DNA sequences containing consecutive locked nucleic acid with one single mismatch (Al, Tl, Cl or Gl).
+	You can use only owc11 (from Owczarzy et al. 2011, by default).
+	To change the file containing the thermodynamic parameters for locked acid nucleic computation, the same syntax as the one for the -nn option is used.
                
 	Set of melting temperature corrections
 
