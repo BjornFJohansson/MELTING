@@ -19,20 +19,19 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 /**
- * This class exists to test the different locked nucleic acid methods.
+ * This class exists to test the different tandem locked nucleic acid methods.
  */
-public class MainTestLockedAcidNucleic {
+public class MainTestSingleMismatchLockedAcidNucleic {
 
 	public static void main(String[] args) {
 		ArrayList<String> lockedAcidNucleicMethods = new ArrayList<String>();
-		lockedAcidNucleicMethods.add("mct04");
         lockedAcidNucleicMethods.add("owc11");
 
-		Properties lockedAcidNucleicSequences = MainTest.loadSequencesTest("src/examples/test/lockedAcidNucleicSequences.txt");
+		Properties lockedAcidNucleicSequences = MainTest.loadSequencesTest("src/examples/test/singleMismatchLockedAcidNucleicSequences.txt");
 		
-		System.out.print("\n\n melting.sequences \t TmExp \t mct04 \t owc11 \n");
+		System.out.print("\n\n melting.sequences \t TmExp \t owc11 \n");
 
-		MainTest.displayResults(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000005", "-lck");
+		MainTest.displayResults(lockedAcidNucleicSequences, lockedAcidNucleicMethods, "dnadna", "Na=1", "0.000002", "-lck");
 	}
 
 }
