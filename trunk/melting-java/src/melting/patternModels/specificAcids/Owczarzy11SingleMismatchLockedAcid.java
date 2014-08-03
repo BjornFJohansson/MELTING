@@ -22,7 +22,7 @@ import melting.methodInterfaces.NamedMethod;
  * 
  * McTigue et al.(2004). Biochemistry 43 : 5388-5405
  */
-public class Owczarzy11TandemLockedAcid extends LockedAcidNNMethod
+public class Owczarzy11SingleMismatchLockedAcid extends LockedAcidNNMethod
   implements NamedMethod
 {
 	// Instance variables

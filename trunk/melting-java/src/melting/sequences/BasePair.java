@@ -151,37 +151,32 @@ public class BasePair {
      * the two acids (TopAcid, BottomAcid) of the base pair are (AL,T), (TL,A), (CL,G) or (GL,C).
      */
     public boolean isComplementaryLockedPair(){
-        if (topAcid.length() != 1 || bottomAcid.length() != 1){
+        if (topAcid.equals("AL")) {
+            if (bottomAcid.equals("T")) {
+                return true;
+            }
             return false;
         }
-        else {
-            if (topAcid.equals("AL")) {
-                if (bottomAcid.equals("T")) {
-                    return true;
-                }
-                return false;
+        else if (topAcid.equals("TL")) {
+            if (bottomAcid.equals("A")) {
+                return true;
             }
-            else if (topAcid.equals("TL")) {
-                if (bottomAcid.equals("A")) {
-                    return true;
-                }
-                return false;
+            return false;
+        }
+        else if (topAcid.equals("CL")) {
+            if (bottomAcid.equals("G")) {
+                return true;
             }
-            else if (topAcid.equals("CL")) {
-                if (bottomAcid.equals("G")) {
-                    return true;
-                }
-                return false;
+            return false;
+        }
+        else if (topAcid.equals("GL")) {
+            if (bottomAcid.equals("C")) {
+                return true;
             }
-            else if (topAcid.equals("GL")) {
-                if (bottomAcid.equals("C")) {
-                    return true;
-                }
-                return false;
-            }
-            else{
-                return false;
-            }
+            return false;
+        }
+        else{
+            return false;
         }
     }
 
