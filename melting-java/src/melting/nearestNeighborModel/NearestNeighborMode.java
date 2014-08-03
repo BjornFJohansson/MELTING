@@ -283,36 +283,19 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 				return positions;
 			}
             else if (acidName == SpecificAcidNames.lockedNucleicAcid){
-                if (environment.getSequences().getDuplex().get(pos1).isComplementaryLockedPair()){
-                    while (position < environment.getSequences().getDuplexLength() - 1){
-                        int testPosition = position + 1;
-                        acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(testPosition));
+                while (position < environment.getSequences().getDuplexLength() - 1){
+                    int testPosition = position + 1;
+                    acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(testPosition));
 
-                        if (acidName == SpecificAcidNames.lockedNucleicAcid && environment.getSequences().getDuplex().get(testPosition).isComplementaryLockedPair()){
-                            position ++;
-                        }
-                        else{
-                            break;
-                        }
+                    if (acidName == SpecificAcidNames.lockedNucleicAcid){
+                        position ++;
                     }
-                    int [] positions = {pos1, position};
-                    return positions;
-                }
-                else{
-                    while (position < environment.getSequences().getDuplexLength() - 1){
-                        int testPosition = position + 1;
-                        acidName = environment.getSequences().getModifiedAcidName(environment.getSequences().getDuplex().get(testPosition));
-                        if (acidName == SpecificAcidNames.lockedNucleicAcid && environment.getSequences().getDuplex().get(testPosition).isComplementaryLockedPair() == false){
-                            position ++;
-
-                        }
-                        else{
-                            break;
-                        }
+                    else{
+                        break;
                     }
-                    int [] positions = {pos1, position};
-                    return positions;
                 }
+                int [] positions = {pos1, position};
+                return positions;
             }
 			else {
 				while (position < environment.getSequences().getDuplexLength() - 1){
@@ -450,18 +433,17 @@ public class NearestNeighborMode implements MeltingComputationMethod{
 					return this.hydroxyadenosineMethod;
 				case lockedNucleicAcid:
                     if (positions[1] - positions[0] + 1 == 1){
-                        if (environment.getSequences().getDuplex().get(positions[0]).isComplementaryLockedPair()){
-                            if (this.lockedAcidMethod == null){
-                                initialiseLockedAcidMethod();
-                            }
-                            return this.lockedAcidMethod;
+                        if (this.lockedAcidMethod == null){
+                            initialiseLockedAcidMethod();
                         }
-                        else{
-                            if (this.lockedAcidMethodSingleMismatch == null){
-                                initialiseLockedAcidSingleMismatchMethod();
-                            }
-                            return this.lockedAcidMethodSingleMismatch;
+                        return this.lockedAcidMethod;
+                    }
+                    // mismatch in locked nucleic acids
+                    else if (!environment.getSequences().getDuplex().get(positions[1]+1).isComplementaryLockedPair()){
+                        if (this.lockedAcidMethodSingleMismatch == null){
+                            initialiseLockedAcidSingleMismatchMethod();
                         }
+                        return this.lockedAcidMethodSingleMismatch;
                     }
                     else {
                         if (this.tandemLockedAcidMethod == null){

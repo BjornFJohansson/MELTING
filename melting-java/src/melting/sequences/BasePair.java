@@ -175,6 +175,30 @@ public class BasePair {
             }
             return false;
         }
+        else if (topAcid.equals("T")) {
+            if (bottomAcid.equals("AL")) {
+                return true;
+            }
+            return false;
+        }
+        else if (topAcid.equals("A")) {
+            if (bottomAcid.equals("TL")) {
+                return true;
+            }
+            return false;
+        }
+        else if (topAcid.equals("G")) {
+            if (bottomAcid.equals("CL")) {
+                return true;
+            }
+            return false;
+        }
+        else if (topAcid.equals("C")) {
+            if (bottomAcid.equals("GL")) {
+                return true;
+            }
+            return false;
+        }
         else{
             return false;
         }
