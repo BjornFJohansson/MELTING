@@ -66,11 +66,10 @@ public class Owczarzy11SingleMismatchLockedAcid extends LockedAcidNNMethod
     public void loadData(HashMap<String, String> options) {
         super.loadData(options);
 
-        String singleLockedName = options.get(OptionManagement.lockedAcidMethod);
         RegisterMethods register = new RegisterMethods();
-        PatternComputationMethod singleMismatch = register.getPatternComputationMethod(OptionManagement.lockedAcidMethod, singleLockedName);
-        singleMismatch.initialiseFileName(singleLockedName);
-        String fileSingleMismatch = singleMismatch.getDataFileName(singleLockedName);
+        PatternComputationMethod singleMismatch = register.getPatternComputationMethod(OptionManagement.lockedAcidMethod, "owc11");
+        singleMismatch.initialiseFileName("owc11");
+        String fileSingleMismatch = singleMismatch.getDataFileName("owc11");
 
         loadFile(fileSingleMismatch, this.collector);
     }
