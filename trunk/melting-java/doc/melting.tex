@@ -476,15 +476,38 @@ neighbor model is used.
   To change the file containing the thermodynamic parameters for azobenzene computation, the same syntax as the one for the \textbf{-nn} option is used.
   Azobenzenes (X\_T for trans azobenzenes and X\_C for cis azobenzenes) are not taken into account by the approximative mode.
 \item [\textbf{-lck} \textit{method\_name}]\mbox{}\\ 
-  Forces to use a specific nearest neighbor model to compute the contribution of locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
+  Forces to use a specific nearest neighbor model to compute the contribution of single locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
   of helix-coil transition. 
   You can use one of the following :
   
   \textsc{DNA duplexes}
     \begin{itemize}
-    \item [\textit{mct04}] (from McTigue et al. 2004) (by default)
+    \item [\textit{mct04}] (from McTigue et al. 2004)
+    \item [\textit{owc11}] (from Owczarzy et al. 2011) (by default)
     \end{itemize}
-  To change the file containing the thermodynamic parameters for locked nucleic acids computation, the same syntax as the one for the \textbf{-nn} option is used.
+  To change the file containing the thermodynamic parameters for single locked nucleic acids computation, the same syntax as the one for the \textbf{-nn} option is used.
+  Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
+  \item [\textbf{-tanLck} \textit{method\_name}]\mbox{}\\ 
+  Forces to use a specific nearest neighbor model to compute the contribution of consecutive locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
+  of helix-coil transition. 
+  You can use one of the following :
+  
+  \textsc{DNA duplexes}
+    \begin{itemize}
+    \item [\textit{owc11}] (from Owczarzy et al. 2011) (by default)
+    \end{itemize}
+  To change the file containing the thermodynamic parameters for consecutive locked nucleic acids computation, the same syntax as the one for the \textbf{-nn} option is used.
+  Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
+  \item [\textbf{-sinMMLck} \textit{method\_name}]\mbox{}\\ 
+  Forces to use a specific nearest neighbor model to compute the contribution of single mismatch in consecutive locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
+  of helix-coil transition. 
+  You can use one of the following :
+  
+  \textsc{DNA duplexes}
+    \begin{itemize}
+    \item [\textit{owc11}] (from Owczarzy et al. 2011) (by default)
+    \end{itemize}
+  To change the file containing the thermodynamic parameters for single mismatch in consecutive locked nucleic acids computation, the same syntax as the one for the \textbf{-nn} option is used.
   Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
 \item [\textbf{-ion} \textit{method\_name}]\mbox{}\\ 
   Forces to use a specific ion correction. You can use one of the following corrections : 
@@ -1852,10 +1875,14 @@ For further information, see the referenced articles.
 \caption{Comparison of experimental and computed Tm for various sets of
  DNA sequences containing hydroxyadenine. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 1\cdot{}10^{-4}$~M}
 \end{figure}
+\pagebreak
 
-\subsubsection{Locked nucleic acids effect}
+\subsubsection{Single Locked nucleic acid effect}
 
 The locked nucleic acids (AL, GL, CL, TL) in DNA duplexes are taken into account.
+
+\paragraph{DNA duplexes : \textbf{Model from McTigue et al., 2004}} 
+
 The program computes the enthalpy and the entropy in two times : first it computes the enthalpy and entropy of 
 the two Crick's pairs containing the locked nucleic acid as if the locked nucleic acid was a simple nucleic acid,
 and then it computes the locked nucleic acid increments for each Crick's base pair containing the locked nucleic acid.
@@ -1876,6 +1903,17 @@ and then it computes the locked nucleic acid increments for each Crick's base pa
 \end{multline*}
 
        (The same computation is performed for $\Delta S$) 
+
+\paragraph{DNA duplexes : \textbf{Model from Owczarzy et al., 2011}} 
+
+The program computes the enthalpy and the entropy following the same nearest-neighbor formula as for perfectly matching Crick's pairs.
+
+\textbf{Examples}
+\begin{multline*}
+\Delta H {\mbox{\texttt{GALC}} \choose \mbox{\texttt{CTG}}} = 
+\Delta H {\mbox{\texttt{GAL}} \choose \mbox{\texttt{CT}}} +
+\Delta H {\mbox{\texttt{ALC}} \choose \mbox{\texttt{CG}}} \\ 
+\end{multline*}
        
 For further information, see the referenced articles.
 
@@ -1886,15 +1924,84 @@ For further information, see the referenced articles.
 \textbf{mct04} & DNA & McTigue et al.(2004)\\
  & & Biochemistry 43 : 5388-5405\\
 \hline
+\textbf{owc11} & DNA & Owczarzy et al.(2011)\\
+ & & Biochemistry 50 : 9352-9367\\
+\hline
 \end{tabular}
 \end{table}
 
 \begin{figure}[h]
 \includegraphics[width=1\linewidth]{images/LockedNucleicAcid}
 \caption{Comparison of experimental and computed Tm for various sets of
- DNA sequences containing Locked Nucleic Acids. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 5\cdot{}10^{-6}$~M}
+ DNA sequences containing single Locked Nucleic Acid. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 5\cdot{}10^{-6}$~M}
 \end{figure}
-      
+\pagebreak
+
+\subsubsection{Consecutive Locked nucleic acids effect}
+
+The consecutive locked nucleic acids (AL, GL, CL, TL) in DNA duplexes are taken into account.
+The program computes the enthalpy and the entropy following the same nearest-neighbor formula as for perfectly matching Crick's pairs.
+
+\textbf{Examples}
+\begin{multline*}
+\Delta H {\mbox{\texttt{GALCLC}} \choose \mbox{\texttt{CTGG}}} = 
+\Delta H {\mbox{\texttt{GAL}} \choose \mbox{\texttt{CT}}} +
+\Delta H {\mbox{\texttt{ALCL}} \choose \mbox{\texttt{TG}}} +
+\Delta H {\mbox{\texttt{CLC}} \choose \mbox{\texttt{GG}}} \\ 
+\end{multline*}
+       
+For further information, see the referenced articles.
+
+\begin{table}[hc]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{model} & \textbf{limits} & \textbf{Article} \\
+\hline
+\textbf{owc11} & DNA & Owczarzy et al.(2011)\\
+ & & Biochemistry 50 : 9352-9367\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\includegraphics[width=1\linewidth]{images/TandemLockedNucleicAcids}
+\caption{Comparison of experimental and computed Tm for various sets of
+ DNA sequences containing consecutive Locked Nucleic Acids. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 2\cdot{}10^{-6}$~M}
+\end{figure}
+
+\pagebreak
+\subsubsection{Consecutive Locked nucleic acids with a single mismatch effect}
+
+The consecutive locked nucleic acids with a single mismatch (AL, GL, CL, TL) in DNA duplexes are taken into account.
+The program computes the enthalpy and the entropy following the same nearest-neighbor formula as for perfectly matching Crick's pairs.
+
+\textbf{Examples}
+\begin{multline*}
+\Delta H {\mbox{\texttt{GALCLGLC}} \choose \mbox{\texttt{CTTCG}}} = 
+\Delta H {\mbox{\texttt{GAL}} \choose \mbox{\texttt{CT}}} +
+\Delta H {\mbox{\texttt{ALCL}} \choose \mbox{\texttt{TT}}} +
+\Delta H {\mbox{\texttt{CLGL}} \choose \mbox{\texttt{TC}}} 
+\Delta H {\mbox{\texttt{GLC}} \choose \mbox{\texttt{CG}}} \\ 
+\end{multline*}
+       
+For further information, see the referenced articles.
+
+\begin{table}[hc]
+\begin{tabular}[h]{| c | c | c |}
+\textbf{model} & \textbf{limits} & \textbf{Article} \\
+\hline
+\textbf{owc11} & DNA & Owczarzy et al.(2011)\\
+ & & Biochemistry 50 : 9352-9367\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\includegraphics[width=1\linewidth]{images/SingleMismatchLockedNucleicAcid}
+\caption{Comparison of experimental and computed Tm for various sets of
+ DNA sequences containing consecutive Locked Nucleic Acids and a single mismatch. $[\mbox{Na}^+] = 1$~M, $[\mbox{nucleic acid}] = 2\cdot{}10^{-6}$~M}
+\end{figure}
+ \pagebreak
+ 
 \subsection{The melting temperature }  
 
 Then the melting temperature is computed by the following formula: 
