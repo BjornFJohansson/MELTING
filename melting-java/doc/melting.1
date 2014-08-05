@@ -574,16 +574,46 @@ To change the file containing the thermodynamic parameters for azobenzene comput
 Azobenzenes (X_T for trans azobenzenes and X_C for cis azobenzenes) are not taken into account by the approximative mode.
 .TP
 .BI "\-lck" "method_name"
-Forces to use a specific nearest neighbor model to compute the contribution of locked nucleic acids (AL, GL, TL and CL) to the thermodynamic 
+Forces to use a specific nearest neighbor model to compute the contribution of single locked nucleic acids (AL, GL, TL and CL) to the thermodynamic
 of helix-coil transition. 
 You can use one of the following :
 
 DNA duplexes
 .br
 .I mct04
-(from McTigue et al. 2004) (by default)
+(from McTigue et al. 2004)
+.br
+.I owc11 (from Owczarzy et al.) (by default)
 
-To change the file containing the thermodynamic parameters for locked nucleic acids computation, the same syntax as the one for the 
+To change the file containing the thermodynamic parameters for single locked nucleic acids computation, the same syntax as the one for the
+.B \-nn
+ option is used.
+Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
+.BI "\-tanLck" "method_name"
+Forces to use a specific nearest neighbor model to compute the contribution of consecutive locked nucleic acids (AL, GL, TL and CL) to the thermodynamic
+of helix-coil transition.
+You can use one of the following :
+
+DNA duplexes
+.br
+.I owc11
+(from Owczarzy et al. 2011) (by default)
+
+To change the file containing the thermodynamic parameters for consecutive locked nucleic acids computation, the same syntax as the one for the
+.B \-nn
+ option is used.
+Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
+.BI "\-sinMMLck" "method_name"
+Forces to use a specific nearest neighbor model to compute the contribution of consecutive locked nucleic acids with a single mismatch (AL, GL, TL and CL) to the thermodynamic
+of helix-coil transition.
+You can use one of the following :
+
+DNA duplexes
+.br
+.I owc11
+(from Owczarzy et al. 2011) (by default)
+
+To change the file containing the thermodynamic parameters for consecutive locked nucleic acids computation with single mismatch, the same syntax as the one for the
 .B \-nn
  option is used.
 Locked nucleic acids (AL, GL, TL and CL) are not taken into account by the approximative mode.
