@@ -28,19 +28,19 @@ TD.eqno			{ }	/* equation-number cells */
 
 
 /* document-specific styles come next */
-DIV.navigation		{   }
-DIV.alltt		{   }
-DIV.quote		{   }
 PRE.preform		{   }
+DIV.quote		{   }
+DIV.navigation		{   }
 SPAN.tt		{   }
-SPAN.textit		{ font-style: italic  }
-SPAN.arabic		{   }
+DIV.alltt		{   }
 SPAN.textbf		{ font-weight: bold  }
-#txt572		{ text-decoration: underline;  }
-#txt573		{ text-decoration: underline;  }
-#txt574		{ text-decoration: underline;  }
-#txt575		{ text-decoration: underline;  }
-#txt578		{ text-decoration: underline;  }
-#txt579		{ text-decoration: underline;  }
-#txt580		{ text-decoration: underline;  }
-#txt581		{ text-decoration: underline;  }
+SPAN.arabic		{   }
+SPAN.textit		{ font-style: italic  }
+#txt599		{ text-decoration: underline;  }
+#txt600		{ text-decoration: underline;  }
+#txt601		{ text-decoration: underline;  }
+#txt602		{ text-decoration: underline;  }
+#txt605		{ text-decoration: underline;  }
+#txt606		{ text-decoration: underline;  }
+#txt607		{ text-decoration: underline;  }
+#txt608		{ text-decoration: underline;  }
