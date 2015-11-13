@@ -4,11 +4,18 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class SlidingWindow {
+	
 	private ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
 	private ArrayList<double[]> data = new ArrayList<double[]>();
 	private ArrayList<String[]> categories = new ArrayList<String[]>();
 	private ArrayList<String[]> bases = new ArrayList<String[]>();
 	private int currentIndex = -1;
+	private int size = 10;
+	
+	public SlidingWindow() {}
+	public SlidingWindow(int size) {
+		this.size = size;
+	}
 	
 	public void resetRectangles() {
 		rectangles = new ArrayList<Rectangle>();
@@ -52,6 +59,10 @@ public class SlidingWindow {
 		return null;
 	}
 	
+	public boolean containsData() {
+		return !data.isEmpty();
+	}
+	
 	public String[] getCategories(int i) {
 		if(i >= 0 && i < categories.size()) {
 			return categories.get(i);
@@ -68,6 +79,14 @@ public class SlidingWindow {
 	
 	public int getCurrentIndex() { 
 		return currentIndex;
+	}
+	
+	public int getRectanglesSize() {
+		return rectangles.size();
+	}
+	
+	public int slidingWindowSize() {
+		return size;
 	}
 	
 }

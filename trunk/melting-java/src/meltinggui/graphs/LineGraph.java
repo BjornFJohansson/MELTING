@@ -3,22 +3,36 @@ package meltinggui.graphs;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Random;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 
 public class LineGraph extends JPanel {
 
 	private static final long serialVersionUID = -7893883434501058128L;
-	private String [] xTitles;
 	private String xLabel;
+	private String yLabel;
 	private String [] xCategories;
-	private double [][] data;
+	private String [] xBases;
+	private boolean plotBases = true;
+	private double [] data;
 	private String graphTitle;
 	private double minY;
 	private double maxY;
@@ -26,25 +40,67 @@ public class LineGraph extends JPanel {
 	private int height = -1;
 	private int width = -1;
 	
-	private static final Color [] COLOURS = new Color[] {new Color(220,0,0), new Color(0,0,220), new Color(0,220,0), Color.DARK_GRAY, Color.MAGENTA, Color.ORANGE,Color.YELLOW,Color.CYAN,Color.PINK,Color.LIGHT_GRAY};
+	Graphics g;	
 	
-	public LineGraph (double [] [] data, double minY, double maxY, String xLabel, String [] xTitles, int [] xCategories, String graphTitle) {
-		this(data,minY,maxY,xLabel,xTitles,new String[0],graphTitle);
+	// sliding window management
+	SlidingWindow slidingWindow = new SlidingWindow(15);
+	private Rectangle currRectangle = null;
+	private double[] currData = null;
+	private String[] currCategories = null;
+	private String[] currBases = null;
+	
+
+	private MouseMotionListener mouseMotionListener = new MouseMotionListener() {
+
+		@Override
+		public void mouseDragged(MouseEvent e) { }
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+            Point p = e.getPoint();
+            for(int j = 0; j < slidingWindow.getRectanglesSize(); j++) {
+                Rectangle r = slidingWindow.getRectangle(j);
+                if(r.contains(p)) {
+                	currRectangle = r;
+                	currData = slidingWindow.getData(j);
+                	currCategories = slidingWindow.getCategories(j);
+                	if(plotBases) {
+                		currBases = slidingWindow.getBases(j);
+                	}
+                    break;
+                }
+            }
+			repaint();
+        }
+	};
+	
+	
+	
+	
+	
+	
+	public LineGraph (double[] data, double minY, double maxY, String xLabel, String yLabel, int[] xCategories, String graphTitle) {
+		this(data, minY, maxY, xLabel, yLabel, new String[0], null, graphTitle);
 		this.xCategories = new String [xCategories.length];
 		for (int i=0;i<xCategories.length;i++) {
 			this.xCategories[i] = ""+xCategories[i];
 		}
 	}
 	
-	public LineGraph (double [] [] data, double minY, double maxY, String xLabel, String [] xTitles, String [] xCategories, String graphTitle) {
+	public LineGraph (double[] data, double minY, double maxY, String xLabel, String yLabel, String[] xCategories, String[] xBases, String graphTitle) {
 		this.data = data;
 		this.minY = minY;
 		this.maxY = maxY;
-		this.xTitles = xTitles;
 		this.xLabel = xLabel;
+		this.yLabel = yLabel;
 		this.xCategories = xCategories;
+		this.xBases = xBases;
+		if(xBases == null) {
+			plotBases = false;
+		}
 		this.graphTitle = graphTitle;
 		this.yInterval = new AxisScale (minY, maxY).getInterval();
+		this.addMouseMotionListener(mouseMotionListener);
 	}
 	
 	@Override
@@ -56,45 +112,109 @@ public class LineGraph extends JPanel {
 	public Dimension getMinimumSize () {
 		return new Dimension(100,200);
 	}
-
 	
-	@Override
-	public int getHeight () {
-		if (height <0) {
-			return super.getHeight();
+	
+	
+	
+	
+	// TODO THIS CAN BE HEAVELY OPTIMISED
+	// TODO No need to replicate the info in data, xCategories, xBases. 
+	// Just keep track of the first index (which is the rectangle index). To this you extract the values between [RectIndex, slidingWindowSize).
+	// Doing so, you save a lot of memory and a bit of computation when the plot is created at start.
+	private void updateSlidingWindow(double baseWidth, double xOffset, double yStart, double yOffset, double yStartPos) {
+		if(width != getWidth() || height != getHeight()) {
+			slidingWindow.resetRectangles();
+			int slidingWindowSize = slidingWindow.slidingWindowSize();
+			Rectangle r;
+			for(int i=0; i<data.length-slidingWindowSize+1; i++) {
+				r = new Rectangle((int)(xOffset+i*baseWidth), (int)(yStartPos), (int)(baseWidth*slidingWindowSize), getY(yStart-yInterval, yStartPos, yOffset)-(int)(yStartPos));
+				slidingWindow.addRectangle(r);		
+			}
+			// Just process this one time.
+			if(!slidingWindow.containsData()) {
+				for(int i=0; i<data.length-slidingWindowSize+1; i++) {
+					double[] d = new double[slidingWindowSize];
+					String[] c = new String[slidingWindowSize];
+					String[] b = new String[slidingWindowSize];
+					for(int j=0; j < slidingWindowSize; j++) {
+						d[j] = data[i+j];
+						c[j] = xCategories[i+j];
+						b[j] = xBases[i+j];
+					}
+					slidingWindow.addData(d);
+					slidingWindow.addCategories(c);
+					if(plotBases) {
+						slidingWindow.addBases(b);
+					}
+				}
+				// Set the first sliding window at the initial position (first rectangle)
+				currRectangle = slidingWindow.getRectangle(0);
+				currData = slidingWindow.getData(0);
+				currCategories = slidingWindow.getCategories(0);
+				if(plotBases) {
+					currBases = slidingWindow.getBases(0);
+				}
+			}
+			
+			// Now update the current rectangle coordinates so that it will be refreshed correctly.
+			currRectangle = slidingWindow.getRectangle(slidingWindow.getCurrentIndex());
+			// update the window width and height
+			width = getWidth();
+			height = getHeight();
 		}
-		return height;
 	}
-
-	@Override
-	public int getWidth () {
-		if (width <0) {
-			return super.getWidth();
-		}
-		return width;
-	}
-
-	public void paint (Graphics g, int width, int height) {
-		this.height = height;
-		this.width = width;
-		paint(g);
-		this.height = -1;
-		this.width = -1;
-	}
+	
+	
+	
 	
 	
 	@Override
 	public void paint (Graphics g) {
-		super.paint(g);
-		
+		super.paint(g);		
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.BLACK);
 		
+		double yStartPos = 40;
+		double yOffset = getHeight()/3;
+		
 		if (g instanceof Graphics2D) {
 			((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
+		}		
 		
+		this.g = g;
+		
+		plotLineGraph(true, data, xCategories, xBases, yStartPos, yOffset);
+		
+		// add the sliding window
+        if(currRectangle != null) {
+			g.setColor(Color.RED);
+			g.drawRect((int)currRectangle.getX(), (int)currRectangle.getY(), (int)currRectangle.getWidth(), (int)currRectangle.getHeight());
+			g.setColor(Color.BLACK);
+
+			// plot the second plot
+			yStartPos = yStartPos + yOffset + 70;
+			plotLineGraph(false, currData, currCategories, currBases, yStartPos, yOffset);	
+        }
+
+	}
+	
+	
+	
+	
+	
+	
+	private int getY(double y, double yStartPos, double yOffset) {
+		return (int) (yStartPos+yOffset - ((yOffset)/(maxY-minY))*(y-minY));		
+	}
+	
+	
+	private void plotLineGraph(boolean isSlidingWindowContainer, double[] dataToPlot, String[] xCategoriesToPlot, String[] xBasesToPlot, double yStartPos, double yOffset) {
+		Font normalFont = g.getFont();
+		Font smallFont = normalFont.deriveFont(normalFont.getSize() * 0.8f);
+
+		
+
 		int lastY = 0;
 		
 		double yStart;
@@ -109,9 +229,11 @@ public class LineGraph extends JPanel {
 		int xOffset = 0;
 		
 		
-
 		
-		for (double i=yStart;i<=maxY;i+=yInterval) {
+		// TODO add a gap between numbers so that they don't overlap with each other
+		// Draw the labels for the yAxis
+		g.setFont(smallFont);
+		for (double i=yStart-yInterval;i<=maxY;i+=yInterval) {
 			//String label = scale.format(currentValue);
 			String label = "" + new BigDecimal(i).setScale(
 					AxisScale.getFirstSignificantDecimalPosition(yInterval), RoundingMode.HALF_UP).doubleValue();	
@@ -121,127 +243,155 @@ public class LineGraph extends JPanel {
 			if (width > xOffset) {
 				xOffset = width;
 			}
-			
-			g.drawString(label, 2, getY(i)+(g.getFontMetrics().getAscent()/2));			
+			g.drawString(label, 25, getY(i, yStartPos, yOffset)+(g.getFontMetrics().getAscent()/2));			
 		}
+		g.setFont(normalFont);
+		
 	
 		// Give the x axis a bit of breathing space
-		xOffset += 5;
-		
-		
-		// Draw the graph title
-		int titleWidth = g.getFontMetrics().stringWidth(graphTitle);
-		g.drawString(graphTitle, (xOffset + ((getWidth()-(xOffset+10))/2)) - (titleWidth/2), 30);
-		
-		
+		xOffset += 30;
+			
 
 		
 		
-		// Now draw the data points
-		double baseWidth = 1.0*(getWidth()-(xOffset+10))/data[0].length;
-
+		// Now draw horizontal lines across from the y axis
+		g.setColor(new Color(180,180,180));
+		for (double i=yStart;i<=maxY;i+=yInterval) {
+			g.drawLine(xOffset, getY(i, yStartPos, yOffset), getWidth()-10, getY(i, yStartPos, yOffset));
+		}
+		g.setColor(Color.BLACK);
 		
+		
+		
+		
+		// Set the base width
+		double baseWidth = 1.0*(getWidth()-(xOffset+10))/dataToPlot.length;
 		// System.out.println("Base Width is "+baseWidth);
-		// First draw faint boxes over alternating bases so you can see which is which
-		// Let's find the longest label, and then work out how often we can draw labels
 		
+		
+		
+		// Now update the sliding window (rectangles + data if required).
+		if(isSlidingWindowContainer) {
+			// Draw the graph title
+			int titleWidth = g.getFontMetrics().stringWidth(graphTitle);
+			g.drawString(graphTitle, (xOffset + ((getWidth()-(xOffset+10))/2)) - (titleWidth/2), 30);
+			updateSlidingWindow(baseWidth, xOffset, yStart, yOffset, yStartPos);
+		}
+		
+		
+		
+		
+		// Draw the labels for the x axis
 		int lastXLabelEnd = 0;
-		
-		for (int i=0;i<data[0].length;i++) {
-			if (i%2 != 0) {
-				g.setColor(new Color(230, 230, 230));
-				g.fillRect((int)(xOffset+(baseWidth*i)), 40, (int)(baseWidth), getHeight()-80);
-			}
-			g.setColor(Color.BLACK);
-			
-			String baseNumber = ""+xCategories[i];
+		g.setFont(smallFont);
+		for (int i=0;i<dataToPlot.length;i++) {
+			String baseNumber = ""+xCategoriesToPlot[i];
 			int baseNumberWidth = g.getFontMetrics().stringWidth(baseNumber);
-			int baseNumberPosition =  (int)((baseWidth/2)+xOffset+(baseWidth*i)-(baseNumberWidth/2));
-			
+			int baseNumberPosition = (int)((baseWidth/2)+xOffset+(baseWidth*i)-(baseNumberWidth/2));
+			int baseNamePosition = (int)((baseWidth/2)+xOffset+(baseWidth*i)-(g.getFontMetrics().stringWidth("A")/2));
 			if (baseNumberPosition > lastXLabelEnd) {
-				g.drawString(baseNumber,baseNumberPosition, getHeight()-25);
+				// Draw the x axis labels
+				g.drawString(baseNumber,baseNumberPosition, getY(yStart-yInterval, yStartPos, yOffset)+15);
+				// Draw the ticks
+				g.drawLine(baseNamePosition+3, getY(yStart-yInterval, yStartPos, yOffset), baseNamePosition+3, getY(yStart-yInterval, yStartPos, yOffset)+4);
+				if(!isSlidingWindowContainer) {
+					g.drawString(xBasesToPlot[i],baseNamePosition, getY(yStart-yInterval, yStartPos, yOffset)+30);
+				}
 				lastXLabelEnd = baseNumberPosition+baseNumberWidth+5;
 			}
 		}
+		g.setFont(normalFont);
 		
-		// Now draw horizontal lines across from the y axis
-
-		g.setColor(new Color(180,180,180));
-		for (double i=yStart;i<=maxY;i+=yInterval) {
-			g.drawLine(xOffset, getY(i), getWidth()-10, getY(i));
-		}
-		g.setColor(Color.BLACK);
 		
-		// Now draw the datasets
 		
+		
+		// Now draw the data set
 		if (g instanceof Graphics2D) {
 			((Graphics2D)g).setStroke(new BasicStroke(2));
-			//((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
-		
-		for (int d=0;d<data.length;d++) {
-			g.setColor(COLOURS[d % COLOURS.length]);
-						
-			lastY = getY(data[d][0]);
-			for (int i=1;i<data[d].length;i++) {
-				if (Double.isNaN(data[d][i])) break;
-				
-				int thisY = getY(data[d][i]);
-				
-				g.drawLine((int)((baseWidth/2)+xOffset+(baseWidth*(i-1))), lastY, (int)((baseWidth/2)+xOffset+(baseWidth*i)), thisY);
-				lastY = thisY;
-			}
-			
+		g.setColor(Color.BLUE);
+		lastY = getY(dataToPlot[0], yStartPos, yOffset);
+		for (int i=1;i<dataToPlot.length;i++) {
+			if (Double.isNaN(dataToPlot[i])) break;
+			int thisY = getY(dataToPlot[i], yStartPos, yOffset);
+			g.drawLine((int)((baseWidth/2)+xOffset+(baseWidth*(i-1))), lastY, (int)((baseWidth/2)+xOffset+(baseWidth*i)), thisY);
+			lastY = thisY;
 		}
 		
 
 		
-		// Now draw the data legend
-
+		
+		// Now draw the x, y axes
 		if (g instanceof Graphics2D) {
 			((Graphics2D)g).setStroke(new BasicStroke(1));
-			//((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
-
 		g.setColor(Color.BLACK);
-		// Now draw the axes
-		g.drawLine(xOffset, getHeight()-40, getWidth()-10,getHeight()-40);
-		g.drawLine(xOffset, getHeight()-40, xOffset, 40);
+		// Draw the x axis
+		g.drawLine(xOffset, getY(yStart-yInterval, yStartPos, yOffset), getWidth()-10, getY(yStart-yInterval, yStartPos, yOffset));
+		// Draw the y axis
+		g.drawLine(xOffset, getY(yStart-yInterval, yStartPos, yOffset), xOffset, (int)(yStartPos));
+		
+		
 		
 		// Draw the xLabel under the xAxis
-		g.drawString(xLabel, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getHeight()-5);
-		
-		
-		
-		// First we need to find the widest label
-		int widestLabel = 0;
-		for (int t=0;t<xTitles.length;t++) {
-			int width = g.getFontMetrics().stringWidth(xTitles[t]);
-			if (width > widestLabel) widestLabel = width;
+		if(isSlidingWindowContainer) {
+			g.drawString(xLabel, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getY(yStart-yInterval, yStartPos, yOffset)+40);
+		} else {
+			g.drawString(xLabel, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getY(yStart-yInterval, yStartPos, yOffset)+55);
 		}
 		
-		// Add 3px either side for a bit of space;
-		widestLabel += 6;
 		
-		// First draw a box to put the legend in
-		g.setColor(Color.WHITE);
-		g.fillRect((getWidth()-10)-widestLabel, 40, widestLabel, 3+(20*xTitles.length));
-		g.setColor(Color.LIGHT_GRAY);
-		g.drawRect((getWidth()-10)-widestLabel, 40, widestLabel, 3+(20*xTitles.length));
-
-		// Now draw the actual labels
-		for (int t=0;t<xTitles.length;t++) {
-			g.setColor(COLOURS[t%COLOURS.length]);
-			g.drawString(xTitles[t], ((getWidth()-10)-widestLabel)+3, 40+(20*(t+1)));
+		// Draw the yLabel on the left of the yAxis
+		if (g instanceof Graphics2D) {
+			Graphics2D g2 = (Graphics2D)g;
+			AffineTransform orig = g2.getTransform();
+			g2.rotate(-Math.PI/2);
+			g2.setColor(Color.BLACK);
+			g2.drawString(yLabel, ((int)(-yStartPos)-getY(yStart-yInterval, yStartPos, yOffset))/2 - (g.getFontMetrics().stringWidth(yLabel)/2), 12);
+			g2.setTransform(orig);
 		}
-		
 
-		
-		
 	}
 
-	private int getY(double y) {
-		return (getHeight()-40) - (int)(((getHeight()-80)/(maxY-minY))*(y-minY));
+
+	
+	public static void main(String[] argv) {
+
+		int size = 500;
+		double yMin=Integer.MAX_VALUE, yMax=0;
+		double[] data = new double[size];
+		String[] categories = new String[size];
+		String[] bases = new String[size];
+		Random r = new Random(), s = new Random();
+	
+		for(int i=0; i<size; i++) {
+			data[i] = r.nextGaussian()*5 + 70;
+			if(yMin>data[i]) {
+				yMin = data[i];
+			} else if(yMax<data[i]) {
+				yMax = data[i];
+			}
+			switch(s.nextInt(4)) {
+			case 0: bases[i]="A"; break;
+			case 1: bases[i]="C"; break;
+			case 2: bases[i]="G"; break;
+			case 3: bases[i]="T"; break;
+			}
+			categories[i] = ""+(i+1);
+		}
+
+		JFrame f = new JFrame();
+		f.setSize(800, 600);
+		f.getContentPane().add(new LineGraph(data, yMin-2, yMax+6, "this is the x axis", "this is the y axis", categories, bases, "Graph Title"));
+
+		WindowListener wndCloser = new WindowAdapter() {
+		@Override
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		   }
+		};
+	   f.addWindowListener(wndCloser);
+	   f.setVisible(true);
 	}
 	
 }
