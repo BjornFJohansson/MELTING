@@ -3,47 +3,60 @@ package meltinggui.graphs;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+
+/**
+ * A simple sliding window representation using awt rectangles.
+ * 
+ * @author dallepep
+ */
 public class SlidingWindow {
 	
+	/**
+	 * A list of rectangles representing the sliding window.
+	 */
 	private ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
-	private ArrayList<double[]> data = new ArrayList<double[]>();
-	private ArrayList<String[]> categories = new ArrayList<String[]>();
-	private ArrayList<String[]> bases = new ArrayList<String[]>();
-	private int currentIndex = -1;
+	/**
+	 * The current selected rectangle index.
+	 */
+	private int currentRectangleIndex = -1;
+	/**
+	 * The number of elements that each rectangle represents.
+	 */
 	private int size = 10;
 	
+	/** 
+	 * Default constructor.
+	 */
 	public SlidingWindow() {}
+	
+	/**
+	 * Constructor with a sliding window size.
+	 * @param size
+	 */
 	public SlidingWindow(int size) {
 		this.size = size;
 	}
 	
-	public void resetRectangles() {
-		rectangles = new ArrayList<Rectangle>();
-	}
-	
+	/** 
+	 * Resets the sliding window.
+	 */
 	public void reset() {
 		rectangles = new ArrayList<Rectangle>();
-		data = new ArrayList<double[]>();
-		categories = new ArrayList<String[]>();
-		bases = new ArrayList<String[]>();
 	}
-	
+
+	/**
+	 * Adds a rectangle to the sliding window.
+	 * @param r
+	 */
 	public void addRectangle(Rectangle r) {
 		rectangles.add(r);
 	}
 	
-	public void addData(double[] d) {
-		data.add(d);
-	}
-	
-	public void addCategories(String[] s) {
-		categories.add(s);
-	}
-	
-	public void addBases(String[] s) {
-		bases.add(s);
-	}
-	
+	/**
+	 * Returns the i-th rectangle.
+	 * @param i
+	 * @return the i-th rectangle.
+	 */
 	public Rectangle getRectangle(int i) {
 		if(i >= 0 && i < rectangles.size()) {
 			return rectangles.get(i);
@@ -51,41 +64,42 @@ public class SlidingWindow {
 		return null;
 	}
 	
-	public double[] getData(int i) {
-		if(i >= 0 && i < data.size()) {
-			currentIndex = i;
-			return data.get(i);
-		}
-		return null;
+	/**
+	 * Returns the index for the current rectangle.
+	 * @return the index for the current rectangle.
+	 */
+	public int getCurrentRectangleIndex() { 
+		return currentRectangleIndex;
 	}
 	
-	public boolean containsData() {
-		return !data.isEmpty();
+	/**
+	 * Sets the index for the current the current rectangle.
+	 */
+	public void setCurrentRectangleIndex(int currentRectangleIndex) { 
+		this.currentRectangleIndex = currentRectangleIndex;
 	}
 	
-	public String[] getCategories(int i) {
-		if(i >= 0 && i < categories.size()) {
-			return categories.get(i);
-		}
-		return null;
+	/**
+	 * Returns true if the index for the current rectangle is not set.
+	 * @return true if the index for the current rectangle is not set.
+	 */
+	public boolean isUnset() {
+		return currentRectangleIndex == -1;
 	}
-	
-	public String[] getBases(int i) {
-		if(i >= 0 && i < bases.size()) {
-			return bases.get(i);
-		} 
-		return null;
-	}
-	
-	public int getCurrentIndex() { 
-		return currentIndex;
-	}
-	
+		
+	/**
+	 * Returns the number of rectangles.
+	 * @return the number of rectangles.
+	 */
 	public int getRectanglesSize() {
 		return rectangles.size();
 	}
 	
-	public int slidingWindowSize() {
+	/**
+	 * Returns the number of elements each rectangle represents (the size of the sliding window).
+	 * @return the size of the sliding window.
+	 */
+	public int windowSize() {
 		return size;
 	}
 	
