@@ -157,24 +157,27 @@ public class LineGraph extends JPanel {
 			((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}		
 		
-
-		// TODO adjust the plot vertically so that they don't leave an empty white gap when the pot is resized.
 		double yStartPos = 40;
-		double yOffset = getHeight()/3;
-		
+		double yOffset = getHeight()/2 - 2*yStartPos;	
 		// paint the first plot containing the sliding window
 		plotLineGraph(true, yStartPos, yOffset);
-		
-		
+				
 		// Now add the sliding window and the second plot
         if(currRectangle != null) {
         	// paint the sliding window
+			if (g instanceof Graphics2D) {
+				((Graphics2D)g).setStroke(new BasicStroke(1.5f));
+			}
 			g.setColor(Color.RED);
 			g.drawRect((int)currRectangle.getX(), (int)currRectangle.getY(), (int)currRectangle.getWidth(), (int)currRectangle.getHeight());
 			g.setColor(Color.BLACK);
+			if (g instanceof Graphics2D) {
+				((Graphics2D)g).setStroke(new BasicStroke(1));
+			}
 
 			// paint the second plot (zoom plot)
-			yStartPos = yStartPos + yOffset + 55;
+			yStartPos = getHeight()/2;
+			
 			plotLineGraph(false, yStartPos, yOffset);
         }
 
@@ -186,11 +189,12 @@ public class LineGraph extends JPanel {
 	 * @param y
 	 * @param yStartPos
 	 * @param yOffset
-	 * @return
+	 * @return the y coordinate
 	 */
 	private int getY(double y, double yStartPos, double yOffset) {
-		return (int) (yStartPos+yOffset - ((yOffset)/(maxY-minY))*(y-minY));		
+		return (int) (yStartPos + yOffset - ((yOffset)/(maxY-minY))*(y-minY));
 	}
+	
 	
 	/**
 	 * This method creates the rectangles reproducing the sliding window. It is also used to 
@@ -246,23 +250,31 @@ public class LineGraph extends JPanel {
 			yStart = yInterval * (((int)minY/yInterval)+1);
 		}
 		int xOffset = 0;
+
 		
-		
-		
-		// TODO add a gap between numbers so that they don't overlap with each other
 		// Draw the labels for the yAxis
 		g.setFont(smallFont);
+		int lastYLabelEnd = Integer.MAX_VALUE;
 		for (double i=yStart-yInterval;i<=maxY;i+=yInterval) {
+			// previous code
 			//String label = scale.format(currentValue);
 			String label = "" + new BigDecimal(i).setScale(
 					AxisScale.getFirstSignificantDecimalPosition(yInterval), RoundingMode.HALF_UP).doubleValue();	
 			label = label.replaceAll(".0$", ""); // Don't leave trailing .0s where we don't need them.			
-			
+		
+			// Calculate the new xOffset depending on the widest ylabel.
 			int width = g.getFontMetrics().stringWidth(label);
 			if (width > xOffset) {
 				xOffset = width;
 			}
-			g.drawString(label, 23, getY(i, yStartPos, yOffset)+(g.getFontMetrics().getAscent()/2));			
+			// place the y axis labels so that they don't overlap when the plot is resized.
+			int baseNumberHeight = g.getFontMetrics().getHeight();
+			int baseNumberPosition = (int)(getY(i, yStartPos, yOffset)+(baseNumberHeight/2));
+			if (baseNumberPosition + baseNumberHeight < lastYLabelEnd) {
+				// Draw the y axis labels
+				g.drawString(label, 23, getY(i, yStartPos, yOffset)+(baseNumberHeight/2));
+				lastYLabelEnd = baseNumberPosition + 2;
+			}
 		}
 		g.setFont(normalFont);
 		
@@ -308,9 +320,7 @@ public class LineGraph extends JPanel {
 			//System.out.println(dataIdxStart + " " + dataIdxEnd);
 		}
 		
-		
-		
-		// Draw the labels for the x axis
+		// Draw the labels for the x axis (STANDARD HORIZONTAL VISUALISATION)
 		int lastXLabelEnd = 0;
 		g.setFont(smallFont);
 		for (int i=dataIdxStart; i<dataIdxEnd; i++) {
@@ -330,7 +340,6 @@ public class LineGraph extends JPanel {
 			}
 		}
 		g.setFont(normalFont);
-		
 		
 		
 		// Now draw the data set
@@ -387,7 +396,7 @@ public class LineGraph extends JPanel {
 
 			@Override
 			public void run() {
-				int size = 2000;
+				int size = 5000;
 				double yMin=Integer.MAX_VALUE, yMax=0;
 				double[] data = new double[size];
 				String[] categories = new String[size];
