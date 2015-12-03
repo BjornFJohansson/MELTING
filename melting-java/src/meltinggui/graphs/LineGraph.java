@@ -146,8 +146,8 @@ public class LineGraph extends JPanel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void paint (Graphics g) {
-		super.paint(g);		
+	protected void paintComponent(Graphics g) {
+		
 		this.g = g;
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
