@@ -19,6 +19,9 @@
 package meltinggui.frames;
 
 import javax.swing.*;
+
+import meltinggui.menu.MeltingMenuBar;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -59,6 +62,16 @@ public class OuterFrame
    */
   private String screenPositionsPath;
 
+  /** 
+   * The MenuBar for Melting
+   */
+  private MeltingMenuBar menu = null;
+  
+  /** 
+   * The last used directory for reading a configuration file.
+   */
+  private File lastUsedDir = null;
+  
   /**
    * Sets up the GUI and displays the main MELTING frame.
    */
@@ -76,6 +89,11 @@ public class OuterFrame
                           screenPositionsFileName;
 
     desktopPane = new JDesktopPane();
+    
+    // set the menu bar
+    menu = new MeltingMenuBar(this);
+	setJMenuBar(menu);
+    
 
     meltingFrame = new MeltingFrame();
     meltingFrame.setVisible(true);
@@ -105,6 +123,32 @@ public class OuterFrame
     setVisible(true);
   }
 
+  
+  public boolean openFile() {
+		JFileChooser chooser;
+		
+		if (lastUsedDir == null) {
+			chooser = new JFileChooser();
+		}
+		else {
+			chooser = new JFileChooser(lastUsedDir);
+		}
+		chooser.setMultiSelectionEnabled(false);
+//		chooser.addChoosableFileFilter(bff);
+//		chooser.setFileFilter(bff);
+		int result = chooser.showOpenDialog(this);
+		if (result == JFileChooser.CANCEL_OPTION) return false;
+	
+		
+		File file = chooser.getSelectedFile();				
+		return true;
+  }
+  
+  public boolean closeFile() {
+	  return true;
+  }
+  
+  
   /**
    * Adds an observer to the melting frame.
    * @param observer The observer.

@@ -20,8 +20,10 @@ package meltinggui;
 
 import meltinggui.frames.MeltingFrame;
 import meltinggui.frames.OuterFrame;
+import meltinggui.menu.MeltingMenuBar;
 
 import javax.swing.*;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -54,6 +56,7 @@ public class MeltingGui
    */
   private String generalCommandLineText = new String("");
 
+  
   /**
    * Sets up the GUI and displays the main MELTING frame.
    */
@@ -63,6 +66,7 @@ public class MeltingGui
     outerFrame.addObserver(this);
   }
 
+  
   /**
    * Receives command line options and sends out the MELTING results.
    */
