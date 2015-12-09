@@ -47,9 +47,8 @@ public class MeltingMenuBar extends JMenuBar implements ActionListener {
 
 	private JMenu fileMenu;
 	private JMenuItem fileConfigOpen;
-	private JMenuItem fileSave;
+	private JMenuItem fileOpen;
 	private JMenuItem fileClose;
-	private JMenuItem fileCloseAll;
 	private JMenuItem fileExit;
 	
 	private JMenu helpMenu;
@@ -69,9 +68,17 @@ public class MeltingMenuBar extends JMenuBar implements ActionListener {
 		fileConfigOpen = new JMenuItem("Open Configuration File...");
 		fileConfigOpen.setMnemonic(KeyEvent.VK_O);
 		fileConfigOpen.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		fileConfigOpen.setActionCommand("open");
+		fileConfigOpen.setActionCommand("open_config");
 		fileConfigOpen.addActionListener(this);
-		fileMenu.add(fileConfigOpen);
+		//TODO Currently disabled
+		//fileMenu.add(fileConfigOpen);
+			
+		fileOpen = new JMenuItem("Open Sequence File...");
+		fileOpen.setMnemonic(KeyEvent.VK_S);
+		fileOpen.setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		fileOpen.setActionCommand("open");
+		fileOpen.addActionListener(this);
+		fileMenu.add(fileOpen);
 		
 		fileMenu.addSeparator();
 		
@@ -130,6 +137,11 @@ public class MeltingMenuBar extends JMenuBar implements ActionListener {
 		
 		if (action.equals("exit")) {
 			application.dispose();
+		}
+		else if (action.equals("open_config")) {
+			if(application.openConfigFile()) {
+//				fileSave.setEnabled(true);
+			}
 		}
 		else if (action.equals("open")) {
 			if(application.openFile()) {

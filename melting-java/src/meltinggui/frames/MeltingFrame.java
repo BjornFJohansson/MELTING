@@ -25,9 +25,19 @@ import meltinggui.MeltingObservable;
 import meltinggui.dialogs.*;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Observer;
 
 /**
@@ -36,14 +46,33 @@ import java.util.Observer;
  */
 public class MeltingFrame extends JInternalFrame
 {
+
   /**
-   * Creates the new frame.
+   * The sequence passed as a file.
    */
-  public MeltingFrame()
-  {
+  private File sequenceFile = null;
+	
+  /** 
+   * The outer frame containing this frame;
+   */
+  OuterFrame outerFrame = null;
+  
+  /** 
+   * Creates a new frame.
+   */
+  public MeltingFrame() {
     super("Melting v"+ OptionManagement.versionNumber, true, false, true, true);
     initializeWidgets();
   }
+  
+  /**
+   * Creates the new frame.
+   */
+  public MeltingFrame(OuterFrame outerFrame) {
+	this();
+    this.outerFrame = outerFrame;
+  }
+  
   /**
    * Observable used to send messages back to all observers.
    */
@@ -179,6 +208,59 @@ public class MeltingFrame extends JInternalFrame
     return constraints;
   }
 
+
+
+  /**
+   * Set the sequence in the sequence dialogue.
+   */
+  public void setSequence(File sequence) {
+	  String sequenceStr = null;	  
+	  sequenceStr = generateString(sequence);
+	  if(sequenceStr != null) {
+		  sequenceFile = sequence;
+		  sequenceDialog.setSequence(sequenceStr);
+	  }
+  }
+  
+  public void cleanSequence() {
+	  sequenceFile = null;
+  }
+  
+  private String generateString(File sequence) {
+	    InputStream is = null;
+	    BufferedReader bis = null;
+		try {
+	        is = new FileInputStream(sequence);
+			bis = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sequenceStr = new StringBuilder();
+			String line;
+			while((line = bis.readLine()) != null) {
+				if(!line.startsWith("#") || !line.startsWith(" ")) {
+					sequenceStr.append(line.trim());
+				}
+			}
+			if(sequenceStr.length() == 0) {
+				outerFrame.setStatusPanelText("File " + sequence.getAbsolutePath() + " does not contain data");
+				return null;
+			}
+			return sequenceStr.toString();
+		} catch (FileNotFoundException e) {
+			outerFrame.setStatusPanelText("File " + sequence.getAbsolutePath() + " could not be opened");
+			return null;
+		} catch (IOException e) {
+			outerFrame.setStatusPanelText("Error reading file " + sequence.getAbsolutePath());
+			return null;
+		} finally {
+			if (is != null) {
+				try {
+					bis.close();
+					is.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+    } 
+  
   /**
    * Sets the command-line text in the command-line text area.
    */
@@ -189,8 +271,11 @@ public class MeltingFrame extends JInternalFrame
                       oligomerConcentrationDialog.getCommandLineFlags() +
                       ionConcentrationDialog.getCommandLineFlags();
     commandLineTextArea.setText(commandLineText);
+	if(sequenceFile == null) {
+	    outerFrame.setStatusPanelText("Results will be written to "+sequenceFile.getName()+".results.csv");
+	}
   }
-
+  
   /**
    * Calculates and displays the MELTING results.
    */
