@@ -98,5 +98,13 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
 
     return commandLineFlags;
   }
+  
+  /**
+   * Set the sequence externally.
+   * @param the sequence to be added
+   */
+  public void setSequence(String sequence) {
+	  this.setValue(0, sequence);
+  }
 }
 

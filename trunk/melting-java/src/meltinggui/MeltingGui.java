@@ -20,7 +20,6 @@ package meltinggui;
 
 import meltinggui.frames.MeltingFrame;
 import meltinggui.frames.OuterFrame;
-import meltinggui.menu.MeltingMenuBar;
 
 import javax.swing.*;
 

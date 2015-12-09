@@ -20,6 +20,8 @@ package meltinggui.frames;
 
 import javax.swing.*;
 
+import meltinggui.dialogs.StatusPanel;
+import melting.BatchMain;
 import meltinggui.menu.MeltingMenuBar;
 
 import java.awt.*;
@@ -72,6 +74,11 @@ public class OuterFrame
    */
   private File lastUsedDir = null;
   
+  
+  /** This is the small strip at the bottom of the main display */
+  private StatusPanel statusPanel;
+  
+  
   /**
    * Sets up the GUI and displays the main MELTING frame.
    */
@@ -93,10 +100,17 @@ public class OuterFrame
     // set the menu bar
     menu = new MeltingMenuBar(this);
 	setJMenuBar(menu);
-    
+	
+	desktopPane.setLayout(new BorderLayout());
+	
+	statusPanel = new StatusPanel();
+	statusPanel.setVisible(true);
+	desktopPane.add(statusPanel, BorderLayout.SOUTH);
+	
 
-    meltingFrame = new MeltingFrame();
+    meltingFrame = new MeltingFrame(this);
     meltingFrame.setVisible(true);
+    //desktopPane.add(meltingFrame, BorderLayout.NORTH);
     desktopPane.add(meltingFrame);
     
     try {
@@ -104,6 +118,7 @@ public class OuterFrame
     }
     catch (java.beans.PropertyVetoException exception) {}
 
+    // Not sure this is loaded
     errorFrame = new ErrorFrame();
     desktopPane.add(errorFrame);
 
@@ -111,6 +126,8 @@ public class OuterFrame
 
     setContentPane(desktopPane);
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    
+    
     addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent windowEvent)
@@ -123,6 +140,10 @@ public class OuterFrame
     setVisible(true);
   }
 
+
+  public boolean openConfigFile() {
+	return false;
+  }
   
   public boolean openFile() {
 		JFileChooser chooser;
@@ -139,13 +160,19 @@ public class OuterFrame
 		int result = chooser.showOpenDialog(this);
 		if (result == JFileChooser.CANCEL_OPTION) return false;
 	
-		
-		File file = chooser.getSelectedFile();				
+		File filename = chooser.getSelectedFile();
+		meltingFrame.setSequence(filename);
 		return true;
   }
   
+  
   public boolean closeFile() {
+	  meltingFrame.cleanSequence();
 	  return true;
+  }
+  
+  public void setStatusPanelText(String str) {
+	  statusPanel.setText(str);
   }
   
   
@@ -248,5 +275,7 @@ public class OuterFrame
     public void clearErrors() {
         errorFrame.clearErrors();
     }
+
+
 }
 
