@@ -18,11 +18,23 @@
 
 package meltinggui;
 
+import melting.BatchMain;
+import melting.Environment;
+import melting.ThermoResult;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterMethods;
+import melting.methodInterfaces.MeltingComputationMethod;
+import meltinggui.dialogs.StatusPanel;
 import meltinggui.frames.MeltingFrame;
 import meltinggui.frames.OuterFrame;
 
 import javax.swing.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -95,8 +107,59 @@ public class MeltingGui
     commandLineText = mandatoryCommandLineText + generalCommandLineText; 
     argsOption = commandLineText.trim().split(" +");
     outerFrame.clearErrors();
-    results = getMeltingResults(argsOption);
+    
+    
+	//results = getMeltingResults(argsOption);
+    // The following does the same essentially, but keeps track of the environment and calculMethod, which are 
+    // used for printing later.
+    
+    
+    // TODO NOTE: For some reason the selected algorithm is not NearestNeighborMode. 
+    // THerefore the entrophy and entalphy are not shown. 
+    // These instead are shown when melting.jar is executed...
+    // Don't know why this happens as the code should be the same.. 
+    
+	OptionManagement manager = new OptionManagement();
+	Environment environment = manager.createEnvironment(argsOption);
+	RegisterMethods register = new RegisterMethods();
+	MeltingComputationMethod calculMethod = register
+			.getMeltingComputationMethod(environment.getOptions());
+	results = calculMethod.computesThermodynamics();
+	environment.setResult(results);
+	
+	results = calculMethod.getRegister()
+			.computeOtherMeltingCorrections(environment);
+	
+	environment.setResult(results);
+	
+	File sequenceFile = outerFrame.getSequenceFile();
+	if(sequenceFile != null) {
+	    OutputStream os = null; 
+	    try {
+			os = new FileOutputStream(sequenceFile.getAbsolutePath()+".results.csv");
+			BatchMain.displaysMeltingResults(os, environment, environment.getResult(), calculMethod);
+			outerFrame.setStatusPanelText("Results written to "+sequenceFile.getName()+".results.csv");
+		} catch (FileNotFoundException e) {
+			outerFrame.setStatusPanelText("File " + sequenceFile.getAbsolutePath()+".results.csv" + " could not be written");
+		} catch (IOException e) {
+			outerFrame.setStatusPanelText("Error writing file " + sequenceFile.getAbsolutePath()+".results.csv");
+		} finally {
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+    
+	
+	
     outerFrame.displayMeltingResults(results);
+    
+    
+    
+    
+    
   }
 
   /**
@@ -117,7 +180,8 @@ public class MeltingGui
 
     return results;
   }
-
+  
+  
   /**
    * Starts up the new frame, and creates an instance of MELTING on it.
    * @param args - Arguments from the command line.
