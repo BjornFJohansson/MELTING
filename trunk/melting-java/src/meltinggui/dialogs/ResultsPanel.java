@@ -118,8 +118,7 @@ public class ResultsPanel extends JPanel
 
       enthalpyOutputField.setValue(String.format("%.0f", enthalpy));
       entropyOutputField.setValue(String.format("%.2f", entropy));
-    }
-    else {
+    } else {
       disableEnthalpyEntropy();
 
       enthalpyOutputField.setValue("");

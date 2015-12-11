@@ -21,7 +21,6 @@ package meltinggui.frames;
 import javax.swing.*;
 
 import meltinggui.dialogs.StatusPanel;
-import melting.BatchMain;
 import meltinggui.menu.MeltingMenuBar;
 
 import java.awt.*;
@@ -78,6 +77,11 @@ public class OuterFrame
   /** This is the small strip at the bottom of the main display */
   private StatusPanel statusPanel;
   
+  /**
+   * The sequence passed as a file.
+   */
+  private File sequenceFile = null;
+
   
   /**
    * Sets up the GUI and displays the main MELTING frame.
@@ -139,7 +143,6 @@ public class OuterFrame
 
     setVisible(true);
   }
-
 
   public boolean openConfigFile() {
 	return false;
@@ -204,6 +207,23 @@ public class OuterFrame
     errorFrame.logException(exception);
   }
 
+  /**
+   * Returns the sequence file.
+   * @return the sequence file.
+   */
+  public File getSequenceFile() {
+	  return sequenceFile;
+  }
+  
+  /**
+   * Set the sequence file
+   * @param file
+   */
+  public void setSequenceFile(File file) {
+	  sequenceFile = file;
+  }
+  
+  
   /**
    * Stores the screen positions of the frames to a file.
    */
