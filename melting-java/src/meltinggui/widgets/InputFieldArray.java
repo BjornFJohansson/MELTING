@@ -19,6 +19,7 @@
 package meltinggui.widgets;
 
 import javax.swing.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Component;
@@ -81,7 +82,12 @@ public class InputFieldArray<W extends Component & InputWidgetInterface>
       widgets.add(newWidget);
 
       add(newLabel, MeltingLayout.LABEL_GROUP);
-      add(newWidget, MeltingLayout.INPUT_GROUP);
+      if(newWidget instanceof JTextArea) {
+    	  JScrollPane scrollPane = new JScrollPane(newWidget);
+          add(scrollPane, MeltingLayout.INPUT_GROUP);  
+      } else {
+    	  add(newWidget, MeltingLayout.INPUT_GROUP);
+      }
     }
   }
 
