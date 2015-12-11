@@ -52,6 +52,11 @@ public class MeltingFrame extends JInternalFrame
    */
   private File sequenceFile = null;
 	
+  /**
+   * The number of sequences.
+   */
+  private int numOfSequences = 0;
+  
   /** 
    * The outer frame containing this frame;
    */
@@ -61,7 +66,7 @@ public class MeltingFrame extends JInternalFrame
    * Creates a new frame.
    */
   public MeltingFrame() {
-    super("Melting v"+ OptionManagement.versionNumber, true, false, true, true);
+    super("Melting Data Form", true, false, true, true);
     initializeWidgets();
   }
   
@@ -171,7 +176,7 @@ public class MeltingFrame extends JInternalFrame
     mainPanel.add(commandLinePanel, constraints);
     mainPanel.add(resultsPanelPanel, getGridBagRow(6));
     JTextPane usageNotice = new JTextPane();
-    usageNotice.setText("Notice: for more options (more computation methods, melting4 interface, batch mode, ...), see commandline-based scripts in this package.");
+    usageNotice.setText("Remark: for more options (more computation methods, melting4 interface, batch mode, ...), see commandline-based scripts in this package.");
     mainPanel.add(usageNotice, getGridBagRow(7));
 
     Container contentPane = getContentPane();
@@ -212,38 +217,62 @@ public class MeltingFrame extends JInternalFrame
 
   /**
    * Set the sequence in the sequence dialogue.
+   * @param sequence the file containing the sequences
    */
   public void setSequence(File sequence) {
-	  String sequenceStr = null;	  
+	  String[] sequenceStr = null;	  
 	  sequenceStr = generateString(sequence);
 	  if(sequenceStr != null) {
 		  sequenceFile = sequence;
-		  sequenceDialog.setSequence(sequenceStr);
+		  sequenceDialog.setSequence(sequenceStr[0]);
+		  sequenceDialog.setComplement(sequenceStr[1]);
+		  sequenceDialog.disableAll();
 	  }
   }
   
+  /** 
+   * Remove the current file containing the sequences.
+   */
   public void cleanSequence() {
 	  sequenceFile = null;
+	  sequenceDialog.clearText();
+	  sequenceDialog.enableAll();
   }
   
-  private String generateString(File sequence) {
+  /**
+   * Extract the sequences from the file and store them in one string.
+   * @param sequence the file containing the sequences
+   * @return a String containing the sequences imported from the file
+   */
+  private String[] generateString(File sequence) {
 	    InputStream is = null;
 	    BufferedReader bis = null;
+	    String[] sequencesStr = new String[2];
 		try {
 	        is = new FileInputStream(sequence);
 			bis = new BufferedReader(new InputStreamReader(is));
-			StringBuilder sequenceStr = new StringBuilder();
+			StringBuilder sequenceBuilder = new StringBuilder();
+			StringBuilder complementBuilder = new StringBuilder();
 			String line;
 			while((line = bis.readLine()) != null) {
 				if(!line.startsWith("#") || !line.startsWith(" ")) {
-					sequenceStr.append(line.trim());
+					// TODO Check that this is the right separator between sequence and complement.
+					int separator = line.indexOf("/");
+					if(separator != -1) {
+						sequenceBuilder.append(line.substring(0, separator).trim()).append("\n");
+						complementBuilder.append(line.substring(separator+1).trim()).append("\n");
+					} else {
+						sequenceBuilder.append(line.trim()).append("\n");
+					}
 				}
 			}
-			if(sequenceStr.length() == 0) {
+			if(sequenceBuilder.length() == 0) {
 				outerFrame.setStatusPanelText("File " + sequence.getAbsolutePath() + " does not contain data");
 				return null;
 			}
-			return sequenceStr.toString();
+			sequencesStr[0] = sequenceBuilder.toString();
+			sequencesStr[1] = complementBuilder.toString();
+			return sequencesStr;
 		} catch (FileNotFoundException e) {
 			outerFrame.setStatusPanelText("File " + sequence.getAbsolutePath() + " could not be opened");
 			return null;
