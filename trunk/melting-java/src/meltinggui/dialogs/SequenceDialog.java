@@ -106,5 +106,21 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
   public void setSequence(String sequence) {
 	  this.setValue(0, sequence);
   }
+
+  /**
+   * Set the complement externally.
+   * @param the complement to be added
+   */
+  public void setComplement(String complement) {
+	  this.setValue(1, complement);
+  }
+  
+  /**
+   * Clear the text for the two text areas.
+   */
+  public void clearText() { 
+	  setSequence("");
+	  setComplement("");
+  }
 }
 
