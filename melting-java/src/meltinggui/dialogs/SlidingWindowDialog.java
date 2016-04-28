@@ -20,43 +20,36 @@ package meltinggui.dialogs;
 
 import java.awt.Color;
 
-import javax.swing.JLabel;
-
-import meltinggui.MeltingLayout;
 import meltinggui.widgets.InputField;
 import meltinggui.widgets.MeltingTextField;
 
 /**
- * A dialog for specifying the oligomer concentration.
- * @author John Gowers
+ * A dialog for specifying the sliding window.
+ * 
+ * @author rodrigue
  */
-public class OligomerConcentrationDialog extends InputField<MeltingTextField>
+public class SlidingWindowDialog extends InputField<MeltingTextField>
   implements DialogInterface
 {
-  /**
-   * A label showing the units (mol/L).
-   */
-  private JLabel unitsLabel = new JLabel("mol/L");
 
   /**
    * Sets up the dialog.
    */
-  public OligomerConcentrationDialog()
+  public SlidingWindowDialog()
   {
-    super("Oligomer concentration (option -P): ", MeltingTextField.class);
+    super("Sliding window: ", MeltingTextField.class);
     setBackground(new Color(0, 0, 0, 0));
-    add(unitsLabel, MeltingLayout.INPUT_GROUP);
   }
 
   /**
    * Gets the command-line flags.
    * @return The command-line flags the user would have used to specify the
-   *         given concentration if they had been using the command-line.
+   *         given sliding window if they had been using the command-line.
    */
   @Override
   public String getCommandLineFlags()
   {
-    String commandLineFlags = " -P " + getValue();
+    String commandLineFlags = " -W " + getValue();
     return commandLineFlags;
   }
 }

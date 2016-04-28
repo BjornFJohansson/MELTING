@@ -18,27 +18,33 @@
 
 package meltinggui;
 
-import melting.BatchMain;
-import melting.Environment;
-import melting.ThermoResult;
-import melting.configuration.OptionManagement;
-import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.MeltingComputationMethod;
-import meltinggui.dialogs.StatusPanel;
-import meltinggui.frames.MeltingFrame;
-import meltinggui.frames.OuterFrame;
-
-import javax.swing.*;
-
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import melting.BatchMain;
+import melting.Environment;
+import melting.configuration.OptionManagement;
+import melting.configuration.RegisterMethods;
+import melting.methodInterfaces.MeltingComputationMethod;
+import meltinggui.frames.MeltingFrame;
+import meltinggui.frames.OuterFrame;
 
 /**
  * The Main class for the Melting GUI. 
@@ -114,8 +120,8 @@ public class MeltingGui
     // used for printing later.
     
     
-    // TODO NOTE: For some reason the selected algorithm is not NearestNeighborMode. 
-    // THerefore the entrophy and entalphy are not shown. 
+    // TODO - For some reason the selected algorithm is not NearestNeighborMode. 
+    // Therefore the entrophy and entalphy are not shown. 
     // These instead are shown when melting.jar is executed...
     // Don't know why this happens as the code should be the same.. 
     
@@ -136,9 +142,11 @@ public class MeltingGui
 	if(sequenceFile != null) {
 	    OutputStream os = null; 
 	    try {
-			os = new FileOutputStream(sequenceFile.getAbsolutePath()+".results.csv");
+	      String outputFileName = sequenceFile.getAbsolutePath()+".results.csv";
+			os = new FileOutputStream(outputFileName);
 			BatchMain.displaysMeltingResults(os, environment, environment.getResult(), calculMethod);
 			outerFrame.setStatusPanelText("Results written to "+sequenceFile.getName()+".results.csv");
+			displayFileinNewWindow(outputFileName);
 		} catch (FileNotFoundException e) {
 			outerFrame.setStatusPanelText("File " + sequenceFile.getAbsolutePath()+".results.csv" + " could not be written");
 		} catch (IOException e) {
@@ -152,7 +160,7 @@ public class MeltingGui
 		}
 	}
     
-	
+	// TODO - if we have a sequence file, don't display the normal results !! Only the sequence file results.
 	
     outerFrame.displayMeltingResults(results);
     
@@ -164,6 +172,7 @@ public class MeltingGui
 
   /**
    * Gets results from the MELTING program.
+   * 
    * @param argsOption Command line arguments for MELTING.
    * @return The results from MELTING.
    */
@@ -181,6 +190,52 @@ public class MeltingGui
     return results;
   }
   
+  /**
+   * Shows the content of a given file in a new windows.
+   * 
+   * @param outputFileName the path of the file to show.
+   */
+  private void displayFileinNewWindow(String outputFileName) 
+  {
+    // TODO - add a parameter to tell if we display the whole file or only a short preview (250 to 500 characters maximum)
+    
+    if ((outputFileName == null) || (!new File(outputFileName).exists())) {
+      System.out.println("Output file '" + outputFileName + "' does not seem to exist !");
+      return;
+    }
+    
+    try {
+      System.out.println("Trying to read '" + outputFileName + "'.");
+      String outputFileContent = readFile(outputFileName, Charset.forName("UTF-8"));
+      JFrame outputFileJFrame = new JFrame("Results saved on file : " + outputFileName);
+      JTextArea outputFileTA = new JTextArea(outputFileContent);
+      outputFileTA.setEditable(false);
+      
+      outputFileJFrame.add(new JScrollPane(outputFileTA));
+      outputFileJFrame.setMinimumSize(new Dimension(800, 600));
+      outputFileJFrame.setVisible(true);
+      
+    } catch (IOException e) {
+      System.out.println("There was a problem opening the ouput file: '" + e.getMessage() + "'");
+    } 
+    
+  }
+
+  /**
+   * Reads the content of a file, using the provided encoding, into a String.
+   * 
+   * @param path the path of the file to be read
+   * @param encoding the encoding to be used to read the file
+   * @return the content of the file
+   * @throws IOException if an IO error happen.
+   */
+  static String readFile(String path, Charset encoding) 
+      throws IOException 
+  {
+    byte[] encoded = Files.readAllBytes(Paths.get(path));
+    return new String(encoded, encoding);
+  }
+
   
   /**
    * Starts up the new frame, and creates an instance of MELTING on it.
