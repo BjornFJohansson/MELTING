@@ -22,7 +22,7 @@ import javax.swing.*;
 
 /**
  * A combo box where the user can specify a particular option.  It implements
- * {@link InputWidgetInterface <code>InputWidgetInterface</code>} so it has a
+ * {@link InputWidgetInterface} so it has a
  * method that returns a string value corresponding to particular command-line
  * parameters.
  * @author John Gowers

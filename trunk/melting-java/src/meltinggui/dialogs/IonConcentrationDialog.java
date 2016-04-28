@@ -38,7 +38,7 @@ public class IonConcentrationDialog extends JComboBox
   private String[] ionNames = new String[] {"Na", "Mg", "K", "Tris"};
 
   /**
-   * The options dispayed on the combo box.
+   * The options displayed on the combo box.
    */
   private String[] comboBoxOptions = createComboBoxOptions(ionNames);
 

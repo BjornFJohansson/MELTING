@@ -22,7 +22,7 @@ import javax.swing.*;
 
 /**
  * A text box for use with the MELTING program.  Implements
- * {@link InputWidgetInterface <code>InputWidgetInterface</code>}.  
+ * {@link InputWidgetInterface}.  
  * @author John Gowers
  */
 public class MeltingTextField extends JTextField

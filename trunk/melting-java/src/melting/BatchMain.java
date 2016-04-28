@@ -9,6 +9,10 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
+/**
+ * @author marine
+ *
+ */
 public class BatchMain {
 
 	public static void main(String[] args) {
@@ -21,7 +25,7 @@ public class BatchMain {
 		 */
 
 		if (args.length < 1) {
-			System.err.print("Usage: melting-batch [OPTIONS] sequencefile");
+			System.err.println("Usage: melting-batch [OPTIONS] sequencefile");
 			System.exit(1);
 		} else {
 			// remove file from list of options, pass options to
@@ -57,6 +61,12 @@ public class BatchMain {
 		}
 	}
 
+	/**
+	 * @param is
+	 * @param os
+	 * @param defaultArgs
+	 * @throws IOException
+	 */
 	public static void readFile(InputStream is, OutputStream os, String[] defaultArgs)
 			throws IOException {
 		BufferedReader bis = new BufferedReader(new InputStreamReader(is));
@@ -64,7 +74,8 @@ public class BatchMain {
 		String line = null;
 		do {
 			line = bis.readLine();
-			String[] newArgs = (line != null)?line.split("[ \t]+"):new String[0];
+			String[] newArgs = (line != null) ? line.split("[ \t]+") : new String[0];
+			
 			if (newArgs.length == 1) {
 				// sequence is alone, prefix with -S
 				String[] newNewArgs = new String[2];
@@ -103,6 +114,10 @@ public class BatchMain {
 		} while (line != null);
 	}
 
+	/**
+	 * @param os
+	 * @param args
+	 */
 	public static void runMelting(OutputStream os, String[] args) {
 		try {
 			OptionManagement manager = new OptionManagement();
@@ -125,7 +140,7 @@ public class BatchMain {
 		}
 	}
 
-	private static void displaysMeltingResults(OutputStream os, Environment environment,
+	public static void displaysMeltingResults(OutputStream os, Environment environment,
 			ThermoResult results, MeltingComputationMethod calculMethod) throws IOException {
         OutputStreamWriter osw = new OutputStreamWriter(os);
 		displayColumnHeaders(osw, calculMethod);

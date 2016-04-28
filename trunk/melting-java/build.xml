@@ -41,7 +41,7 @@
 	</target>
 	
 	<target name="compile" depends="prepare-src">   
-		<javac srcdir="${build.src}" destdir="${build.bin}" debug="${debug}" optimize="${optimize}" verbose="${verbose}" source="1.5" target="1.5">
+		<javac srcdir="${build.src}" destdir="${build.bin}" debug="${debug}" optimize="${optimize}" verbose="${verbose}" source="1.6" target="1.6">
 		</javac>      
 	</target>	
 	

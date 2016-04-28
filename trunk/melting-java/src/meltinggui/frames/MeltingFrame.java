@@ -87,26 +87,22 @@ public class MeltingFrame extends JInternalFrame
 
   // Widgets to put on to the frame.  Declarations indented to show structure.
   private JPanel mainPanel = new JPanel();
-    private JPanel sequencesPanel = new JPanel();
-      private SequenceDialog sequenceDialog = new SequenceDialog();
-    private JPanel hybridizationPanel = new JPanel();
-      private HybridizationDialog hybridizationDialog =
-                                                     new HybridizationDialog();
-    private JPanel oligomerConcentrationPanel = new JPanel();
-      private OligomerConcentrationDialog oligomerConcentrationDialog = 
-                                             new OligomerConcentrationDialog();
-    private JPanel ionConcentrationsPanel = new JPanel();
-      private IonConcentrationDialog ionConcentrationDialog = 
-                                                  new IonConcentrationDialog();
-    private JPanel buttonsPanel = new JPanel();
-      private JButton getThermodynamicsButton = 
-                                             new JButton("Get Thermodynamics");
-      private JToggleButton moreOptionsButton =
-                                          new JToggleButton("More Options...");
-    private JPanel commandLinePanel = new JPanel();
-      private JTextArea commandLineTextArea = new JTextArea(" -S  -H  -P  -E");
-    private JPanel resultsPanelPanel = new JPanel();
-      private ResultsPanel resultsPanel = new ResultsPanel();
+  private JPanel sequencesPanel = new JPanel();
+  private SequenceDialog sequenceDialog = new SequenceDialog();
+  private SlidingWindowDialog slidingWindowDialog = new SlidingWindowDialog();
+  private JPanel hybridizationPanel = new JPanel();
+  private HybridizationDialog hybridizationDialog = new HybridizationDialog();
+  private JPanel oligomerConcentrationPanel = new JPanel();
+  private OligomerConcentrationDialog oligomerConcentrationDialog = new OligomerConcentrationDialog();
+  private JPanel ionConcentrationsPanel = new JPanel();
+  private IonConcentrationDialog ionConcentrationDialog =  new IonConcentrationDialog();
+  private JPanel buttonsPanel = new JPanel();
+  private JButton getThermodynamicsButton = new JButton("Get Thermodynamics");
+  private JToggleButton moreOptionsButton = new JToggleButton("More Options...");
+  private JPanel commandLinePanel = new JPanel();
+  private JTextArea commandLineTextArea = new JTextArea(" -S  -H  -P  -E");
+  private JPanel resultsPanelPanel = new JPanel();
+  private ResultsPanel resultsPanel = new ResultsPanel();
 
   /**
    * Sets up the widgets and puts them on the frame.
@@ -130,6 +126,7 @@ public class MeltingFrame extends JInternalFrame
 
     mainPanel.setLayout(new GridBagLayout());
     sequencesPanel.setLayout(new GridLayout(1, 1));
+    
     hybridizationPanel.setLayout(new GridLayout(1, 1));
     oligomerConcentrationPanel.setLayout(new GridLayout(1, 1));
     ionConcentrationsPanel.setLayout(
@@ -147,24 +144,26 @@ public class MeltingFrame extends JInternalFrame
                                MeltingLayout.INPUT_GROUP);
     buttonsPanel.add(getThermodynamicsButton, BorderLayout.WEST);
     buttonsPanel.add(Box.createHorizontalGlue());
-    //TODO buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
+    buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
     commandLinePanel.add(commandLineTextArea, BorderLayout.CENTER);
     resultsPanelPanel.add(resultsPanel);
 
-    constraints = getGridBagRow(0);
+    int row = 0;
+    constraints = getGridBagRow(row++);
     constraints.weighty = 0.5;
     mainPanel.add(sequencesPanel, constraints);
-    mainPanel.add(hybridizationPanel, getGridBagRow(1));
-    mainPanel.add(oligomerConcentrationPanel, getGridBagRow(2));
-    mainPanel.add(ionConcentrationsPanel, getGridBagRow(3));
-    mainPanel.add(buttonsPanel, getGridBagRow(4));
-    constraints = getGridBagRow(5);
+    mainPanel.add(slidingWindowDialog, getGridBagRow(row++));
+    mainPanel.add(hybridizationPanel, getGridBagRow(row++));
+    mainPanel.add(oligomerConcentrationPanel, getGridBagRow(row++));
+    mainPanel.add(ionConcentrationsPanel, getGridBagRow(row++));
+    mainPanel.add(buttonsPanel, getGridBagRow(row++));
+    constraints = getGridBagRow(row++);
     constraints.weighty = 1.0;
     mainPanel.add(commandLinePanel, constraints);
-    mainPanel.add(resultsPanelPanel, getGridBagRow(6));
+    mainPanel.add(resultsPanelPanel, getGridBagRow(row++));
     JTextPane usageNotice = new JTextPane();
     usageNotice.setText("Remark: for more options (more computation methods, melting4 interface, batch mode, ...), see commandline-based scripts in this package.");
-    mainPanel.add(usageNotice, getGridBagRow(7));
+    mainPanel.add(usageNotice, getGridBagRow(row++));
 
     Container contentPane = getContentPane();
     contentPane.add(Box.createRigidArea(new Dimension(532, 12)),
@@ -228,6 +227,7 @@ public class MeltingFrame extends JInternalFrame
   
   /**
    * Extract the sequences from the file and store them in one string.
+   * 
    * @param sequence the file containing the sequences
    * @return a String containing the sequences imported from the file
    */

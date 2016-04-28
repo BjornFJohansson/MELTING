@@ -578,11 +578,11 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * to check if all mandatory options are present and valid. (hybridization type, ion concentrations, sequence (5'3'), oligomer concentration and sometimes the 
+	 * Checks if all mandatory options are present and valid. (hybridization type, ion concentrations, sequence (5'3'), oligomer concentration and sometimes the 
 	 * complementary sequence (3'5'))
 	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return true if all mandatory options are present and valid.
-	 * If one of the required options is not valid, an OptionSynthaxError is thrown.
+	 * If one of the required options is not valid, an {@link OptionSyntaxError} is thrown.
 	 */
 	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
 		boolean needComplementaryInput = false;
@@ -643,11 +643,12 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * to check if all the ion and agent concentrations entered by the user are valid. (positive numeric values)
+	 * Checks if all the ion and agent concentrations entered by the user are valid. (positive numeric values)
+	 * 
 	 * @param  solutionComposition : different ion and agent concentrations
 	 * @return true if all the ion and agent concentrations entered by the are valid.
-	 * If at least one of the concentrations is not valid, an OptionSynthaxException is thrown.
-	 * If a NumberFormatException is caught, an OptionSynthaxError is thrown.
+	 * If at least one of the concentrations is not valid, an {@link OptionSyntaxError} is thrown.
+	 * If a {@link NumberFormatException} is caught, an OptionSynthaxError is thrown.
 	 */
 	private boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
@@ -676,7 +677,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * puts the default options in a new HashMap depending on the type of hybridization entered by the user.
+	 * Puts the default options in a new HashMap depending on the type of hybridization entered by the user.
+	 * 
 	 * @param args : contains the options entered by the user.
 	 * @return HasMap containing the default options. The default options depend on the type of hybridization entered by the user.
 	 * If the type of hybridization is missing, an OptionSyntaxError is thrown.
