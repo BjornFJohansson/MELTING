@@ -15,6 +15,11 @@ import java.util.Arrays;
  */
 public class BatchMain {
 
+	/**
+	 * Runs a melting job for each sequence in the input file. 
+	 * 
+	 * @param args the arguments passed to the program
+	 */
 	public static void main(String[] args) {
 		/**
 		 * normal options
@@ -33,13 +38,16 @@ public class BatchMain {
 			String[] commonArgs = Arrays.copyOfRange(args, 0, args.length - 1);
 			String filename = args[args.length - 1];
 
+			// TODO - make use of the output file name options ?
+			// TODO - add a new option for the input file ?
+			
             InputStream is = null;
             OutputStream os = null;
 			try {
-                is = new FileInputStream(filename);
+                is = new FileInputStream(filename); 
                 os = new FileOutputStream(filename+".results.csv");
                 System.out.println("Results will be written to "+filename+".results.csv");
-				readFile(is, os, commonArgs);
+				readFileAndRunMelting(is, os, commonArgs);
 			} catch (FileNotFoundException e) {
 				System.err.print("File " + filename + " could not be opened");
 			} catch (IOException e) {
@@ -61,17 +69,23 @@ public class BatchMain {
 		}
 	}
 
+	// TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
+	// TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
+	
 	/**
-	 * @param is
-	 * @param os
-	 * @param defaultArgs
-	 * @throws IOException
+	 * Calculates melting temperatures for each sequence present in the input stream
+	 * and writes the results in the output stream.
+	 * 
+	 * @param is input stream where to read the sequences
+	 * @param os output stream where we will write the results
+	 * @param defaultArgs user input arguments to run melting
+	 * @throws IOException If an I/O error occurs
 	 */
-	public static void readFile(InputStream is, OutputStream os, String[] defaultArgs)
+	public static void readFileAndRunMelting(InputStream is, OutputStream os, String[] defaultArgs) 
 			throws IOException {
 		BufferedReader bis = new BufferedReader(new InputStreamReader(is));
 
-		String line = null;
+		String line = null; // TODO - print header for the first line ??
 		do {
 			line = bis.readLine();
 			String[] newArgs = (line != null) ? line.split("[ \t]+") : new String[0];
@@ -91,7 +105,7 @@ public class BatchMain {
 				newNewArgs[3] = newArgs[1];
 				newArgs = newNewArgs;
 			} else if (newArgs.length == 0) {
-				// skip empty lines
+				// skip empty lines // TODO - add a character(s) to be able to have comment lines ?
 				newArgs = null;
 			} else {
 				System.err.print("Invalid line [" + line + "]");
@@ -99,9 +113,9 @@ public class BatchMain {
 			}
 
 			if (newArgs != null) {
-				String[] completeArgs = new String[defaultArgs.length
-						+ newArgs.length];
+				String[] completeArgs = new String[defaultArgs.length + newArgs.length];
 				int i = 0;
+				
 				for (String arg : defaultArgs) {
 					completeArgs[i++] = arg;
 				}
@@ -115,8 +129,10 @@ public class BatchMain {
 	}
 
 	/**
-	 * @param os
-	 * @param args
+	 * 
+	 * 
+	 * @param os output stream where we will write the results
+	 * @param args arguments to run melting
 	 */
 	public static void runMelting(OutputStream os, String[] args) {
 		try {
@@ -140,6 +156,13 @@ public class BatchMain {
 		}
 	}
 
+	/**
+	 * @param os
+	 * @param environment
+	 * @param results
+	 * @param calculMethod
+	 * @throws IOException
+	 */
 	public static void displaysMeltingResults(OutputStream os, Environment environment,
 			ThermoResult results, MeltingComputationMethod calculMethod) throws IOException {
         OutputStreamWriter osw = new OutputStreamWriter(os);

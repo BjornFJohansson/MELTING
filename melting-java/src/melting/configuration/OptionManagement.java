@@ -220,8 +220,22 @@ public class OptionManagement {
 	 * Option name for the data file pathway.
 	 */
 	public static final String NN_Path = "-NNPath";
-	
 	/**
+	 * Option name for the data file pathway.
+	 */
+	public static final String nn_Path = "-nnpath";
+	    
+    /**
+     * Option name to get the sequence(s) to analyse from an input file.
+     */
+    public static final String inputFile = "-I";
+	
+    /**
+     * Option name to get the complementary sequence(s) to analyse from an input file.
+     */
+    public static final String inputComplementFile = "-IC";
+
+    /**
 	 * Option name to print the melting results in an output file.
 	 */
 	public static final String outPutFile = "-O";
@@ -235,6 +249,11 @@ public class OptionManagement {
 	 * Option name for the oligomer concentration correction factor.
 	 */
 	public static final String factor = "-F";
+	
+	/**
+	 * Option name for the sliding window
+	 */
+	public static final String sliding_window = "-w";
 	
 	/**
 	 * Logger meltingLogger : Logger object to print the Melting warning, severe or/and info messages
@@ -280,6 +299,11 @@ public class OptionManagement {
 	private static int factorValue = 4;
 	
 	/**
+     * default sliding window value
+     */
+    private static int slidingWindow = 0;
+	
+	/**
 	 * HashMap<String, String> DNADefaultOptions : contains the default options if the type of hybridization is "dnadna"
 	 */
 	private HashMap<String, String> DNADefaultOptions = new HashMap<String, String>();
@@ -302,7 +326,7 @@ public class OptionManagement {
 	// OptionManagement constructor
 	
 	/**
-	 * creates an OptionManagement object. initialises the default options, variables, etc. 
+	 * Creates an OptionManagement object. Initialises the default options, variables, etc. 
 	 */
 	public OptionManagement(){
 
@@ -363,12 +387,16 @@ public class OptionManagement {
 	 */
 	private void initialiseMeltingVariables(){
 		registerMeltingVariables.add(NN_Path);
+		registerMeltingVariables.add(nn_Path);
 		registerMeltingVariables.add(threshold);
 		registerMeltingVariables.add(factor);
+		registerMeltingVariables.add(sliding_window);
+		registerMeltingVariables.add(inputFile);
+		registerMeltingVariables.add(inputComplementFile);
 	}
 	
 	/**
-	 * initialises the DNADefaultOptions of OptionManagement.
+	 * Initialises the DNADefaultOptions of OptionManagement.
 	 */
 	private void initialisesDNADefaultOptions() {
 		this.DNADefaultOptions.put(NNMethod, "all97");
@@ -394,7 +422,7 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * initialises the RNADefaultOptions of OptionManagement.
+	 * Initialises the RNADefaultOptions of OptionManagement.
 	 */
 	private void initialiseRNADefaultOptions() {
 		this.RNADefaultOptions.put(NNMethod, "xia98");
@@ -415,22 +443,22 @@ public class OptionManagement {
 		this.RNADefaultOptions.put(longDanglingEndMethod, "sugrna02");
 
 	}
-	
+
 	/**
-	 * initialises the hybridDefaultOptions of OptionManagement.
+	 * Initialises the hybridDefaultOptions of OptionManagement.
 	 */
 	private void initialiseHybridDefaultOptions() {
-		this.hybridDefaultOptions.put(NNMethod, "sug95");
-    this.hybridDefaultOptions.put(singleMismatchMethod, "wat11");
-		this.hybridDefaultOptions.put(approximativeMode, "wetdnarna91");
-		this.hybridDefaultOptions.put(NaEquivalentMethod, "ahs01");
-		this.hybridDefaultOptions.put(DMSOCorrection, "ahs01");
-		this.hybridDefaultOptions.put(formamideCorrection, "bla96");
-		
+	  this.hybridDefaultOptions.put(NNMethod, "sug95");
+	  this.hybridDefaultOptions.put(singleMismatchMethod, "wat11");
+	  this.hybridDefaultOptions.put(approximativeMode, "wetdnarna91");
+	  this.hybridDefaultOptions.put(NaEquivalentMethod, "ahs01");
+	  this.hybridDefaultOptions.put(DMSOCorrection, "ahs01");
+	  this.hybridDefaultOptions.put(formamideCorrection, "bla96");
+
 	}
-	
+
 	/**
-	 * initialises the mRNADefaultOptions of OptionManagement.
+	 * Initialises the mRNADefaultOptions of OptionManagement.
 	 */
 	private void initialiseMRNADefaultOptions() {
 		this.mRNADefaultOptions.put(NNMethod, "tur06");
@@ -441,10 +469,12 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * to check if the argument 'option' entered by the user is an option value.
-	 * @param  option
-	 * @return true if the argument 'option' entered by the user is an option value.
-	 * Ex : "-nn" => isAnOptionValue("-nn") = false
+	 * Checks if the argument 'option' entered by the user is an option value.
+	 * 
+	 * @param  option the option value
+	 * @return true if the argument 'option' entered by the user is an option value (does not start by the '-' character).
+	 * <br/>
+	 * Ex : "-nn" => isAnOptionValue("-nn") = false <br/>
 	 * Ex : "san04" => isAnOptionValue("san04") = true
 	 */ 
 	private boolean isAnOptionValue(String option){
@@ -458,74 +488,97 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * changes the default Threshold value, correction factor value and/or data file pathway value if the user wants to.
+	 * Changes the default Threshold value, correction factor value and/or data file pathway value if the user wants to.
+	 * 
 	 * @param args : contains the options entered by the user
-	 * If there is an error in the options syntax, a OptonSyntaxError is thrown.
+	 * @throws OptionSyntaxError If there is an error in the options syntax.
 	 */
-	private void setOptionValues(String [] args){
+	private void setOptionValues(String [] args) {
 
 		boolean isNecessaryToSetOptionsValues = true;
 		
-		if (args.length == 1){
+		if (args.length == 1) {
 			isNecessaryToSetOptionsValues = false;
 		}
-		if (isNecessaryToSetOptionsValues){
+		if (isNecessaryToSetOptionsValues) {
 
-		for (int i = 0;i < args.length ; i++){
+		for (int i = 0;i < args.length ; i++) {
 			String option = args[i];
 			
 			if (i == args.length - 1){
 				isNecessaryToSetOptionsValues = false;
 				break;
 			}
-			
-				String value = args[i+1];
 
-				if (isAnOptionValue(option) == false){
-					if (option.equals(NN_Path)){
-						if (isAnOptionValue(value)){
-							dataPathwayValue = value;
-                            if (!new File(dataPathwayValue).exists()){
-                                throw new OptionSyntaxError("\n Cannot find where the thermodynamic parameters are located. "+NN_Path+" was:"+dataPathwayValue+". Please set " +
-                                        "a valid "+NN_Path+" option (path to the folder containing thermodynamic parameters)");
-                            }
-						}
-						else {
-							throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
-						}
-					}	
-				}
-				else if (option.equals(threshold)){
-					if (isAnOptionValue(value)){
-						if (Integer.getInteger(value) != null && Integer.parseInt(value) >= 0) {
-							thresholdValue = Integer.parseInt(value);
-						}
-						else {
-							throw new OptionSyntaxError("\n The threshold (option " + threshold + ") must be a strictly positive numeric value.");
-						}
-					}
-					else {
-						throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
-					}
-				}
-				else if (option.equals(factor)){
-					if (isAnOptionValue(value)){
-						if (Integer.getInteger(value) != null && (Integer.parseInt(value) == 1 || Integer.parseInt(value) == 4)) {
-							factorValue = Integer.parseInt(value);
-						}
-						else {
-							throw new OptionSyntaxError("\n The correction factor (option " + factor + ") must be 1, 2 or 4.");
-						}
-					}
-					else {
-						throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");				}
-				}
+			String value = args[i+1];
+
+			if (isAnOptionValue(option) == false) {
+			  
+			  if (option.equals(NN_Path) || option.equals(nn_Path)) {
+			    if (isAnOptionValue(value)) {
+			      dataPathwayValue = value;
+			      if (!new File(dataPathwayValue).exists()){
+			        throw new OptionSyntaxError("\n Cannot find where the thermodynamic parameters are located. "+NN_Path+" was:"+dataPathwayValue+". Please set " +
+			            "a valid "+NN_Path+" option (path to the folder containing thermodynamic parameters)");
+			      }
+			    }
+			    else {
+			      throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
+			    }
+			  }	
+			  else if (option.equals(threshold))
+			  {
+			    if (isAnOptionValue(value)){
+			      if (Integer.valueOf(value) != null && Integer.parseInt(value) >= 0) {
+			        thresholdValue = Integer.parseInt(value);
+			      }
+			      else {
+			        throw new OptionSyntaxError("\n The threshold (option " + threshold + ") must be a strictly positive numeric value.");
+			      }
+			    }
+			    else {
+			      throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");
+			    }
+			  }
+			  else if (option.equals(factor))
+			  {
+			    if (isAnOptionValue(value)){
+			      if (Integer.valueOf(value) != null && (Integer.parseInt(value) == 1 || Integer.parseInt(value) == 4)) {
+			        factorValue = Integer.parseInt(value);
+			      }
+			      else {
+			        throw new OptionSyntaxError("\n The correction factor (option " + factor + ") must be 1, 2 or 4.");
+			      }
+			    }
+			    else {
+			      throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");				
+			    }
+			  }
+			  else if (option.equals(sliding_window))
+			  {
+			    if (isAnOptionValue(value)) {
+			      Integer valueInteger = Integer.valueOf(value); 
+			      
+			      if ((valueInteger != null) && (valueInteger > 0)) {
+			        slidingWindow = Integer.parseInt(value);
+			      }
+			      else 
+			      {
+			        throw new OptionSyntaxError("\n The sliding window (option " + sliding_window + ") must be a strictly positive numeric value.");
+			      }
+			    }
+			    else 
+			    {
+			      throw new OptionSyntaxError("\n I don't understand the option " + option + " " + value + ".");              
+			    }
+			  }
 			}
+		}
 		}
 	}
 	
 	/**
-	 * displays Melting help documentation.
+	 * Displays Melting help documentation.
 	 * If a FileNotFoundException or a IOException is caught, a FileException is thrown.
 	 */
 	public void readMeltingHelp(){
@@ -551,11 +604,11 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * displays Melting legal information.
+	 * Displays Melting legal information.
 	 */
 	private void readLegalInformation(){
 		StringBuffer legalInformation = new StringBuffer();
-		legalInformation.append("   Melting 5 is copyright (C) 2009 by Nicolas Le Novère and Marine Dumousseau\n\n");
+		legalInformation.append("   Melting 5 is copyright (C) 2009-2016 by Nicolas Le Novère and Marine Dumousseau\n\n");
 		legalInformation.append("   This  program  is  free  software; you can redistribute it\n");
 		legalInformation.append("   and/or modify it under the terms of the GNU General Public\n");
 		legalInformation.append("   License  as  published  by  the  Free Software Foundation;\n");
@@ -571,8 +624,8 @@ public class OptionManagement {
 		legalInformation.append("  Software  Foundation,  Inc.,  59  Temple Place, Suite 330,\n");
 		legalInformation.append("  Boston, MA  02111-1307 USA\n\n");
 		legalInformation.append("  Nicolas Le Novère and Marine Dumousseau, Computational Biology, EMBL-EBI\n");
-		legalInformation.append("  Hinxton CB10 1SD United-Kingdom\n");
-		legalInformation.append("  lenov@ebi.ac.uk\n");
+		legalInformation.append("  Hinxton CB10 1SD United-Kingdom\n");// TODO - add Babraham info + John, Piero and me ?
+		legalInformation.append("  melting-forum@googlegroups.com\n");
 		
 		meltingLogger.log(Level.INFO, legalInformation.toString());
 	}
@@ -580,13 +633,18 @@ public class OptionManagement {
 	/**
 	 * Checks if all mandatory options are present and valid. (hybridization type, ion concentrations, sequence (5'3'), oligomer concentration and sometimes the 
 	 * complementary sequence (3'5'))
+	 * 
 	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return true if all mandatory options are present and valid.
-	 * If one of the required options is not valid, an {@link OptionSyntaxError} is thrown.
+	 * @throws OptionSyntaxError If one of the required options is not valid.
 	 */
 	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
 		boolean needComplementaryInput = false;
-		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false || optionSet.containsKey(sequence) == false){
+		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false ||
+		    ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)))
+		{
+		  System.out.println("hasRequired options = " + ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)));
+		  System.out.println("hasRequired options contain inputFile = " + optionSet.containsKey(inputFile));
 			return false;
 		}
 
@@ -601,39 +659,52 @@ public class OptionManagement {
 			throw new OptionSyntaxError("\n The oligomer concentration (entered with the option " + nucleotides + ") must be a numeric value.", e);
 		}
 		
-		String value = optionSet.get(sequence).toUpperCase();
-		BasePair.initialiseNucleicAcidList();
-		if (NucleotidSequences.checkSequence(value)){
-			if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*")){
-				needComplementaryInput = true;
-			}
+		if (! optionSet.containsKey(inputFile)) {
+		  String value = optionSet.get(sequence).toUpperCase();
+		  BasePair.initialiseNucleicAcidList();
+		  if (NucleotidSequences.checkSequence(value)){
+		    if ((value.contains("I") && optionSet.get(selfComplementarity).equals("false")) || value.contains("A*")){
+		      needComplementaryInput = true;
+		    }
+		  }
+		  else {
+		    throw new OptionSyntaxError("\n The sequence (entered with the option " + sequence + ") contains some characters we can't understand.");
+		  }
 		}
-		else {
-			throw new OptionSyntaxError("\n The sequence (entered with the option " + sequence + ") contains some characters we can't understand.");
+		else 
+		{
+		  // TODO - do we check the entire fasta file ?? 
+		  // TODO - do we pass the entire file here or do we pass the sequences one by one ? Might be easier to pass them one by one using the arguments
 		}
-
+		
 		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
 
 			throw new OptionSyntaxError("\n There is one syntax mistake in the ion and denaturing agent concentrations. Check the option" + solutioncomposition + ".");
 		}
+		
 		if(optionSet.containsKey(complementarySequence)){
 			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
 				throw new OptionSyntaxError("\n The complementary sequence (entered with the option " + complementarySequence + ") contains some characters we can't understand.");
 			}
-		}
-		
-		else if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false){
+		}		
+		else if (needComplementaryInput && optionSet.containsKey(complementarySequence) == false)
+		{
 			return false;
 		}
-		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false){
-			if (NucleotidSequences.isSelfComplementarySequence(optionSet.get(OptionManagement.sequence).toUpperCase()) || optionSet.get(selfComplementarity).equals("true")){
+		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false 
+		    && (! optionSet.containsKey(inputFile)))
+		{
+			if (NucleotidSequences.isSelfComplementarySequence(optionSet.get(OptionManagement.sequence).toUpperCase()) 
+			    || optionSet.get(selfComplementarity).equals("true"))
+			{
 				optionSet.put(selfComplementarity, "true");
 				optionSet.put(factor, "1");
 				
 				String seq2 = NucleotidSequences.getInversedSequence(optionSet.get(sequence));
 				optionSet.put(complementarySequence, seq2);
 			}
-			else {
+			else 
+			{
 				String seq2 = NucleotidSequences.getComplementarySequence(optionSet.get(sequence), optionSet.get(hybridization));
 				optionSet.put(complementarySequence, seq2);
 			}
@@ -647,8 +718,7 @@ public class OptionManagement {
 	 * 
 	 * @param  solutionComposition : different ion and agent concentrations
 	 * @return true if all the ion and agent concentrations entered by the are valid.
-	 * If at least one of the concentrations is not valid, an {@link OptionSyntaxError} is thrown.
-	 * If a {@link NumberFormatException} is caught, an OptionSynthaxError is thrown.
+	 * @throws OptionSyntaxError If one of the concentrations is not valid.
 	 */
 	private boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
@@ -681,7 +751,7 @@ public class OptionManagement {
 	 * 
 	 * @param args : contains the options entered by the user.
 	 * @return HasMap containing the default options. The default options depend on the type of hybridization entered by the user.
-	 * If the type of hybridization is missing, an OptionSyntaxError is thrown.
+	 * @throws OptionSyntaxError If the type of hybridization is missing.
 	 */
 	private HashMap<String, String> initialiseDefaultOptions(String [] args){
 
@@ -692,8 +762,12 @@ public class OptionManagement {
 			if (args[i].equals(OptionManagement.hybridization)){
 				if (i != args.length - 1 && isAnOptionValue(args[i + 1])){
 					hybrid = args[i + 1];
-					break;
 				}
+			}
+			if (args[i].equals(OptionManagement.inputFile)) {
+              if (i != args.length - 1 && isAnOptionValue(args[i + 1])){
+                optionSet.put(inputFile, args[i + 1]);
+              }
 			}
 		}
 
@@ -725,12 +799,16 @@ public class OptionManagement {
 		optionSet.put(factor, Integer.toString(factorValue));
 		optionSet.put(globalMethod, "def");
 		optionSet.put(selfComplementarity, "false");
+		
+		if (slidingWindow > 0) {
+		  optionSet.put(sliding_window, Integer.toString(slidingWindow));
+		}
 			
 		return optionSet;
 	}
 	
 	/**
-	 * initialises the meltingLogger.
+	 * Initialises the meltingLogger.
 	 */
 	public void initialiseLogger(){
 		StreamHandler handler = new StreamHandler(System.out, new MeltingFormatter());
@@ -740,8 +818,9 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * the verbose mode introduction. (Melting introduction)
-	 * @return String containing the melting introduction for the verbose mode.
+	 * Returns the melting introduction for the verbose mode.
+	 * 
+	 * @return the melting introduction for the verbose mode.
 	 */
 	private String getVerbose(){
 		StringBuffer verboseValue = new StringBuffer();
@@ -750,17 +829,18 @@ public class OptionManagement {
 		verboseValue.append("This program   computes for a nucleotide probe, the enthalpy, the entropy \n");
 		verboseValue.append("and the melting temperature of the binding to its complementary template. \n");
 		verboseValue.append("Four types of hybridisation are possible: DNA/DNA, DNA/RNA, RNA/RNA and 2-O-methyl RNA/RNA. \n");
-		verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009 \n \n");
+		verboseValue.append("Copyright (C) Nicolas Le Novère and Marine Dumousseau 2009-2016 \n \n");
 		verboseValue.append("******************************************************************************\n");
 		return verboseValue.toString();
 	}
 	
 	/**
-	 * collects the options entered by the user and stocks them in a HashMap.
+	 * Collects the options entered by the user and stocks them in a HashMap.
+	 * 
 	 * @param args : contains the options entered by the user.
 	 * @return HasMap containing the options entered by the user.
-	 * If one of the options is invalid, an OptionsSyntaxError is thrown.
-	 * If one of the Melting required options is missing, an OptionsSyntaxError is thrown. 
+	 * @throws OptionSyntaxError If one of the options is invalid or if one of the Melting required options is missing.
+	 * 
 	 */
 	private HashMap<String, String> collectOptions(String [] args){
 
@@ -781,13 +861,13 @@ public class OptionManagement {
 			if (i + 1 <= args.length - 1){
 				value = args[i+1];
 			}
-			boolean isAnValue = isAnOptionValue(option);
+			boolean isAValue = isAnOptionValue(option);
 			if (i > 0){
 				if (args[i - 1].equals(OptionManagement.sequence) || args[i - 1].equals(OptionManagement.complementarySequence)){
-					isAnValue = true;
+					isAValue = true;
 				}
 			}
-			if (isAnValue == false){
+			if (isAValue == false){
 					if (option.equals(OptionManagement.verboseMode)){
 						meltingLogger.setLevel(Level.FINE);
 						Handler[] handlers = meltingLogger.getHandlers();
@@ -888,7 +968,8 @@ public class OptionManagement {
 	// public methods
 	
 	/**
-	 * This method is called to get the DNADefaultOptions of OptionManagement.
+	 * Returns the DNADefaultOptions of OptionManagement.
+	 * 
 	 * @return the DNADefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getDNADefaultOptions() {
@@ -896,7 +977,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * This method is called to get the RNADefaultOptions of OptionManagement.
+	 * Returns  the RNADefaultOptions of OptionManagement.
+	 * 
 	 * @return the RNADefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getRNADefaultOptions() {
@@ -904,7 +986,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * This method is called to get the hybridDefaultOptions of OptionManagement.
+	 * Returns  the hybridDefaultOptions of OptionManagement.
+	 * 
 	 * @return the hybridDefaultOptions of OptionManagement.
 	 */
 	public HashMap<String, String> getHybridDefaultOptions() {
@@ -912,7 +995,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * This method is called to get the mRNADefaultOptions of OptionManagement.
+	 * Returns the mRNADefaultOptions of OptionManagement.
+	 * 
 	 * @return the mRNADefaultOptions HashMap of the OptionManagement object.
 	 */
 	public HashMap<String, String> getMRNADefaultOptions() {
@@ -920,7 +1004,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * to check if the user just wants to know some information about melting. (help documentation, legal information, data file pathway or Melting version number)
+	 * Checks if the user just wants to know some information about melting. (help documentation, legal information, data file pathway or Melting version number)
+	 * 
 	 * @param args : contains the options entered by the user
 	 * @return true if the user wants to know some information about melting.
 	 */
@@ -950,6 +1035,7 @@ public class OptionManagement {
 	/**
 	 * if at least one of the options entered by the user is an option to display some information about Melting,
 	 * the requested information is displayed.
+	 * 
 	 * @param args : contains the option entered by the user
 	 */
 	public void readOptions(String [] args){
@@ -980,7 +1066,8 @@ public class OptionManagement {
 	}
 	
 	/**
-	 * collects the options entered by the user and creates an Environment from them.
+	 * Collects the options entered by the user and creates an Environment from them.
+	 * 
 	 * @param args : contains the options entered by the user
 	 * @return Environment initialized with the default options and the options entered by the user.
 	 */
@@ -1006,9 +1093,16 @@ public class OptionManagement {
 		else{
 			OptionManagement.logMessage("no self complementarity ");
 		}
-		OptionManagement.logMessage("sequence : " + environment.getSequences().getSequence());
-		OptionManagement.logMessage("complementary sequence : " + environment.getSequences().getComplementary());
 		
+		if (! optionDictionnary.containsKey(inputFile)) 
+		{
+		  OptionManagement.logMessage("sequence : " + environment.getSequences().getSequence());
+		  OptionManagement.logMessage("complementary sequence : " + environment.getSequences().getComplementary());		
+		}
+		else 
+		{
+		  OptionManagement.logMessage("Input file : " + environment.getOptions().get(inputFile));
+		}
 		return environment;
 	}
 

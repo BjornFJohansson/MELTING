@@ -1,7 +1,8 @@
 	MELTING 5 help
 		
-More information is available in the user-guide. Type `man melting' to access it or consult one of the 
-melting.xxx files, where xxx states for ps (postscript), pdf or html.
+More information is available in the user-guide. Consult one of the 
+melting.xxx files, where xxx states for ps (postscript), pdf or html
+tat are located in the 'doc' folder.
 		
 	Information about MELTING 5 : 
 
@@ -35,8 +36,8 @@ melting.xxx files, where xxx states for ps (postscript), pdf or html.
 
 -H [hybridization]
 	Type of hybridization, mandatory. Four types of hybridization are allowed : dnadna (DNA duplex), rnarna (RNA duplex), dnarna or rnadna (hybrid DNA/RNA) and mrnarna or rnamrna (2-o-methyl RNA/ RNA). The type of hybridization defines the kind of the sequence and its complementary. 
-		Ex : dnarna = the sequence (entered with the option -S) is a DNA sequence and its complementary (entered with the option -C) is a RNA sequence.
-		Ex : rnadna = the sequence (entered with the option -S) is a RNA sequence and its complementary (entered with the option -C) is a DNA sequence  
+		Ex: dnarna = the sequence (entered with the option -S) is a DNA sequence and its complementary (entered with the option -C) is a RNA sequence.
+		Ex: rnadna = the sequence (entered with the option -S) is a RNA sequence and its complementary (entered with the option -C) is a DNA sequence  
 
 
 	General options :
@@ -50,14 +51,29 @@ melting.xxx files, where xxx states for ps (postscript), pdf or html.
 -nnpath [folder pathway]
 	Change the default pathway (Data) where to find the default calorimetric tables (thermodynamic parameters).
 
+-I [filename]
+  To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
+  The sequence file could be in the Fasta format or contain on sequence per line, in this last case, one line
+  can contain the sequence and the complementary sequence, separated by a space character. 
+
+-IC [filename]
+  To read a set of complementary sequences in an input file. 'filename' is the name or the full path to the file.
+  The sequence file could be in the Fasta format or contain on sequence per line. The number of sequences in this file
+  should match the number of sequences that are on the file given with the '-I' option. If this is not the case this
+  file/option will be ignored 
+
 -O [filename]
-	To write the results in an output file. filename is the name or the pathway of the file.
+	To write the results in an output file. 'filename' is the name or the full path to the file.
 
 -self
 	To precise that the sequence entered with the option -S is self complementary. No complementary sequence is mandatory. The program automatically can detect a self complementary sequence for perfect matching sequences or sequences with dangling ends. In these cases, the option -self is not necessary, otherwise we need to precise that the sequences are self complementary.
 
 -F [factor value]
 	Correction for the concentration of nucleic acid. F is automatically 1 if the sequences are self complementary. Otherwise F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. The default factor value is 4.
+
+-w [sliding window value]
+  The input sequence will be examined slide by slide and a melting result will be provided for each slide.
+  Ex: '-S TAGTCTAA -w 6' -> result given for TAGTCT, AGTCTA and GTCTAA 
 
 	Set of thermodynamic parameters and methods : 
 By default, the approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), otherwise the nearest 
@@ -98,8 +114,8 @@ neighbor model is used.
 
 	If there is no formula name after the option -nn, we will compute the melting temperature with the default nearest neighbor model. 
 	Each nearest neighbor model uses a specific xml file containing the thermodynamic values. If you want to use another file, write the file name or the file pathway preceded by ':' (-nn [optionalname:optionalfile]).
-		Ex : -nn tan04:fileName if you want to use the nearest neighbor model from Tanaka et al. 2004 with the thermodynamic parameters in the file fileName. 
-		Ex : -nn :fileName if you want to use the default nearest neighbor model with the thermodynamic parameters in the file fileName. 
+		Ex: -nn tan04:fileName if you want to use the nearest neighbor model from Tanaka et al. 2004 with the thermodynamic parameters in the file fileName. 
+		Ex: -nn :fileName if you want to use the default nearest neighbor model with the thermodynamic parameters in the file fileName. 
 
 -sinMM [name]
 	Forces to use a specific nearest neighbor model for single mismatch(es) in the sequences. You can use one of the following :

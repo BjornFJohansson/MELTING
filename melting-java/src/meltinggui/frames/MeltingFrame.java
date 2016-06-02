@@ -308,6 +308,7 @@ public class MeltingFrame extends JInternalFrame
    */
   public void displayMeltingResults(melting.ThermoResult results)
   {
+ // TODO - if the option for a sliding window is given, generate the list of sequences and launch a set of jobs
     resultsPanel.displayMeltingResults(results);
   }
 }

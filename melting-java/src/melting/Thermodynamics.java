@@ -34,8 +34,12 @@ public class Thermodynamics {
 	 */
 	protected double entropy;
 	
-	// Thermodynamics constructor
-	
+	/**
+	 * Creates a new instance of {@link Thermodynamics}.
+	 * 
+	 * @param H enthalpy
+	 * @param S entropy
+	 */
 	public Thermodynamics(double H, double S){
 		this.enthalpy = H;
 		this.entropy = S;

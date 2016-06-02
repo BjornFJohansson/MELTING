@@ -396,7 +396,7 @@ public class LineGraph extends JPanel {
 
 			@Override
 			public void run() {
-				int size = 5000;
+				int size = 100;
 				double yMin=Integer.MAX_VALUE, yMax=0;
 				double[] data = new double[size];
 				String[] categories = new String[size];
