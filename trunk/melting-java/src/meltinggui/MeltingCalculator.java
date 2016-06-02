@@ -82,6 +82,6 @@ public class MeltingCalculator
   private void computeMeltingResults() throws RuntimeException
   {
     OptionManagement optionManager = new OptionManagement();
-    results = Main.getMeltingResults(argsOption, optionManager);
+    results = Main.getMeltingResults(argsOption, optionManager).getResult();
   }
 }

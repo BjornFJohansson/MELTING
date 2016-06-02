@@ -83,17 +83,20 @@ public class Environment {
 	// Environment constructor
 	
 	/**
-	 * creates an Environment object from the different options (default options and options entered by the user).
-	 * initialises the different instance variables of the Environment object.
-	 * If the options HashMap is null, an OptionSyntaxError is thrown.
-	 * If all the required ion concentrations (Na, Mg, K, Tris) are 0, an OptionSyntaxError is thrown.
+	 * Creates an Environment object from the different options (default options and options entered by the user).
+	 * <p>Initialises the different instance variables of the Environment object.
+	 * 
 	 * @param options : contains the options (default options and options entered by the user)
+	 * @throws OptionSyntaxError If the options HashMap is null or if all the required 
+	 * ion concentrations (Na, Mg, K, Tris) are 0.
 	 */
 	public Environment(HashMap<String, String> options){
 		this.options = options;
 
 		if (options == null){
-			throw new OptionSyntaxError("\n Some required options are missing. You have to enter the type of hybridization, the oligomer concentration, the sequences (at less the sequence 5'3') and at less one of the following ion concentrations : Na+, Mg2+, Tris+, K+. Read the manual for further information or see the option " + OptionManagement.meltingHelp);
+			throw new OptionSyntaxError("\n Some required options are missing. You have to enter the type of hybridization,"
+			    + " the oligomer concentration, the sequences (at less the sequence 5'3') and at less one of the following ion"
+			    + " concentrations : Na+, Mg2+, Tris+, K+. Read the manual for further information or see the option " + OptionManagement.meltingHelp);
 		}
 				
 		initialiseConcentrations();
@@ -105,21 +108,29 @@ public class Environment {
 		this.oligomerConcentration = Double.parseDouble(options.get(OptionManagement.nucleotides));
 		this.Hybridization = options.get(OptionManagement.hybridization).toLowerCase();
 		
-		if (options.get(OptionManagement.selfComplementarity).equals("true")){
+		if (options.get(OptionManagement.selfComplementarity).equals("true"))
+		{
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
 		}
-		else if (NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase()) && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.complementarySequence).toUpperCase())){
+		else if ((! options.containsKey(OptionManagement.inputFile)) 
+		    && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.complementarySequence).toUpperCase())
+		    && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase()))
+		{
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
 		}
-		else {
+		else 
+		{
 			this.IsSelfComplementarity = false;
 			this.factor = Integer.parseInt(options.get(OptionManagement.factor));
 		}
 
-		sortSquences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
+		if (! options.containsKey(OptionManagement.inputFile))
+		{
+		sortSequences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
 		NucleotidSequences.initialiseModifiedAcidHashmap();
+		}
 		
 		this.result = new ThermoResult(0,0,0);
 
@@ -128,15 +139,16 @@ public class Environment {
 	// public methods
 	
 	/**
-	 * sorts the sequences in function of the type of hybridization : In case of DNA/RNA type of hybridization, the sequence (5'3') must be a DNA sequence
+	 * Sorts the sequences in function of the type of hybridization : In case of DNA/RNA type of hybridization, the sequence (5'3') must be a DNA sequence
 	 * and the complementary sequence (3'5') a RNA sequence. In case of mRNA/RNA type of hybridization, the sequence (5'3') must be a mRNA sequence
 	 * and the complementary sequence (3'5') a RNA sequence.
 	 * Then creates the sequences NucleotidSequences of the Environment object.
+	 * 
 	 * @param  hybridization : type of hybridization. Precise the nature of each sequence (DNA, RNA or mRNA)
 	 * @param  firstSequence : sequence (5'3')
 	 * @param  secondSequence : complementary sequence (3'5')
 	 */
-	public void sortSquences(String hybridization, String firstSequence, String secondSequence){
+	public void sortSequences(String hybridization, String firstSequence, String secondSequence){
 		if (hybridization.equals("rnadna") || hybridization.equals("rnamrna")){
 			this.sequences = new NucleotidSequences(NucleotidSequences.getInversedSequence(secondSequence), NucleotidSequences.getInversedSequence(firstSequence));
 		}
@@ -146,7 +158,7 @@ public class Environment {
 	}
 
 	/**
-	 * This method is called to get the factor of Environment.
+	 * Gets the factor of Environment.
 	 * @return int factor of Environment.
 	 */
 	public int getFactor() {
