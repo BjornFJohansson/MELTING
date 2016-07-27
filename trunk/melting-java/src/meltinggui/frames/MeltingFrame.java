@@ -18,14 +18,14 @@
 
 package meltinggui.frames;
 
-import meltinggui.ArgsMessage;
-import meltinggui.MeltingLayout;
-import meltinggui.MeltingObservable;
-import meltinggui.dialogs.*;
-
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -37,8 +37,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Observer;
 
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
+import javax.swing.WindowConstants;
+
+import meltinggui.ArgsMessage;
+import meltinggui.MeltingLayout;
+import meltinggui.MeltingObservable;
+import meltinggui.dialogs.HybridizationDialog;
+import meltinggui.dialogs.IonConcentrationDialog;
+import meltinggui.dialogs.OligomerConcentrationDialog;
+import meltinggui.dialogs.ResultsPanel;
+import meltinggui.dialogs.SequenceDialog;
+import meltinggui.dialogs.SlidingWindowDialog;
+
 /**
  * The frame that opens when the user runs the GUI.
+ * 
  * @author John Gowers
  */
 public class MeltingFrame extends JInternalFrame
@@ -86,22 +107,73 @@ public class MeltingFrame extends JInternalFrame
   private String commandLineText;
 
   // Widgets to put on to the frame.  Declarations indented to show structure.
+  /**
+   * 
+   */
   private JPanel mainPanel = new JPanel();
+  /**
+   * 
+   */
   private JPanel sequencesPanel = new JPanel();
+  /**
+   * 
+   */
   private SequenceDialog sequenceDialog = new SequenceDialog();
+  /**
+   * 
+   */
   private SlidingWindowDialog slidingWindowDialog = new SlidingWindowDialog();
+  /**
+   * 
+   */
   private JPanel hybridizationPanel = new JPanel();
+  /**
+   * 
+   */
   private HybridizationDialog hybridizationDialog = new HybridizationDialog();
+  /**
+   * 
+   */
   private JPanel oligomerConcentrationPanel = new JPanel();
+  /**
+   * 
+   */
   private OligomerConcentrationDialog oligomerConcentrationDialog = new OligomerConcentrationDialog();
+  /**
+   * 
+   */
   private JPanel ionConcentrationsPanel = new JPanel();
+  /**
+   * 
+   */
   private IonConcentrationDialog ionConcentrationDialog =  new IonConcentrationDialog();
+  /**
+   * 
+   */
   private JPanel buttonsPanel = new JPanel();
+  /**
+   * 
+   */
   private JButton getThermodynamicsButton = new JButton("Get Thermodynamics");
+  /**
+   * 
+   */
   private JToggleButton moreOptionsButton = new JToggleButton("More Options...");
+  /**
+   * 
+   */
   private JPanel commandLinePanel = new JPanel();
+  /**
+   * 
+   */
   private JTextArea commandLineTextArea = new JTextArea(" -S  -H  -P  -E");
+  /**
+   * 
+   */
   private JPanel resultsPanelPanel = new JPanel();
+  /**
+   * 
+   */
   private ResultsPanel resultsPanel = new ResultsPanel();
 
   /**
@@ -203,6 +275,7 @@ public class MeltingFrame extends JInternalFrame
 
   /**
    * Set the sequence in the sequence dialogue.
+   * 
    * @param sequence the file containing the sequences
    */
   public void setSequence(File sequence) {
@@ -285,7 +358,8 @@ public class MeltingFrame extends JInternalFrame
     commandLineText = sequenceDialog.getCommandLineFlags() +
                       hybridizationDialog.getCommandLineFlags() +
                       oligomerConcentrationDialog.getCommandLineFlags() +
-                      ionConcentrationDialog.getCommandLineFlags();
+                      ionConcentrationDialog.getCommandLineFlags() +
+                      slidingWindowDialog.getCommandLineFlags();
     commandLineTextArea.setText(commandLineText);
   }
   
