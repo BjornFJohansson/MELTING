@@ -52,7 +52,9 @@ public class InputFieldArray<W extends Component & InputWidgetInterface>
 
   /**
    * Create the widgets and set them up.  
+   * 
    * @param labelText Array of strings holding the text for each label.
+   * @param clazz Array of widgets
    */
   public InputFieldArray(String[] labelText, Class<W> clazz)
   {

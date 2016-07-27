@@ -18,17 +18,35 @@
 
 package meltinggui.frames;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Observer;
+
+import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import meltinggui.dialogs.StatusPanel;
 import meltinggui.menu.MeltingMenuBar;
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.*;
-import java.util.Observer;
-
+/**
+ * Main {@link JFrame} containing all of the Melting options component. 
+ * 
+ * @author John Gowers
+ * @author rodrigue
+ *
+ */
 public class OuterFrame
   extends JFrame
 {
@@ -144,36 +162,55 @@ public class OuterFrame
     setVisible(true);
   }
 
+  /**
+   * 
+   * @return ??
+   */
   public boolean openConfigFile() {
 	return false;
   }
   
+  /**
+   * Opens a {@link JFileChooser} so that the user can select a sequence file and
+   * sets the file name into the {@code meltingFrame}.
+   * 
+   * @return true
+   */
   public boolean openFile() {
-		JFileChooser chooser;
-		
-		if (lastUsedDir == null) {
-			chooser = new JFileChooser();
-		}
-		else {
-			chooser = new JFileChooser(lastUsedDir);
-		}
-		chooser.setMultiSelectionEnabled(false);
-//		chooser.addChoosableFileFilter(bff);
-//		chooser.setFileFilter(bff);
-		int result = chooser.showOpenDialog(this);
-		if (result == JFileChooser.CANCEL_OPTION) return false;
-	
-		File filename = chooser.getSelectedFile();
-		meltingFrame.setSequence(filename);
-		return true;
+    JFileChooser chooser;
+
+    if (lastUsedDir == null) {
+      chooser = new JFileChooser();
+    }
+    else {
+      chooser = new JFileChooser(lastUsedDir);
+    }
+    chooser.setMultiSelectionEnabled(false);
+    //		chooser.addChoosableFileFilter(bff);
+    //		chooser.setFileFilter(bff);
+    int result = chooser.showOpenDialog(this);
+    if (result == JFileChooser.CANCEL_OPTION) return false;
+
+    File filename = chooser.getSelectedFile();
+    meltingFrame.setSequence(filename);
+    return true;
   }
   
   
+  /**
+   * 
+   * @return true
+   */
   public boolean closeFile() {
 	  meltingFrame.cleanSequence();
 	  return true;
   }
   
+  /**
+   * Sets the status panel text
+   * 
+   * @param str the text to set
+   */
   public void setStatusPanelText(String str) {
 	  statusPanel.setText(str);
   }
@@ -209,6 +246,7 @@ public class OuterFrame
 
   /**
    * Returns the sequence file.
+   * 
    * @return the sequence file.
    */
   public File getSequenceFile() {
@@ -216,8 +254,9 @@ public class OuterFrame
   }
   
   /**
-   * Set the sequence file
-   * @param file
+   * Set the sequence file.
+   * 
+   * @param file the {@link File} that contain the sequence(s)
    */
   public void setSequenceFile(File file) {
 	  sequenceFile = file;
@@ -292,10 +331,12 @@ public class OuterFrame
               screenSize.height - (inset * 2));
   }
 
-    public void clearErrors() {
-        errorFrame.clearErrors();
-    }
-
+  /**
+   * 
+   */
+  public void clearErrors() {
+    errorFrame.clearErrors();
+  }
 
 }
 
