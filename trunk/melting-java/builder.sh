@@ -1,7 +1,7 @@
 #!/bin/bash
 TMPFOLDER=/tmp/meltingbuild
-INNER_ARCHIVE_FOLDER=MELTING5.2.0
-ARCHIVE_NAME=MELTING5.2.0
+INNER_ARCHIVE_FOLDER=melting-5.3.0
+ARCHIVE_NAME=melting-5.3.0
 DSTFOLDER=${TMPFOLDER}/${INNER_ARCHIVE_FOLDER}
 echo "Preparing temporary folder ${DSTFOLDER}"
 mkdir -p ${DSTFOLDER}
@@ -16,14 +16,18 @@ echo "Copying documentations"
 cp -Rf doc javadoc ${DSTFOLDER}
 
 echo "Copying binaries"
-cp -Rf executable ${DSTFOLDER}
+cp -Rf executable ${DSTFOLDER}/bin
+
+echo "Copying binaries"
+cp -Rf executable/melting5.jar ${DSTFOLDER}/
 
 echo "Copying miscellaneous"
 cp -Rf testResults ${DSTFOLDER}
-cp ChangeLog GeneralPublicLicence Install.unices README build.xml buildProject.sh ${DSTFOLDER}
+cp ChangeLog COPYING.txt LICENSE.txt Install.unices README build.xml buildProject.sh ${DSTFOLDER}
 
 echo "Adding execution rights"
-chmod a+x ${DSTFOLDER}/executable/*
+chmod a+x ${DSTFOLDER}/bin/*
+chmod a+x ${DSTFOLDER}/melting5.jar
 chmod a+x ${DSTFOLDER}/Install.unices
 chmod a+x ${DSTFOLDER}/buildProject.sh
 

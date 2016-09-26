@@ -4,6 +4,6 @@ cd $(dirname $0)
 if [ ! "$NN_PATH" ]; then
   NN_PATH=../Data
 fi
-java -cp melting5.jar melting.BatchMain $*
+java -cp melting5.jar:../lib/htsjdk-2.3.0.jar melting.BatchMain $*
 
 echo
