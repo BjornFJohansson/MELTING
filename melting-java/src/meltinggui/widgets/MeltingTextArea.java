@@ -19,8 +19,8 @@
 package meltinggui.widgets;
 
 import java.awt.Dimension;
-import java.awt.Insets;
-import javax.swing.*;
+
+import javax.swing.JTextArea;
 
 /**
  * A text area for use with the MELTING program.  Implements
@@ -79,35 +79,7 @@ public class MeltingTextArea extends JTextArea
     super.selectAll();
   }
 
-//  /**
-//   * We override the <code>getPreferredSize</code> method in order to produce
-//   * better resizing behaviour.
-//   * @return The new preferred size.
-//   */
-//   FIXME This does not work, as it doesn't allow the user to see rows below 
-//  the size of the text area. The default getPreferredSize() works instead.
-//  
-//  @Override
-//  public Dimension getPreferredSize()
-//  {
-//    Dimension preferredSize = new Dimension(400, 400);
-//    Insets insets = getInsets();
-//    int rows = getRows();
-//    int columns = getColumns();
-//
-//    if (columns != 0) {
-//      preferredSize.width = (columns * getColumnWidth()) +
-//                            insets.left                  +
-//                            insets.right;
-//    }
-//    if (rows != 0) {
-//      preferredSize.height = (rows * getRowHeight()) +
-//                             insets.top              +
-//                             insets.bottom;
-//    }
-//    return preferredSize;
-//  }
-  
+
   /**
    * Override the <code>getMinimumSize</code> method to return the preferred 
    * size - these text areas should never be any smaller than their preferred

@@ -2,7 +2,7 @@
 		
 More information is available in the user-guide. Consult one of the 
 melting.xxx files, where xxx states for ps (postscript), pdf or html
-tat are located in the 'doc' folder.
+that are located in the 'doc' folder.
 		
 	Information about MELTING 5 : 
 
@@ -22,11 +22,10 @@ tat are located in the 'doc' folder.
 	Mandatory options :
 
 -S [sequence]
-	Nucleic acid sequence, mandatory. The sens of this sequence must be 5'-3'.
-
+	Nucleic acid sequence, mandatory. The sense of this sequence must be 5'-3'.
 
 -C [complementary sequence]
-	Nucleic acid complementary sequence, mandatory only if there is inosine bases or azobenznes in the sequence entered with the opton -S. The sens of this sequence must be 3'-5''.
+	Nucleic acid complementary sequence, mandatory only if there is inosine bases or azobenzenes in the sequence entered with the option -S. The sense of this sequence must be 3'-5''.
 
 -E [agent1=concentration1:agent2=concentration2]
 	Different agent concentrations in the solution. The agents can be cations (Na, K, Tris, Mg for Na+, K+, Tris+ and Mg2+), dNTP or other agents (DMSO, formamide). The concentrations must be in Mol/L but there are some exceptions : DMSO is a percentage, formamide is a percentage if the method lincorr is chosen and in Mol/L if the method bla96 is chosen. At least one cation concentration is mandatory, the other agents are optional. See the documentation for the concentration limits. It depends on the used correction.
@@ -53,12 +52,12 @@ tat are located in the 'doc' folder.
 
 -I [filename]
   To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
-  The sequence file could be in the Fasta format or contain on sequence per line, in this last case, one line
+  The sequence file could be in the Fasta format or contain one sequence per line, in this last case, one line
   can contain the sequence and the complementary sequence, separated by a space character. 
 
 -IC [filename]
   To read a set of complementary sequences in an input file. 'filename' is the name or the full path to the file.
-  The sequence file could be in the Fasta format or contain on sequence per line. The number of sequences in this file
+  The sequence file could be in the Fasta format or contain one sequence per line. The number of sequences in this file
   should match the number of sequences that are on the file given with the '-I' option. If this is not the case this
   file/option will be ignored 
 
