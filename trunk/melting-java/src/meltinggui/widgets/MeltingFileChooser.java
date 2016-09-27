@@ -18,6 +18,11 @@
 
 package meltinggui.widgets;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -34,23 +39,45 @@ public class MeltingFileChooser extends JPanel
   implements InputWidgetInterface
 {
   /**
-   * Array of combo box options for the combo box.
+   * file browser so that the user can select a file easily.
    */
-  private static final JFileChooser comboBoxOptions = new JFileChooser(); 
+  private static final JFileChooser fileChooser = new JFileChooser(); 
   
-  private JTextField fileNameTextField;
-  
-  // TODO - create a panel with a textfield and button launching the jfileChooser - return the file name as value
-
   /**
-   * Fills in the combo box options, and sets up the combo box model.
-   * @param suppliedOptions The combo box options supplied parameters to the
-   * constructor.
+   * 
    */
-  public MeltingFileChooser(ComboBoxOption[] suppliedOptions)
+  private JTextField fileNameTextField;
+  /**
+   * 
+   */
+  private JButton fileChooserButton = new JButton("...");
+  
+  /**
+   * 
+   */
+  public MeltingFileChooser()
   {
-    // TODO - create a panel with a textfield and button launching the jfileChooser - return the file name as value
+    super();
+    setLayout(new GridLayout(1, 0)); // TODO - GridBagLayout
 
+    fileNameTextField = new JTextField(30);
+    add(fileNameTextField);
+    
+    fileChooserButton.setAction(new AbstractAction() {
+      
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        int result = fileChooser.showOpenDialog(null);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+          setValue(fileChooser.getSelectedFile().getAbsolutePath());
+        }
+      }
+    });
+    fileChooserButton.setToolTipText("Clicking on this button will open a file browser where you will be able to easily select the file.");
+    fileChooserButton.setText("...");
+    add(fileChooserButton);
   }
 
 
@@ -68,7 +95,7 @@ public class MeltingFileChooser extends JPanel
   /**
    * Sets the file name in the JTextField
    * 
-   * @param newValue
+   * @param newValue the new value
    */
   @Override
   public void setValue(String newValue) {
@@ -81,6 +108,15 @@ public class MeltingFileChooser extends JPanel
   @Override
   public void selectAll() {
     
+  }
+  
+  /**
+   * Sets the tooltip value on the text field.
+   * 
+   * @param tooltip the tooltip
+   */
+  public void setTextFieldToolTip(String tooltip) {
+    fileNameTextField.setToolTipText(tooltip);
   }
 }
 

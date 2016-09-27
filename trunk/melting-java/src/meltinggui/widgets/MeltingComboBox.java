@@ -85,7 +85,7 @@ public class MeltingComboBox extends JComboBox
   }
 
   /**
-   * Gets the command-line text corrseponding to the selected option.
+   * Gets the command-line text corresponding to the selected option.
    * @return The command-line text.
    */
   @Override

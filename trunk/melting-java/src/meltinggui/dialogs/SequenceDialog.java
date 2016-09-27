@@ -32,8 +32,8 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
    */
   public SequenceDialog()
   {
-    super(new String[] {"Sequence (Option -S): ",
-                        "Complementary sequence (Option -C): "},
+    super(new String[] {"Sequence: ",
+                        "Complementary sequence: "},
           MeltingTextArea.class);
   }
 
@@ -84,8 +84,7 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
 
     // Remove all white space from the sequences.
     String sequenceText = getSequenceText().replaceAll("[ \\t\\n]", "");
-    String complementaryText =
-                     getComplementaryText().replaceAll("[ \\t\\n]", "");
+    String complementaryText = getComplementaryText().replaceAll("[ \\t\\n]", "");
 
     commandLineFlags = commandLineFlags.concat(sequenceText);
     
