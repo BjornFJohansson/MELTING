@@ -55,6 +55,7 @@ import meltinggui.dialogs.IonConcentrationDialog;
 import meltinggui.dialogs.OligomerConcentrationDialog;
 import meltinggui.dialogs.ResultsPanel;
 import meltinggui.dialogs.SequenceDialog;
+import meltinggui.dialogs.SequenceInputPanel;
 import meltinggui.dialogs.SlidingWindowDialog;
 
 /**
@@ -74,7 +75,7 @@ public class MeltingFrame extends JInternalFrame
    * Creates a new frame.
    */
   public MeltingFrame() {
-    super("Melting Data Form", true, false, true, true);
+    super("Melting Input parameters", true, false, true, true);
     initializeWidgets();
   }
   
@@ -115,10 +116,11 @@ public class MeltingFrame extends JInternalFrame
    * 
    */
   private JPanel sequencesPanel = new JPanel();
+  // private SequenceDialog sequenceDialog = new SequenceDialog();  
   /**
    * 
    */
-  private SequenceDialog sequenceDialog = new SequenceDialog();
+  private SequenceInputPanel sequenceInputDialog = new SequenceInputPanel();
   /**
    * 
    */
@@ -207,7 +209,7 @@ public class MeltingFrame extends JInternalFrame
     commandLinePanel.setLayout(new BorderLayout(30, 30));
     resultsPanelPanel.setLayout(new GridLayout(1, 2));
 
-    sequencesPanel.add(sequenceDialog);
+    sequencesPanel.add(sequenceInputDialog);
     hybridizationPanel.add(hybridizationDialog);
     oligomerConcentrationPanel.add(oligomerConcentrationDialog);
     ionConcentrationsPanel.add(new JLabel("Ion concentrations (option -E): "),
@@ -278,24 +280,24 @@ public class MeltingFrame extends JInternalFrame
    * 
    * @param sequence the file containing the sequences
    */
-  public void setSequence(File sequence) {
+  public void setSequence(File sequence) {  // TODO - do we still need this method ?
 	  String[] sequenceStr = null;	  
 	  sequenceStr = generateString(sequence);
 	  if(sequenceStr != null) {
 		  outerFrame.setSequenceFile(sequence);
-		  sequenceDialog.setSequence(sequenceStr[0]);
-		  sequenceDialog.setComplement(sequenceStr[1]);
-		  sequenceDialog.disableAll();
+//		  sequenceDialog.setSequence(sequenceStr[0]);
+//		  sequenceDialog.setComplement(sequenceStr[1]);
+//		  sequenceDialog.disableAll();
 	  }
   }
   
   /** 
    * Remove the current file containing the sequences.
    */
-  public void cleanSequence() {
+  public void cleanSequence() { // TODO - do we still need this method ?
 	  outerFrame.setSequenceFile(null);
-	  sequenceDialog.clearText();
-	  sequenceDialog.enableAll();
+//	  sequenceInputDialog.clearText();
+//	  sequenceInputDialog.enableAll();
   }
   
   /**
@@ -355,7 +357,7 @@ public class MeltingFrame extends JInternalFrame
    */
   private void setCommandLineText()
   {
-    commandLineText = sequenceDialog.getCommandLineFlags() +
+    commandLineText = sequenceInputDialog.getCommandLineFlags() +
                       hybridizationDialog.getCommandLineFlags() +
                       oligomerConcentrationDialog.getCommandLineFlags() +
                       ionConcentrationDialog.getCommandLineFlags() +

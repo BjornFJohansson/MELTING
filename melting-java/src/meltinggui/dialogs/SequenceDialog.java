@@ -22,6 +22,7 @@ import meltinggui.widgets.*;
 
 /**
  * Dialog for specifying the sequence and complementary sequence.
+ * 
  * @author John Gowers
  */
 public class SequenceDialog extends InputFieldArray<MeltingTextArea>
@@ -39,6 +40,7 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
 
   /**
    * Gets the sequence text.
+   * 
    * @return The text specifying the sequence.
    */
   public String getSequenceText()
@@ -48,6 +50,7 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
 
   /**
    * Gets the complementary sequence text.
+   * 
    * @return The text specifying the complementary sequence.
    */
   public String getComplementaryText()
@@ -74,6 +77,7 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
   /**
    * Gets the command-line flags corresponding to the chosen sequence and
    * complementary sequence.
+   * 
    * @return The command-line flags the user would have to type in to specify
    *         the same sequences.
    */
@@ -99,23 +103,25 @@ public class SequenceDialog extends InputFieldArray<MeltingTextArea>
   }
   
   /**
-   * Set the sequence externally.
-   * @param the sequence to be added
+   * Sets the sequence.
+   * 
+   * @param sequence the sequence to be added
    */
   public void setSequence(String sequence) {
 	  this.setValue(0, sequence);
   }
 
   /**
-   * Set the complement externally.
-   * @param the complement to be added
+   * Sets the complement sequence.
+   * 
+   * @param complement the complement to be added
    */
   public void setComplement(String complement) {
 	  this.setValue(1, complement);
   }
   
   /**
-   * Clear the text for the two text areas.
+   * Clears the text for the two text areas.
    */
   public void clearText() { 
 	  setSequence("");

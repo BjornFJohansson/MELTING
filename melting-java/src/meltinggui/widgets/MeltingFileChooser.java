@@ -18,7 +18,10 @@
 
 package meltinggui.widgets;
 
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -58,10 +61,22 @@ public class MeltingFileChooser extends JPanel
   public MeltingFileChooser()
   {
     super();
-    setLayout(new GridLayout(1, 0)); // TODO - GridBagLayout
+    setLayout(new GridBagLayout());
 
-    fileNameTextField = new JTextField(30);
-    add(fileNameTextField);
+    // creates a constraints object
+    GridBagConstraints c = new GridBagConstraints();
+    c.insets = new Insets(2, 2, 2, 2); // insets for all components
+    c.gridx = 0; // column 0
+    c.gridy = 0; // row 0
+    c.ipadx = 10; // increases components width by 10 pixels
+    c.ipady = 0; // increases components height by 10 pixels
+    c.weightx = 2;
+    c.anchor = GridBagConstraints.WEST;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    
+    fileNameTextField = new JTextField(15);
+    fileNameTextField.setMinimumSize(new Dimension(50, 10));
+    add(fileNameTextField, c);
     
     fileChooserButton.setAction(new AbstractAction() {
       
@@ -77,7 +92,11 @@ public class MeltingFileChooser extends JPanel
     });
     fileChooserButton.setToolTipText("Clicking on this button will open a file browser where you will be able to easily select the file.");
     fileChooserButton.setText("...");
-    add(fileChooserButton);
+    
+    c.gridx = 1; // column 1
+    c.weightx = 0;
+    c.fill = GridBagConstraints.NONE;
+    add(fileChooserButton, c);
   }
 
 
