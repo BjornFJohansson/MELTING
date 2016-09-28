@@ -63,7 +63,7 @@ public class InputFieldArray<W extends Component & InputWidgetInterface>
 
     setBackground(new Color(0, 0, 0, 0));
 
-    setLayout(new MeltingLayout(this, 2, 0));
+    setLayout(new MeltingLayout(this, 2, 0)); // TODO - stop using MeltingLayout - use GridBagLayout !! 
 
     numberOfWidgets = labelText.length;
 
@@ -102,6 +102,18 @@ public class InputFieldArray<W extends Component & InputWidgetInterface>
   {
     return widgets.get(index).getValue();
   }
+
+  /**
+   * Get a particular widget.
+   * 
+   * @param index The index of that widget.
+   * @return a widget.
+   */
+  public W getWidget(int index)
+  {
+    return widgets.get(index);
+  }
+
 
   /**
    * Sets the value in a particular widget.

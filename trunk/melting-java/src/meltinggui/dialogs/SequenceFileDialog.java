@@ -70,15 +70,14 @@ public class SequenceFileDialog extends InputFieldArray<MeltingFileChooser>
   {
     String commandLineFlags = " -I ";
 
-    // Remove all white space from the sequences.
     String sequenceText = getSequenceFilePath();
-    String complementaryText = getComplementaryFilePath();
-
     commandLineFlags = commandLineFlags.concat(sequenceText);
     
     // Only give the flag for the complementary sequence file if the user has
     // entered one.
-    if (getComplementaryFilePath().trim().length() > 0) {
+    String complementaryText = getComplementaryFilePath().trim();
+
+    if (complementaryText.length() > 0) {
       commandLineFlags += " -IC ";
       commandLineFlags += complementaryText;
     }
