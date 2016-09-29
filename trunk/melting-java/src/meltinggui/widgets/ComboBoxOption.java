@@ -20,6 +20,7 @@ package meltinggui.widgets;
 
 /**
  * An option on a combo box used to select additional MELTING options.
+ * 
  * @author John Gowers
  */
 public class ComboBoxOption
@@ -36,8 +37,13 @@ public class ComboBoxOption
   private String commandLineText;
 
   /**
+   * The tooltip text for the option
+   */
+  private String tooltip;
+  
+  /**
    * Constructor setting the text to be displayed in the combo box and the text
-   * that would be written to the cmomand line.
+   * that would be written to the command line.
    */
   public ComboBoxOption(String optionText,
                         String commandLineText)
@@ -47,7 +53,19 @@ public class ComboBoxOption
   }
 
   /**
+   * Constructor setting the text to be displayed in the combo box and the text
+   * that would be written to the command line.
+   */
+  public ComboBoxOption(String optionText, String commandLineText, String tooltip)
+  {
+    setOptionText(optionText);
+    setCommandLineText(commandLineText);
+    setTooltip(tooltip);
+  }
+
+  /**
    * Sets the option text.
+   * 
    * @param optionText Text displayed on the combo box option.
    */
   public void setOptionText(String optionText)
@@ -57,6 +75,7 @@ public class ComboBoxOption
 
   /**
    * Gets the option text.
+   * 
    * @return The text displayed on the combo box option.
    */
   public String getOptionText()
@@ -66,6 +85,7 @@ public class ComboBoxOption
 
   /**
    * Sets the command-line text.
+   * 
    * @param commandLineText Text that would be written to the command line.
    */
   public void setCommandLineText(String commandLineText)
@@ -75,6 +95,7 @@ public class ComboBoxOption
 
   /**
    * Gets the command-line text.
+   * 
    * @return The text that would be written to the command line.
    */
   public String getCommandLineText()
@@ -84,6 +105,7 @@ public class ComboBoxOption
 
   /**
    * Copies this combo box option to another combo box option.
+   * 
    * @return The new combo box option.
    */
   public ComboBoxOption copy()
@@ -92,6 +114,26 @@ public class ComboBoxOption
             new ComboBoxOption(getOptionText(), getCommandLineText());
     return newComboBoxOption;
   }
+
+  /**
+   * Returns the tooltip text.
+   * 
+   * @return the tooltip
+   */
+  public String getTooltip() {
+    return tooltip;
+  }
+
+  /**
+   * Sets the tooltip text for the option.
+   * 
+   * @param tooltip the tooltip to set
+   */
+  public void setTooltip(String tooltip) {
+    this.tooltip = tooltip;
+  }
+  
+  
 }
     
 
