@@ -25,9 +25,10 @@ import javax.swing.*;
  * {@link InputWidgetInterface} so it has a
  * method that returns a string value corresponding to particular command-line
  * parameters.
+ * 
  * @author John Gowers
  */
-public class MeltingComboBox extends JComboBox
+public class MeltingComboBox extends JComboBox<String>
   implements InputWidgetInterface
 {
   /**
@@ -37,6 +38,7 @@ public class MeltingComboBox extends JComboBox
 
   /**
    * Fills in the combo box options, and sets up the combo box model.
+   * 
    * @param suppliedOptions The combo box options supplied parameters to the
    * constructor.
    */
@@ -50,6 +52,7 @@ public class MeltingComboBox extends JComboBox
 
   /**
    * Adds an empty option to the start of an array of combo box options.
+   * 
    * @param suppliedOptions The original combo box options supplied, without
    * the extra empty option.
    */
@@ -60,6 +63,7 @@ public class MeltingComboBox extends JComboBox
             new ComboBoxOption[numberOfSuppliedOptions + 1];
     newComboBoxOptions[0] = new ComboBoxOption(" Please select...", "");
     for (int i = 0 ; i < numberOfSuppliedOptions ; i++) {
+      System.out.println(suppliedOptions[i].getCommandLineText());
       newComboBoxOptions[i + 1] = suppliedOptions[i].copy();
     }
 
@@ -68,11 +72,12 @@ public class MeltingComboBox extends JComboBox
 
   /**
    * Gets the combo box model.
+   * 
    * @return The model used in the combo box.
    */
-  private ComboBoxModel getComboBoxModel()
+  private ComboBoxModel<String> getComboBoxModel()
   {
-    DefaultComboBoxModel newModel;
+    DefaultComboBoxModel<String> newModel;
     int numberOfComboBoxOptions = comboBoxOptions.length;
     String[] comboBoxOptionText = new String[numberOfComboBoxOptions];
 
@@ -80,12 +85,13 @@ public class MeltingComboBox extends JComboBox
       comboBoxOptionText[i] = comboBoxOptions[i].getOptionText();
     }
 
-    newModel = new DefaultComboBoxModel(comboBoxOptionText);
+    newModel = new DefaultComboBoxModel<String>(comboBoxOptionText);
     return newModel;
   }
 
   /**
    * Gets the command-line text corresponding to the selected option.
+   * 
    * @return The command-line text.
    */
   @Override
@@ -96,7 +102,8 @@ public class MeltingComboBox extends JComboBox
 
   /**
    * Does nothing.
-   * @param newValue
+   * 
+   * @param newValue ignored value
    */
   @Override
   public void setValue(String newValue) {}

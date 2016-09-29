@@ -251,7 +251,7 @@ neighbor model is used.
 			owc1904 (equation 19 from Owczarzy et al. 2004)
 			owc2004 (equation 20 from Owczarzy et al. 2004)
 			owc2104 (equation 21 from Owczarzy et al. 2004)
-			owc2204 (equation 21 from Owczarzy et al. 2004)  (by default)
+			owc2204 (equation 22 from Owczarzy et al. 2004)  (by default)
 			san96 (from Santalucia et al. 1996)
 			san04 (from Santalucia et al. 1998, 2004)
 			schlif (from Schildkraut and Lifson 1965)
@@ -293,7 +293,7 @@ neighbor model is used.
 -DMSO [name]
 	Forces to use a specific DMSO correction (DMSO is always in percent). You can use one of the following : 
 		(DNA)
-			ahs01 (from von Ahsen et al 2001)  (by default)
+			ahs01 (from Von Ahsen et al 2001)  (by default)
 			mus81 (from Musielski et al. 1981)
 			cul76 (from Cullen et al. 1976)
 			esc80 (from Escara et al. 1980). 
