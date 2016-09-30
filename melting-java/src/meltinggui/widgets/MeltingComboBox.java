@@ -63,7 +63,7 @@ public class MeltingComboBox extends JComboBox<String>
             new ComboBoxOption[numberOfSuppliedOptions + 1];
     newComboBoxOptions[0] = new ComboBoxOption(" Please select...", "");
     for (int i = 0 ; i < numberOfSuppliedOptions ; i++) {
-      System.out.println(suppliedOptions[i].getCommandLineText());
+      //System.out.println(suppliedOptions[i].getCommandLineText());
       newComboBoxOptions[i + 1] = suppliedOptions[i].copy();
     }
 
