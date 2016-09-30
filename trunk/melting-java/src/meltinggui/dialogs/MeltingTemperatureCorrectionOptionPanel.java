@@ -100,7 +100,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     
     // Formamide correction
     ComboBoxOption[] options = new ComboBoxOption[3];
-    options[0] = new ComboBoxOption("DNA:", "");
+    options[0] = new ComboBoxOption("<html><u>RNA:</u>", "");
     options[1] = new ComboBoxOption("  Blake et al 1996 (default)", "-for bla96");
     options[2] = new ComboBoxOption("  Linear correction", "-for lincorr");
     
@@ -110,7 +110,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
 
     // DMSO correction
     options = new ComboBoxOption[5];
-    options[0] = new ComboBoxOption("DNA:", "");
+    options[0] = new ComboBoxOption("<html><u>RNA:</u>", "");
     options[1] = new ComboBoxOption("  Von Ahsen et al 2001 (default)", "-DMSO ahs01");
     options[2] = new ComboBoxOption("  Musielski et al. 1981", "-DMSO mus81");
     options[3] = new ComboBoxOption("  Cullen et al. 1976", "-DMSO cul76");
@@ -122,9 +122,9 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     
     // ion corrections
     int index = 0;
-    options = new ComboBoxOption[30];
-    options[index] = new ComboBoxOption("Sodium corrections:", "");
-    options[++index] = new ComboBoxOption("  DNA:", "");
+    options = new ComboBoxOption[32];
+    options[index] = new ComboBoxOption("<html><u>Sodium corrections:</u>", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>RNA:</u>", "");
     options[++index] = new ComboBoxOption("    Von Ahsen et al. 2001", "-ion ahs01");
     options[++index] = new ComboBoxOption("    Frank-Kamenetskii et al 2001", "-ion kam71");
     options[++index] = new ComboBoxOption("    equation 19 from Owczarzy et al. 2004", "-ion owc1904");
@@ -137,27 +137,29 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     options[++index] = new ComboBoxOption("    Tan et al. 2006", "-ion tanna06");
     options[++index] = new ComboBoxOption("    Wetmur 1991", "-ion wetdna91");
     
-    options[++index] = new ComboBoxOption("  RNA or 2-o methyl RNA:", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>RNA or 2-o methyl RNA:</u>", "");
     options[++index] = new ComboBoxOption("    Tan et al. 2007 (default)", "-ion tanna07");
     options[++index] = new ComboBoxOption("    Wetmur 1991", "-ion wetrna91");
     
-    options[++index] = new ComboBoxOption("  RNA/DNA:", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>RNA/DNA:</u>", "");
     options[++index] = new ComboBoxOption("    Wetmur 1991 (default)", "-ion wetdnarna91");
 
-    options[++index] = new ComboBoxOption("Magnesium corrections:", "");
-    options[++index] = new ComboBoxOption("  DNA:", "");
+    options[++index] = new ComboBoxOption("", "");
+    options[++index] = new ComboBoxOption("<html><u>Magnesium corrections:</u>", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>DNA:</u>", "");
     options[++index] = new ComboBoxOption("    Owczarzy et al. 2008 (default)", "-ion owcmg08");
     options[++index] = new ComboBoxOption("    Tan et al. 2006", "-ion tanmg06");
     
-    options[++index] = new ComboBoxOption("  RNA or 2-o methyl RNA:", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>RNA or 2-o methyl RNA:</u>", "");
     options[++index] = new ComboBoxOption("    Tan et al. 2007", "-ion tanmg07");
 
-    options[++index] = new ComboBoxOption("Mixed Na Mg corrections:", "");
-    options[++index] = new ComboBoxOption("  DNA:", "");
+    options[++index] = new ComboBoxOption("", "");
+    options[++index] = new ComboBoxOption("<html><u>Mixed Na Mg corrections:</u>", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>DNA:</u>", "");
     options[++index] = new ComboBoxOption("    Owczarzy et al. 2008 (default)", "-ion owcmix08");
     options[++index] = new ComboBoxOption("    Tan et al. 2007", "-ion tanmix07");
 
-    options[++index] = new ComboBoxOption("  RNA or 2-o methyl RNA:", "");
+    options[++index] = new ComboBoxOption("<html>&nbsp;&nbsp;<u>RNA or 2-o methyl RNA:</u>", "");
     options[++index] = new ComboBoxOption("    Tan et al. 2007", "-ion tanmix07"); // TODO - same name with the DNA option ??
 
     ionCorrectionCB = new MeltingComboBox(options);   
@@ -172,7 +174,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
    
     // Na equivalent concentration correction
     options = new ComboBoxOption[4];
-    options[0] = new ComboBoxOption("DNA:", "");
+    options[0] = new ComboBoxOption("<html><u>DNA:</u>", "");
     options[1] = new ComboBoxOption("  Von Ahsen et al 2001 (default)", "-naeq ahs01");
     options[2] = new ComboBoxOption("  Mitsuhashi et al. 1996", "-naeq mit96");
     options[3] = new ComboBoxOption("  Peyret 2000", "-naeq pey00");
