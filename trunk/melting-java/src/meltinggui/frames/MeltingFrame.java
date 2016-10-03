@@ -219,8 +219,10 @@ public class MeltingFrame extends JInternalFrame
     buttonsPanel.add(getThermodynamicsButton, BorderLayout.WEST);
     buttonsPanel.add(Box.createHorizontalGlue());
     buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
-    commandLinePanel.add(commandLineTextArea, BorderLayout.CENTER);
-    resultsPanelPanel.add(resultsPanel);
+
+    // TODO - this will be moved to a new window
+    //commandLinePanel.add(commandLineTextArea, BorderLayout.CENTER);
+    //resultsPanelPanel.add(resultsPanel);
 
     int row = 0;
     constraints = getGridBagRow(row++);
