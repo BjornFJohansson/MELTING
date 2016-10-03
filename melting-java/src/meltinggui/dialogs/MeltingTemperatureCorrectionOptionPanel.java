@@ -106,7 +106,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     
     formamideCorrectionCB = new MeltingComboBox(options);
     formamideCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Formamide correction"));
-    formamideCorrectionCB.setToolTipText("Forces to use a specific formamide correction.");
+    formamideCorrectionCB.setToolTipText("Select a specific formamide correction.");
 
     // DMSO correction
     options = new ComboBoxOption[5];
@@ -118,7 +118,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     
     dmsoCorrectionCB = new MeltingComboBox(options);   
     dmsoCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "DMSO correction"));
-    dmsoCorrectionCB.setToolTipText("Forces to use a specific DMSO correction (DMSO is always in percent).");
+    dmsoCorrectionCB.setToolTipText("Select a specific DMSO correction (DMSO is always in percent).");
     
     // ion corrections
     int index = 0;
@@ -163,9 +163,9 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     options[++index] = new ComboBoxOption("    Tan et al. 2007", "-ion tanmix07"); // TODO - same name with the DNA option ??
 
     ionCorrectionCB = new MeltingComboBox(options);   
-    ionCorrectionCB.setMaximumRowCount(20);
+    ionCorrectionCB.setMaximumRowCount(25);
     ionCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "ion corrections"));
-    ionCorrectionCB.setToolTipText("<html>Forces to use a specific ion correction.<br>" 
+    ionCorrectionCB.setToolTipText("<html>Select a specific ion correction.<br>" 
         + "By default, the program use the algorithm from Owczarzy et al. 2008 : ratio = Mg^0.5 and monovalent = Na + Tris + K<br><br>"
         + "<ul><li>    if monovalent = 0, a magnesium correction is used.<br>"
         + "<li>    if ratio < 0.22, a sodium correction is used.<br>"
@@ -181,7 +181,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     
     naEquivalentCB = new MeltingComboBox(options);   
     naEquivalentCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Na equivalent concentration"));
-    naEquivalentCB.setToolTipText("Forces to use a specific ion correction which gives a sodium equivalent concentration if other cations are present.");
+    naEquivalentCB.setToolTipText("Select a specific ion correction which gives a sodium equivalent concentration if other cations are present.");
   }
   
   /**

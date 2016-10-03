@@ -236,7 +236,8 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[++index] = new ComboBoxOption("<html><u>mRNA/RNA:</u>", "");
     options[++index] = new ComboBoxOption("  Kierzek et al. 2006", "-nn tur06");
 
-    nearestNeighborModelCB = new MeltingComboBox(options);   
+    nearestNeighborModelCB = new MeltingComboBox(options);
+    nearestNeighborModelCB.setMaximumRowCount(25);
     nearestNeighborModelCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "nearest neighbor model"));
     nearestNeighborModelCB.setToolTipText("<html>Select a specific nearest neighbor model.<br>"
         + "The approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), "
