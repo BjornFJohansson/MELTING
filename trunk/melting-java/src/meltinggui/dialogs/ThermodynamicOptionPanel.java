@@ -84,14 +84,15 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
 
     setLayout(new GridBagLayout());
     setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Thermodynamic parameters and methods"));
-
+    setBackground(Color.WHITE);
+    
     initComboBoxes();
     
     int row = 0;
     
     // creates a constraints object
     GridBagConstraints c = new GridBagConstraints();
-    c.insets = new Insets(2, 2, 2, 2); // insets for all components
+    c.insets = new Insets(4, 4, 4, 4); // insets for all components
     c.gridx = 0; // column 0
     c.gridy = row; // row ?
     c.ipadx = 10; // increases components width by 10 pixels
@@ -171,7 +172,9 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     c.gridy = row; // row 2
     c.weighty = 2;
     c.fill = GridBagConstraints.BOTH;
-    add(new JPanel(), c);
+    JPanel emptyPanel = new JPanel();
+    emptyPanel.setBackground(Color.WHITE);
+    add(emptyPanel, c);
   }
 
   /** Listens to the radio buttons. */
@@ -210,6 +213,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
 
     approximativeFormulaCB = new MeltingComboBox(options);   
     approximativeFormulaCB.setMaximumRowCount(20);
+    approximativeFormulaCB.setBackground(Color.WHITE);
     approximativeFormulaCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "approximative formula"));
     approximativeFormulaCB.setToolTipText("<html>Select a specific approximative formula.<br>"
         + "The approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), "
@@ -238,6 +242,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
 
     nearestNeighborModelCB = new MeltingComboBox(options);
     nearestNeighborModelCB.setMaximumRowCount(25);
+    nearestNeighborModelCB.setBackground(Color.WHITE);
     nearestNeighborModelCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "nearest neighbor model"));
     nearestNeighborModelCB.setToolTipText("<html>Select a specific nearest neighbor model.<br>"
         + "The approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), "
@@ -258,6 +263,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[++index] = new ComboBoxOption("  Davis et al. 2008", "-sinMM zno08");
 
     nnmSingleMismatchCB = new MeltingComboBox(options);   
+    nnmSingleMismatchCB.setBackground(Color.WHITE);
     nnmSingleMismatchCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for single mismatch(es)"));
     nnmSingleMismatchCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for single mismatch(es) in the sequences.");
     
@@ -267,6 +273,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[1] = new ComboBoxOption("  Serra et al. 2012 (default)", "-GU ser12");
     
     nnmGuBasedPairInRnaCB = new MeltingComboBox(options);
+    nnmGuBasedPairInRnaCB.setBackground(Color.WHITE);
     nnmGuBasedPairInRnaCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for GU base pairs in RNA"));
     nnmGuBasedPairInRnaCB.setToolTipText("Select a specific formamide correction.");
 
@@ -278,6 +285,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[3] = new ComboBoxOption("  Mathews et al. 1999", "-tanMM tur99");
     
     nnmTandemMismatchCB = new MeltingComboBox(options);
+    nnmTandemMismatchCB.setBackground(Color.WHITE);
     nnmTandemMismatchCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for tandem mismatches"));
     nnmTandemMismatchCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for tandem mismatches in the sequences.");
 
@@ -290,6 +298,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[4] = new ComboBoxOption("  Badhwarr et al. 2007, only for 1x2 loop", "-intLP zno07");
     
     nnmInternalLoopCB = new MeltingComboBox(options);
+    nnmInternalLoopCB.setBackground(Color.WHITE);
     nnmInternalLoopCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for internal loop"));
     nnmInternalLoopCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for internal loop in the sequences.");
 
@@ -303,6 +312,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[5] = new ComboBoxOption("  Miller et al. 2008 (default)", "-sinDE ser08");
     
     nnmSingleDanglingEndCB = new MeltingComboBox(options);
+    nnmSingleDanglingEndCB.setBackground(Color.WHITE);
     nnmSingleDanglingEndCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for single dangling end"));
     nnmSingleDanglingEndCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for single dangling end(s) in the sequences.");
 
@@ -316,6 +326,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[5] = new ComboBoxOption("  O'toole et al. 2006 (default)", "-secDE ser06");
     
     nnmSecondDanglingEndCB = new MeltingComboBox(options);
+    nnmSecondDanglingEndCB.setBackground(Color.WHITE);
     nnmSecondDanglingEndCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for second dangling end"));
     nnmSecondDanglingEndCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for second dangling end(s) in the sequences.");
 
@@ -327,6 +338,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[3] = new ComboBoxOption("  Ohmichi et al. 2002, only for polyA dangling ends", "-lonDE sugrna02");
     
     nnmLongDanglingEndCB = new MeltingComboBox(options);
+    nnmLongDanglingEndCB.setBackground(Color.WHITE);
     nnmLongDanglingEndCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for long dangling end"));
     nnmLongDanglingEndCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for long dangling end(s) in the sequences (self complementary sequences).");
 
@@ -340,6 +352,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[5] = new ComboBoxOption("  Lu et al. 1999 and 2006 (default)", "-sinBU tur06");
     
     nnmSingleBulgeLoopCB = new MeltingComboBox(options);
+    nnmSingleBulgeLoopCB.setBackground(Color.WHITE);
     nnmSingleBulgeLoopCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for single bulge loop"));
     nnmSingleBulgeLoopCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for single bulge loop(s) in the sequences.");
 
@@ -351,6 +364,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[3] = new ComboBoxOption("  Mathews et al. 1999 and Lu et al 2006", "-lonBU tur06");
     
     nnmLongBulgeLoopCB = new MeltingComboBox(options);
+    nnmLongBulgeLoopCB.setBackground(Color.WHITE);
     nnmLongBulgeLoopCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for long bulge loop"));
     nnmLongBulgeLoopCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for long bulge loop(s) in the sequences.");
 
@@ -362,6 +376,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[3] = new ComboBoxOption("  Wright et al. 2007", "-ino zno07");
     
     nnmInosineBaseCB = new MeltingComboBox(options);
+    nnmInosineBaseCB.setBackground(Color.WHITE);
     nnmInosineBaseCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for inosine base"));
     nnmInosineBaseCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for inosine base (I) in the sequences.");
 
@@ -371,6 +386,7 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
     options[1] = new ComboBoxOption("  Owczarzy et al. 2011", "-lck owc11");
     
     nnmLockedNucleicAcidCB = new MeltingComboBox(options);
+    nnmLockedNucleicAcidCB.setBackground(Color.WHITE);
     nnmLockedNucleicAcidCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "NN model for locked nucleic acid"));
     nnmLockedNucleicAcidCB.setToolTipText("<html>Select a specific nearest neighbor model <br>for DNA sequences containing locked nucleic acid (Al, Tl, Cl or Gl).");
 
