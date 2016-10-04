@@ -45,6 +45,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
   public MeltingTemperatureCorrectionOptionPanel() {
 
     setLayout(new GridBagLayout());
+    setBackground(Color.WHITE);
     setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Melting temperature corrections"));
 
     initComboBoxes();
@@ -87,7 +88,9 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     c.gridy = row; // row 2
     c.weighty = 2;
     c.fill = GridBagConstraints.BOTH;
-    add(new JPanel(), c);
+    JPanel emptyPanel = new JPanel();
+    emptyPanel.setBackground(Color.WHITE);
+    add(emptyPanel, c);
   }
 
   /**
@@ -105,6 +108,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     options[2] = new ComboBoxOption("  Linear correction", "-for lincorr");
     
     formamideCorrectionCB = new MeltingComboBox(options);
+    formamideCorrectionCB.setBackground(Color.WHITE);
     formamideCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Formamide correction"));
     formamideCorrectionCB.setToolTipText("Select a specific formamide correction.");
 
@@ -116,7 +120,8 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     options[3] = new ComboBoxOption("  Cullen et al. 1976", "-DMSO cul76");
     options[4] = new ComboBoxOption("  Escara et al. 1980", "-DMSO esc80");
     
-    dmsoCorrectionCB = new MeltingComboBox(options);   
+    dmsoCorrectionCB = new MeltingComboBox(options);
+    dmsoCorrectionCB.setBackground(Color.WHITE);
     dmsoCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "DMSO correction"));
     dmsoCorrectionCB.setToolTipText("Select a specific DMSO correction (DMSO is always in percent).");
     
@@ -164,6 +169,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
 
     ionCorrectionCB = new MeltingComboBox(options);   
     ionCorrectionCB.setMaximumRowCount(25);
+    ionCorrectionCB.setBackground(Color.WHITE);
     ionCorrectionCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "ion corrections"));
     ionCorrectionCB.setToolTipText("<html>Select a specific ion correction.<br>" 
         + "By default, the program use the algorithm from Owczarzy et al. 2008 : ratio = Mg^0.5 and monovalent = Na + Tris + K<br><br>"
@@ -180,6 +186,7 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
     options[3] = new ComboBoxOption("  Peyret 2000", "-naeq pey00");
     
     naEquivalentCB = new MeltingComboBox(options);   
+    naEquivalentCB.setBackground(Color.WHITE);
     naEquivalentCB.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Na equivalent concentration"));
     naEquivalentCB.setToolTipText("Select a specific ion correction which gives a sodium equivalent concentration if other cations are present.");
   }

@@ -1,6 +1,7 @@
 package meltinggui.dialogs;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,6 +12,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  * @author rodrigue
@@ -37,39 +41,64 @@ public class ExpertOptionPanel extends JPanel implements ActionListener, DialogI
   public ExpertOptionPanel() {
 
     setLayout(new GridBagLayout());
+    setBackground(Color.WHITE);   
     setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Expert options"));
 
     init();
     
-    int row = 0;
-    
     // creates a constraints object
     GridBagConstraints c = new GridBagConstraints();
-    c.insets = new Insets(4, 4, 4, 4); // insets for all components
     c.gridx = 0; // column 0
-    c.gridy = row; // row ?
-    c.ipadx = 10; // increases components width by 10 pixels
-    c.ipady = 0; // increases components height by 10 pixels
-    c.weightx = 2; // resize so that all combo box have the same width
-    c.anchor = GridBagConstraints.NORTHEAST;
+    c.gridy = 0; // row 0
+    c.weightx = 1; // resize so that all combo box have the same width
+    c.anchor = GridBagConstraints.LINE_START;
     c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridwidth = 2;
 
-    // thermodynamic parameters and methods
-    add(thermodynamicOptionPanel, c);
+    // First column
     
-    // melting temperature options
-    c.anchor = GridBagConstraints.NORTH;
-    c.gridy = row; // row ?
-    c.gridx = 1;
-    add(temperatureOptionPanel, c);
+    // TODO - insert an information panel
+    c.insets = new Insets(10, 4, 10, 4); 
+    JTextPane informationArea = new JTextPane();
+    informationArea.setEditable(false);
+    informationArea.setEditorKit(new HTMLEditorKit());
+    informationArea.setText("<html>Long text explaning the expert optionsrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr<p>blabla"
+        + "<p>an other paragraphe");
+    JScrollPane scrollPane = new JScrollPane(informationArea);
+    scrollPane.setMinimumSize(new Dimension(600, 120));
+    add(scrollPane, c);
+    // add(informationArea, c);
+    
+    // thermodynamic parameters and methods
+    c.insets = new Insets(4, 4, 4, 4); // insets for all components
+    c.gridy++;
+    c.gridwidth = 1;
+    c.gridheight = 2;    
+    c.anchor = GridBagConstraints.NORTHEAST;
+    add(thermodynamicOptionPanel, c);
     
     
     // empty JPanel to fill in the empty space
-    row++;
-    c.gridy = row; // row 2
+    c.gridwidth = 2;
+    c.gridheight = 1;    
+    c.gridy++;
     c.weighty = 2;
     c.fill = GridBagConstraints.BOTH;
     add(new JPanel(), c);
+
+    
+    // Second column
+    c.gridx = 1; // column 1
+    c.gridy = 1; // row 1 - as the text area is in row 0.
+    c.weighty = 0;
+    
+    // melting temperature options
+    c.anchor = GridBagConstraints.NORTH;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.gridwidth = 1;
+    add(temperatureOptionPanel, c);
+    
+
   }
 
   /** Listens to the radio buttons. */
@@ -97,6 +126,7 @@ public class ExpertOptionPanel extends JPanel implements ActionListener, DialogI
       //Create and set up the window.
       JFrame frame = new JFrame("TestFrame");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      frame.setMinimumSize(new Dimension(600, 940));
 
       //Create and set up the content pane.
       JComponent newContentPane = new ExpertOptionPanel();
