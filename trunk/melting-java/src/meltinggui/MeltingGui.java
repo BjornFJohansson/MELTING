@@ -29,21 +29,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import melting.BatchMain;
 import melting.Environment;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.MeltingComputationMethod;
-import meltinggui.frames.MeltingFrame;
 import meltinggui.frames.OuterFrame;
 
 /**
@@ -121,7 +116,7 @@ public class MeltingGui
     
     
     // TODO - For some reason the selected algorithm is not NearestNeighborMode. 
-    // Therefore the entrophy and entalphy are not shown. 
+    // Therefore the entropy and enthalpy are not shown. 
     // These instead are shown when melting.jar is executed...
     // Don't know why this happens as the code should be the same.. 
     
@@ -174,7 +169,7 @@ public class MeltingGui
    * Gets results from the MELTING program.
    * 
    * @param argsOption Command line arguments for MELTING.
-   * @return The results from MELTING.
+   * @return the MELTING results.
    */
   private melting.ThermoResult getMeltingResults(String[] argsOption)
   {
@@ -244,41 +239,41 @@ public class MeltingGui
   public static void main(String args[])
   {
     // Get the Nimbus look and feel, if supported (Java SE 6 or later).  
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info :
-        UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    }
-    catch (ClassNotFoundException exception) {
-      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
-                                                         null,
-                                                         exception);
-    } 
-    catch (InstantiationException exception) {
-      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
-                                                         null,
-                                                         exception);
-    } 
-    catch (IllegalAccessException exception) {
-      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
-                                                         null,
-                                                         exception);
-    } 
-    catch (UnsupportedLookAndFeelException exception) {
-      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
-                                                         null,
-                                                         exception);
-    } 
+//    try {
+//      for (javax.swing.UIManager.LookAndFeelInfo info :
+//        UIManager.getInstalledLookAndFeels()) {
+//        if ("Nimbus".equals(info.getName())) {
+//          UIManager.setLookAndFeel(info.getClassName());
+//          break;
+//        }
+//      }
+//    }
+//    catch (ClassNotFoundException exception) {
+//      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
+//                                                         null,
+//                                                         exception);
+//    } 
+//    catch (InstantiationException exception) {
+//      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
+//                                                         null,
+//                                                         exception);
+//    } 
+//    catch (IllegalAccessException exception) {
+//      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
+//                                                         null,
+//                                                         exception);
+//    } 
+//    catch (UnsupportedLookAndFeelException exception) {
+//      Logger.getLogger(MeltingFrame.class.getName()).log(Level.SEVERE,
+//                                                         null,
+//                                                         exception);
+//    } 
 
     java.awt.EventQueue.invokeLater(new Runnable() {
-                    public void run()
-                    {
-                      new MeltingGui();
-                    }
-                  });
+      public void run()
+      {
+        new MeltingGui();
+      }
+    });
   }
 }

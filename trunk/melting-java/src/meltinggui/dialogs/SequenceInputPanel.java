@@ -73,7 +73,7 @@ public class SequenceInputPanel extends JPanel implements ActionListener, Dialog
   public SequenceInputPanel() {
 
     setLayout(new GridBagLayout());
-    setMinimumSize(new Dimension(537,171));
+    setMinimumSize(new Dimension(537, 240));
     setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black, 1, true), "Sequence(s) Input"));
 
     directInputRadioButton = new JRadioButton(DIRECT_INPUT);

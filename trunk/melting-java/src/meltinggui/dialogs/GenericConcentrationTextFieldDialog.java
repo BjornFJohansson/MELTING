@@ -27,10 +27,11 @@ import meltinggui.widgets.InputField;
 import meltinggui.widgets.MeltingTextField;
 
 /**
- * A dialog for specifying the oligomer concentration.
+ * A dialog for specifying concentration.
+ * 
  * @author John Gowers
  */
-public class OligomerConcentrationDialog extends InputField<MeltingTextField>
+public class GenericConcentrationTextFieldDialog extends InputField<MeltingTextField>
   implements DialogInterface
 {
   /**
@@ -39,13 +40,19 @@ public class OligomerConcentrationDialog extends InputField<MeltingTextField>
   private JLabel unitsLabel = new JLabel("mol/L");
 
   /**
+   * 
+   */
+  private String option;
+  
+  /**
    * Sets up the dialog.
    */
-  public OligomerConcentrationDialog()
+  public GenericConcentrationTextFieldDialog(String label, String option)
   {
-    super("Oligomer concentration:  ", MeltingTextField.class);
+    super(label, MeltingTextField.class);
     setBackground(new Color(0, 0, 0, 0));
     add(unitsLabel, MeltingLayout.INPUT_GROUP);
+    this.option = option;
   }
 
   /**
@@ -56,7 +63,7 @@ public class OligomerConcentrationDialog extends InputField<MeltingTextField>
   @Override
   public String getCommandLineFlags()
   {
-    String commandLineFlags = " -P " + getValue();
+    String commandLineFlags = option+ getValue().trim();
     return commandLineFlags;
   }
 }
