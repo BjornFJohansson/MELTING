@@ -1,14 +1,14 @@
 // This program is free software; you can redistribute it and/or modify it
-// under the terms of the GNU General Public Licence as published by the Free
-// Software Foundation; either verison 2 of the Licence, or (at your option)
+// under the terms of the GNU General Public License as published by the Free
+// Software Foundation; either version 2 of the License, or (at your option)
 // any later version.
 //
 // This program is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for
+// FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 // more details.  
 //
-// You should have received a copy of the GNU General Public Licence along with
+// You should have received a copy of the GNU General Public License along with
 // this program; if not, write to the Free Software Foundation, Inc., 
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
@@ -26,6 +26,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -37,11 +38,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Observer;
 
+import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
@@ -50,11 +53,12 @@ import javax.swing.WindowConstants;
 import meltinggui.ArgsMessage;
 import meltinggui.MeltingLayout;
 import meltinggui.MeltingObservable;
+import meltinggui.dialogs.ExpertOptionPanel;
+import meltinggui.dialogs.GenericConcentrationTextFieldDialog;
 import meltinggui.dialogs.HybridizationDialog;
 import meltinggui.dialogs.IonConcentrationDialog;
 import meltinggui.dialogs.OligomerConcentrationDialog;
 import meltinggui.dialogs.ResultsPanel;
-import meltinggui.dialogs.SequenceDialog;
 import meltinggui.dialogs.SequenceInputPanel;
 import meltinggui.dialogs.SlidingWindowDialog;
 
@@ -136,19 +140,8 @@ public class MeltingFrame extends JInternalFrame
   /**
    * 
    */
-  private JPanel oligomerConcentrationPanel = new JPanel();
-  /**
-   * 
-   */
   private OligomerConcentrationDialog oligomerConcentrationDialog = new OligomerConcentrationDialog();
-  /**
-   * 
-   */
-  private JPanel ionConcentrationsPanel = new JPanel();
-  /**
-   * 
-   */
-  private IonConcentrationDialog ionConcentrationDialog =  new IonConcentrationDialog();
+  // private IonConcentrationDialog ionConcentrationDialog =  new IonConcentrationDialog();
   /**
    * 
    */
@@ -160,7 +153,15 @@ public class MeltingFrame extends JInternalFrame
   /**
    * 
    */
-  private JToggleButton moreOptionsButton = new JToggleButton("More Options...");
+  private JToggleButton moreOptionsButton = new JToggleButton("Expert Options...");
+  /**
+   * 
+   */
+  private ExpertOptionPanel expertOptionPanel = new ExpertOptionPanel();
+  /**
+   * 
+   */
+  private JScrollPane expertOptionJSP;
   /**
    * 
    */
@@ -194,53 +195,62 @@ public class MeltingFrame extends JInternalFrame
               sendMeltingArgs();
             }
     });
-    commandLineTextArea.setBackground(new Color(0, 0, 0, 0));
-    commandLineTextArea.setEditable(false);
-    commandLineTextArea.setLineWrap(true);
+//    commandLineTextArea.setBackground(new Color(0, 0, 0, 0));
+//    commandLineTextArea.setEditable(false);
+//    commandLineTextArea.setLineWrap(true);
+//    commandLinePanel.setLayout(new BorderLayout(30, 30));
 
     mainPanel.setLayout(new GridBagLayout());
     sequencesPanel.setLayout(new GridLayout(1, 1));
     
     hybridizationPanel.setLayout(new GridLayout(1, 1));
-    oligomerConcentrationPanel.setLayout(new GridLayout(1, 1));
-    ionConcentrationsPanel.setLayout(
-                    new MeltingLayout(ionConcentrationsPanel, 10, 1));
     buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
-    commandLinePanel.setLayout(new BorderLayout(30, 30));
-    resultsPanelPanel.setLayout(new GridLayout(1, 2));
-
+    
     sequencesPanel.add(sequenceInputDialog);
     hybridizationPanel.add(hybridizationDialog);
-    oligomerConcentrationPanel.add(oligomerConcentrationDialog);
-    ionConcentrationsPanel.add(new JLabel("Ion concentrations (option -E): "),
-                               MeltingLayout.LABEL_GROUP);
-    ionConcentrationsPanel.add(ionConcentrationDialog,
-                               MeltingLayout.INPUT_GROUP);
     buttonsPanel.add(getThermodynamicsButton, BorderLayout.WEST);
     buttonsPanel.add(Box.createHorizontalGlue());
     buttonsPanel.add(moreOptionsButton, BorderLayout.EAST);
 
-    // TODO - this will be moved to a new window
-    //commandLinePanel.add(commandLineTextArea, BorderLayout.CENTER);
-    //resultsPanelPanel.add(resultsPanel);
+    moreOptionsButton.setAction(new AbstractAction("Expert Options...") {
+      
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        expertOptionJSP.setVisible(!expertOptionJSP.isVisible());
+        pack();
+      }
+    });
 
     int row = 0;
     constraints = getGridBagRow(row++);
-    constraints.weighty = 0.5;
+    constraints.weighty = 0;
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    constraints.anchor = GridBagConstraints.NORTHWEST;
     mainPanel.add(sequencesPanel, constraints);
     mainPanel.add(slidingWindowDialog, getGridBagRow(row++));
     mainPanel.add(hybridizationPanel, getGridBagRow(row++));
-    mainPanel.add(oligomerConcentrationPanel, getGridBagRow(row++));
-    mainPanel.add(ionConcentrationsPanel, getGridBagRow(row++));
+    mainPanel.add(oligomerConcentrationDialog, getGridBagRow(row++));
+    mainPanel.add(new GenericConcentrationTextFieldDialog("Salt (Na)      ", "Na="), getGridBagRow(row++));
+    mainPanel.add(new GenericConcentrationTextFieldDialog("Potassium (K)  ", "K="), getGridBagRow(row++));
+    mainPanel.add(new GenericConcentrationTextFieldDialog("Magnessium (Mg)", "Mg="), getGridBagRow(row++));
+    mainPanel.add(new GenericConcentrationTextFieldDialog("Tris           ", "Tris="), getGridBagRow(row++));
     mainPanel.add(buttonsPanel, getGridBagRow(row++));
     constraints = getGridBagRow(row++);
     constraints.weighty = 1.0;
-    mainPanel.add(commandLinePanel, constraints);
-    mainPanel.add(resultsPanelPanel, getGridBagRow(row++));
+//    mainPanel.add(commandLinePanel, constraints); // resultsPanelPanel.setLayout(new GridLayout(1, 2));
+//    mainPanel.add(resultsPanelPanel, getGridBagRow(row++));
     JTextPane usageNotice = new JTextPane();
     usageNotice.setText("Remark: for more options (more computation methods, melting4 interface, batch mode, ...), see commandline-based scripts in this package.");
-    mainPanel.add(usageNotice, getGridBagRow(row++));
+    constraints = getGridBagRow(row++);
+    constraints.weighty = 0;
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    constraints.anchor = GridBagConstraints.NORTHWEST;
+    mainPanel.add(usageNotice, constraints);
 
+    // empty JPanel to fill in the empty space
+    mainPanel.add(new JPanel(), getGridBagRow(row++));
+
+    
     Container contentPane = getContentPane();
     contentPane.add(Box.createRigidArea(new Dimension(532, 12)),
                     BorderLayout.NORTH);
@@ -252,6 +262,21 @@ public class MeltingFrame extends JInternalFrame
                     BorderLayout.EAST);
     contentPane.add(mainPanel, BorderLayout.CENTER);
 
+    // expert panel
+    constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.BOTH;
+    constraints.insets = new Insets(10, 4, 10, 4); 
+    constraints.gridx = 1;
+    constraints.gridy = 0;
+    constraints.gridheight = 11;
+    constraints.weightx = 10;
+    constraints.weighty = 1;
+    expertOptionJSP = new JScrollPane(expertOptionPanel);
+    expertOptionJSP.setMinimumSize(new Dimension(500, 600));
+    expertOptionJSP.setPreferredSize(new Dimension(800, 600));
+    mainPanel.add(expertOptionJSP, constraints);
+    
+    
     pack();
   }
 
@@ -267,6 +292,7 @@ public class MeltingFrame extends JInternalFrame
   {
     GridBagConstraints constraints = new GridBagConstraints();
     constraints.fill = GridBagConstraints.BOTH;
+    constraints.insets = new Insets(4, 4, 4, 4); // insets for all components
     constraints.gridx = 0;
     constraints.gridy = row;
     constraints.weightx = 0.5;
@@ -362,8 +388,11 @@ public class MeltingFrame extends JInternalFrame
     commandLineText = sequenceInputDialog.getCommandLineFlags() +
                       hybridizationDialog.getCommandLineFlags() +
                       oligomerConcentrationDialog.getCommandLineFlags() +
-                      ionConcentrationDialog.getCommandLineFlags() +
+                      // TODO - retrieve and construct the ion -E option ionConcentrationDialog.getCommandLineFlags() +
                       slidingWindowDialog.getCommandLineFlags();
+    
+    // TODO - add the expertPanel options if shown
+    
     commandLineTextArea.setText(commandLineText);
   }
   
