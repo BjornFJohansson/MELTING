@@ -63,8 +63,34 @@ public class GenericConcentrationTextFieldDialog extends InputField<MeltingTextF
   @Override
   public String getCommandLineFlags()
   {
-    String commandLineFlags = option+ getValue().trim();
-    return commandLineFlags;
+    String value = getValue().trim();
+    
+    if (value.length() > 0) {
+      String commandLineFlags = option + value;
+      return commandLineFlags;
+    }
+    
+    return "";
+  }
+  
+  /**
+   * Returns <code>true</code> if the text is not empty and can be converted to a {@link Double}.
+   * 
+   * @return <code>true</code> if the text is not empty and can be converted to a {@link Double}.
+   */
+  public boolean isValidNumber() {
+    String value = getValue().trim();
+    
+    if (value.length() > 0) {
+      try {
+        Double.valueOf(value);
+        return true;
+      } catch (NumberFormatException e) {
+        // does nothing, we just return false to the method
+      }
+    }
+    
+    return false;
   }
 }
 

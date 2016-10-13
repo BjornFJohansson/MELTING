@@ -229,9 +229,20 @@ public class MeltingTemperatureCorrectionOptionPanel extends JPanel implements D
   @Override
   public String getCommandLineFlags() {
     
-    String command = " " + formamideCorrectionCB.getValue() + " " + dmsoCorrectionCB.getValue()
-    + " " + ionCorrectionCB.getValue() + " " + naEquivalentCB.getValue() + " ";
+    String command = " ";
     
+    if (formamideCorrectionCB.getValue().trim().length() > 0) {
+      command += formamideCorrectionCB.getValue() + " ";
+    }    
+    if (dmsoCorrectionCB.getValue().trim().length() > 0) {
+      command += dmsoCorrectionCB.getValue() + " ";
+    }    
+    if (ionCorrectionCB.getValue().trim().length() > 0) {
+      command += ionCorrectionCB.getValue() + " ";
+    }    
+    if (naEquivalentCB.getValue().trim().length() > 0) {
+      command += naEquivalentCB.getValue() + " ";
+    }    
         
     return command;
   }

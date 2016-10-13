@@ -123,13 +123,12 @@ public class MeltingGui
 	OptionManagement manager = new OptionManagement();
 	Environment environment = manager.createEnvironment(argsOption);
 	RegisterMethods register = new RegisterMethods();
-	MeltingComputationMethod calculMethod = register
-			.getMeltingComputationMethod(environment.getOptions());
+	MeltingComputationMethod calculMethod = register.getMeltingComputationMethod(environment.getOptions());
+
 	results = calculMethod.computesThermodynamics();
 	environment.setResult(results);
 	
-	results = calculMethod.getRegister()
-			.computeOtherMeltingCorrections(environment);
+	results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);
 	
 	environment.setResult(results);
 	

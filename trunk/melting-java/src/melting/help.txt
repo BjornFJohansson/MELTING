@@ -152,7 +152,7 @@ neighbor model is used.
 		(DNA)
 			allsanpey (from Allawi, Santalucia and Peyret 1997, 1998 and 1999)  (by default)
 		(RNA)
-			tur99 (from Mathews et al. 1999)  (by default)
+			tur06 (from Turner et al. 1999 and 2006)  (by default)
 
 	To change the file containing the thermodynamic parameters for tandem mismatches computation, the same syntax as the one for the -nn option is used. 
 

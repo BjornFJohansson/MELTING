@@ -156,9 +156,7 @@ public class ExpertOptionPanel extends JPanel implements ActionListener, DialogI
   @Override
   public String getCommandLineFlags() {
     
-    String command = "" + thermodynamicOptionPanel.getCommandLineFlags() 
-    + " " + temperatureOptionPanel.getCommandLineFlags();
-    
+    String command = thermodynamicOptionPanel.getCommandLineFlags() + temperatureOptionPanel.getCommandLineFlags();
         
     return command;
   }
