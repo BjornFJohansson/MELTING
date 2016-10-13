@@ -94,7 +94,7 @@ public class OptionManagement {
 	/**
 	 * Option name for the choice of tandem mismatches computation method.
 	 */
-	public static final String tandemMismatchMethod = "-tan";
+	public static final String tandemMismatchMethod = "-tanMM";
 	
 	/**
 	 * Option name for the choice of internal loop computation method.

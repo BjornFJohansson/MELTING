@@ -49,8 +49,14 @@ public class SlidingWindowDialog extends InputField<MeltingTextField>
   @Override
   public String getCommandLineFlags()
   {
-    String commandLineFlags = " -w " + getValue();
-    return commandLineFlags;
+    String value = getValue().trim();
+    
+    if (value.length() > 0) {
+      String commandLineFlags = " -w " + getValue();
+      return commandLineFlags;
+    }
+    
+    return "";
   }
 }
 

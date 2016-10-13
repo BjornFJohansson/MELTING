@@ -19,7 +19,6 @@
 package meltinggui.frames;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -42,7 +41,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -51,12 +49,10 @@ import javax.swing.JToggleButton;
 import javax.swing.WindowConstants;
 
 import meltinggui.ArgsMessage;
-import meltinggui.MeltingLayout;
 import meltinggui.MeltingObservable;
 import meltinggui.dialogs.ExpertOptionPanel;
 import meltinggui.dialogs.GenericConcentrationTextFieldDialog;
 import meltinggui.dialogs.HybridizationDialog;
-import meltinggui.dialogs.IonConcentrationDialog;
 import meltinggui.dialogs.OligomerConcentrationDialog;
 import meltinggui.dialogs.ResultsPanel;
 import meltinggui.dialogs.SequenceInputPanel;
@@ -141,7 +137,22 @@ public class MeltingFrame extends JInternalFrame
    * 
    */
   private OligomerConcentrationDialog oligomerConcentrationDialog = new OligomerConcentrationDialog();
-  // private IonConcentrationDialog ionConcentrationDialog =  new IonConcentrationDialog();
+  /**
+   * 
+   */
+  private GenericConcentrationTextFieldDialog sodiumConcentrationDialog = new GenericConcentrationTextFieldDialog("Salt (Na)      ", "Na=");
+  /**
+   * 
+   */
+  private GenericConcentrationTextFieldDialog potassiumConcentrationDialog = new GenericConcentrationTextFieldDialog("Potassium (K)  ", "K=");
+  /**
+   * 
+   */
+  private GenericConcentrationTextFieldDialog magnesiumConcentrationDialog = new GenericConcentrationTextFieldDialog("Magnessium (Mg)", "Mg=");
+  /**
+   * 
+   */
+  private GenericConcentrationTextFieldDialog trisConcentrationDialog = new GenericConcentrationTextFieldDialog("Tris           ", "Tris=");
   /**
    * 
    */
@@ -230,10 +241,10 @@ public class MeltingFrame extends JInternalFrame
     mainPanel.add(slidingWindowDialog, getGridBagRow(row++));
     mainPanel.add(hybridizationPanel, getGridBagRow(row++));
     mainPanel.add(oligomerConcentrationDialog, getGridBagRow(row++));
-    mainPanel.add(new GenericConcentrationTextFieldDialog("Salt (Na)      ", "Na="), getGridBagRow(row++));
-    mainPanel.add(new GenericConcentrationTextFieldDialog("Potassium (K)  ", "K="), getGridBagRow(row++));
-    mainPanel.add(new GenericConcentrationTextFieldDialog("Magnessium (Mg)", "Mg="), getGridBagRow(row++));
-    mainPanel.add(new GenericConcentrationTextFieldDialog("Tris           ", "Tris="), getGridBagRow(row++));
+    mainPanel.add(sodiumConcentrationDialog, getGridBagRow(row++));
+    mainPanel.add(potassiumConcentrationDialog, getGridBagRow(row++));
+    mainPanel.add(magnesiumConcentrationDialog, getGridBagRow(row++));
+    mainPanel.add(trisConcentrationDialog, getGridBagRow(row++));
     mainPanel.add(buttonsPanel, getGridBagRow(row++));
     constraints = getGridBagRow(row++);
     constraints.weighty = 1.0;
@@ -385,14 +396,43 @@ public class MeltingFrame extends JInternalFrame
    */
   private void setCommandLineText()
   {
-    commandLineText = sequenceInputDialog.getCommandLineFlags() +
-                      hybridizationDialog.getCommandLineFlags() +
-                      oligomerConcentrationDialog.getCommandLineFlags() +
-                      // TODO - retrieve and construct the ion -E option ionConcentrationDialog.getCommandLineFlags() +
-                      slidingWindowDialog.getCommandLineFlags();
+    commandLineText = sequenceInputDialog.getCommandLineFlags() + hybridizationDialog.getCommandLineFlags() +
+        oligomerConcentrationDialog.getCommandLineFlags() + slidingWindowDialog.getCommandLineFlags();
     
-    // TODO - add the expertPanel options if shown
+    // retrieve and construct the ion -E option
+    String concentration = null;
     
+    if (sodiumConcentrationDialog.isValidNumber()) {
+      concentration = sodiumConcentrationDialog.getCommandLineFlags();
+    }
+    if (potassiumConcentrationDialog.isValidNumber()) {
+      if (concentration != null) {
+        concentration += ":";
+      }
+      concentration += potassiumConcentrationDialog.getCommandLineFlags();
+    }
+    if (magnesiumConcentrationDialog.isValidNumber()) {
+      if (concentration != null) {
+        concentration += ":";
+      }
+      concentration += magnesiumConcentrationDialog.getCommandLineFlags();
+    }
+    if (trisConcentrationDialog.isValidNumber()) {
+      if (concentration != null) {
+        concentration += ":";
+      }
+      concentration += trisConcentrationDialog.getCommandLineFlags();
+    }
+    
+    // add the expertPanel options if shown
+    if (expertOptionPanel.isVisible()) {
+      commandLineText += expertOptionPanel.getCommandLineFlags();   
+
+      // TODO - add the cations from the expert panel to the 'concentration' variable, once it is developed.
+    }
+    
+    commandLineText += " -E " + concentration + " ";
+
     commandLineTextArea.setText(commandLineText);
   }
   
@@ -402,6 +442,12 @@ public class MeltingFrame extends JInternalFrame
   public void sendMeltingArgs()
   {
     setCommandLineText();
+    
+    System.out.println("Here are the options selected by the user:\n" + commandLineText + "\n");
+    
+    // TODO - do a bit of validation of the different parameters/arguments
+    
+    
     ArgsMessage message = new ArgsMessage(ArgsMessage.ArgumentType.MANDATORY,
                                           commandLineText);
 

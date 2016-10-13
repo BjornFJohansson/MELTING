@@ -430,9 +430,48 @@ public class ThermodynamicOptionPanel extends JPanel implements ActionListener, 
   @Override
   public String getCommandLineFlags() {
     
-    String command = "" + nnmGuBasedPairInRnaCB.getValue() + " " + nnmSingleMismatchCB.getValue();
+    String command = " ";
     
-        
+    if (approximativeFormulaCB.getValue().trim().length() > 0) {
+      command += approximativeFormulaCB.getValue() + " ";
+    }
+    if (nearestNeighborModelCB.getValue().trim().length() > 0) {
+      command += nearestNeighborModelCB.getValue() + " ";
+    }
+    if (nnmGuBasedPairInRnaCB.getValue().trim().length() > 0) {
+      command += nnmGuBasedPairInRnaCB.getValue() + " ";
+    }
+    if (nnmInosineBaseCB.getValue().trim().length() > 0) {
+      command += nnmInosineBaseCB.getValue() + " ";
+    }
+    if (nnmInternalLoopCB.getValue().trim().length() > 0) {
+      command += nnmInternalLoopCB.getValue() + " ";
+    }
+    if (nnmLockedNucleicAcidCB.getValue().trim().length() > 0) {
+      command += nnmLockedNucleicAcidCB.getValue() + " ";
+    }
+    if (nnmLongBulgeLoopCB.getValue().trim().length() > 0) {
+      command += nnmLongBulgeLoopCB.getValue() + " ";
+    }
+    if (nnmLongDanglingEndCB.getValue().trim().length() > 0) {
+      command += nnmLongDanglingEndCB.getValue() + " ";
+    }
+    if (nnmSecondDanglingEndCB.getValue().trim().length() > 0) {
+      command += nnmSecondDanglingEndCB.getValue() + " ";
+    }
+    if (nnmSingleBulgeLoopCB.getValue().trim().length() > 0) {
+      command += nnmSingleBulgeLoopCB.getValue() + " ";
+    }
+    if (nnmSingleDanglingEndCB.getValue().trim().length() > 0) {
+      command += nnmSingleDanglingEndCB.getValue() + " ";
+    }
+    if (nnmSingleMismatchCB.getValue().trim().length() > 0) {
+      command += nnmSingleMismatchCB.getValue() + " ";
+    }
+    if (nnmTandemMismatchCB.getValue().trim().length() > 0) {
+      command += nnmTandemMismatchCB.getValue() + " ";
+    }
+    
     return command;
   }
 }
