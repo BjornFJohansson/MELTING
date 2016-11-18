@@ -18,6 +18,7 @@
 
 package meltinggui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +48,19 @@ import meltinggui.frames.OuterFrame;
 public class MeltingGui
   extends JFrame implements Observer
 {
+  /**
+   * 
+   */
+  public static final Color LABEL_BACKGROUND_COLOR = Color.WHITE;
+  /**
+   * 
+   */
+  public static final Color COMBOBOX_BACKGROUND_COLOR = Color.WHITE;
+  /**
+   * 
+   */
+  public static final Color PANEL_BACKGROUND_COLOR = Color.LIGHT_GRAY;
+  
   /**
    * Frame holding all the other components.
    */
