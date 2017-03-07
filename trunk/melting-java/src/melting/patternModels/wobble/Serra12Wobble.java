@@ -12,9 +12,9 @@
 // this program; if not, write to the Free Software Foundation, Inc., 
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-// Marine Dumousseau, Nicolas Lenovere
+// Marine Dumousseau, Nicolas Le Novere
 // EMBL-EBI, neurobiology computational group,             
-// Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk
+// Cambridge, UK. e-mail: melting-forum@googlegroups.com
 
 package melting.patternModels.wobble;
 
@@ -27,12 +27,11 @@ import melting.sequences.NucleotidSequences;
 import melting.methodInterfaces.NamedMethod;
 
 /**
- * This class represents the GU base pair model ser12. It extends PatternComputation.
+ * Represents the GU base pair model ser12. It extends PatternComputation.
  *
  * Serra et al (2012) Biochemistry 51(16): 3508–3522
  *
- * @author Marine Dumousseau (marine@ebi.ac.uk)
- * @version $Id$
+ * @author Marine Dumousseau
  * @since <pre>10/02/13</pre>
  */
 

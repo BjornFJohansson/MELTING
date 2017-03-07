@@ -39,7 +39,6 @@ public class BatchMain {
 			String filename = args[args.length - 1];
 
 			// TODO - make use of the output file name options ?
-			// TODO - add a new option for the input file ?
 			
             InputStream is = null;
             OutputStream os = null;
@@ -69,9 +68,6 @@ public class BatchMain {
 		}
 	}
 
-	// TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
-	// TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
-	
 	/**
 	 * Calculates melting temperatures for each sequence present in the input stream
 	 * and writes the results in the output stream.

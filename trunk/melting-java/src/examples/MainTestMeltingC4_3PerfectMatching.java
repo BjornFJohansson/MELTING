@@ -11,7 +11,7 @@
 
  *       Marine Dumousseau and Nicolas Le Novere                                                   
  *       EMBL-EBI, neurobiology computational group,                          
- *       Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk        */
+ *       Cambridge, UK. e-mail: melting-forum@googlegroups.com        */
 
 package examples;
 
