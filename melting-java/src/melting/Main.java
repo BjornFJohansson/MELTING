@@ -151,6 +151,13 @@ public class Main {
 	
   // public static main method
 
+  
+  // TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
+  // TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
+  // TODO - separate the calculations from a set of arguments from the display of the result, so that we can re-use the same API for the command line and the GUI
+  
+
+  
   /**
    * @param args : contains the options entered by the user.
    */
@@ -174,7 +181,7 @@ public class Main {
     else {
       
       // TODO - check if an input file was given instead of a single sequence !
-      // In this case, save on file per sequence or just add everything to the same output, adding comments when we change sequence.
+      // In this case, save one file per sequence or just add everything to the same output, adding comments when we change sequence.
       ArrayList<String> inputSequences = new ArrayList<String>();
       
       if (env.getOptions().containsKey(OptionManagement.inputFile)) {

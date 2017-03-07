@@ -12,9 +12,9 @@
 // this program; if not, write to the Free Software Foundation, Inc., 
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-// Marine Dumousseau, Nicolas Lenovere
+// Marine Dumousseau, Nicolas Le Novere
 // EMBL-EBI, neurobiology computational group,             
-// Cambridge, UK. e-mail: lenov@ebi.ac.uk, marine@ebi.ac.uk
+// Cambridge, UK. e-mail: melting-forum@googlegroups.com
 
 package meltinggui.dialogs;
 
