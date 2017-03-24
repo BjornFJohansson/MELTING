@@ -27,6 +27,7 @@ import java.awt.Container;
 
 /**
  * A frame with a text area for displaying error messages.
+ * 
  * @author John Gowers
  */
 public class ErrorFrame extends JInternalFrame

@@ -129,11 +129,6 @@ public class MeltingGui
     // used for printing later.
     
     
-    // TODO - For some reason the selected algorithm is not NearestNeighborMode. 
-    // Therefore the entropy and enthalpy are not shown. 
-    // These instead are shown when melting.jar is executed...
-    // Don't know why this happens as the code should be the same.. 
-    
 	OptionManagement manager = new OptionManagement();
 	Environment environment = manager.createEnvironment(argsOption);
 	RegisterMethods register = new RegisterMethods();
@@ -146,15 +141,21 @@ public class MeltingGui
 	
 	environment.setResult(results);
 	
-	File sequenceFile = outerFrame.getSequenceFile();
+	File sequenceFile = outerFrame.getSequenceFile(); // TODO - is it used ?
 	if(sequenceFile != null) {
+	  
+	  // We have a sequence file as input
+	  
 	    OutputStream os = null; 
 	    try {
 	      String outputFileName = sequenceFile.getAbsolutePath()+".results.csv";
 			os = new FileOutputStream(outputFileName);
+			
 			BatchMain.displaysMeltingResults(os, environment, environment.getResult(), calculMethod);
+			
 			outerFrame.setStatusPanelText("Results written to "+sequenceFile.getName()+".results.csv");
 			displayFileinNewWindow(outputFileName);
+			
 		} catch (FileNotFoundException e) {
 			outerFrame.setStatusPanelText("File " + sequenceFile.getAbsolutePath()+".results.csv" + " could not be written");
 		} catch (IOException e) {
@@ -166,6 +167,10 @@ public class MeltingGui
 				e.printStackTrace();
 			}
 		}
+	} else {
+	  
+	  // TODO - deal with the case when we don't have a sequence file !!
+	  
 	}
     
 	// TODO - if we have a sequence file, don't display the normal results !! Only the sequence file results.

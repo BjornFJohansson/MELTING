@@ -37,6 +37,12 @@ import melting.nearestNeighborModel.NearestNeighborMode;
  */
 public class Main {
 
+  // TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
+  // TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
+  // TODO - separate the calculations from a set of arguments from the display of the result, so that we can re-use the same API for the command line and the GUI
+  
+
+  
 	// private static methods
 	
   /**
@@ -61,13 +67,16 @@ public class Main {
   /**
    * Compute the entropy, enthalpy and the melting temperature and display the results.
    * 
+   * <p>This method will remove the options related to the input file and replace them
+   * by a single sequence option, the sequence passed as attribute "<code>inputSequence</code>".</p>
+   * 
    * @param initArgs : contains the options entered by the user.
    * @param optionManager : the OptionManagement which allows to manage
    * the different options entered by the user.
-   * @param baseString : the input sequence
+   * @param inputSequence : the input sequence
    */
-  private static void runMeltingSequenceFromInputFile(String[] initArgs,
-      OptionManagement optionManager, String baseString) 
+  private static ThermoResult runMeltingSequenceFromInputFile(String[] initArgs,
+      OptionManagement optionManager, String inputSequence) 
   {
     int inputFileIndex = -1;
     String[] args = Arrays.copyOf(initArgs, initArgs.length);
@@ -84,10 +93,10 @@ public class Main {
     if (inputFileIndex != -1) 
     {
       args[inputFileIndex] = OptionManagement.sequence;
-      args[inputFileIndex + 1] = baseString;
+      args[inputFileIndex + 1] = inputSequence;
     }
     
-    runMelting(args, optionManager);
+    return runMelting(args, optionManager);
   }
 
 
@@ -152,11 +161,6 @@ public class Main {
   // public static main method
 
   
-  // TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
-  // TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
-  // TODO - separate the calculations from a set of arguments from the display of the result, so that we can re-use the same API for the command line and the GUI
-  
-
   
   /**
    * @param args : contains the options entered by the user.
@@ -182,12 +186,13 @@ public class Main {
       
       // TODO - check if an input file was given instead of a single sequence !
       // In this case, save one file per sequence or just add everything to the same output, adding comments when we change sequence.
-      ArrayList<String> inputSequences = new ArrayList<String>();
+      
+      ArrayList<String> inputSequences = new ArrayList<String>(); // TODO : create a method that can be used from the GUI as well - display can be controlled with the OptionManagement.meltingLogger
       
       if (env.getOptions().containsKey(OptionManagement.inputFile)) {
         String inputFileName = env.getOptions().get(OptionManagement.inputFile);
         
-        System.out.println("Input file = " + inputFileName);
+        OptionManagement.logInfo("Input file = " + inputFileName);
         
         FastaSequenceFile fastaFile = new FastaSequenceFile(new File(inputFileName), true);
 
@@ -196,7 +201,7 @@ public class Main {
         while ((sequence = fastaFile.nextSequence()) != null) {
           System.out.println(sequence.getName() + "\n" + sequence.getBaseString());
           
-          runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString());
+          runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString()); // TODO - add the complementary sequence if available
         }
         return;
       }
@@ -207,7 +212,7 @@ public class Main {
 
 
       
-      if (env.getOptions().get(OptionManagement.sliding_window) != null) 
+      if (env.getOptions().get(OptionManagement.sliding_window) != null) // TODO - create a method that can be used for all sequences of an input file 
       {
 
         int slidingWindow = Integer.parseInt(env.getOptions().get(OptionManagement.sliding_window));
@@ -302,7 +307,7 @@ public class Main {
       for (String arg : defaultArgs) {
         completeArgs[j++] = arg;
       }
-      for (String arg : newArgs) {
+      for (String arg : newArgs) { // TODO - test what happen when the option are repeated, like two -S options
         completeArgs[j++] = arg;
       }
 

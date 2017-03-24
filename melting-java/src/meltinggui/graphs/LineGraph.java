@@ -26,17 +26,28 @@ import javax.swing.SwingUtilities;
 
 
 /**
- * This class defines a line graph plot. Below the complete plotted values, a secondary plot 
+ * Defines a line graph plot. 
+ * 
+ * <p>Below the complete plotted values, a secondary plot 
  * representing a zooming window is also painted. This window is updated by moving the mouse 
  * on the former plot which will cause a sliding window movement indicating which plot area 
- * is currently zoomed.
- *
+ * is currently zoomed.</p>
+ * 
  * @author dallepep
+ * @author rodrigue
  */
 public class LineGraph extends JPanel {
 
-	private static final long serialVersionUID = -7893883434501058128L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1;
 
+	/**
+	 * 
+	 */
+	private static final Color VERY_LIGHT_GRAY = new Color(230, 230, 230);
+	
 	// Graphic variables
 	/** A reference of the Graphics object used for plotting. */
 	private Graphics g;	
@@ -103,7 +114,19 @@ public class LineGraph extends JPanel {
 	
 	
 	// Constructors
-	/** Constructor without bases. */
+	// Constructor without sequence bases.
+    /**
+     * Creates a new {@link LineGraph}.
+     * 
+     * @param data the data
+     * @param minY the minimum value in the y axis.
+     * @param maxY the maximum value in the y axis.
+     * @param xLabel the label for the x axis
+     * @param yLabel the label for the y axis
+     * @param xCategories the values that would be use as the tick marks on the x axis of the upper plot.
+     *  We expect an array of the same size as {@code data} but only some of the values will be used if the sequence is long.
+     * @param graphTitle the graph title.
+     */
 	public LineGraph (double[] data, double minY, double maxY, String xLabel, String yLabel, int[] xCategories, String graphTitle) {
 		this(data, minY, maxY, xLabel, yLabel, new String[0], null, graphTitle);
 		this.xCategories = new String [xCategories.length];
@@ -112,7 +135,22 @@ public class LineGraph extends JPanel {
 		}
 	}
 	
-	/** Constructor including bases bases. */
+
+	// Constructor with sequence bases.
+	/**
+	 * Creates a new {@link LineGraph}.
+	 * 
+	 * @param data the data
+	 * @param minY the minimum value in the y axis.
+	 * @param maxY the maximum value in the y axis.
+	 * @param xLabel the label for the x axis
+	 * @param yLabel the label for the y axis
+	 * @param xCategories the values that would be use as the tick marks on the x axis of the upper plot.
+	 *  We expect an array of the same size as {@code data} but only some of the values will be used if the sequence is long.
+	 * @param xBases the sequence bases that would be use as the tick marks on the x axis of the lower, zoomed plot.
+     *  We expect an array of the same size as {@code data} but only a small number of them will be displayed at the same time.
+	 * @param graphTitle the graph title.
+	 */
 	public LineGraph (double[] data, double minY, double maxY, String xLabel, String yLabel, String[] xCategories, String[] xBases, String graphTitle) {
 		this.data = data;
 		this.minY = minY;
@@ -139,7 +177,7 @@ public class LineGraph extends JPanel {
 	 */
 	@Override
 	public Dimension getMinimumSize () {
-		return new Dimension(300,200);
+		return new Dimension(300,400);
 	}
 	
 	/**
@@ -186,6 +224,7 @@ public class LineGraph extends JPanel {
 	
 	/**
 	 * Returns a consistent vertical value for the object position within the plot.
+	 * 
 	 * @param y
 	 * @param yStartPos
 	 * @param yOffset
@@ -231,7 +270,8 @@ public class LineGraph extends JPanel {
 
 	
 	/**
-	 * Paints the line graph. This method is used to paint both the line plots
+	 * Paints the line graph. This method is used to paint both line plots
+	 * 
 	 * @param isSlidingWindowContainer true if the plot containing the sliding window is being plotted.
 	 * @param yStartPos the vertical starting position of the plot
 	 * @param yOffset the vertical offset from yStartPos
@@ -287,14 +327,23 @@ public class LineGraph extends JPanel {
 		
 		// Now draw horizontal lines across from the y axis
 		for (double i=yStart-yInterval;i<=maxY;i+=yInterval) {
-			// Draw horizontal line
-			g.setColor(Color.LIGHT_GRAY);
-			g.drawLine(xOffset, getY(i, yStartPos, yOffset), getWidth()-10, getY(i, yStartPos, yOffset));
-			// Draw tick marks on the y axis
-			g.setColor(Color.BLACK);
-			g.drawLine(xOffset-tickMarkLength, getY(i, yStartPos, yOffset), xOffset, getY(i, yStartPos, yOffset));
+		  // Draw horizontal line
+		  // g.setColor(Color.LIGHT_GRAY);
+		  g.setColor(VERY_LIGHT_GRAY);
+		  g.drawLine(xOffset, getY(i, yStartPos, yOffset), getWidth()-10, getY(i, yStartPos, yOffset));
+		  // Draw tick marks on the y axis
+		  g.setColor(Color.BLACK);
+		  g.drawLine(xOffset-tickMarkLength, getY(i, yStartPos, yOffset), xOffset, getY(i, yStartPos, yOffset));
 		}
 
+		// Draw an horizontal line at y = 0
+		g.setColor(Color.RED); // TODO - change this color to BLACK ?
+        g.drawLine(xOffset, getY(0, yStartPos, yOffset), getWidth()-10, getY(0, yStartPos, yOffset));
+        // TODO - color the inside of the graph like in http://www.ebi.ac.uk/biomodels/tools/melting/result/png/MELTING-20170317-3005 ?
+        
+        
+        // setting back the color to black
+        g.setColor(Color.BLACK);
 		
 		
 		// Set the indexes
@@ -386,6 +435,39 @@ public class LineGraph extends JPanel {
 
 	}
 
+	/**
+	 * Generates a new {@link LineGraph} with some randomized values.
+	 * 
+	 * @param sequenceLength the length of the sequence to build randomly.
+	 * @param graphTitle the graph title.
+	 * @return a new {@link LineGraph} with some randomized values.
+	 */
+	public static LineGraph randomLineGraph(int sequenceLength, String graphTitle) {
+      int size = sequenceLength;
+	  double yMin=Integer.MAX_VALUE, yMax=0;
+      double[] data = new double[size];
+      String[] categories = new String[size];
+      String[] bases = new String[size];
+      Random r = new Random(), s = new Random();
+  
+      for(int i=0; i<size; i++) {
+          data[i] = r.nextGaussian()*5 + (s.nextBoolean() ? 20 : -50);
+          if(yMin>data[i]) {
+              yMin = data[i];
+          } else if(yMax<data[i]) {
+              yMax = data[i];
+          }
+          switch(s.nextInt(4)) {
+          case 0: bases[i]="A"; break;
+          case 1: bases[i]="C"; break;
+          case 2: bases[i]="G"; break;
+          case 3: bases[i]="T"; break;
+          }
+          categories[i] = ""+(i+1);
+      }
+
+      return new LineGraph(data, yMin-2, yMax+6, "x axis", "y axis", categories, bases, graphTitle);
+	}
 
 	/**
 	 * A simple main as use case.
@@ -397,31 +479,11 @@ public class LineGraph extends JPanel {
 			@Override
 			public void run() {
 				int size = 100;
-				double yMin=Integer.MAX_VALUE, yMax=0;
-				double[] data = new double[size];
-				String[] categories = new String[size];
-				String[] bases = new String[size];
-				Random r = new Random(), s = new Random();
-			
-				for(int i=0; i<size; i++) {
-					data[i] = r.nextGaussian()*5 + 70;
-					if(yMin>data[i]) {
-						yMin = data[i];
-					} else if(yMax<data[i]) {
-						yMax = data[i];
-					}
-					switch(s.nextInt(4)) {
-					case 0: bases[i]="A"; break;
-					case 1: bases[i]="C"; break;
-					case 2: bases[i]="G"; break;
-					case 3: bases[i]="T"; break;
-					}
-					categories[i] = ""+(i+1);
-				}
-		
+				LineGraph lineGraph = randomLineGraph(size, "Graph Title");
+				
 				JFrame f = new JFrame();
 				f.setSize(600, 550);
-				f.getContentPane().add(new LineGraph(data, yMin-2, yMax+6, "x axis", "y axis", categories, bases, "Graph Title"));
+				f.getContentPane().add(lineGraph);
 		
 				WindowListener wndCloser = new WindowAdapter() {
 				@Override

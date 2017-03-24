@@ -18,26 +18,49 @@
 
 package meltinggui.dialogs;
 
-import javax.swing.*;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import melting.ThermoResult;
+import java.awt.GridBagLayout;
 
-import meltinggui.MeltingLayout;
-import meltinggui.widgets.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import melting.ThermoResult;
+import melting.nearestNeighborModel.NearestNeighborMode;
 
 /**
- * A panel to display the melting temperature, enthalpy and entropy results.  
+ * A panel to display the melting temperature, enthalpy and entropy results. 
+ *  
  * @author John Gowers
+ * @author rodrigue
  */
 public class ResultsPanel extends JPanel
 {
-  private OutputField enthalpyOutputField = new OutputField("Enthalpy: ");
-  private JLabel enthalpyUnitsLabel = new JLabel("J/mol");
-  private OutputField entropyOutputField = new OutputField("Entropy: ");
-  private JLabel entropyUnitsLabel = new JLabel("J/molK");
-  private OutputField tmOutputField = new OutputField("Melting temperature: ");
-  private JLabel tmUnitsLabel = new JLabel("degrees C");
+  /**
+   * 
+   */
+  private JLabel enthalpyLabel = new JLabel("Enthalpy (J/mol): ");
+  /**
+   * 
+   */
+  private JTextField enthalpyOutputField = new JTextField();  
+  /**
+   * 
+   */
+  private JLabel entropyLabel = new JLabel("Entropy (J.mol-1.K-1): ");
+  /**
+   * 
+   */
+  private JTextField entropyOutputField = new JTextField();  
+  /**
+   * 
+   */
+  private JLabel tmLabel = new JLabel("Melting temperature (degrees C): ");
+  /**
+   * 
+   */
+  private JTextField tmOutputField = new JTextField();  
+  
 
   /**
    * Create and set up the panel.
@@ -45,40 +68,49 @@ public class ResultsPanel extends JPanel
   public ResultsPanel()
   {
     disableEnthalpyEntropy();
-
+    
     setLayout(new GridBagLayout());
-    GridBagConstraints constraints;
 
-    enthalpyOutputField.add(enthalpyUnitsLabel, MeltingLayout.INPUT_GROUP);
-    entropyOutputField.add(entropyUnitsLabel, MeltingLayout.INPUT_GROUP);
-    tmOutputField.add(tmUnitsLabel, MeltingLayout.INPUT_GROUP);
+    // creates a constraints object
+    GridBagConstraints c = new GridBagConstraints();
+    int row = 0;
+    c.gridx = 0; // column 0
+    c.gridy = row; // row 0
+    c.weightx = 1; // resize so that all combo box have the same width
+    c.anchor = GridBagConstraints.LINE_START;
+    c.fill = GridBagConstraints.NONE;
+    c.gridwidth = 1;
 
-    constraints = getGridBagRowCol(0, 0);
-    add(enthalpyOutputField, constraints);
-    constraints = getGridBagRowCol(0, 1);
-    constraints.weightx = 1.0;
-    add(Box.createHorizontalGlue(), constraints);
-    add(entropyOutputField, getGridBagRowCol(0, 2));
-    constraints = getGridBagRowCol(1, 0);
-    constraints.gridwidth = 3;
-    add(tmOutputField, constraints);
-  }
+    // enthalpy
+    c.weightx = 0;
+    add(enthalpyLabel, c);
+    c.gridx = 1;
+    c.weightx = 1;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    add(enthalpyOutputField, c);
 
-  /**
-   * Factory creating a standardized <code>GridBagConstraints</code> object for
-   * the <code>GridBagLayout</code> for a given row and column number.
-   * @param   row   The row to put the component in.
-   * @param   col   The column to put the component in.
-   * @return   The new <code>GridBagConstraints</code>.
-   */
-  private GridBagConstraints getGridBagRowCol(int row, int col)
-  {
-    GridBagConstraints constraints = new GridBagConstraints();
-    constraints.fill = GridBagConstraints.BOTH;
-    constraints.weightx = 0.5;
-    constraints.gridx = col;
-    constraints.gridy = row;
-    return constraints;
+    // entropy
+    c.gridx = 0;
+    c.gridy = 1;
+    c.weightx = 0;
+    c.fill = GridBagConstraints.NONE;
+    add(entropyLabel, c);
+    c.gridx = 1;
+    c.weightx = 1;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    add(entropyOutputField, c);
+
+    // melting temperature
+    c.gridx = 0;
+    c.gridy = 2;
+    c.weightx = 0;
+    c.fill = GridBagConstraints.NONE;
+    add(tmLabel, c);
+    c.gridx = 1;
+    c.weightx = 1;
+    c.fill = GridBagConstraints.HORIZONTAL;
+    add(tmOutputField, c);
+    
   }
 
   /**
@@ -86,8 +118,10 @@ public class ResultsPanel extends JPanel
    */
   public final void disableEnthalpyEntropy()
   {
-    enthalpyOutputField.setDisabled();
-    entropyOutputField.setDisabled();
+    enthalpyOutputField.setVisible(false);
+    enthalpyLabel.setVisible(false);
+    entropyOutputField.setVisible(false);
+    entropyLabel.setVisible(false);
   }
 
   /**
@@ -95,34 +129,35 @@ public class ResultsPanel extends JPanel
    */
   public final void enableEnthalpyEntropy()
   {
-    enthalpyOutputField.setEnabled();
-    entropyOutputField.setEnabled();
+    enthalpyOutputField.setVisible(true);
+    enthalpyLabel.setVisible(true);
+    entropyOutputField.setVisible(true);
+    entropyLabel.setVisible(true);
   }
 
   /**
    * Displays the results from the MELTING program.
+   * 
    * @param results The {@link ThermoResult <code>ThermoResult</code>} 
    *                containing the results.
    */
   public void displayMeltingResults(melting.ThermoResult results)
   {
     double tm = results.getTm();
-    tmOutputField.setValue(String.format("%.2f", tm));
+    tmOutputField.setText(String.format("%.2f", tm));
 
-    if (results.getCalculMethod() instanceof
-                            melting.nearestNeighborModel.NearestNeighborMode) {
+    if (results.getCalculMethod() instanceof NearestNeighborMode) {
       double enthalpy = results.getEnthalpy();
       double entropy = results.getEntropy();
 
       enableEnthalpyEntropy();
 
-      enthalpyOutputField.setValue(String.format("%.0f", enthalpy));
-      entropyOutputField.setValue(String.format("%.2f", entropy));
+      enthalpyOutputField.setText(String.format("%.0f", enthalpy));
+      entropyOutputField.setText(String.format("%.2f", entropy));
     } else {
       disableEnthalpyEntropy();
 
-      enthalpyOutputField.setValue("");
-      entropyOutputField.setValue("");
+      enthalpyOutputField.setText("");
     }
   }
 }

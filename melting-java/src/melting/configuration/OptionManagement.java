@@ -608,7 +608,7 @@ public class OptionManagement {
 	 */
 	private void readLegalInformation(){
 		StringBuffer legalInformation = new StringBuffer();
-		legalInformation.append("   Melting 5 is copyright (C) 2009-2016 by Nicolas Le Novère and Marine Dumousseau\n\n");
+		legalInformation.append("   Melting 5 is copyright (C) 2009-2017 by Nicolas Le Novère and Marine Dumousseau\n\n");
 		legalInformation.append("   This  program  is  free  software; you can redistribute it\n");
 		legalInformation.append("   and/or modify it under the terms of the GNU General Public\n");
 		legalInformation.append("   License  as  published  by  the  Free Software Foundation;\n");
@@ -617,15 +617,15 @@ public class OptionManagement {
 		legalInformation.append("   This  program  is  distributed in the hope that it will be\n");
 		legalInformation.append("   useful, but WITHOUT ANY WARRANTY; without even the implied\n");
 		legalInformation.append("   warranty  of  MERCHANTABILITY  or FITNESS FOR A PARTICULAR\n");
-		legalInformation.append("  PURPOSE.  See the GNU  General  Public  License  for  more\n");
-		legalInformation.append("  details.\n\n");
-		legalInformation.append("  You  should have received a copy of the GNU General Public\n");
-		legalInformation.append("  License along with this program; if not, write to the Free\n");
-		legalInformation.append("  Software  Foundation,  Inc.,  59  Temple Place, Suite 330,\n");
-		legalInformation.append("  Boston, MA  02111-1307 USA\n\n");
-		legalInformation.append("  Nicolas Le Novère and Marine Dumousseau, Computational Biology, EMBL-EBI\n");
-		legalInformation.append("  Hinxton CB10 1SD United-Kingdom\n");// TODO - add Babraham info + John, Piero and me ?
-		legalInformation.append("  melting-forum@googlegroups.com\n");
+		legalInformation.append("   PURPOSE.  See the GNU  General  Public  License  for  more\n");
+		legalInformation.append("   details.\n\n");
+		legalInformation.append("   You  should have received a copy of the GNU General Public\n");
+		legalInformation.append("   License along with this program; if not, write to the Free\n");
+		legalInformation.append("   Software  Foundation,  Inc.,  59  Temple Place, Suite 330,\n");
+		legalInformation.append("   Boston, MA  02111-1307 USA\n\n");
+		legalInformation.append("   Nicolas Le Novère and Marine Dumousseau, Computational Biology, EMBL-EBI\n");
+		legalInformation.append("   Hinxton CB10 1SD United-Kingdom\n");// TODO - add Babraham info + John, Piero and me ?
+		legalInformation.append("   melting-forum@googlegroups.com\n");
 		
 		meltingLogger.log(Level.INFO, legalInformation.toString());
 	}
@@ -673,8 +673,8 @@ public class OptionManagement {
 		}
 		else 
 		{
-		  // TODO - do we check the entire fasta file ?? 
-		  // TODO - do we pass the entire file here or do we pass the sequences one by one ? Might be easier to pass them one by one using the arguments
+		  // nothing to do. 
+		  // we pass the sequences one by one so no need to take care of the input file(s) here.
 		}
 		
 		if (checkConcentrations(optionSet.get(solutioncomposition)) == false) {
