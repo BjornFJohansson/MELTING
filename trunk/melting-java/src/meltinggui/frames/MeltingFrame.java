@@ -447,6 +447,8 @@ public class MeltingFrame extends JInternalFrame
     
     // TODO - do a bit of validation of the different parameters/arguments
     
+    // TODO - main method to calculate the melting temperatures
+    
     
     ArgsMessage message = new ArgsMessage(ArgsMessage.ArgumentType.MANDATORY,
                                           commandLineText);

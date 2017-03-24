@@ -104,7 +104,7 @@ public class OuterFrame
   /**
    * Sets up the GUI and displays the main MELTING frame.
    */
-  public OuterFrame()
+  public OuterFrame() 
   {
     super("Melting v5.0");
 
@@ -149,6 +149,7 @@ public class OuterFrame
     setContentPane(desktopPane);
     setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     
+    // TODO - add a menu to list all windows opened to be able to retrieve them easily. 
     
     addWindowListener(new WindowAdapter() {
                     @Override
