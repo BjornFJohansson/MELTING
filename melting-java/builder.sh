@@ -41,6 +41,7 @@ echo "Packing into zip"
 cd ${TMPFOLDER}
 zip ${ARCHIVE_NAME}.zip ${INNER_ARCHIVE_FOLDER}/ && echo "\t ${ARCHIVE_NAME}.zip done"
 cd -
+cp ${TMPFOLDER}/${ARCHIVE_NAME}.zip . 
 
 echo "Cleaning"
 #rm -Rf ${TMPFOLDER}

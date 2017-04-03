@@ -1,8 +1,17 @@
 #!/bin/sh
 
-cd $(dirname $0)
-if [ ! "$NN_PATH" ]; then
+RESOLVE_LINK=`readlink -f $0`
+MELTING_CONVERTER_HOME=`dirname ${RESOLVE_LINK}`
+
+#cd $(dirname $0)
+if [ ! "$NN_PATH" ] && [ -e /usr/local/share/MELTING/Data ]; then
   NN_PATH=/usr/local/share/MELTING/Data
+elif [ ! "$NN_PATH" ] && [ -e ${MELTING_CONVERTER_HOME}/../Data ]; then
+    NN_PATH=${MELTING_CONVERTER_HOME}/../Data
 fi
 
-java -cp melting5.jar:../lib/htsjdk-2.3.0.jar melting.Main $*
+echo NN_PATH = ${NN_PATH}
+echo "CLASSPATH = ${MELTING_CONVERTER_HOME}/melting5.jar"
+echo "options = '$@'"
+
+java -cp ${MELTING_CONVERTER_HOME}/melting5.jar melting.Main $@

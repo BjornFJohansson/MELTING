@@ -168,7 +168,6 @@ public class Main {
   public static void main(String[] args) {
 
     OptionManagement optionManager = new OptionManagement();
-    Environment env = optionManager.createEnvironment(args);
     
     if (args.length == 0){
       optionManager.initialiseLogger();
@@ -183,6 +182,7 @@ public class Main {
       }
     }
     else {
+      Environment env = optionManager.createEnvironment(args);
       
       // TODO - check if an input file was given instead of a single sequence !
       // In this case, save one file per sequence or just add everything to the same output, adding comments when we change sequence.

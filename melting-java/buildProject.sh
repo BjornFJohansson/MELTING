@@ -1,5 +1,5 @@
 #!/bin/bash
 
 ant compile
-ant jar
+ant bigjar
 ant javadoc
