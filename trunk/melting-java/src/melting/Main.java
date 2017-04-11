@@ -203,6 +203,8 @@ public class Main {
           
           runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString()); // TODO - add the complementary sequence if available
         }
+        
+        fastaFile.close();
         return;
       }
       else 
