@@ -1,8 +1,9 @@
-           Licensing and Distribution Terms for Melting,
-        Please visit 
-    <http://www.ebi.ac.uk/biomodels/tools/melting/> to have more information about Melting.
+           Licensing and Distribution Terms for Melting
+        
+    Please visit <http://www.ebi.ac.uk/biomodels/tools/melting/> 
+    to have more information about Melting.
 
-Copyright (C) 2009-2015 jointly by the following organizations:
+Copyright (C) 2009-2017 jointly by the following organizations:
  1. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
  2. The Babraham Institute, Cambridge, UK
 

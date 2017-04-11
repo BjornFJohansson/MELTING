@@ -226,7 +226,7 @@ public class OptionManagement {
 	public static final String nn_Path = "-nnpath";
 	    
     /**
-     * Option name to get the sequence(s) to analyse from an input file.
+     * Option name to get the sequence(s) to analyse from an input fasta file.
      */
     public static final String inputFile = "-I";
 	
@@ -235,6 +235,12 @@ public class OptionManagement {
      */
     public static final String inputComplementFile = "-IC";
 
+    /**
+     * Option name to get the sequence(s) to analyse from an input file that has the old format
+     * (one sequence per line and the complementary sequence on the same line, separated by a space).
+     */
+    public static final String oldInputFile = "-IOF";
+    
     /**
 	 * Option name to print the melting results in an output file.
 	 */
@@ -393,6 +399,7 @@ public class OptionManagement {
 		registerMeltingVariables.add(sliding_window);
 		registerMeltingVariables.add(inputFile);
 		registerMeltingVariables.add(inputComplementFile);
+		registerMeltingVariables.add(oldInputFile);
 	}
 	
 	/**
@@ -608,7 +615,9 @@ public class OptionManagement {
 	 */
 	private void readLegalInformation(){
 		StringBuffer legalInformation = new StringBuffer();
-		legalInformation.append("   Melting 5 is copyright (C) 2009-2017 by Nicolas Le Novère and Marine Dumousseau\n\n");
+		legalInformation.append("   Melting 5 is copyright (C) 2009-2017  jointly by the following organizations:\n" +
+		    "      1. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK\n" +
+		    "      2. The Babraham Institute, Cambridge, UK\n\n");
 		legalInformation.append("   This  program  is  free  software; you can redistribute it\n");
 		legalInformation.append("   and/or modify it under the terms of the GNU General Public\n");
 		legalInformation.append("   License  as  published  by  the  Free Software Foundation;\n");
@@ -623,9 +632,8 @@ public class OptionManagement {
 		legalInformation.append("   License along with this program; if not, write to the Free\n");
 		legalInformation.append("   Software  Foundation,  Inc.,  59  Temple Place, Suite 330,\n");
 		legalInformation.append("   Boston, MA  02111-1307 USA\n\n");
-		legalInformation.append("   Nicolas Le Novère and Marine Dumousseau, Computational Biology, EMBL-EBI\n");
-		legalInformation.append("   Hinxton CB10 1SD United-Kingdom\n");// TODO - add Babraham info + John, Piero and me ?
-		legalInformation.append("   melting-forum@googlegroups.com\n");
+		legalInformation.append("   Nicolas Le Novère and Marine Dumousseau\n");
+		legalInformation.append("   contact: melting-forum@googlegroups.com\n");
 		
 		meltingLogger.log(Level.INFO, legalInformation.toString());
 	}
@@ -641,11 +649,11 @@ public class OptionManagement {
 	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
 		boolean needComplementaryInput = false;
 		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false ||
-		    ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)))
+		    ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)) && (optionSet.containsKey(oldInputFile) == false))
 		{
-		  System.out.println("hasRequired options = " + ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)));
-		  System.out.println("hasRequired options contain inputFile = " + optionSet.containsKey(inputFile));
-			return false;
+		  // System.out.println("hasRequired options = " + ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)));
+		  // System.out.println("hasRequired options contain inputFile = " + optionSet.containsKey(inputFile));
+		  return false;
 		}
 
 		try {
@@ -659,7 +667,7 @@ public class OptionManagement {
 			throw new OptionSyntaxError("\n The oligomer concentration (entered with the option " + nucleotides + ") must be a numeric value.", e);
 		}
 		
-		if (! optionSet.containsKey(inputFile)) {
+		if (! (optionSet.containsKey(inputFile) || optionSet.containsKey(oldInputFile))) {
 		  String value = optionSet.get(sequence).toUpperCase();
 		  BasePair.initialiseNucleicAcidList();
 		  if (NucleotidSequences.checkSequence(value)){
@@ -692,7 +700,7 @@ public class OptionManagement {
 			return false;
 		}
 		else if (optionSet.containsKey(complementarySequence) == false && needComplementaryInput == false 
-		    && (! optionSet.containsKey(inputFile)))
+		    && (! (optionSet.containsKey(inputFile) || optionSet.containsKey(oldInputFile))))
 		{
 			if (NucleotidSequences.isSelfComplementarySequence(optionSet.get(OptionManagement.sequence).toUpperCase()) 
 			    || optionSet.get(selfComplementarity).equals("true"))
@@ -768,7 +776,7 @@ public class OptionManagement {
               if (i != args.length - 1 && isAnOptionValue(args[i + 1])){
                 optionSet.put(inputFile, args[i + 1]);
               }
-			}
+			} // TODO - do we need this code here ? Do we need to add code for the IOF option ?
 		}
 
 		if (hybrid.equals("dnadna")) {
@@ -1094,15 +1102,20 @@ public class OptionManagement {
 			OptionManagement.logMessage("no self complementarity ");
 		}
 		
-		if (! optionDictionnary.containsKey(inputFile)) 
+		if (! (optionDictionnary.containsKey(inputFile) || optionDictionnary.containsKey(oldInputFile))) 
 		{
 		  OptionManagement.logMessage("sequence : " + environment.getSequences().getSequence());
 		  OptionManagement.logMessage("complementary sequence : " + environment.getSequences().getComplementary());		
 		}
-		else 
+		else if (optionDictionnary.containsKey(inputFile))
 		{
 		  OptionManagement.logMessage("Input file : " + environment.getOptions().get(inputFile));
 		}
+		else 
+		{
+		  OptionManagement.logMessage("Input file : " + environment.getOptions().get(oldInputFile));
+		}
+		
 		return environment;
 	}
 

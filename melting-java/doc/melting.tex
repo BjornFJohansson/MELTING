@@ -11,7 +11,7 @@
 \title{\textsc{melting} - nearest-neighbor computation of nucleic acid hybridation}
 \author{Marine Dumousseau, William John Gowers \and Nicolas Le Nov\`ere \\
   \texttt{n.lenovere@gmail.com}}
-\date{February 2014}
+\date{april 2017}
 \maketitle
 
 \newpage
@@ -148,6 +148,19 @@ to see if you can get something interesting).
   Change the default pathway (Data) where to find the default calorimetric tables (thermodynamic parameters).
   The program will look for the file in a directory specified during the installation.
   However, if an environment variable NN\_PATH is defined, melting will search in this one first.
+\item [\textbf{-I} \textit{input\_file}]\mbox{}\\
+  To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
+  The sequence file need to be in the Fasta format. If this option is used, the '-S' option is no longer mandatory. 
+\item [\textbf{-IC} \textit{inputC\_file}]\mbox{}\\
+  To read a set of complementary sequences in an input file. 'filename' is the name or the full path to the file.
+  The sequence file need to be in the Fasta format. The number of sequences in this file should match the number
+  of sequences that are on the file given with the '-I' option. If this is not the case this file/option will be
+  ignored. 
+\item [\textbf{-IOF} \textit{inputOF\_file}]\mbox{}\\  
+  To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
+  The sequence file should be in the old melting input file format, meaning contain one sequence per line.
+  One line can contain the sequence and the complementary sequence, separated by a space character.
+  If this option is used, the '-S' option is no longer mandatory. 
 \item [\textbf{-O} \textit{output\_file}]\mbox{}\\ 
   The output is directed to this file instead of the standard output. The name of the file must be specified.
 \item [\textbf{-self}]\mbox{}\\
@@ -184,11 +197,14 @@ to see if you can get something interesting).
   The option \textbf{-self} is necessary to precise the self 
   complementarity because the program can't detect it.
       
- \item [\textbf{-F} \textit{factor}  ]\mbox{}\\
+\item [\textbf{-F} \textit{factor}  ]\mbox{}\\
   This is the correction factor used to modulate the effect of the nucleic acid concentration in the computation of the melting temperature. 
   See section ALGORITHM for details. If the sequences are automatically recognized as self complementary sequences or if the option \textbf{-self}
   is used, the factor correction is automatically 1. Otherwise F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. 
   The default factor value is 4.
+\item [\textbf{-w} \textit{sliding window value}  ]\mbox{}\\
+  The input sequence(s) will be examined slide by slide and a melting result will be provided for each slide.
+  Ex: '-S TAGTCTAA -w 6' -> result given for TAGTCT, AGTCTA and GTCTAA 
 \end{description}
 
 \subsection{Set of thermodynamic parameters and methods (models)}
@@ -713,7 +729,7 @@ and entropy from the elementary parameters of each Crick's pair.
 \end{displaymath}
 The initiation computation is not the same for each following model. 
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -811,7 +827,7 @@ only for sequences composed from 2 to 7 CNG repeats and the initiation is alread
 \end{displaymath}
 For further information, see the referenced article.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -974,7 +990,7 @@ $\delta{}h_\mathrm{per-AU/GU}$ accounts for AU or GU nearest neighbors.
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -1101,7 +1117,7 @@ $\delta{}h_\mathrm{p}$ accounts for an AG or GA pairs adjacent to a UC, CC or CU
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
  \hline
@@ -1219,7 +1235,7 @@ n > 2.
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1279,7 +1295,7 @@ parameters of each Crick's pair containing the GU base pairs.
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \hline
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
@@ -1334,7 +1350,7 @@ CGATC\textbf{A}
 
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1399,7 +1415,7 @@ only a single danging end and then, it adds a bonus for the second dangling end 
 
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1467,7 +1483,7 @@ CGATC\textbf{AAA}
 
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1595,7 +1611,7 @@ $\delta{}h_\mathrm{intervening-NN}$ accounts for the intervening base pair stack
        (The same computation is performed for $\Delta S$) 
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1693,7 +1709,7 @@ to the long bulge loop.
 
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1747,7 +1763,7 @@ parameters of each Crick's pair containing the inosine base.
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1810,7 +1826,7 @@ CGATCCG
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1857,7 +1873,7 @@ increments.
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1917,7 +1933,7 @@ The program computes the enthalpy and the entropy following the same nearest-nei
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1952,7 +1968,7 @@ The program computes the enthalpy and the entropy following the same nearest-nei
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -1985,7 +2001,7 @@ The program computes the enthalpy and the entropy following the same nearest-nei
        
 For further information, see the referenced articles.
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{model} & \textbf{limits} & \textbf{Article} \\
 \hline
@@ -2163,7 +2179,7 @@ $[\mbox{Mg}^{2+}]$ and several ion corrections are proposed  (see the reference 
  \end{displaymath}
  \end{itemize}
  
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{contexts} & \textbf{Article} \\
 \hline
@@ -2275,7 +2291,7 @@ tanna06 & DNA & Tan et al. 2006,  \\
  \end{displaymath}
  \end{itemize} 
 
- \begin{table}[hc]
+ \begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2343,7 +2359,7 @@ tanmg06 & DNA & Tan et al. 2006 \\
  \end{displaymath}
  \end{itemize}
 
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
@@ -2404,7 +2420,7 @@ Several sodium equivalence ready to use are proposed by this program :
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
@@ -2448,7 +2464,7 @@ applied. However, these corrections are rough approximations and results accurac
   \end{itemize}
  
 For further information, see the referenced articles :
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2492,7 +2508,7 @@ mus80 & DNA & Musielski et al., 1981 \\
   \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{correction} & \textbf{limits} & \textbf{Article} \\
 \hline 
@@ -2569,7 +2585,7 @@ Tm = 67 + 16.6\log\frac{[\mbox{Na}^+]}{1+0.7[\mbox{Na}^+]} + 0.8\% GC - \frac{50
 \end{itemize}
 
 For further information, see the referenced articles :
-\begin{table}[hc]
+\begin{table}[h]
 \begin{tabular}[h]{| c | c | c |}
 \textbf{formula} & \textbf{limits} & \textbf{Article} \\ 
 \hline
@@ -2675,7 +2691,9 @@ You can use \textsc{melting} through a web server at
    
 \section{Copyright }
 Melting is copyright 
-\copyright 1997, 2014 by Nicolas Le Nov\`ere, Marine Dumousseau and William John Gowers.
+\copyright 1997, 2017 jointly by the following organizations:
+ 1. EMBL European Bioinformatics Institute (EMBL-EBI), Hinxton, UK
+ 2. The Babraham Institute, Cambridge, UK
 
 This program is free software; 
 you can redistribute it and/or modify it under the terms of the GNU General 
@@ -2696,16 +2714,15 @@ Nicolas Joly is an efficient and kind debugger and advisor. Catherine
 Letondal wrote the HTML interface to melting. Thanks to Nirav Merchant,
 Taejoon Kwon, Leo Schalkwyk, Mauro Petrillo, Andrew Thompson, Wong Chee Hong, Ivano
 Zara for their bug fixes and comments. Thanks to Richard Owczarzy for his magnesium 
-correction. Thanks to Charles Plessy for the graphical interface files. Thanks to Daniel McGreal for the SOAP interface of MELTING at the EMBL-EBI. Thanks to Nicolas Rodriguez for the current web interface and finally thanks
-to the usenet helpers, particularly Olivier Dehon and Nicolas Chuche.
+correction. Thanks to Charles Plessy for the graphical interface files. Thanks
+to Daniel McGreal for the SOAP interface of MELTING at the EMBL-EBI. Thanks to
+Nicolas Rodriguez for the current web interface and GUI client and finally
+thanks to the usenet helpers, particularly Olivier Dehon and Nicolas Chuche.
 
    
 \section{Authors }
 Nicolas Le Nov\`ere, Marine Dumousseau and William John Gowers, \\
-EMBL-EBI, 
-Wellcome-Trust Genome Campus
-Hinxton Cambridge, CB10 1SD, UK
-n.lenovere@gmail.com
+contact: melting-forum@googlegroups.com
   
 \section{History }
 

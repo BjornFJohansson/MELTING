@@ -59,14 +59,19 @@ that are located in the 'doc' folder.
 
 -I [filename]
   To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
-  The sequence file could be in the Fasta format or contain one sequence per line, in this last case, one line
-  can contain the sequence and the complementary sequence, separated by a space character. 
+  The sequence file need to be in the Fasta format. If this option is used, the '-S' option is no longer mandatory. 
 
 -IC [filename]
   To read a set of complementary sequences in an input file. 'filename' is the name or the full path to the file.
-  The sequence file could be in the Fasta format or contain one sequence per line. The number of sequences in this file
-  should match the number of sequences that are on the file given with the '-I' option. If this is not the case this
-  file/option will be ignored 
+  The sequence file need to be in the Fasta format. The number of sequences in this file should match the number
+  of sequences that are on the file given with the '-I' option. If this is not the case this file/option will be
+  ignored 
+
+-IOF [filename]
+  To read a set of input sequences in an input file. 'filename' is the name or the full path to the file. 
+  The sequence file should be in the old melting input file format, meaning contain one sequence per line.
+  One line can contain the sequence and the complementary sequence, separated by a space character.
+  If this option is used, the '-S' option is no longer mandatory. 
 
 -O [filename]
 	To write the results in an output file. 'filename' is the name or the full path to the file.
@@ -82,10 +87,12 @@ that are located in the 'doc' folder.
 	F is 4 if the both strands are present in equivalent amount and 1 if one strand is in excess. The default factor value is 4.
 
 -w [sliding window value]
-  The input sequence will be examined slide by slide and a melting result will be provided for each slide.
+  The input sequence(s) will be examined slide by slide and a melting result will be provided for each slide.
   Ex: '-S TAGTCTAA -w 6' -> result given for TAGTCT, AGTCTA and GTCTAA 
 
+
 	Set of thermodynamic parameters and methods : 
+	
 By default, the approximative mode is used for oligonucleotides longer than 60 bases (the default threshold value), otherwise the nearest 
 neighbor model is used. 
 
