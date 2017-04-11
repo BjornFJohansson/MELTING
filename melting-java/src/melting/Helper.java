@@ -26,8 +26,9 @@ import melting.methodInterfaces.SodiumEquivalentMethod;
 public class Helper {
 	
 	/**
-	 * to check if the user wants to use another thermodynamic parameters file with the used model.
-	 * The new file name is specified in the methodName, preceded by the model name and ":"
+	 * Checks if the user wants to use another thermodynamic parameters file with the used model.
+	 * The new file name is specified in the methodName, preceded by the model name and ":".
+	 * 
 	 * @param  methodName : the method or model option entered by the user.
 	 * @return true if the methodName String contains ":". (a new file name has been entered by the user)
 	 * Ex : san04 => the model name (no specified file name, the default file name of the san04 model is used)
@@ -42,7 +43,8 @@ public class Helper {
 	}
 	
 	/**
-	 * This method is called to extract the new file name to the method or model option entered by the user.
+	 * Extracts the new file name to the method or model option entered by the user.
+	 * 
 	 * @param  methodName : the method or model option entered by the user.
 	 * @return String new file name (or pathway + new file name) containing the thermodynamic parameters.
 	 */
@@ -51,7 +53,8 @@ public class Helper {
 	}
 	
 	/**
-	 * This method is called to extract the method or model name to the method or model option entered by the user.
+	 * Extracts the method or model name to the method or model option entered by the user.
+	 * 
 	 * @param  methodName : the method or model option entered by the user.
 	 * @return String method or model name.
 	 */
@@ -60,7 +63,8 @@ public class Helper {
 	}
 	
 	/**
-	 * computes a sodium equivalent concentration from the different ion concentrations of the Environment object.
+	 * Computes a sodium equivalent concentration from the different ion concentrations of the Environment object.
+	 * 
 	 * @param environment
 	 * @return double sodium equivalent concentration.
 	 */
@@ -79,4 +83,8 @@ public class Helper {
 		
 		return NaEq;
 	}
+	
+	// TODO - add helper methods to run melting with the different input files and the sliding window option.
+	
+	
 }

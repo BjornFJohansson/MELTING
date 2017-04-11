@@ -55,7 +55,6 @@ public class Main {
   private static ThermoResult runMelting(String [] args, OptionManagement optionManager){
     try {
       ThermoResult results = getMeltingResults(args, optionManager).getResult();
-      displaysMeltingResults(results);
       return results;
 
     } catch (Exception e) {
@@ -183,27 +182,33 @@ public class Main {
     }
     else {
       Environment env = optionManager.createEnvironment(args);
+
+      // TODO - to manipulate the arguments/options given by the user, use the HashMap returned from env.getOptions() and create a new Environment from the modified HashMap
       
       // TODO - check if an input file was given instead of a single sequence !
+      
       // In this case, save one file per sequence or just add everything to the same output, adding comments when we change sequence.
+
       
       ArrayList<String> inputSequences = new ArrayList<String>(); // TODO : create a method that can be used from the GUI as well - display can be controlled with the OptionManagement.meltingLogger
-      
+
       if (env.getOptions().containsKey(OptionManagement.inputFile)) {
         String inputFileName = env.getOptions().get(OptionManagement.inputFile);
-        
+
         OptionManagement.logInfo("Input file = " + inputFileName);
-        
+
         FastaSequenceFile fastaFile = new FastaSequenceFile(new File(inputFileName), true);
 
         // do a for loop on the input sequence(s)
         ReferenceSequence sequence = null;
         while ((sequence = fastaFile.nextSequence()) != null) {
           System.out.println(sequence.getName() + "\n" + sequence.getBaseString());
-          
-          runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString()); // TODO - add the complementary sequence if available
+
+          ThermoResult results = runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString()); // TODO - add the complementary sequence if available // TODO - add support for the sliding window
+          displaysMeltingResults(results);
+
         }
-        
+
         fastaFile.close();
         return;
       }
@@ -213,11 +218,13 @@ public class Main {
       }
 
 
+      // TODO - if there is a sliding windows, always save results to a file with a generated name if none are given
       
       if (env.getOptions().get(OptionManagement.sliding_window) != null) // TODO - create a method that can be used for all sequences of an input file 
       {
 
         int slidingWindow = Integer.parseInt(env.getOptions().get(OptionManagement.sliding_window));
+
         String sequence = env.getSequences().getSequence(); // TODO - slide on the complementary sequence as well if provided
         int sequenceLength = sequence.length();
 
@@ -225,6 +232,7 @@ public class Main {
 
         // generating the list of sequences 
         ArrayList<String> sequences = new ArrayList<String>();
+        ArrayList<String> complementSequences = new ArrayList<String>();
 
         if (sequenceLength <= slidingWindow) {
           sequences.add(sequence);
@@ -243,7 +251,7 @@ public class Main {
         // System.out.println("sliced sequences : " + sequences);
 
         // launch melting on each sequences
-        List<Environment> results = runMeltingOnSequenceList(sequences, null, args, optionManager);
+        List<Environment> results = runMeltingOnSequenceList(sequences, complementSequences, args, optionManager);
 
         if (results.size() > 0) 
         {
@@ -258,7 +266,8 @@ public class Main {
       }
       else 
       {
-        runMelting(args, optionManager);
+        ThermoResult results = runMelting(args, optionManager);
+        displaysMeltingResults(results);
       }
     }
   }
