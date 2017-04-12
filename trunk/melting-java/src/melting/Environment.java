@@ -113,9 +113,10 @@ public class Environment {
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
 		}
-		else if ((! options.containsKey(OptionManagement.inputFile)) 
+		else if ((options.get(OptionManagement.complementarySequence) == null)
+		    || ((options.get(OptionManagement.complementarySequence) != null)
 		    && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.complementarySequence).toUpperCase())
-		    && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase()))
+		    && NucleotidSequences.isSelfComplementarySequence(options.get(OptionManagement.sequence).toUpperCase())))
 		{
 			this.IsSelfComplementarity = true;
 			this.factor = 1;
@@ -126,11 +127,11 @@ public class Environment {
 			this.factor = Integer.parseInt(options.get(OptionManagement.factor));
 		}
 
-		if (! options.containsKey(OptionManagement.inputFile))
+		if (options.get(OptionManagement.complementarySequence) != null)
 		{
-		sortSequences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());
-		NucleotidSequences.initialiseModifiedAcidHashmap();
+		  sortSequences(this.Hybridization, options.get(OptionManagement.sequence).toUpperCase(), options.get(OptionManagement.complementarySequence).toUpperCase());		  
 		}
+		NucleotidSequences.initialiseModifiedAcidHashmap();
 		
 		this.result = new ThermoResult(0,0,0);
 

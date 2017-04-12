@@ -18,17 +18,10 @@
 
 package melting;
 
-import htsjdk.samtools.reference.FastaSequenceFile;
-import htsjdk.samtools.reference.ReferenceSequence;
-
-import java.io.File;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.MeltingComputationMethod;
 import melting.nearestNeighborModel.NearestNeighborMode;
 
@@ -37,101 +30,14 @@ import melting.nearestNeighborModel.NearestNeighborMode;
  */
 public class Main {
 
-  // TODO - do a second method that take an array of sequences and return an array of ThermoResult ?
-  // TODO - support fasta and fastq ? Use the classes FastaSequenceFile and FastqReader
-  // TODO - separate the calculations from a set of arguments from the display of the result, so that we can re-use the same API for the command line and the GUI
+  // TODO - support fastq and other formats ? Use the classes FastqReader, SamReaderFactory.makeDefault(), ...
+  // see http://plindenbaum.blogspot.co.uk/2010/04/readingwriting-sambam-file-with-picard.html
+  // see https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/samtools/example/ExampleSamUsage.html
   
 
   
 	// private static methods
 	
-  /**
-   * Compute the entropy, enthalpy and the melting temperature and display the results. 
-   * 
-   * @param args : contains the options entered by the user.
-   * @param optionManager : the OptionManagement which allows to manage
-   * the different options entered by the user.
-   */
-  private static ThermoResult runMelting(String [] args, OptionManagement optionManager){
-    try {
-      ThermoResult results = getMeltingResults(args, optionManager).getResult();
-      return results;
-
-    } catch (Exception e) {
-      OptionManagement.logError(e.getMessage());
-      return null;
-    }
-  }
-
-  /**
-   * Compute the entropy, enthalpy and the melting temperature and display the results.
-   * 
-   * <p>This method will remove the options related to the input file and replace them
-   * by a single sequence option, the sequence passed as attribute "<code>inputSequence</code>".</p>
-   * 
-   * @param initArgs : contains the options entered by the user.
-   * @param optionManager : the OptionManagement which allows to manage
-   * the different options entered by the user.
-   * @param inputSequence : the input sequence
-   */
-  private static ThermoResult runMeltingSequenceFromInputFile(String[] initArgs,
-      OptionManagement optionManager, String inputSequence) 
-  {
-    int inputFileIndex = -1;
-    String[] args = Arrays.copyOf(initArgs, initArgs.length);
-    
-    for (int i = 0; i < args.length; i++)
-    {
-      if (args[i].equals(OptionManagement.inputFile))
-      {
-        inputFileIndex = i;
-        break;
-      }
-    }
-    
-    if (inputFileIndex != -1) 
-    {
-      args[inputFileIndex] = OptionManagement.sequence;
-      args[inputFileIndex + 1] = inputSequence;
-    }
-    
-    return runMelting(args, optionManager);
-  }
-
-
-  /**
-   * Compute the entropy, enthalpy and melting temperature, and return 
-   * these results.
-   * 
-   * @param args options (entered by the user) that determine the
-   *             sequence, hybridization type and other features of the
-   *             environment.
-   * @param optionManager the {@link OptionManagement} which
-   *                      allows the program to manage the different
-   *                      options entered by the user.  
-   * @return The {@link Environment} containing the results of the Melting computation.
-   */
-  public static Environment getMeltingResults(String[] args,
-      OptionManagement optionManager)
-  {
-    NumberFormat format = NumberFormat.getInstance();
-    format.setMaximumFractionDigits(2);
-
-    // Set up the environment from the supplied arguments and get the 
-    // results.
-    Environment environment = optionManager.createEnvironment(args);
-    RegisterMethods register = new RegisterMethods();
-    MeltingComputationMethod calculMethod = register.getMeltingComputationMethod(environment.getOptions());
-    ThermoResult results = calculMethod.computesThermodynamics();
-    results.setCalculMethod(calculMethod);
-    environment.setResult(results);
-
-    // Apply corrections to the results.
-    results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);
-    environment.setResult(results);
-    return environment;
-  }
-
   /**
    * Displays the results of Melting : the computed enthalpy and entropy (in cal/mol and J/mol), and the computed 
    * melting temperature (in degrees).
@@ -157,9 +63,6 @@ public class Main {
     OptionManagement.logInfo("Melting temperature : " + format.format(results.getTm()) + " degrees C.\n");
   }
 	
-  // public static main method
-
-  
   
   /**
    * @param args : contains the options entered by the user.
@@ -181,156 +84,85 @@ public class Main {
       }
     }
     else {
+      // The options look like they are good
       Environment env = optionManager.createEnvironment(args);
 
-      // TODO - to manipulate the arguments/options given by the user, use the HashMap returned from env.getOptions() and create a new Environment from the modified HashMap
+      // TODO - In the case of a sliding windows on a set of input sequences, save one file per sequence or just add everything to the same output, adding comments when we change sequence?
       
-      // TODO - check if an input file was given instead of a single sequence !
-      
-      // In this case, save one file per sequence or just add everything to the same output, adding comments when we change sequence.
-
-      
-      ArrayList<String> inputSequences = new ArrayList<String>(); // TODO : create a method that can be used from the GUI as well - display can be controlled with the OptionManagement.meltingLogger
-
       if (env.getOptions().containsKey(OptionManagement.inputFile)) {
-        String inputFileName = env.getOptions().get(OptionManagement.inputFile);
 
-        OptionManagement.logInfo("Input file = " + inputFileName);
-
-        FastaSequenceFile fastaFile = new FastaSequenceFile(new File(inputFileName), true);
-
-        // do a for loop on the input sequence(s)
-        ReferenceSequence sequence = null;
-        while ((sequence = fastaFile.nextSequence()) != null) {
-          System.out.println(sequence.getName() + "\n" + sequence.getBaseString());
-
-          ThermoResult results = runMeltingSequenceFromInputFile(args, optionManager, sequence.getBaseString()); // TODO - add the complementary sequence if available // TODO - add support for the sliding window
-          displaysMeltingResults(results);
-
-        }
-
-        fastaFile.close();
-        return;
-      }
-      else 
-      {
-        // TODO - add the sequence + complementary if available ?
-      }
-
-
-      // TODO - if there is a sliding windows, always save results to a file with a generated name if none are given
-      
-      if (env.getOptions().get(OptionManagement.sliding_window) != null) // TODO - create a method that can be used for all sequences of an input file 
-      {
-
-        int slidingWindow = Integer.parseInt(env.getOptions().get(OptionManagement.sliding_window));
-
-        String sequence = env.getSequences().getSequence(); // TODO - slide on the complementary sequence as well if provided
-        int sequenceLength = sequence.length();
-
-        // System.out.println("Sliding windows was used: " + slidingWindow);
-
-        // generating the list of sequences 
-        ArrayList<String> sequences = new ArrayList<String>();
-        ArrayList<String> complementSequences = new ArrayList<String>();
-
-        if (sequenceLength <= slidingWindow) {
-          sequences.add(sequence);
+        if (env.getOptions().get(OptionManagement.sliding_window) == null)  
+        {
+          List<Environment> results = Helper.computeMeltingOnFastaFile(env.getOptions());
+          int i = 1;
+        
+          for (Environment result : results) {
+            if (i == 1) {
+              writeColumnHeaders(result.getResult().getCalculMethod());
+            }
+            writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
+            
+            i++;
+          }
         }
         else 
         {
-          int max = sequenceLength - slidingWindow;
-
-          for (int i = 0; i < max; i++) 
+          List<List<Environment>> results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
+          int i = 1;
+          
+          for (List<Environment> resultforOneSequence : results) 
           {
-            String subSeq = sequence.substring(i, i + slidingWindow);
-            sequences.add(subSeq);
-          }
+            int j = 1;
+            // 
+            System.out.println("\n\n Processing sequence number " + i + ".\n\n" + resultforOneSequence);
+            
+            for (Environment result : resultforOneSequence)
+            {
+              if (j == 1) {
+                writeColumnHeaders(result.getResult().getCalculMethod());
+              }
+
+              writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
+              j++;
+            }
+          }          
         }
-
-        // System.out.println("sliced sequences : " + sequences);
-
-        // launch melting on each sequences
-        List<Environment> results = runMeltingOnSequenceList(sequences, complementSequences, args, optionManager);
-
-        if (results.size() > 0) 
-        {
-          writeColumnHeaders(results.get(0).getResult().getCalculMethod());
-        }
-
-        for (Environment result : results)
-        {
-          writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
-        }
-
+      }
+      else if (env.getOptions().containsKey(OptionManagement.oldInputFile)) 
+      {
+        // TODO - create methods for the old input file
+        
       }
       else 
       {
-        ThermoResult results = runMelting(args, optionManager);
-        displaysMeltingResults(results);
+        // we have a simple sequence as input
+      
+        if (env.getOptions().get(OptionManagement.sliding_window) == null) 
+        {
+          Environment result = Helper.computeMeltingResults(env);
+          
+          displaysMeltingResults(result.getResult());
+        }
+        else
+        {
+          List<Environment> results = Helper.computeMeltingResultsWithWindow(env);
+          
+          int i = 1;
+          
+          for (Environment result : results) {
+            if (i == 1) {
+              writeColumnHeaders(result.getResult().getCalculMethod());
+            }
+            writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
+            
+            i++;
+          }
+        }
       }
     }
   }
+
   
-  /**
-   * Calculates melting temperatures for each sequence present in the input list
-   * and return the results in a list of {@link ThermoResult}.
-   * 
-   * @param sequences input list where to get the sequences
-   * @param complement_sequences input list where to get the complementary sequences if given by the user (can be null)
-   * @param defaultArgs user input arguments to run melting
-   * 
-   */
-  public static List<Environment> runMeltingOnSequenceList(List<String> sequences, List<String> complement_sequences,
-      String[] defaultArgs, OptionManagement optionManager) 
-  {
-    ArrayList<Environment> results = new ArrayList<Environment>();
-    boolean getComplement = false;
-    
-    if ((complement_sequences != null) && (complement_sequences.size() == sequences.size())) {
-      getComplement = true;
-    }
-    String[] newArgs = (getComplement) ? new String[4] : new String[2];
-    
-    int i = 0;
-    for (String seq : sequences) 
-    {
-      if (!getComplement)
-      {
-        // sequence is alone, prefix with -S
-        newArgs[0] = "-S";
-        newArgs[1] = seq;
-      }
-      else
-      {
-        // complementary sequence is present
-        String cseq = complement_sequences.get(i);
-
-        newArgs[0] = "-S";
-        newArgs[1] = seq;
-        newArgs[2] = "-C";
-        newArgs[3] = cseq;
-      } 
-
-      String[] completeArgs = new String[defaultArgs.length + newArgs.length];
-      int j = 0;
-
-      for (String arg : defaultArgs) {
-        completeArgs[j++] = arg;
-      }
-      for (String arg : newArgs) { // TODO - test what happen when the option are repeated, like two -S options
-        completeArgs[j++] = arg;
-      }
-
-      Environment result = getMeltingResults(completeArgs, optionManager);
-      results.add(result);
-
-      i++;
-    }
-    
-    return results;
-  }
-
   /**
    * Writes the melting results as a single line, with each field separated by a tabulation.
    * 
