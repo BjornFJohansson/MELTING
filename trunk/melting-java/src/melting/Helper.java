@@ -74,7 +74,7 @@ public class Helper {
 	/**
 	 * Computes a sodium equivalent concentration from the different ion concentrations of the Environment object.
 	 * 
-	 * @param environment
+	 * @param environment the melting {@link Environment}
 	 * @return double sodium equivalent concentration.
 	 */
 	public static double computesNaEquivalent(Environment environment){
@@ -162,11 +162,16 @@ public class Helper {
       if (getComplement) {
         options.put(OptionManagement.complementarySequence, complementSeq);
       }
-      results.add(computeMeltingResults(new Environment((HashMap<String, String>) options.clone())));
+      
+      HashMap<String, String> newOptions = (HashMap<String, String>) options.clone();
+      // create the complementary sequence if needed
+      OptionManagement.hasRequiredOptions(newOptions);
+      
+      results.add(computeMeltingResults(new Environment(newOptions)));
     }
     else 
     {
-      int max = sequenceLength - slidingWindow;
+      int max = sequenceLength - slidingWindow + 1;
 
       for (int i = 0; i < max; i++) 
       {
@@ -177,9 +182,12 @@ public class Helper {
           options.put(OptionManagement.complementarySequence, complementSeq.substring(i, i + slidingWindow));
         }
 
-        results.add(computeMeltingResults(new Environment((HashMap<String, String>) options.clone())));
+        HashMap<String, String> newOptions = (HashMap<String, String>) options.clone();
+        // create the complementary sequence if needed
+        OptionManagement.hasRequiredOptions(newOptions);
+        
+        results.add(computeMeltingResults(new Environment(newOptions)));
       }
-      
     }
     
     return results;
@@ -222,7 +230,11 @@ public class Helper {
         options.put(OptionManagement.complementarySequence, cseq);
       } 
   
-      Environment result = new Environment((HashMap<String, String>) options.clone());
+      HashMap<String, String> newOptions = (HashMap<String, String>) options.clone();
+      // create the complementary sequence if needed
+      OptionManagement.hasRequiredOptions(newOptions);
+
+      Environment result = new Environment(newOptions);
       computeMeltingResults(result);
       
       results.add(result);
@@ -234,10 +246,13 @@ public class Helper {
   }
 
   /**
-   * Computes
+   * Computes the entropies, enthalpies and melting temperatures for the given options. 
    * 
-   * @param optionsOrigin
-   * @return
+   * <p>We expect to find in the options a valid input file and a sliding window. If not
+   * present, an {@link IllegalArgumentException} will be thrown.</p>
+   * 
+   * @param optionsOrigin user input arguments to run melting
+   * @return a {@link List} of {@link List} of {@link Environment} that contain the computed entropies, enthalpies and melting temperatures for each sequences.
    * @throws IllegalArgumentException if the windows option '-w' is not present, if the input file is not defined
    * or if the input file(s) does not exits or is not readable.
    */
@@ -292,7 +307,7 @@ public class Helper {
       String sequenceStr = sequence.getBaseString();
       options.put(OptionManagement.sequence, sequenceStr);
       
-      System.out.println("DEBUG - computeMeltingOnFastaFile - " + sequence.getName() + "\n" + sequenceStr);
+      // System.out.println("DEBUG - computeMeltingOnFastaFile - " + sequence.getName() + "\n" + sequenceStr);
       
       if (readComplement) {
         ReferenceSequence complementarySequence = fastaComplementFile.nextSequence();    
@@ -321,10 +336,13 @@ public class Helper {
   }
 
   /**
-   * Computes
+   * Computes the entropies, enthalpies and melting temperatures for the given options. 
    * 
-   * @param optionsOrigin
-   * @return
+   * <p>We expect to find in the options a valid fasta input file, if not
+   * present, an {@link IllegalArgumentException} will be thrown.</p>
+   * 
+   * @param optionsOrigin user input arguments to run melting
+   * @return a {@link List} of {@link Environment} that contain the computed entropies, enthalpies and melting temperatures for each sequences.
    * @throws IllegalArgumentException if the input file is not defined or if the input file(s) does not exits or is not readable.
    */
   @SuppressWarnings("unchecked")
@@ -374,7 +392,7 @@ public class Helper {
       String sequenceStr = sequence.getBaseString();
       options.put(OptionManagement.sequence, sequenceStr);
       
-      System.out.println("DEBUG - computeMeltingOnFastaFile - " + sequence.getName() + "\n" + sequenceStr);
+      // System.out.println("DEBUG - computeMeltingOnFastaFile - " + sequence.getName() + "\n" + sequenceStr);
       
       if (readComplement) {
         ReferenceSequence complementarySequence = fastaComplementFile.nextSequence();    
@@ -402,7 +420,91 @@ public class Helper {
     return results;
   }
 	
-	// TODO - add helper methods to run melting with the different input files and the sliding window option.
-	
-	
+
+  /**
+   * Computes the entropies, enthalpies and melting temperatures for the given options. 
+   * 
+   * <p>We expect to find in the options a valid input file, if not
+   * present, an {@link IllegalArgumentException} will be thrown.</p>
+   * 
+   * @param optionsOrigin user input arguments to run melting
+   * @return a {@link List} of {@link Environment} that contain the computed entropies, enthalpies and melting temperatures for each sequences.
+   * @throws IllegalArgumentException if the input file is not defined or if the input file(s) does not exits or is not readable.
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Environment> computeMeltingOnsimpleFile(HashMap<String, String> optionsOrigin) {
+    
+    ArrayList<Environment> results = new ArrayList<Environment>();
+    HashMap<String, String> options = (HashMap<String, String>) optionsOrigin.clone();
+    
+    String inputFileName = options.get(OptionManagement.inputFile);
+    String inputComplementFileName = options.get(OptionManagement.inputComplementFile);
+    boolean readComplement = false;
+    
+    if (inputFileName == null || inputFileName.trim().length() == 0) {
+      
+      throw new IllegalArgumentException("You need to define the input file '" + OptionManagement.inputFile + "' option.");
+    }
+    else if (! (new File(inputFileName).exists())) {
+      OptionManagement.logInfo("The input file '" + new File(inputFileName).getAbsolutePath() + "' does not exists or is not readable.");
+      throw new IllegalArgumentException("You need to define a valid input file '" + OptionManagement.inputFile + "' option.");
+    }
+    
+    if ((inputComplementFileName != null) && (inputComplementFileName.trim().length() == 0)) {
+      if (! (new File(inputComplementFileName).exists())) {
+        OptionManagement.logInfo("The complement file '" + new File(inputComplementFileName).getAbsolutePath() + "' does not exists or is not readable.");
+        throw new IllegalArgumentException("You need to define a valid complement input file '" + OptionManagement.inputComplementFile + "' option.");
+      }
+      readComplement = true;
+    }
+    
+    OptionManagement.logInfo("Input file = " + inputFileName);
+  
+    // removing unnecessary options
+    options.remove(OptionManagement.inputFile);
+    options.remove(OptionManagement.inputComplementFile);
+    
+    FastaSequenceFile fastaFile = new FastaSequenceFile(new File(inputFileName), true);
+    FastaSequenceFile fastaComplementFile = null;
+    
+    if (readComplement) {
+      fastaComplementFile = new FastaSequenceFile(new File(inputComplementFileName), true);
+    }
+  
+    // do a for loop on the input sequence(s)
+    ReferenceSequence sequence = null;    
+    while ((sequence = fastaFile.nextSequence()) != null) {
+      
+      String sequenceStr = sequence.getBaseString();
+      options.put(OptionManagement.sequence, sequenceStr);
+      
+      // System.out.println("DEBUG - computeMeltingOnFastaFile - " + sequence.getName() + "\n" + sequenceStr);
+      
+      if (readComplement) {
+        ReferenceSequence complementarySequence = fastaComplementFile.nextSequence();    
+        
+        if (complementarySequence == null) {
+          fastaFile.close();
+          if (readComplement) {
+            fastaComplementFile.close();
+          }
+          throw new IllegalArgumentException("The input file ('" + OptionManagement.inputFile + "' option) and the complement input file ('" +
+              OptionManagement.inputComplementFile + "' option) need to have the same size.");
+        }
+        
+        options.put(OptionManagement.complementarySequence, sequenceStr);
+      }
+      
+      results.add(computeMeltingResults(new Environment((HashMap<String, String>) options.clone())));
+    }
+  
+    fastaFile.close();
+    if (readComplement) {
+      fastaComplementFile.close();
+    }
+    
+    return results;
+  }
+    
+
 }

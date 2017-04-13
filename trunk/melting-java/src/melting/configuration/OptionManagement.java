@@ -640,13 +640,13 @@ public class OptionManagement {
 	
 	/**
 	 * Checks if all mandatory options are present and valid. (hybridization type, ion concentrations, sequence (5'3'), oligomer concentration and sometimes the 
-	 * complementary sequence (3'5'))
+	 * complementary sequence (3'5')). Adds the complementary sequence if it is missing.
 	 * 
 	 * @param optionSet : contains the options (default options and options entered by the user)
 	 * @return true if all mandatory options are present and valid.
 	 * @throws OptionSyntaxError If one of the required options is not valid.
 	 */
-	private boolean hasRequiredOptions(HashMap<String, String> optionSet){
+	public static boolean hasRequiredOptions(HashMap<String, String> optionSet) {
 		boolean needComplementaryInput = false;
 		if (optionSet.containsKey(hybridization) == false || optionSet.containsKey(nucleotides) == false ||
 		    ((optionSet.containsKey(sequence) == false) && (optionSet.containsKey(inputFile) == false)) && (optionSet.containsKey(oldInputFile) == false))
@@ -690,7 +690,7 @@ public class OptionManagement {
 			throw new OptionSyntaxError("\n There is one syntax mistake in the ion and denaturing agent concentrations. Check the option" + solutioncomposition + ".");
 		}
 		
-		if(optionSet.containsKey(complementarySequence)){
+		if (optionSet.containsKey(complementarySequence)){
 			if (NucleotidSequences.checkSequence(optionSet.get(OptionManagement.complementarySequence)) == false){
 				throw new OptionSyntaxError("\n The complementary sequence (entered with the option " + complementarySequence + ") contains some characters we can't understand.");
 			}
@@ -728,7 +728,7 @@ public class OptionManagement {
 	 * @return true if all the ion and agent concentrations entered by the are valid.
 	 * @throws OptionSyntaxError If one of the concentrations is not valid.
 	 */
-	private boolean checkConcentrations(String solutionComposition){
+	private static boolean checkConcentrations(String solutionComposition){
 		String [] solution = solutionComposition.split(":"); 
 				
 		if (solution == null){
@@ -1083,7 +1083,6 @@ public class OptionManagement {
 
 		HashMap<String, String> optionDictionnary = collectOptions(args);
 		Environment environment = new Environment(optionDictionnary);
-		
 		OptionManagement.logMessage("\n Environment : ");
 		Iterator<Map.Entry<String, Double>> entry = environment.getConcentrations().entrySet().iterator();
 		while (entry.hasNext()){
@@ -1111,7 +1110,7 @@ public class OptionManagement {
 		{
 		  OptionManagement.logMessage("Input file : " + environment.getOptions().get(inputFile));
 		}
-		else 
+		else  if (optionDictionnary.containsKey(oldInputFile))
 		{
 		  OptionManagement.logMessage("Input file : " + environment.getOptions().get(oldInputFile));
 		}

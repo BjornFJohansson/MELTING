@@ -34,7 +34,7 @@ public class Main {
   // see http://plindenbaum.blogspot.co.uk/2010/04/readingwriting-sambam-file-with-picard.html
   // see https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/samtools/example/ExampleSamUsage.html
   
-
+// to run with a file: -I /home/rodrigue/src/melting-java/Data/fasta-example.txt
   
 	// private static methods
 	
@@ -84,85 +84,91 @@ public class Main {
       }
     }
     else {
-      // The options look like they are good
-      Environment env = optionManager.createEnvironment(args);
-
-      // TODO - In the case of a sliding windows on a set of input sequences, save one file per sequence or just add everything to the same output, adding comments when we change sequence?
-      
-      if (env.getOptions().containsKey(OptionManagement.inputFile)) {
-
-        if (env.getOptions().get(OptionManagement.sliding_window) == null)  
-        {
-          List<Environment> results = Helper.computeMeltingOnFastaFile(env.getOptions());
-          int i = 1;
+      try {
         
-          for (Environment result : results) {
-            if (i == 1) {
-              writeColumnHeaders(result.getResult().getCalculMethod());
+        // The options look like they are good
+        Environment env = optionManager.createEnvironment(args);
+
+        // TODO - In the case of a sliding windows on a set of input sequences, save one file per sequence or just add everything to the same output, adding comments when we change sequence?
+
+        if (env.getOptions().containsKey(OptionManagement.inputFile)) {
+
+          if (env.getOptions().get(OptionManagement.sliding_window) == null)  
+          {
+            List<Environment> results = Helper.computeMeltingOnFastaFile(env.getOptions());
+            int i = 1;
+
+            for (Environment result : results) {
+              if (i == 1) {
+                writeColumnHeaders(result.getResult().getCalculMethod());
+              }
+              writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
+
+              i++;
             }
-            writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
-            
-            i++;
           }
+          else 
+          {
+            List<List<Environment>> results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
+            int i = 1;
+
+            for (List<Environment> resultforOneSequence : results) 
+            {
+              int j = 1;
+              // 
+              OptionManagement.logInfo("\n\n Processing sequence number " + i + ".\n");
+
+              for (Environment result : resultforOneSequence)
+              {
+                if (j == 1) {
+                  writeColumnHeaders(result.getResult().getCalculMethod());
+                }
+
+                writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
+                j++;
+              }
+              i++;
+            }          
+          }
+        }
+        else if (env.getOptions().containsKey(OptionManagement.oldInputFile)) 
+        {
+          // TODO - create methods for the old input file
+
         }
         else 
         {
-          List<List<Environment>> results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
-          int i = 1;
-          
-          for (List<Environment> resultforOneSequence : results) 
+          // we have a simple sequence as input
+
+          if (env.getOptions().get(OptionManagement.sliding_window) == null) 
           {
-            int j = 1;
-            // 
-            System.out.println("\n\n Processing sequence number " + i + ".\n\n" + resultforOneSequence);
-            
-            for (Environment result : resultforOneSequence)
-            {
-              if (j == 1) {
+            Environment result = Helper.computeMeltingResults(env);
+
+            displaysMeltingResults(result.getResult());
+          }
+          else
+          {
+            List<Environment> results = Helper.computeMeltingResultsWithWindow(env);
+
+            int i = 1;
+
+            for (Environment result : results) {
+              if (i == 1) {
                 writeColumnHeaders(result.getResult().getCalculMethod());
               }
-
               writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
-              j++;
+
+              i++;
             }
-          }          
-        }
-      }
-      else if (env.getOptions().containsKey(OptionManagement.oldInputFile)) 
-      {
-        // TODO - create methods for the old input file
-        
-      }
-      else 
-      {
-        // we have a simple sequence as input
-      
-        if (env.getOptions().get(OptionManagement.sliding_window) == null) 
-        {
-          Environment result = Helper.computeMeltingResults(env);
-          
-          displaysMeltingResults(result.getResult());
-        }
-        else
-        {
-          List<Environment> results = Helper.computeMeltingResultsWithWindow(env);
-          
-          int i = 1;
-          
-          for (Environment result : results) {
-            if (i == 1) {
-              writeColumnHeaders(result.getResult().getCalculMethod());
-            }
-            writeMeltingResults(result.getSequences().getSequence(), result.getSequences().getComplementary(), result.getResult());
-            
-            i++;
           }
         }
+      } catch (IllegalArgumentException e) {
+        OptionManagement.logError(e.getMessage());
       }
-    }
+    } 
   }
 
-  
+
   /**
    * Writes the melting results as a single line, with each field separated by a tabulation.
    * 
