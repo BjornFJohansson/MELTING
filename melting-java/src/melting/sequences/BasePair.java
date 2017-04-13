@@ -381,6 +381,7 @@ public class BasePair {
 	 * initialises the existingNucleicAcids of BasePair.
 	 */
 	public static void initialiseNucleicAcidList(){
+	  if (existingNucleicAcids.size() == 0) {
 		existingNucleicAcids.add("A");
 		existingNucleicAcids.add("T");
 		existingNucleicAcids.add("U");
@@ -396,6 +397,7 @@ public class BasePair {
 		existingNucleicAcids.add("UL");
 		existingNucleicAcids.add("X_C");
 		existingNucleicAcids.add("X_T");
+	  }
 	}
 	
 	/**

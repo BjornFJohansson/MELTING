@@ -35,14 +35,15 @@ import melting.methodInterfaces.MeltingComputationMethod;
 import melting.sequences.NucleotidSequences;
 
 /**
- * This class contains the different method tests.
+ * Contains the different test methods used by other test classes.
  */
 public class MainTest {
 
 	// public static methods
 	
 	/**
-	 * loads the data from the file and stocks them in a Properties object.
+	 * Loads the data from the file and stocks them in a Properties object.
+	 * 
 	 * @param  fileName : name or pathway of the file containing the experimental data.
 	 * @return Properties containing the experimental data from the file.
 	 */
@@ -65,7 +66,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * computes the enthalpy, entropy and melting temperature with the options in String [] args.
+	 * Computes the enthalpy, entropy and melting temperature with the options in String [] args.
+	 * 
 	 * @param args : contains the test options
 	 * @return double : melting temperature.
 	 */
@@ -93,7 +95,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * Displays the computed and experimental melting temperature for each method or model to test.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -119,7 +122,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test with different sodium concentrations.
+	 * Displays the computed and experimental melting temperature for each method or model to test with different sodium concentrations.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -145,7 +149,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test with different magnesium concentrations.
+	 * Displays the computed and experimental melting temperature for each method or model to test with different magnesium concentrations.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -171,7 +176,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each NaEq method or model to test with different magnesium concentrations.
+	 * Displays the computed and experimental melting temperature for each NaEq method or model to test with different magnesium concentrations.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -197,7 +203,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature with MELTING 4.2 approximative formula and with different magnesium concentrations.
+	 * Displays the computed and experimental melting temperature with MELTING 4.2 approximative formula and with different magnesium concentrations.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -222,7 +229,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each dangling end method or model.
+	 * Displays the computed and experimental melting temperature for each dangling end method or model.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -248,8 +256,9 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * Displays the computed and experimental melting temperature for each method or model to test.
 	 * In the experimental data, the complementary sequence is given.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -276,8 +285,9 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * Displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
 	 * In the experimental data, the complementary sequence is given.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -304,7 +314,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for single mismatches. (melting 4.2)
+	 * Displays the computed and experimental melting temperature for single mismatches. (melting 4.2)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -330,7 +341,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for single dangling ends. (melting 4.2)
+	 * Displays the computed and experimental melting temperature for single dangling ends. (melting 4.2)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -356,8 +368,9 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test.
+	 * Displays the computed and experimental melting temperature for each method or model to test.
 	 * The experimental data are for self complementary sequences.
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -383,7 +396,8 @@ public class MainTest {
 	}
 
 	/**
-	 * to run melting 4.2 and get the results
+	 * Run melting 4.2 and get the results.
+	 * 
 	 * @param args : contains test options
 	 * @return double : computed melting temperature
 	 */
@@ -419,7 +433,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * to run melting 4.3 and get the results
+	 * Run melting 4.3 and get the results.
+	 * 
 	 * @param args : contains test options
 	 * @return double : computed melting temperature
 	 */
@@ -453,7 +468,8 @@ public class MainTest {
 	}
 
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * Displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -478,7 +494,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.2)
+	 * Displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.2)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -505,7 +522,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.3)
+	 * Displays the computed and experimental melting temperature for DNA/RNA duplexes. (melting 4.3)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -533,7 +551,8 @@ public class MainTest {
 
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * Displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -558,7 +577,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * Displays the computed and experimental melting temperature for each method or model to test. (melting 4.2)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization
@@ -584,7 +604,8 @@ public class MainTest {
 	}
 	
 	/**
-	 * displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * Displays the computed and experimental melting temperature for each method or model to test. (melting 4.3)
+	 * 
 	 * @param properties : contains the experimental data.
 	 * @param methodNames : contains all the method or model to test with the experimental data.
 	 * @param  hybridization : type of hybridization

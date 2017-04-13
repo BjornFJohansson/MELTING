@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,6 +38,7 @@ import javax.swing.JTextArea;
 
 import melting.BatchMain;
 import melting.Environment;
+import melting.Helper;
 import melting.configuration.OptionManagement;
 import melting.configuration.RegisterMethods;
 import melting.methodInterfaces.MeltingComputationMethod;
@@ -99,7 +101,6 @@ public class MeltingGui
   public void update(Observable observable, Object message)
   {
     String[] argsOption;
-    melting.ThermoResult results;
 
     if (message instanceof ArgsMessage)
     {
@@ -123,64 +124,54 @@ public class MeltingGui
     argsOption = commandLineText.trim().split(" +");
     outerFrame.clearErrors();
     
-    
-	//results = getMeltingResults(argsOption);
-    // The following does the same essentially, but keeps track of the environment and calculMethod, which are 
-    // used for printing later.
-    
-    
 	OptionManagement manager = new OptionManagement();
-	Environment environment = manager.createEnvironment(argsOption);
-	RegisterMethods register = new RegisterMethods();
-	MeltingComputationMethod calculMethod = register.getMeltingComputationMethod(environment.getOptions());
+	Environment env = manager.createEnvironment(argsOption);
+	
+	// TODO - use the new method to calculate the meting results + display the result in the ResultFrame !
+	
+    if (env.getOptions().containsKey(OptionManagement.inputFile)) {
 
-	results = calculMethod.computesThermodynamics();
-	environment.setResult(results);
+      if (env.getOptions().get(OptionManagement.sliding_window) == null)  
+      {
+        List<Environment> results = Helper.computeMeltingOnFastaFile(env.getOptions());
+        
+        // TODO - setup the ResultFrame
+      }
+      else 
+      {
+        List<List<Environment>> results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
+
+        // TODO - setup the ResultFrame
+
+      }
+    }
+    else if (env.getOptions().containsKey(OptionManagement.oldInputFile)) 
+    {
+      // TODO - create methods for the old input file
+
+    }
+    else 
+    {
+      // we have a simple sequence as input
+
+      if (env.getOptions().get(OptionManagement.sliding_window) == null) 
+      {
+        Environment result = Helper.computeMeltingResults(env);
+
+        // TODO - setup the ResultFrame
+
+      }
+      else
+      {
+        List<Environment> results = Helper.computeMeltingResultsWithWindow(env);
+
+        // TODO - setup the ResultFrame
+      }
+    }
+
 	
-	results = calculMethod.getRegister().computeOtherMeltingCorrections(environment);
 	
-	environment.setResult(results);
-	
-	File sequenceFile = outerFrame.getSequenceFile(); // TODO - is it used ?
-	if(sequenceFile != null) {
-	  
-	  // We have a sequence file as input
-	  
-	    OutputStream os = null; 
-	    try {
-	      String outputFileName = sequenceFile.getAbsolutePath()+".results.csv";
-			os = new FileOutputStream(outputFileName);
-			
-			BatchMain.displaysMeltingResults(os, environment, environment.getResult(), calculMethod);
-			
-			outerFrame.setStatusPanelText("Results written to "+sequenceFile.getName()+".results.csv");
-			displayFileinNewWindow(outputFileName);
-			
-		} catch (FileNotFoundException e) {
-			outerFrame.setStatusPanelText("File " + sequenceFile.getAbsolutePath()+".results.csv" + " could not be written");
-		} catch (IOException e) {
-			outerFrame.setStatusPanelText("Error writing file " + sequenceFile.getAbsolutePath()+".results.csv");
-		} finally {
-			try {
-				os.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	} else {
-	  
-	  // TODO - deal with the case when we don't have a sequence file !!
-	  
-	}
-    
-	// TODO - if we have a sequence file, don't display the normal results !! Only the sequence file results.
-	
-    outerFrame.displayMeltingResults(results);
-    
-    
-    
-    
-    
+	// old method - outerFrame.displayMeltingResults(results);
   }
 
   /**

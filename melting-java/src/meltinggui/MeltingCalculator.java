@@ -18,13 +18,15 @@
 
 package meltinggui;
 
-import melting.Main;
+import melting.Environment;
+import melting.Helper;
 import melting.ThermoResult;
 import melting.configuration.OptionManagement;
 
 /**
- * Class intended to provide an interface between the GUI and the MELTING
+ * Provides an interface between the GUI and the MELTING
  * program itself.
+ * 
  * @author John Gowers
  */
 public class MeltingCalculator
@@ -82,6 +84,7 @@ public class MeltingCalculator
   private void computeMeltingResults() throws RuntimeException
   {
     OptionManagement optionManager = new OptionManagement();
-    results = Main.getMeltingResults(argsOption, optionManager).getResult();
+    Environment env = optionManager.createEnvironment(argsOption);
+    results = Helper.computeMeltingResults(env).getResult(); // TODO - check if we still need this class
   }
 }
