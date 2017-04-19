@@ -33,27 +33,32 @@ public class SequenceNavigatorPanel extends JPanel {
   /**
    * 
    */
-  JButton firstButton = new JButton("<<");
+  private JButton firstButton = new JButton("<<");
   /**
    * 
    */
-  JButton prevButton = new JButton("<");
+  private JButton prevButton = new JButton("<");
   /**
    * 
    */
-  JButton nextButton = new JButton(">");
+  private JButton nextButton = new JButton(">");
   /**
    * 
    */
-  JButton lastButton = new JButton(">>");
+  private JButton lastButton = new JButton(">>");
   /**
    * 
    */
-  JButton randomButton = new JButton("Random");
+  private JButton randomButton = new JButton("Random");
   /**
    * 
    */
-  JLabel sequenceIndex = new JLabel("1 / " + nbSequence);
+  private JLabel sequenceIndex = new JLabel("1 / " + nbSequence);
+  
+  /**
+   * 
+   */
+  private ResultFrame resultFrame;
   
   /**
    * Tests the SequenceNavigatorPanel layout.
@@ -68,7 +73,7 @@ public class SequenceNavigatorPanel extends JPanel {
     frame.setMinimumSize(new Dimension(600, 100));
 
     //Create and set up the content pane.
-    JComponent newContentPane = new SequenceNavigatorPanel(new ResultFrame());
+    JComponent newContentPane = new SequenceNavigatorPanel(new ResultFrame(null));
     newContentPane.setOpaque(true); //content panes must be opaque
     frame.setContentPane(newContentPane);
 
@@ -84,6 +89,8 @@ public class SequenceNavigatorPanel extends JPanel {
    */
   public SequenceNavigatorPanel(ResultFrame resultFrame) {
    
+    this.resultFrame = resultFrame;
+    
     add(firstButton);
     
     add(prevButton);
@@ -92,9 +99,11 @@ public class SequenceNavigatorPanel extends JPanel {
 
     add(lastButton);
 
-    // TODO - insert empty space
+    // TODO - insert empty space?
     
     add(randomButton);
+    
+    setNumberOfSequences(resultFrame.getNbSequences());
     
     // left label
     add(sequenceIndex);
@@ -127,6 +136,7 @@ public class SequenceNavigatorPanel extends JPanel {
     updateSequenceIndexLabel();
     
     // TODO - send an event to the result frame or update it directly ?
+    resultFrame.updateSequence(currentIndex);
   }
   
   /**

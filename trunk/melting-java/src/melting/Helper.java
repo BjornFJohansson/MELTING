@@ -409,7 +409,11 @@ public class Helper {
         options.put(OptionManagement.complementarySequence, sequenceStr);
       }
       
-      results.add(computeMeltingResults(new Environment((HashMap<String, String>) options.clone())));
+      HashMap<String, String> newOptions = (HashMap<String, String>) options.clone();
+      // create the complementary sequence if needed
+      OptionManagement.hasRequiredOptions(newOptions);
+
+      results.add(computeMeltingResults(new Environment(newOptions)));
     }
   
     fastaFile.close();

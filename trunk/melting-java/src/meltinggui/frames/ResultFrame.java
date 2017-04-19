@@ -26,17 +26,21 @@ import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLEditorKit;
 
+import melting.Environment;
+import melting.Helper;
+import melting.configuration.OptionManagement;
 import meltinggui.dialogs.ResultsPanel;
 import meltinggui.graphs.LineGraph;
 import meltinggui.widgets.SequenceNavigatorPanel;
@@ -49,6 +53,22 @@ import meltinggui.widgets.SequenceNavigatorPanel;
  */
 public class ResultFrame extends JFrame {
 
+  /**
+   * 
+   */
+  private static final String X_AXIS_LABEL = "Nucleotide (and position)";
+  /**
+   * 
+   */
+  private static final String X_AXIS_LABEL2 = "Position";
+  /**
+   * 
+   */
+  private static final String Y_AXIS_LABEL = "Temperature (degres C)";
+  /**
+   * 
+   */
+  private static final String LINE_GRAPH_TITLE_PREFIX = "Melting points with a window size of ";
   /**
    * 
    */
@@ -70,11 +90,40 @@ public class ResultFrame extends JFrame {
    */
   SequenceNavigatorPanel sequenceNav;
   
+  /**
+   * 
+   */
+  public List<List<Environment>> results;
   
   /**
    * 
    */
-  public ResultFrame() {
+  public int nbSequences = -1;
+  
+  /**
+   * 
+   */
+  public boolean slidingWindow = false;
+  /**
+   * 
+   */
+  public String slidingWindowSize = "";
+  
+  /**
+   * 
+   */
+  public ResultFrame(List<List<Environment>> results) { // TODO - pass in the original options ?
+    this.results = results;
+    
+    if (results != null) {
+      nbSequences = results.size();
+      
+      if (nbSequences > 0) {
+        slidingWindow = results.get(0).size() > 1;
+        slidingWindowSize = results.get(0).get(0).getOptions().get(OptionManagement.sliding_window);
+      }
+    }
+    
     init();
   }
   
@@ -123,13 +172,38 @@ public class ResultFrame extends JFrame {
     sequenceNav = new SequenceNavigatorPanel(this);
     resultPanel.add(sequenceNav, c);
     
+    if (nbSequences <= 1) {
+      sequenceNav.setVisible(false);
+    }
+    
     // simple Result panel for one result - Will be hidden if the window option as been selected. 
     c.gridy = ++row; // row 3
     resultPanel.add(simpleResultPanel, c);
     
+    if (slidingWindow) {
+      simpleResultPanel.setVisible(false);
     
-    // TODO - complex result panel - Will be hidden if the window option as not been selected. LineGaph ( + result as an array?) 
     
+      // complex result panel - Will be hidden or not present if the window option has not been selected. LineGaph ( + result as an array?) 
+      c.gridy = ++row; // row 4
+      LineGraph lg = LineGraph.createLineGraph(results.get(0).size(), results.get(0), X_AXIS_LABEL, X_AXIS_LABEL2, Y_AXIS_LABEL, LINE_GRAPH_TITLE_PREFIX + " '" + slidingWindowSize + "'");
+      resultPanel.add(lg, c);
+      
+    }
+    
+    // TODO - add an empty panel to fill the remaining space if needed
+    c.gridy = ++row; // row 5-6
+  }
+  
+  
+
+  /**
+   * Returns the number of sequences in this {@link ResultFrame}.
+   * 
+   * @return the number of sequences in this {@link ResultFrame}.
+   */
+  public int getNbSequences() {
+    return nbSequences;
   }
 
   /**
@@ -142,24 +216,48 @@ public class ResultFrame extends JFrame {
 
       @Override
       public void run() {
-        int size = 100;
-        LineGraph lineGraph = LineGraph.randomLineGraph(size, "Melting temperatures");
 
-        ResultFrame f = new ResultFrame();
 
-        // creates a constraints object
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; // column 0
-        c.gridy = 5; // row 1
-        c.weightx = 1; // resize so that all combo box have the same width
-        c.anchor = GridBagConstraints.LINE_START;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 2;
+        String[] singleSequenceArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-nnpath", "/home/rodrigue/src/melting-java/Data", "-S", "AATGCTTGTATAGTTGA"};
+        String[] singleSequenceWithWindowArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-w", "4", "-nnpath", "/home/rodrigue/src/melting-java/Data", 
+            "-S", "AATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGAAATGCTTGTATAGTTGA"};
+        String[] fastaFileMeltingArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-nnpath", "/home/rodrigue/src/melting-java/Data", 
+            "-I", "/home/rodrigue/src/melting-java/testDataNico/fasta-example.txt", "-IC", "/home/rodrigue/src/melting-java/testDataNico/fasta-example-complement.txt"};
+        String[] fastaFileMeltingWithWArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-w", "4", "-nnpath", "/home/rodrigue/src/melting-java/Data", 
+            "-I", "/home/rodrigue/src/melting-java/testDataNico/fasta-example.txt", "-IC", "/home/rodrigue/src/melting-java/testDataNico/fasta-example-complement.txt"};
 
-        f.resultPanel.add(lineGraph, c);
-
+        OptionManagement manager = new OptionManagement();
+        manager.initialiseLogger();
+        
+        // single sequence, one melting computation
+        Environment env = manager.createEnvironment(singleSequenceArgs);        
+        Environment result = Helper.computeMeltingResults(env);        
+        List<List<Environment>> results = new ArrayList<List<Environment>>();
+        results.add(new ArrayList<Environment>());
+        results.get(0).add(result);
+        
+        // single sequence, several melting computation
+        env = manager.createEnvironment(singleSequenceWithWindowArgs);        
+        List<Environment> resultSW = Helper.computeMeltingResultsWithWindow(env);        
+        results = new ArrayList<List<Environment>>();
+        results.add(resultSW);
+        
+        // several sequences, one melting computation
+        env = manager.createEnvironment(fastaFileMeltingArgs);        
+        List<Environment> resultFastaFile = Helper.computeMeltingOnFastaFile(env.getOptions());
+        results = new ArrayList<List<Environment>>();
+        
+        for (Environment resultSeq : resultFastaFile) {
+          List<Environment> resultsSingle = new ArrayList<Environment>();
+          resultsSingle.add(resultSeq);
+          
+          results.add(resultsSingle);          
+        }
         
         
+        ResultFrame f = new ResultFrame(results);
+
+
         f.setSize(900, 650);
 
         WindowListener windowCloser = new WindowAdapter() {
@@ -174,5 +272,15 @@ public class ResultFrame extends JFrame {
       }
     });
 
+  }
+
+  /**
+   * Updates the GUI, displaying the results for the sequence at the given index.
+   * 
+   * @param sequenceIndex the sequence index
+   */
+  public void updateSequence(int sequenceIndex) {
+    // TODO - update the GUI, displaying the results for the sequence at the given index.  
+    
   }
 }

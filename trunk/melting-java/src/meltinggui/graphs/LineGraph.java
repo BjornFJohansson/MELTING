@@ -17,11 +17,14 @@ import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import melting.Environment;
 
 
 
@@ -79,6 +82,8 @@ public class LineGraph extends JPanel {
 	private String graphTitle;
 	/** The x axis main label. */
 	private String xLabel;
+    /** The x axis label for the top plot. */
+    private String xLabelTop;	
 	/** The y axis main label. */
 	private String yLabel;
 	
@@ -156,6 +161,7 @@ public class LineGraph extends JPanel {
 		this.minY = minY;
 		this.maxY = maxY;
 		this.xLabel = xLabel;
+		this.xLabelTop = xLabel;
 		this.yLabel = yLabel;
 		this.xCategories = xCategories;
 		this.xBases = xBases;
@@ -165,11 +171,21 @@ public class LineGraph extends JPanel {
 	}
 	
 	/**
+	 * Sets the x axis label for the top plot
+	 *  
+	 * @param xLabelTop the xLabelTop to set
+	 */
+	public void setXLabelTop(String xLabelTop) {
+	  this.xLabelTop = xLabelTop;
+	}
+
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Dimension getPreferredSize () {
-		return new Dimension(800,600);
+	  return new Dimension(800,600);
 	}
 
 	/**
@@ -379,7 +395,7 @@ public class LineGraph extends JPanel {
 			int baseNamePosition = (int)((baseWidth/2)+xOffset+(baseWidth*(i-dataIdxStart))-(g.getFontMetrics().stringWidth("A")/2));
 			if (baseNumberPosition > lastXLabelEnd) {
 				// Draw the x axis labels
-				g.drawString(baseNumber,baseNumberPosition, getY(yStart-yInterval, yStartPos, yOffset)+15);
+				g.drawString(baseNumber, baseNumberPosition, getY(yStart-yInterval, yStartPos, yOffset)+15);
 				// Draw the tick marks
 				g.drawLine(baseNamePosition+3, getY(yStart-yInterval, yStartPos, yOffset), baseNamePosition+3, getY(yStart-yInterval, yStartPos, yOffset)+tickMarkLength);
 				if(!isSlidingWindowContainer) {
@@ -417,7 +433,7 @@ public class LineGraph extends JPanel {
 		
 		// Draw the xLabel under the xAxis
 		if(isSlidingWindowContainer) {
-			g.drawString(xLabel, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getY(yStart-yInterval, yStartPos, yOffset)+35);
+			g.drawString(xLabelTop, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getY(yStart-yInterval, yStartPos, yOffset)+35);
 		} else {
 			g.drawString(xLabel, (getWidth()/2) - (g.getFontMetrics().stringWidth(xLabel)/2), getY(yStart-yInterval, yStartPos, yOffset)+50);
 		}
@@ -436,15 +452,15 @@ public class LineGraph extends JPanel {
 	}
 
 	/**
-	 * Generates a new {@link LineGraph} with some randomized values.
-	 * 
-	 * @param sequenceLength the length of the sequence to build randomly.
-	 * @param graphTitle the graph title.
-	 * @return a new {@link LineGraph} with some randomized values.
-	 */
-	public static LineGraph randomLineGraph(int sequenceLength, String graphTitle) {
+     * Generates a new {@link LineGraph} with the given values.
+     * 
+     * @param sequenceLength the length of the sequence to build randomly.
+     * @param graphTitle the graph title.
+     * @return a new {@link LineGraph} with some randomized values.
+     */
+    public static LineGraph randomLineGraph(int sequenceLength, String graphTitle) {
       int size = sequenceLength;
-	  double yMin=Integer.MAX_VALUE, yMax=0;
+      double yMin=Integer.MAX_VALUE, yMax=0;
       double[] data = new double[size];
       String[] categories = new String[size];
       String[] bases = new String[size];
@@ -467,7 +483,62 @@ public class LineGraph extends JPanel {
       }
 
       return new LineGraph(data, yMin-2, yMax+6, "x axis", "y axis", categories, bases, graphTitle);
+    }
+
+	/**
+	 * Generates a new {@link LineGraph} with the given {@link Environment}s.
+	 * 
+	 * @param sequenceLength the length of the sequence.
+	 * @param results the list of results
+	 * @return a new {@link LineGraph}.
+	 */
+	public static LineGraph createLineGraph(int sequenceLength, List<Environment> results) {
+      return createLineGraph(sequenceLength, results, "x", "x", "y", "Line Graph");
 	}
+
+    /**
+     * Generates a new {@link LineGraph} with the given {@link Environment}s.
+     *
+     * @param sequenceLength the length of the sequence
+     * @param results the list of results
+     * @param xAxisLabel the label for the x axis of the bottom plot
+     * @param xAxisLabel2 the label for the x axis of the top plot
+     * @param yAxisLabel the label for the y axis on both plots
+     * @param title the title of the whole graph.
+     * @return a new {@link LineGraph}.
+     */
+    public static LineGraph createLineGraph(int sequenceLength, List<Environment> results, String xAxisLabel, String xAxisLabel2, String yAxisLabel, String title) {
+      int size = sequenceLength;
+      double yMin=Integer.MAX_VALUE, yMax=Integer.MIN_VALUE;
+      double[] data = new double[size];
+      String[] categories = new String[size];
+      String[] bases = new String[size];
+
+      for(int i = 0; i < size; i++) {
+        data[i] = results.get(i).getResult().getTm();
+
+        if (yMin > data[i]) {
+          yMin = data[i];
+        } else if(yMax < data[i]) {
+          yMax = data[i];
+        }
+
+        bases[i] = results.get(i).getSequences().getSequence().substring(0, 1);
+        
+        categories[i] = ""+(i+1);
+      }
+      
+      // make sure we display y = 0
+      if (yMin > 0) {
+        yMin = -2;
+      }
+
+      LineGraph lg = new LineGraph(data, yMin-2, yMax+6, xAxisLabel, yAxisLabel, categories, bases, title);
+      lg.setXLabelTop(xAxisLabel2);
+      
+      return lg;
+    }
+
 
 	/**
 	 * A simple main as use case.
