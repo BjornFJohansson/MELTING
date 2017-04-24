@@ -170,6 +170,8 @@ public class LineGraph extends JPanel {
 		this.addMouseMotionListener(mouseMotionListener);
 	}
 	
+	// TODO - add methods to update the data underlying a LineGraph ?
+	
 	/**
 	 * Sets the x axis label for the top plot
 	 *  
