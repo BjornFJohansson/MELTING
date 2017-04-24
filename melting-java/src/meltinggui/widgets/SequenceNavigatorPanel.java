@@ -135,7 +135,7 @@ public class SequenceNavigatorPanel extends JPanel {
   public void updateSequenceIndex() {
     updateSequenceIndexLabel();
     
-    // TODO - send an event to the result frame or update it directly ?
+    // telling the ResultFrame to update
     resultFrame.updateSequence(currentIndex);
   }
   
@@ -190,8 +190,12 @@ public class SequenceNavigatorPanel extends JPanel {
       public void actionPerformed(ActionEvent e) {
         Random rand = new Random();
 
+        int oldIndex = currentIndex;
         currentIndex = rand.nextInt(nbSequence);
-        updateSequenceIndex();          
+        
+        if (oldIndex != currentIndex) {
+          updateSequenceIndex();
+        }
       }
     });
 

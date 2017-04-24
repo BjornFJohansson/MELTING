@@ -19,6 +19,7 @@
 package meltinggui.frames;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -46,7 +47,7 @@ import meltinggui.graphs.LineGraph;
 import meltinggui.widgets.SequenceNavigatorPanel;
 
 /**
- * A frame with multiple tabs to display the melting results in different ways.
+ * A frame to display the melting results in different ways.
  * 
  * @author rodrigue
  *
@@ -72,55 +73,60 @@ public class ResultFrame extends JFrame {
   /**
    * 
    */
-  JPanel resultPanel = new JPanel();
+  private JPanel resultPanel = new JPanel();
   /**
    * 
    */
-  JTextPane informationArea = new JTextPane();  
+  private JTextPane informationArea = new JTextPane();  
   /**
    * 
    */
-  JTextArea optionsTA = new JTextArea();
+  private JTextArea optionsTA = new JTextArea();
   /**
    * 
    */
-  JPanel simpleResultPanel = new ResultsPanel();
+  private ResultsPanel simpleResultPanel = new ResultsPanel();
   /**
    * 
    */
-  SequenceNavigatorPanel sequenceNav;
+  private SequenceNavigatorPanel sequenceNav;
   
   /**
    * 
    */
-  public List<List<Environment>> results;
+  private List<List<Environment>> results;
   
   /**
    * 
    */
-  public int nbSequences = -1;
+  private int row = 0;
+
+  /**
+   * 
+   */
+  private int nbSequences = -1;
   
   /**
    * 
    */
-  public boolean slidingWindow = false;
+  private boolean slidingWindow = false;
   /**
    * 
    */
-  public String slidingWindowSize = "";
+  private String slidingWindowSize = "";
   
   /**
    * 
    */
-  public ResultFrame(List<List<Environment>> results) { // TODO - pass in the original options ?
+  public ResultFrame(List<List<Environment>> results) { // TODO - pass in the original options as well ?
     this.results = results;
     
     if (results != null) {
       nbSequences = results.size();
       
       if (nbSequences > 0) {
-        slidingWindow = results.get(0).size() > 1;
         slidingWindowSize = results.get(0).get(0).getOptions().get(OptionManagement.sliding_window);
+        slidingWindow = slidingWindowSize != null;
       }
     }
     
@@ -139,7 +145,6 @@ public class ResultFrame extends JFrame {
 
     // creates a constraints object
     GridBagConstraints c = new GridBagConstraints();
-    int row = 0;
     c.gridx = 0; // column 0
     c.gridy = row; // row 0
     c.weightx = 1; // resize so that all combo box have the same width
@@ -189,6 +194,8 @@ public class ResultFrame extends JFrame {
       LineGraph lg = LineGraph.createLineGraph(results.get(0).size(), results.get(0), X_AXIS_LABEL, X_AXIS_LABEL2, Y_AXIS_LABEL, LINE_GRAPH_TITLE_PREFIX + " '" + slidingWindowSize + "'");
       resultPanel.add(lg, c);
       
+    } else {
+      simpleResultPanel.displayMeltingResults(results.get(0).get(0).getResult());
     }
     
     // TODO - add an empty panel to fill the remaining space if needed
@@ -224,7 +231,7 @@ public class ResultFrame extends JFrame {
         String[] fastaFileMeltingArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-nnpath", "/home/rodrigue/src/melting-java/Data", 
             "-I", "/home/rodrigue/src/melting-java/testDataNico/fasta-example.txt", "-IC", "/home/rodrigue/src/melting-java/testDataNico/fasta-example-complement.txt"};
         String[] fastaFileMeltingWithWArgs = {"-E", "Na=0.3", "-P", "0.03", "-H", "dnadna", "-w", "4", "-nnpath", "/home/rodrigue/src/melting-java/Data", 
-            "-I", "/home/rodrigue/src/melting-java/testDataNico/fasta-example.txt", "-IC", "/home/rodrigue/src/melting-java/testDataNico/fasta-example-complement.txt"};
+            "-I", "/home/rodrigue/src/melting-java/testDataNico/fasta-example.txt"}; // , "-IC", "/home/rodrigue/src/melting-java/testDataNico/fasta-example-complement.txt"
 
         OptionManagement manager = new OptionManagement();
         manager.initialiseLogger();
@@ -253,10 +260,12 @@ public class ResultFrame extends JFrame {
           
           results.add(resultsSingle);          
         }
-        
+
+        // several sequences, several melting computation
+        env = manager.createEnvironment(fastaFileMeltingWithWArgs);        
+        results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
         
         ResultFrame f = new ResultFrame(results);
-
 
         f.setSize(900, 650);
 
@@ -280,7 +289,40 @@ public class ResultFrame extends JFrame {
    * @param sequenceIndex the sequence index
    */
   public void updateSequence(int sequenceIndex) {
-    // TODO - update the GUI, displaying the results for the sequence at the given index.  
+
+    if (! slidingWindow) 
+    {
+      simpleResultPanel.displayMeltingResults(results.get(sequenceIndex).get(0).getResult());
+    }
+    else 
+    {
+      // TODO - if the result array if of size one ==> show the simpleResultPanel 
+      
+      // go through all child of the main panel to remove the LineGraph
+      for (Component c : resultPanel.getComponents()) {
+        if (c instanceof LineGraph) {
+          resultPanel.remove(c);
+        }
+        else {
+          System.out.println("component class = " + c.getClass().getSimpleName());
+        }
+      }
+      
+      // add the new component
+      
+      // creates a constraints object
+      GridBagConstraints c = new GridBagConstraints();
+      c.gridx = 0; // column 0
+      c.weightx = 1; // resize so that all combo box have the same width
+      c.anchor = GridBagConstraints.LINE_START;
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.gridwidth = 2;
+      c.gridy = row - 1;
+      
+      LineGraph lg = LineGraph.createLineGraph(results.get(sequenceIndex).size(), results.get(sequenceIndex), X_AXIS_LABEL, X_AXIS_LABEL2, Y_AXIS_LABEL, LINE_GRAPH_TITLE_PREFIX + " '" + slidingWindowSize + "'");
+      resultPanel.add(lg, c);
+      resultPanel.repaint();
+    }
     
   }
 }

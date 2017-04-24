@@ -20,14 +20,15 @@ package meltinggui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,13 +37,11 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import melting.BatchMain;
 import melting.Environment;
 import melting.Helper;
 import melting.configuration.OptionManagement;
-import melting.configuration.RegisterMethods;
-import melting.methodInterfaces.MeltingComputationMethod;
 import meltinggui.frames.OuterFrame;
+import meltinggui.frames.ResultFrame;
 
 /**
  * The Main class for the Melting GUI. 
@@ -125,9 +124,8 @@ public class MeltingGui
     outerFrame.clearErrors();
     
 	OptionManagement manager = new OptionManagement();
-	Environment env = manager.createEnvironment(argsOption);
-	
-	// TODO - use the new method to calculate the meting results + display the result in the ResultFrame !
+	Environment env = manager.createEnvironment(argsOption); // TODO - original, unmodified options to be send to the result frame for an potential display
+    List<List<Environment>> results2D = new ArrayList<List<Environment>>(); 
 	
     if (env.getOptions().containsKey(OptionManagement.inputFile)) {
 
@@ -135,14 +133,17 @@ public class MeltingGui
       {
         List<Environment> results = Helper.computeMeltingOnFastaFile(env.getOptions());
         
-        // TODO - setup the ResultFrame
+        // creating the correct array of results        
+        for (Environment resultSeq : results) {
+          List<Environment> resultsSingle = new ArrayList<Environment>();
+          resultsSingle.add(resultSeq);
+          
+          results2D.add(resultsSingle);          
+        }
       }
       else 
       {
-        List<List<Environment>> results = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
-
-        // TODO - setup the ResultFrame
-
+        results2D = Helper.computeMeltingOnFastaFileWithWindows(env.getOptions());
       }
     }
     else if (env.getOptions().containsKey(OptionManagement.oldInputFile)) 
@@ -158,18 +159,34 @@ public class MeltingGui
       {
         Environment result = Helper.computeMeltingResults(env);
 
-        // TODO - setup the ResultFrame
-
+        // creating the correct array of results     
+        results2D.add(new ArrayList<Environment>());
+        results2D.get(0).add(result);
       }
       else
       {
         List<Environment> results = Helper.computeMeltingResultsWithWindow(env);
 
-        // TODO - setup the ResultFrame
+        // creating the correct array of results
+        results2D.add(results);
       }
     }
 
-	
+	// displaying the results
+    final ResultFrame f = new ResultFrame(results2D);
+
+    f.setMinimumSize(new Dimension(800, 600));
+
+    WindowListener windowCloser = new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        f.setVisible(false);
+        f.dispose();
+      }
+    };
+
+    f.addWindowListener(windowCloser);
+    f.setVisible(true);
 	
 	// old method - outerFrame.displayMeltingResults(results);
   }
